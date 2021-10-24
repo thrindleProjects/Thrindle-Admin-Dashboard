@@ -1,0 +1,57 @@
+* {
+  /* overflow-x: hidden !important; */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f0f4f9;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #166CB4;
+  border-radius: 30px;
+  min-height: 30px;
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 1000ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+
+/* FONTS */
+.font-ExtraBold {
+  font-family: "Avenir-Black";
+}
+.font-Medium {
+  font-family: "Avenir-Medium";
+}
+.font-Regular {
+  font-family: "Avenir-Regular";
+}
+.font-Bold {
+  font-family: "Avenir-Heavy";
+}
+.font-Light {
+  font-family: "Avenir-Light";
+}
+.font-SemiBold {
+  font-family: "Avenir-Book";
+}
