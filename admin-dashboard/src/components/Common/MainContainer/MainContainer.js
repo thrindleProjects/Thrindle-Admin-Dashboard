@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FaRegBell, FaAngleDown, FaSearch, FaBars } from "react-icons/fa";
+import {
+  FaRegBell,
+  FaAngleDown,
+  FaSearch,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import User from "../../../assests/images/image.jpg";
 import Image from "../../../assests/images/profile.svg";
@@ -9,12 +15,20 @@ import Image2 from "../../../assests/images/logout.svg";
 import Image3 from "../../../assests/images/noti-settings.svg";
 import Image4 from "../../../assests/images/noti.svg";
 import Logo from "../../../assests/images/About.png";
+import "./MainContainer.css";
+import SingleNavItem from "../../Navbar/SingleNavItem";
+import { data2 } from "../../Navbar/navData";
 
 const MainContainer = (props) => {
   const [showNav, setShowNav] = useState(false);
   const [dropdown, setDropdown] = useState(false);
+  const [showSideNav, setShowSideNav] = useState(false);
+  const closeSideNav = () => {
+    setShowSideNav(false);
+  };
   const [noti, setNoti] = useState(false);
   document.title = props.title || "Thrindle Dashboard";
+
   return (
     <MainCont showNav={showNav} className="w-full">
       <TopNav className="w-full flex flex-row  px-9 fixed top-0 z-50 bg-white-main left-0 right-0">
@@ -37,7 +51,7 @@ const MainContainer = (props) => {
         </div>
         <FaBars
           className="bar-icon text-2xl text-primary-dark cursor-pointer lg:hidden"
-          // onClick={() => setShowSideNav(true)}
+          onClick={() => setShowSideNav(true)}
         />
 
         <div className="user-cont">
@@ -130,6 +144,7 @@ const MainContainer = (props) => {
                   to="/profile"
                   onClick={() => setDropdown(false)}
                   className="single-dropdown flex flex-row w-full px-3"
+                  activeClassName="nav-profile-dropdown"
                 >
                   <img
                     src={Image}
@@ -145,6 +160,7 @@ const MainContainer = (props) => {
                   to="/settings"
                   onClick={() => setDropdown(false)}
                   className="single-dropdown flex flex-row w-full px-3"
+                  activeClassName="nav-profile-dropdown"
                 >
                   <img
                     src={Image1}
@@ -174,6 +190,36 @@ const MainContainer = (props) => {
           </div>
         </div>
       </TopNav>
+      {/* {showSideNav && ( */}
+      <SideNav
+        onClick={() => setShowSideNav(false)}
+        id="main-side-nav"
+        className={
+          !showSideNav
+            ? "side-nav w-screen h-screen fixed top-0 bottom-0 left-0 right-0"
+            : "side-nav active w-screen h-screen fixed top-0 bottom-0 left-0 right-0 "
+        }
+      >
+        <div className="side-nav-cont bg-white-main  h-full">
+          <FaTimes
+            className="side-nav-icon absolute"
+            id="close-side-nav-icon"
+            onClick={() => setShowSideNav(false)}
+          />
+          <div className="side-nav-logo">
+            <img
+              src={Logo}
+              alt="main-logo"
+              className="side-logo w-full h-full"
+            />
+          </div>
+          <div className="side-nav-links overflow-auto">
+            {data2.map((item, index) => (
+              <SingleNavItem {...item} key={index} closeNav={closeSideNav} />
+            ))}
+          </div>
+        </div>
+      </SideNav>
       <MainContent className="w-full ">
         {/* MOBILE SEARCH */}
         <SearchCont2 className="inputCont2 bg-white-main mb-10 mt-5 rounded-xl lg:hidden">
@@ -384,5 +430,50 @@ const SearchCont2 = styled.div`
     display: flex;
     align-items: center;
     height: 40px;
+  }
+`;
+
+const SideNav = styled.div`
+  z-index: 900;
+  .side-nav-cont {
+    width: 70%;
+  }
+  .side-nav-icon {
+    right: 50px;
+    top: 30px;
+    color: #fff;
+    font-size: 3rem;
+  }
+  .side-nav-logo {
+    height: 25%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    box-shadow: 0px 4px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  .side-logo {
+    width: 160px;
+    height: 32px;
+  }
+  .side-nav-links {
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10%;
+    // justify-content: center;
+  }
+  @media (max-width: 1000px) {
+  }
+  @media (max-width: 650px) {
+    .side-nav-cont {
+      width: 80%;
+    }
+    .side-nav-icon {
+      right: 10px;
+      top: 20px;
+      color: #fff;
+      font-size: 2.5rem;
+    }
   }
 `;

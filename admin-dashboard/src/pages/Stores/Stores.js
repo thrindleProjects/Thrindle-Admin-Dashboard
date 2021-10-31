@@ -3,7 +3,12 @@ import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 import GeneralHeaderTab from "../../components/Common/GeneralHeaderTab/GeneralHeaderTab";
-import { storeData,storeFilter,sellerHeader } from "../../data";
+import {
+  storeData,
+  storeFilter,
+  sellerHeader,
+  storeTableData,
+} from "../../data";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import StoreTable from "../../components/Common/GenralTable/StoreTable";
@@ -34,7 +39,7 @@ const Stores = () => {
         />
         <StoreTable
           tableHeaderData={sellerHeader}
-        //   tableData={dashTableData}
+          tableData={storeTableData}
           showCheck
         />
       </FirstSection>

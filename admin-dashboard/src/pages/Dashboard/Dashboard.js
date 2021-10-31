@@ -68,7 +68,7 @@ const Dashboard = () => {
       </FirstSection>
       <SecondSection
         data-aos="fade-up"
-        data-aos-duration="2000"
+        data-aos-duration="1000"
         data-aos-delay="1000"
         className="w-full bg-white-main rounded-md pt-10 pb-10"
       >
@@ -96,7 +96,7 @@ const Dashboard = () => {
       </SecondSection>
       <ThirdSection
         data-aos="fade-up"
-        data-aos-duration="2000"
+        data-aos-duration="1000"
         data-aos-delay="1000"
         className="w-full lg:grid lg:grid-cols-2 gap-10 pt-10 pb-10 mt-10"
       >

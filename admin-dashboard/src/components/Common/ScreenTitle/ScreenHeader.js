@@ -7,9 +7,13 @@ const ScreenHeader = (props) => {
       <h2 className="text-left header text-3xl  font-ExtraBold mr-5">
         {props.title}
       </h2>
-      <div className="box flex flex-row bg-primary-dark">
-        <p className="text-white-main text-sm font-Bold">{props.value}</p>
-      </div>
+      {props.noVal ? (
+        ""
+      ) : (
+        <div className="box flex flex-row bg-primary-dark">
+          <p className="text-white-main text-sm font-Bold">{props.value}</p>
+        </div>
+      )}
     </MainHeader>
   );
 };

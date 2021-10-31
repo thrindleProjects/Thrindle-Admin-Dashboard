@@ -6,9 +6,9 @@ import Image5 from "./assests/images/dash-pending-order.svg";
 import Image6 from "./assests/images/dash-delievered-order.svg";
 import Image7 from "./assests/images/dash-cancelled-order.svg";
 import Image8 from "./assests/images/inactive-orders.svg";
-import Image9 from './assests/images/pending-store.svg'
-import Image10 from './assests/images/inactive-store.svg'
-import Image11 from './assests/images/approved-store.svg'
+import Image9 from "./assests/images/pending-store.svg";
+import Image10 from "./assests/images/inactive-store.svg";
+import Image11 from "./assests/images/approved-store.svg";
 
 export const dashData = [
   {
@@ -498,9 +498,9 @@ export const sellerHeader = [
   {
     title: "Choosen Market",
   },
-  {
-    title: "Shop ID",
-  },
+  // {
+  //   title: "Shop ID",
+  // },
   {
     title: "Joined",
   },
@@ -553,5 +553,73 @@ export const customerData = [
     gender: "Male",
     location: "Nigeria",
     joined: "Oct 07, 2021",
+  },
+];
+
+export const storeTableData = [
+  {
+    name: "Yinka Olalere",
+    phoneNumber: "081234567897",
+    email: "yola@gmail.com",
+    storeName: "Yinka’s Store",
+    category: "Fashion",
+    market: "Balogun market",
+    joined: "Oct 07, 2021",
+    action: {
+      approve: "Approve",
+      decline: "Decline",
+    },
+  },
+  {
+    name: "Yinka Olalere",
+    phoneNumber: "081234567897",
+    email: "yola@gmail.com",
+    storeName: "Yinka’s Store",
+    category: "Fashion",
+    market: "Balogun market",
+    joined: "Oct 07, 2021",
+    action: {
+      approve: "Approve",
+      decline: "Decline",
+    },
+  },
+  {
+    name: "Yinka Olalere",
+    phoneNumber: "081234567897",
+    email: "yola@gmail.com",
+    storeName: "Yinka’s Store",
+    category: "Fashion",
+    market: "Balogun market",
+    joined: "Oct 07, 2021",
+    action: {
+      approve: "Approve",
+      decline: "Decline",
+    },
+  },
+  {
+    name: "Yinka Olalere",
+    phoneNumber: "081234567897",
+    email: "yola@gmail.com",
+    storeName: "Yinka’s Store",
+    category: "Fashion",
+    market: "Balogun market",
+    joined: "Oct 07, 2021",
+    action: {
+      approve: "Approve",
+      decline: "Decline",
+    },
+  },
+  {
+    name: "Yinka Olalere",
+    phoneNumber: "081234567897",
+    email: "yola@gmail.com",
+    storeName: "Yinka’s Store",
+    category: "Fashion",
+    market: "Balogun market",
+    joined: "Oct 07, 2021",
+    action: {
+      approve: "Approve",
+      decline: "Decline",
+    },
   },
 ];

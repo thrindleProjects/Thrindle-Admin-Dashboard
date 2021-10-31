@@ -1,10 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
+import { FaEllipsisH } from "react-icons/fa";
 
 const StoreTable = (props) => {
   return (
-    <MainTable className="w-full rounded-md  py-10 mt-5 overflow-auto">
+    <MainTable
+      className="w-full rounded-md  py-10 mt-5 overflow-auto"
+    >
       <table className="w-full">
         <thead className="main-table-header  rounded-md flex flex-row">
           {props.showCheck && <GeneralCheckBox />}
@@ -29,53 +32,49 @@ const StoreTable = (props) => {
 
               <td>
                 <p className="status text-left text-sm text-white-text font-Regular">
-                  {item.status}
+                  {item.name}
                 </p>
               </td>
               <td>
                 <p className="orderId text-left text-sm text-white-text font-Regular">
-                  {item.OrderID}
+                  {item.phoneNumber}
                 </p>
               </td>
               <td>
                 <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.ProductTitle}
+                  {item.email}
                 </p>
               </td>
               <td>
                 <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.Price}
+                  {item.storeName}
                 </p>
               </td>
               <td>
                 <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.CustomerName}
+                  {item.category}
                 </p>
               </td>
               <td>
                 <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.PhoneNo}
+                  {item.market}
                 </p>
               </td>
               <td>
                 <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.Market}
+                  {item.joined}
                 </p>
               </td>
-              <td>
-                <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.Store}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.Category}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.OrderDate}
-                </p>
+              <td className='pl-3'>
+                <FaEllipsisH className="text-base text-primary-dark" />
+                {/* <div className="w-full flex flex-row actionCont">
+                  <p className="product text-left text-xs actionText text-secondary-success font-Regular">
+                    {item.action.approve}
+                  </p>
+                  <p className="product text-left text-xs actionText text-secondary-error font-Regular">
+                    {item.action.decline}
+                  </p>
+                </div> */}
               </td>
             </tr>
           ))}
@@ -108,6 +107,13 @@ const MainTable = styled.div`
   tr {
     height: 50px;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
+  }
+  .actionCont {
+    align-items: center;
+    justify-content: space-between;
+  }
+  .actionText {
+    font-size: 10px;
   }
 `;

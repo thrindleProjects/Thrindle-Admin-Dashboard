@@ -9,7 +9,7 @@ const SingleDashboard = (props) => {
       color={props.color}
       className="w-full rounded-xl bg-white-main px-4 pt-5 pb-2 lg:mb-0 mb-10"
       data-aos="fade-up"
-      data-aos-duration="2000"
+      data-aos-duration="1000"
       data-aos-delay={`${props.index * 300}`}
     >
       <div className="w-full flex flex-row align-middle justify-between mb-4">

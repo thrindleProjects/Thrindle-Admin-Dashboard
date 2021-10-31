@@ -18,24 +18,28 @@ const GeneralPagination = (props) => {
           </p>
         </button>
       </div>
-      <div className="pagination flex flex-row ">
-        <div className="num-cont flex flex-row mr-10">
-          <span className="text-white-text font-Bold text-sm">01</span>
-          <span className="text-white-text font-Bold text-sm mb-1">-</span>
-          <span className="text-white-text font-Bold text-sm">10</span>
-          <span className="text-white-text font-Bold text-sm">&nbsp;of</span>
-          <span className="text-white-text font-Bold text-sm">&nbsp;08</span>
+      {props.noPag ? (
+        ""
+      ) : (
+        <div className="pagination flex flex-row ">
+          <div className="num-cont flex flex-row mr-10">
+            <span className="text-white-text font-Bold text-sm">01</span>
+            <span className="text-white-text font-Bold text-sm mb-1">-</span>
+            <span className="text-white-text font-Bold text-sm">10</span>
+            <span className="text-white-text font-Bold text-sm">&nbsp;of</span>
+            <span className="text-white-text font-Bold text-sm">&nbsp;08</span>
+          </div>
+          {/* CONTROLS */}
+          <div className="controls flex flex-row">
+            <button className="single-controls flex flex-row rounded-md focus:outline-none outline-none">
+              <FaAngleLeft className="text-base single-control-icon text-center text-white-main" />
+            </button>
+            <button className="single-controls flex flex-row rounded-md focus:outline-none outline-none ">
+              <FaAngleRight className="text-base single-control-icon text-center text-white-main" />
+            </button>
+          </div>
         </div>
-        {/* CONTROLS */}
-        <div className="controls flex flex-row">
-          <button className="single-controls flex flex-row rounded-md focus:outline-none outline-none">
-            <FaAngleLeft className="text-base single-control-icon text-center text-white-main" />
-          </button>
-          <button className="single-controls flex flex-row rounded-md focus:outline-none outline-none ">
-            <FaAngleRight className="text-base single-control-icon text-center text-white-main" />
-          </button>
-        </div>
-      </div>
+      )}
     </MainPagination>
   );
 };
