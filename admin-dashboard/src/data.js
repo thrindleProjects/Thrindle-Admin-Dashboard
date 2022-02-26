@@ -382,6 +382,23 @@ export const storeData = [
   },
 ];
 
+export const inventData = [
+  {
+    title: "Pending Stores",
+    color: "#F69F13",
+    icon: Image10,
+    activeIcon: Image9,
+    value: 200,
+  },
+  {
+    title: "Approved Stores",
+    color: "#4BC7EA",
+    icon: Image10,
+    activeIcon: Image11,
+    value: 1000,
+  },
+];
+
 export const orderFilter = [
   {
     title: "Customer Name",
