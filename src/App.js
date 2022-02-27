@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 function App() {
   const location = useLocation();
   const [show, setShow] = useState(false);
+  
   AOS.init({
     easing: "ease-in-out",
   });
@@ -24,6 +25,7 @@ function App() {
     location: { pathname: routeName },
   } = history;
   console.log(routeName);
+
   useEffect(() => {
     if (
       routeName === "/login" ||
