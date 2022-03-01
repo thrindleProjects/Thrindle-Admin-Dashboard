@@ -10,7 +10,6 @@ function Shipment() {
   const [filterValue, setFilterValue] = useState("");
   return (
     <MainContainer>
-      <div>Hello Yes bbb</div>
       <ScreenHeader title="Shipment" value={300} />
       <GeneralFilterTab
         filter={filterValue}
