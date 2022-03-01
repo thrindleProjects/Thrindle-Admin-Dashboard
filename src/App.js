@@ -19,12 +19,12 @@ function App() {
   AOS.init({
     easing: "ease-in-out",
   });
+
   const history = useHistory();
 
   const {
     location: { pathname: routeName },
   } = history;
-  console.log(routeName);
 
   useEffect(() => {
     if (

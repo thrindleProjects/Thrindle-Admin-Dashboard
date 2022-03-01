@@ -27,6 +27,7 @@ const Inventory = (props) => {
   const changeTab = (val) => {
     setActiveTab(val);
   };
+  
   useEffect(() => {
     if (qty && qty !== "") {
       setActiveTab(qty);
@@ -42,12 +43,12 @@ const Inventory = (props) => {
   );
 
   return (
-    <MainContainer className='relative'>
+    <MainContainer className="relative">
       <FirstSection>
         {showModal && (
           <InventoryModal setModal={setShowModal} modalItem={modalItem} />
         )}
-        <ScreenHeader title='Inventory' value={4000} />
+        <ScreenHeader title="Inventory" value={4000} />
         <GeneralHeaderTab
           data={inventData}
           activeTab={activeTab}
@@ -58,7 +59,7 @@ const Inventory = (props) => {
           filterData={inventFilter}
           changeFilter={(val) => setFilterValue(val)}
         />
-        <GeneralPagination noPag showButtons={false} />
+        <GeneralPagination noPag showButtons={false} pag={true} />
         <InventoryTable
           showCheck
           tableHeaderData={inventTableHeader}

@@ -50,6 +50,8 @@ export const routes = [
     title: "Users and Permission",
     path: "/users",
     component: UnP,
+  },
+  {
     title: "Shipment",
     path: "/shipment",
     component: Shipment,

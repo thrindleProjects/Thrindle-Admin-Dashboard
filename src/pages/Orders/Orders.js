@@ -30,8 +30,8 @@ const Orders = (props) => {
   }, [qty]);
   return (
     <MainContainer>
-      <FirstSection className='w-full'>
-        <ScreenHeader title='Orders' value={1000} />
+      <FirstSection className="w-full">
+        <ScreenHeader title="Orders" value={1000} />
         <GeneralHeaderTab
           data={orderData}
           activeTab={activeTab}
@@ -43,8 +43,8 @@ const Orders = (props) => {
           changeFilter={(val) => setFilterValue(val)}
         />
         <GeneralPagination
-          cancelText='Cancel Order'
-          deleteText='delete Order'
+          cancelText="Cancel Order"
+          deleteText="delete Order"
         />
         <GeneralTable
           tableHeaderData={orderTableHeader}

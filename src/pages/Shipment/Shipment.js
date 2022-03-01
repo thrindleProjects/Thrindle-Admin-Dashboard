@@ -17,7 +17,11 @@ function Shipment() {
         filterData={shipmentFilter}
         changeFilter={(val) => setFilterValue(val)}
       />
-      <GeneralPagination deleteText="delete Order" onlyDelete={true} />
+      <GeneralPagination
+        deleteText="delete Order"
+        onlyDelete={true}
+        pag={true}
+      />
       <ShipmentTable
         tableHeaderData={shipmentTableHeader}
         tableData={shipmentData}
