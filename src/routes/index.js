@@ -6,6 +6,7 @@ import Profile from "../pages/Profile/Profile";
 import Customers from "../pages/Customers/Customers";
 import Stores from "../pages/Stores/Stores";
 import Settings from "../pages/Settings/Settings";
+import Shipment from "../pages/Shipment/Shipment";
 
 export const routes = [
   {
@@ -37,5 +38,10 @@ export const routes = [
     title: "Settings",
     path: "/settings",
     component: Settings,
+  },
+  {
+    title: "Shipment",
+    path: "/shipment",
+    component: Shipment,
   },
 ];

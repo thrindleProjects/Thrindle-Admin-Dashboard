@@ -300,7 +300,70 @@ export const dashTableData = [
     Market: "Balogun",
     Store: "Yinka’s Store",
     Category: "Fashion",
-    OrderDate: "Oct 07, 2021",
+    OrderDate: "Oct 07, 2022",
+  },
+];
+
+export const shipmentData = [
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
+  },
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
+  },
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
+  },
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
+  },
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
+  },
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
   },
 ];
 
@@ -365,6 +428,7 @@ export const orderData = [
     value: 100,
   },
 ];
+
 export const storeData = [
   {
     title: "Pending Stores",
@@ -402,6 +466,21 @@ export const orderFilter = [
     title: "Location",
   },
 ];
+export const shipmentFilter = [
+  {
+    title: "Today",
+  },
+  {
+    title: "Last 3 days",
+  },
+  {
+    title: "Delivered",
+  },
+  {
+    title: "In progress",
+  },
+];
+
 export const storeFilter = [
   {
     title: "Seller Name",
@@ -453,6 +532,33 @@ export const orderTableHeader = [
   },
   {
     title: "Order Date",
+  },
+];
+
+export const shipmentTableHeader = [
+  {
+    title: "Customer Name",
+  },
+  {
+    title: "Order ID",
+  },
+  {
+    title: "Carrier",
+  },
+  {
+    title: "Order Date",
+  },
+  {
+    title: "Shipping Date",
+  },
+  {
+    title: "Exp. Delivery Date",
+  },
+  {
+    title: "Carrier Status",
+  },
+  {
+    title: "Payment Status",
   },
 ];
 

@@ -7,16 +7,26 @@ const GeneralPagination = (props) => {
     <MainPagination className="w-full flex flex-row flex-wrap mt-14">
       <div className="pagination-btn-cont flex flex-row flex-wrap">
         {/* Single Btn */}
-        <button className="flex flex-row cancel rounded-md border border-secondary-yellow text-secondary-yellow outline-none focus:outline-none mr-5 lg:mb-0 mb-5 hover:opacity-80">
-          <p className="text-base font-Regular text-center capitalize">
-            {props.cancelText}
-          </p>
-        </button>
-        <button className="flex flex-row cancel rounded-md border border-secondary-error text-white-main outline-none focus:outline-none mr-5 lg:mb-0 mb-5 bg-secondary-error hover:opacity-80">
-          <p className="text-base font-Regular text-center capitalize">
-            {props.deleteText}
-          </p>
-        </button>
+        {props.onlyDelete ? (
+          <button className="flex flex-row cancel rounded-md border border-secondary-error text-white-main outline-none focus:outline-none mr-5 lg:mb-0 mb-5 bg-secondary-error hover:opacity-80">
+            <p className="text-base font-Regular text-center capitalize">
+              {props.deleteText}
+            </p>
+          </button>
+        ) : (
+          <>
+            <button className="flex flex-row cancel rounded-md border border-secondary-yellow text-secondary-yellow outline-none focus:outline-none mr-5 lg:mb-0 mb-5 hover:opacity-80">
+              <p className="text-base font-Regular text-center capitalize">
+                {props.cancelText}
+              </p>
+            </button>
+            <button className="flex flex-row cancel rounded-md border border-secondary-error text-white-main outline-none focus:outline-none mr-5 lg:mb-0 mb-5 bg-secondary-error hover:opacity-80">
+              <p className="text-base font-Regular text-center capitalize">
+                {props.deleteText}
+              </p>
+            </button>
+          </>
+        )}
       </div>
       {props.noPag ? (
         ""

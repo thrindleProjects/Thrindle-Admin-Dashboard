@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const GeneralHeaderTab = (props) => {
-    console.log(props);
+  console.log(props);
   return (
     <MainTab className=" flex flex-row flex-wrap">
       {props.data?.map((item, index) => (
