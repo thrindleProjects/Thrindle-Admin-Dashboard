@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 import { FaEllipsisH } from "react-icons/fa";
+
 const InventoryTable = (props) => {
+  const handleModal = (product) => {
+    return props.setModal(true, product);
+  };
+
   return (
     <MainTable className='w-full rounded-md  py-10 mt-5 overflow-auto'>
       <table className='w-full'>
@@ -68,8 +73,8 @@ const InventoryTable = (props) => {
                   {item.uploadDate}
                 </p>
               </td>
-              <td>
-                <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize'>
+              <td onClick={() => handleModal(item)}>
+                <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize cursor-pointer'>
                   <FaEllipsisH className='text-base text-primary-dark' />
                 </p>
               </td>
