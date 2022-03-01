@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const GeneralHeaderTab = (props) => {
+    console.log(props);
   return (
-    <MainTab className=' flex flex-row flex-wrap'>
+    <MainTab className=" flex flex-row flex-wrap">
       {props.data?.map((item, index) => (
         <SingleTab
           tab={props.activeTab}
@@ -11,23 +12,23 @@ const GeneralHeaderTab = (props) => {
           title={item.title}
           color={item.color}
           onClick={() => props.changeTab(item.title)}
-          className='single-tab flex flex-row h-full pb-5 mr-10 cursor-pointer lg:mb-0 mb-5'
+          className="single-tab flex flex-row h-full pb-5 mr-10 cursor-pointer lg:mb-0 mb-5"
         >
           <img
             src={item.title === props.activeTab ? item.activeIcon : item.icon}
-            alt='icons'
-            className='block'
+            alt="icons"
+            className="block"
           />
           <TabTitle
             tab={props.activeTab}
             title={item.title}
             color={item.color}
-            className='text-base tab-title text-white-text mx-5'
+            className="text-base tab-title text-white-text mx-5"
           >
             {item.title}
           </TabTitle>
-          <div className='box flex flex-row '>
-            <p className='text-white-main text-sm font-Bold'>{item.value}</p>
+          <div className="box flex flex-row ">
+            <p className="text-white-main text-sm font-Bold">{item.value}</p>
           </div>
         </SingleTab>
       ))}

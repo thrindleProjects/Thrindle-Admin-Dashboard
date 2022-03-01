@@ -4,24 +4,23 @@ import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 
 const DashboardTable = (props) => {
   return (
-    <MainTable className='w-full mt-2 overflow-auto'>
-      <table className='w-full'>
-        <thead className='main-table-header  rounded-md flex flex-row'>
+    <MainTable className="w-full mt-2 overflow-auto">
+      <table className="w-full">
+        <thead className="main-table-header  rounded-md flex flex-row">
           {props.showCheck && <GeneralCheckBox />}
-          <tr className='main-table-header  rounded-md flex flex-row'>
-            {props.tableHeaderData.map((item, index) => (
-              <th
-                className='table-head-text text-sm font-normal font-Regular text-left text-white-text'
-                key={index}
-              >
-                {item.title}
-              </th>
-            ))}
-          </tr>
+
+          {props.tableHeaderData.map((item, index) => (
+            <th
+              className="table-head-text text-sm font-normal font-Regular text-left text-white-text"
+              key={index}
+            >
+              {item.title}
+            </th>
+          ))}
         </thead>
-        <tbody className='main-table-body'>
+        <tbody className="main-table-body">
           {props.tableData.map((item, index) => (
-            <tr key={index} className='w-full flex flex-row'>
+            <tr key={index} className="w-full flex flex-row">
               {props.showCheck && (
                 <td>
                   <GeneralCheckBox />
@@ -29,52 +28,52 @@ const DashboardTable = (props) => {
               )}
 
               <td>
-                <p className='status text-left lg:text-sm text-xs text-white-text font-Regular'>
+                <p className="status text-left lg:text-sm text-xs text-white-text font-Regular">
                   {item.status}
                 </p>
               </td>
               <td>
-                <p className='orderId text-left lg:text-sm text-xs text-white-text font-Regular'>
+                <p className="orderId text-left lg:text-sm text-xs text-white-text font-Regular">
                   {item.OrderID}
                 </p>
               </td>
               <td>
-                <p className='product text-left lg:text-sm text-xs text-white-text font-Regular'>
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
                   {item.ProductTitle}
                 </p>
               </td>
               <td>
-                <p className='product text-left lg:text-sm text-xs text-white-text font-Regular'>
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
                   {item.Price}
                 </p>
               </td>
               <td>
-                <p className='product text-left lg:text-sm text-xs text-white-text font-Regular'>
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
                   {item.CustomerName}
                 </p>
               </td>
               <td>
-                <p className='product text-left lg:text-sm text-xs text-white-text font-Regular'>
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
                   {item.PhoneNo}
                 </p>
               </td>
               <td>
-                <p className='product text-left lg:text-sm text-xs text-white-text font-Regular'>
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
                   {item.Market}
                 </p>
               </td>
               <td>
-                <p className='product text-left lg:text-sm text-xs text-white-text font-Regular'>
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
                   {item.Store}
                 </p>
               </td>
               <td>
-                <p className='product text-left lg:text-sm text-xs text-white-text font-Regular'>
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
                   {item.Category}
                 </p>
               </td>
               <td>
-                <p className='product text-left lg:text-sm text-xs text-white-text font-Regular'>
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
                   {item.OrderDate}
                 </p>
               </td>
@@ -89,7 +88,7 @@ const DashboardTable = (props) => {
 export default DashboardTable;
 
 const MainTable = styled.div`
-  //   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
+//   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
   .main-table-header {
     width: 100%;
     padding: 0px 12px !important;
