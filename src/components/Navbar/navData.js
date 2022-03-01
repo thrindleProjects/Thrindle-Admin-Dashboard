@@ -45,6 +45,12 @@ export const navData = [
         icon: Image4,
         icon2: Active3,
       },
+      {
+        title: "Add Products",
+        path: "/add-products",
+        icon: Image4,
+        icon2: Active3,
+      },
     ],
   },
 
@@ -147,7 +153,7 @@ export const data2 = [
     icon: Image8,
     icon2: Active7,
   },
-  
+
   {
     title: "Settings",
     path: "/settings",
