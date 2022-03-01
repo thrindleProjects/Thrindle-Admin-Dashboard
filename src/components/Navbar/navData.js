@@ -45,8 +45,15 @@ export const navData = [
         icon: Image4,
         icon2: Active3,
       },
+      {
+        title: "Add Products",
+        path: "/add-products",
+        icon: Image4,
+        icon2: Active3,
+      },
     ],
   },
+
   {
     mainNav: "Business",
     subNav: [
@@ -70,6 +77,7 @@ export const navData = [
       },
     ],
   },
+
   {
     mainNav: "Admistration",
     subNav: [
@@ -96,48 +104,56 @@ export const data2 = [
     icon: Image,
     icon2: Active,
   },
+
   {
     title: "Orders",
     path: "/orders",
     icon: Image1,
     icon2: Active1,
   },
+
   {
     title: "Customers",
     path: "/customers",
     icon: Image3,
     icon2: Active2,
   },
+
   {
     title: "Stores",
     path: "/stores",
     icon: Image4,
     icon2: Active3,
   },
+
   {
     title: "Shipment/Delivery",
     path: "/shipment",
     icon: Image5,
     icon2: Active4,
   },
+
   {
     title: "Audit",
     path: "/audit",
     icon: Image6,
     icon2: Active5,
   },
+
   {
     title: "Inventory",
     path: "/inventory",
     icon: Image7,
     icon2: Active6,
   },
+
   {
     title: "Users & Permission",
     path: "/users",
     icon: Image8,
     icon2: Active7,
   },
+
   {
     title: "Settings",
     path: "/settings",

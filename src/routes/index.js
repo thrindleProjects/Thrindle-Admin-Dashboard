@@ -6,8 +6,12 @@ import Profile from "../pages/Profile/Profile";
 import Customers from "../pages/Customers/Customers";
 import Stores from "../pages/Stores/Stores";
 import Settings from "../pages/Settings/Settings";
+<<<<<<< HEAD
 import Inventory from "../pages/Inventory/Inventory";
 import UnP from "../pages/U&P/UnP";
+=======
+import Shipment from "../pages/Shipment/Shipment";
+>>>>>>> dev
 
 export const routes = [
   {
@@ -49,5 +53,8 @@ export const routes = [
     title: "Users and Permission",
     path: "/users",
     component: UnP,
+    title: "Shipment",
+    path: "/shipment",
+    component: Shipment,
   },
 ];

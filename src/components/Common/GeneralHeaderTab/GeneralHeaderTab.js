@@ -2,6 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 const GeneralHeaderTab = (props) => {
+<<<<<<< HEAD
+=======
+  console.log(props);
+>>>>>>> dev
   return (
     <MainTab className=' flex flex-row flex-wrap'>
       {props.data?.map((item, index) => (
