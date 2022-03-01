@@ -16,6 +16,7 @@ import GeneralTable from "../../components/Common/GenralTable/GeneralTable";
 const Orders = (props) => {
   const [activeTab, setActiveTab] = useState("Pending Orders");
   const [filterValue, setFilterValue] = useState("");
+
   const qty = props.location.search
     ? props.location.search.split("=")[1]
     : "Pending Orders";
@@ -25,16 +26,16 @@ const Orders = (props) => {
   useEffect(() => {
     if (qty && qty !== "") {
       setActiveTab(qty);
-    } 
+    }
   }, [qty]);
   return (
     <MainContainer>
-      <FirstSection className="w-full">
-        <ScreenHeader title="Orders" value={1000} />
+      <FirstSection className='w-full'>
+        <ScreenHeader title='Orders' value={1000} />
         <GeneralHeaderTab
           data={orderData}
           activeTab={activeTab}
-          changeTab={(val) => changeTab(val)}
+          changeTab={changeTab}
         />
         <GeneralFilterTab
           filter={filterValue}
@@ -42,8 +43,8 @@ const Orders = (props) => {
           changeFilter={(val) => setFilterValue(val)}
         />
         <GeneralPagination
-          cancelText="Cancel Order"
-          deleteText="delete Order"
+          cancelText='Cancel Order'
+          deleteText='delete Order'
         />
         <GeneralTable
           tableHeaderData={orderTableHeader}

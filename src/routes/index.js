@@ -6,6 +6,8 @@ import Profile from "../pages/Profile/Profile";
 import Customers from "../pages/Customers/Customers";
 import Stores from "../pages/Stores/Stores";
 import Settings from "../pages/Settings/Settings";
+import Inventory from "../pages/Inventory/Inventory";
+import UnP from "../pages/U&P/UnP";
 
 export const routes = [
   {
@@ -37,5 +39,15 @@ export const routes = [
     title: "Settings",
     path: "/settings",
     component: Settings,
+  },
+  {
+    title: "Inventory",
+    path: "/inventory",
+    component: Inventory,
+  },
+  {
+    title: "Users and Permission",
+    path: "/users",
+    component: UnP,
   },
 ];

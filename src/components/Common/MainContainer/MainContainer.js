@@ -30,8 +30,8 @@ const MainContainer = (props) => {
   document.title = props.title || "Thrindle Dashboard";
 
   return (
-    <MainCont showNav={showNav} className="w-full">
-      <TopNav className="w-full flex flex-row  px-9 fixed top-0 z-50 bg-white-main left-0 right-0">
+    <MainCont showNav={showNav} className='w-full'>
+      <TopNav className='w-full flex flex-row  px-9 fixed top-0 z-50 bg-white-main left-0 right-0'>
         <div
           className={
             showNav
@@ -40,32 +40,32 @@ const MainContainer = (props) => {
           }
         >
           <input
-            type="text"
-            placeholder="Search"
-            className="w-full flex pl-5 flex-row h-full nav-input rounded-md text-lg text-white-text outline-none focus:outline-none"
+            type='text'
+            placeholder='Search'
+            className='w-full flex pl-5 flex-row h-full nav-input rounded-md text-lg text-white-text outline-none focus:outline-none'
           />
         </div>
         {/* LAPTOP CCONTENT */}
-        <div className="logo-cont lg:hidden">
-          <img src={Logo} alt="Thrindle Logo" className="block w-full h-full" />
+        <div className='logo-cont lg:hidden'>
+          <img src={Logo} alt='Thrindle Logo' className='block w-full h-full' />
         </div>
         <FaBars
-          className="bar-icon text-2xl text-primary-dark cursor-pointer lg:hidden"
+          className='bar-icon text-2xl text-primary-dark cursor-pointer lg:hidden'
           onClick={() => setShowSideNav(true)}
         />
 
-        <div className="user-cont">
+        <div className='user-cont'>
           <div
-            className="search-cont mr-6 flex flex-row cursor-pointer"
+            className='search-cont mr-6 flex flex-row cursor-pointer'
             onClick={() => setShowNav(!showNav)}
           >
-            <FaSearch className=" text-xl text-white-text bell-icon" />
+            <FaSearch className=' text-xl text-white-text bell-icon' />
           </div>
           <div
             onClick={() => setNoti(!noti)}
-            className="noti-bell mr-6 flex flex-row cursor-pointer"
+            className='noti-bell mr-6 flex flex-row cursor-pointer'
           >
-            <FaRegBell className="text-xl text-white-text bell-icon " />
+            <FaRegBell className='text-xl text-white-text bell-icon ' />
             {/* NOTIFICATION DROPDOWN */}
             <div
               className={
@@ -74,50 +74,50 @@ const MainContainer = (props) => {
                   : "bg-white-main w-full absolute rounded-md  top-14 notification-dropdown "
               }
             >
-              <div className="w-full h-64 relative">
-                <div className="w-full h-full px-5 pt-5">
-                  <div className="w-full align-middle justify-between  flex flex-row">
-                    <p className="text-lg text-white-text font-Bold">
+              <div className='w-full h-64 relative'>
+                <div className='w-full h-full px-5 pt-5'>
+                  <div className='w-full align-middle justify-between  flex flex-row'>
+                    <p className='text-lg text-white-text font-Bold'>
                       Notification
                     </p>
-                    <img src={Image3} alt="settings-icon" className="block" />
+                    <img src={Image3} alt='settings-icon' className='block' />
                   </div>
-                  <div className="w-full pt-10 flex flex-col align-middle justify-center ">
+                  <div className='w-full pt-10 flex flex-col align-middle justify-center '>
                     <img
                       src={Image4}
-                      alt="settings-icon"
-                      className="block w-14 h-14 mx-auto"
+                      alt='settings-icon'
+                      className='block w-14 h-14 mx-auto'
                     />
-                    <p className="text-white-text text-sm font-Bold text-center mt-3">
+                    <p className='text-white-text text-sm font-Bold text-center mt-3'>
                       Omo! you no get notification jare
                     </p>
                   </div>
                 </div>
                 <NavLink
-                  to="/notifications"
+                  to='/notifications'
                   exact
                   onClick={() => setNoti(false)}
-                  className="absolute bottom-0 w-full h-10 rounded-md bg-secondary-yellow flex flex-row noti-bottom"
+                  className='absolute bottom-0 w-full h-10 rounded-md bg-secondary-yellow flex flex-row noti-bottom'
                 >
-                  <p className="text-white-main text-sm font-Medium">
+                  <p className='text-white-main text-sm font-Medium'>
                     Show all notifications
                   </p>
                 </NavLink>
               </div>
             </div>
           </div>
-          <div className="sub-user relative">
-            <img src={User} alt="user" className="user block" />
+          <div className='sub-user relative'>
+            <img src={User} alt='user' className='user block' />
             <div>
-              <p className="user-name capitalize text-white-text text-sm ml-2">
+              <p className='user-name capitalize text-white-text text-sm ml-2'>
                 Olayinka Olalere
               </p>
-              <p className="user-name lowercase text-white-text text-xs ml-2">
+              <p className='user-name lowercase text-white-text text-xs ml-2'>
                 yinka@thrindle.com
               </p>
             </div>
             <FaAngleDown
-              className="text-secondary-light text-md ml-2 block mt-1 cursor-pointer"
+              className='text-secondary-light text-md ml-2 block mt-1 cursor-pointer'
               onClick={() => setDropdown(!dropdown)}
             />
             <div
@@ -127,61 +127,61 @@ const MainContainer = (props) => {
                   : "w-full absolute bg-white-main pb-5 top-12 rounded-md sub-dropdown "
               }
             >
-              <div className="w-full flex flex-row px-3 sub-user-cont pb-4 pt-4">
-                <img src={User} alt="user" className="user small-user block" />
+              <div className='w-full flex flex-row px-3 sub-user-cont pb-4 pt-4'>
+                <img src={User} alt='user' className='user small-user block' />
                 <div>
-                  <p className="user-name  capitalize text-white-text text-sm ml-2">
+                  <p className='user-name  capitalize text-white-text text-sm ml-2'>
                     Olayinka Olalere
                   </p>
-                  <p className="user-name lowercase text-primary-dark text-xs ml-2">
+                  <p className='user-name lowercase text-primary-dark text-xs ml-2'>
                     yinka@thrindle.com
                   </p>
                 </div>
               </div>
-              <div className="w-full pt-2 ">
+              <div className='w-full pt-2 '>
                 {/* SINGLE */}
                 <NavLink
-                  to="/profile"
+                  to='/profile'
                   onClick={() => setDropdown(false)}
-                  className="single-dropdown flex flex-row w-full px-3"
-                  activeClassName="nav-profile-dropdown"
+                  className='single-dropdown flex flex-row w-full px-3'
+                  activeClassName='nav-profile-dropdown'
                 >
                   <img
                     src={Image}
-                    alt="icon"
-                    className="block mr-5 single-dropdown-icon"
+                    alt='icon'
+                    className='block mr-5 single-dropdown-icon'
                   />
-                  <p className="text-left dropdown-text text-sm font-Bold">
+                  <p className='text-left dropdown-text text-sm font-Bold'>
                     Admin Profile
                   </p>
                 </NavLink>
                 {/* SINGLE */}
                 <NavLink
-                  to="/settings"
+                  to='/settings'
                   onClick={() => setDropdown(false)}
-                  className="single-dropdown flex flex-row w-full px-3"
-                  activeClassName="nav-profile-dropdown"
+                  className='single-dropdown flex flex-row w-full px-3'
+                  activeClassName='nav-profile-dropdown'
                 >
                   <img
                     src={Image1}
-                    alt="icon"
-                    className="block mr-5 single-dropdown-icon"
+                    alt='icon'
+                    className='block mr-5 single-dropdown-icon'
                   />
-                  <p className="text-left dropdown-text text-sm font-Bold">
+                  <p className='text-left dropdown-text text-sm font-Bold'>
                     Settings
                   </p>
                 </NavLink>
                 {/* SINGLE */}
                 <div
                   onClick={() => setDropdown(false)}
-                  className="single-dropdown flex flex-row w-full px-3"
+                  className='single-dropdown flex flex-row w-full px-3'
                 >
                   <img
                     src={Image2}
-                    alt="icon"
-                    className="block mr-5 single-dropdown-icon"
+                    alt='icon'
+                    className='block mr-5 single-dropdown-icon'
                   />
-                  <p className="text-left dropdown-text text-sm font-Bold">
+                  <p className='text-left dropdown-text text-sm font-Bold'>
                     Logout
                   </p>
                 </div>
@@ -193,40 +193,40 @@ const MainContainer = (props) => {
       {/* {showSideNav && ( */}
       <SideNav
         onClick={() => setShowSideNav(false)}
-        id="main-side-nav"
+        id='main-side-nav'
         className={
           !showSideNav
             ? "side-nav w-screen h-screen fixed top-0 bottom-0 left-0 right-0"
             : "side-nav active w-screen h-screen fixed top-0 bottom-0 left-0 right-0 "
         }
       >
-        <div className="side-nav-cont bg-white-main  h-full">
+        <div className='side-nav-cont bg-white-main  h-full'>
           <FaTimes
-            className="side-nav-icon absolute"
-            id="close-side-nav-icon"
+            className='side-nav-icon absolute'
+            id='close-side-nav-icon'
             onClick={() => setShowSideNav(false)}
           />
-          <div className="side-nav-logo">
+          <div className='side-nav-logo'>
             <img
               src={Logo}
-              alt="main-logo"
-              className="side-logo w-full h-full"
+              alt='main-logo'
+              className='side-logo w-full h-full'
             />
           </div>
-          <div className="side-nav-links overflow-auto">
+          <div className='side-nav-links overflow-auto'>
             {data2.map((item, index) => (
               <SingleNavItem {...item} key={index} closeNav={closeSideNav} />
             ))}
           </div>
         </div>
       </SideNav>
-      <MainContent className="w-full ">
+      <MainContent className={`w-full`}>
         {/* MOBILE SEARCH */}
-        <SearchCont2 className="inputCont2 bg-white-main mb-10 mt-5 rounded-xl lg:hidden">
-          <div className="icon-cont2 ">
-            <FaSearch className="text-white-text text-base" />
+        <SearchCont2 className='inputCont2 bg-white-main mb-10 mt-5 rounded-xl lg:hidden'>
+          <div className='icon-cont2 '>
+            <FaSearch className='text-white-text text-base' />
           </div>
-          <input placeholder="Search" className="search-input2 ml-2" />
+          <input placeholder='Search' className='search-input2 ml-2' />
         </SearchCont2>
         {props.children}
       </MainContent>

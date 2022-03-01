@@ -382,6 +382,23 @@ export const storeData = [
   },
 ];
 
+export const inventData = [
+  {
+    title: "Pending Products",
+    color: "#F69F13",
+    icon: Image8,
+    activeIcon: Image5,
+    value: 200,
+  },
+  {
+    title: "Approved Products",
+    color: "#009E52",
+    icon: Image8,
+    activeIcon: Image6,
+    value: 1000,
+  },
+];
+
 export const orderFilter = [
   {
     title: "Customer Name",
@@ -421,6 +438,15 @@ export const storeFilter = [
   {
     title: "Choosen Market",
   },
+];
+
+export const inventFilter = [
+  { title: "Product Title" },
+  { title: "Category" },
+  { title: "Price" },
+  { title: "Market" },
+  { title: "Store" },
+  { title: "Upload date" },
 ];
 
 export const orderTableHeader = [
@@ -508,6 +534,18 @@ export const sellerHeader = [
     title: "Action",
   },
 ];
+
+export const inventTableHeader = [
+  { title: "Status" },
+  { title: "Product Title" },
+  { title: "Category" },
+  { title: "Price" },
+  { title: "Market" },
+  { title: "Store" },
+  { title: "Upload Date" },
+  { title: "More" },
+];
+
 export const customerData = [
   {
     customerName: "Dark Web",
@@ -621,5 +659,53 @@ export const storeTableData = [
       approve: "Approve",
       decline: "Decline",
     },
+  },
+];
+
+export const inventTableData = [
+  {
+    status: "approved",
+    title: "Ladies Bouginy",
+    category: "Fashion",
+    price: 7500.0,
+    market: "Balogun",
+    store: "yinka’s store",
+    uploadDate: "Oct 07, 2021",
+  },
+  {
+    status: "pending",
+    title: "Ladies Bouginy",
+    category: "Fashion",
+    price: 7500.0,
+    market: "Balogun",
+    store: "yinka’s store",
+    uploadDate: "Oct 07, 2021",
+  },
+  {
+    status: "pending",
+    title: "Ladies Bouginy",
+    category: "Fashion",
+    price: 7500.0,
+    market: "Balogun",
+    store: "yinka’s store",
+    uploadDate: "Oct 07, 2021",
+  },
+  {
+    status: "pending",
+    title: "Ladies Bouginy",
+    category: "Fashion",
+    price: 7500.0,
+    market: "Balogun",
+    store: "yinka’s store",
+    uploadDate: "Oct 07, 2021",
+  },
+  {
+    status: "approved",
+    title: "Ladies Bouginy",
+    category: "Fashion",
+    price: 7500.0,
+    market: "Balogun",
+    store: "yinka’s store",
+    uploadDate: "Oct 07, 2021",
   },
 ];
