@@ -11,7 +11,7 @@ import {
   inventFilter,
   inventTableHeader,
   inventTableData,
-} from "../../data";
+} from "../../data/data";
 import styled from "styled-components";
 
 const Inventory = (props) => {

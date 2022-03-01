@@ -4,7 +4,7 @@ import GeneralPagination from "../../components/Common/GeneralPagination/General
 import ShipmentTable from "../../components/Common/GenralTable/ShipmentTable";
 import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
-import { shipmentData, shipmentFilter, shipmentTableHeader } from "../../data";
+import { shipmentData, shipmentFilter, shipmentTableHeader } from "../../data/data";
 
 function Shipment() {
   const [filterValue, setFilterValue] = useState("");

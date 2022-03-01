@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import PendingOrder from "../../assests/images/image.jpg";
+import PendingOrder from "../../assets/images/image.jpg";
 
 const InventoryModal = (props) => {
   const modalRef = useRef(null);

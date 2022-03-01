@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Bg from "../../../assests/images/Login.png";
-import Logo from "../../../assests/images/thrindle.png";
+import Bg from "../../../assets/images/Login.png";
+import Logo from "../../../assets/images/thrindle.png";
 import LoginBtn from "../../../components/Common/Button/LoginBtn";
 import LoginPasswordInput from "../../../components/Common/CustomInput/LoginPasswordInput";
 
