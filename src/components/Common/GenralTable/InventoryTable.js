@@ -3,8 +3,23 @@ import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 import { FaEllipsisH } from "react-icons/fa";
 
 const InventoryTable = (props) => {
-  const handleModal = (product) => {
-    return props.setModal(true, product);
+  const handleModal = (id) => {
+    return props.setModal(true, id);
+  };
+
+  const getMarketName = (storeId) => {
+    if (storeId.startsWith("CV")) return "Computer Village";
+    if (storeId.startsWith("BM")) return "Balogun Market";
+    if (storeId.startsWith("EM")) return "Eko Market";
+    return "Other Market";
+  };
+
+  const getUploadDate = (updatedAt) => {
+    const date = new Date(updatedAt);
+    let newDay = date.getDate();
+    let newMonth = date.getMonth() + 1;
+    let newYear = date.getFullYear();
+    return `${newDay}/${newMonth}/${newYear}`;
   };
 
   return (
@@ -25,61 +40,65 @@ const InventoryTable = (props) => {
           ))}
         </thead>
         <tbody className='main-table-body'>
-          {props.tableData?.map((item, index) => (
-            <tr key={index} className='w-full flex flex-row'>
-              {props.showCheck && (
+          {props.tableData?.map((item) => {
+            let marketName = getMarketName(item.store_id);
+            let uploadDate = getUploadDate(item.updatedAt);
+            return (
+              <tr key={item._id} className='w-full flex flex-row'>
+                {props.showCheck && (
+                  <td>
+                    <GeneralCheckBox />
+                  </td>
+                )}
                 <td>
-                  <GeneralCheckBox />
+                  <p
+                    className={`status text-left text-sm font-Regular capitalize ${
+                      item.verified
+                        ? "text-primary-dark"
+                        : "text-secondary-yellow"
+                    }`}
+                  >
+                    {item.verified ? "Approved" : "Pending"}
+                  </p>
                 </td>
-              )}
-              <td>
-                <p
-                  className={`status text-left text-sm font-Regular capitalize ${
-                    item.status === "approved"
-                      ? "text-primary-dark"
-                      : "text-secondary-yellow"
-                  }`}
-                >
-                  {item.status}
-                </p>
-              </td>
-              <td>
-                <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
-                  {item.title}
-                </p>
-              </td>
-              <td>
-                <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
-                  {item.category}
-                </p>
-              </td>
-              <td>
-                <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
-                  N{item.price.toLocaleString()}
-                </p>
-              </td>
-              <td>
-                <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
-                  {item.market}
-                </p>
-              </td>
-              <td>
-                <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize'>
-                  {item.store}
-                </p>
-              </td>
-              <td>
-                <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize'>
-                  {item.uploadDate}
-                </p>
-              </td>
-              <td onClick={() => handleModal(item)}>
-                <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize cursor-pointer'>
-                  <FaEllipsisH className='text-base text-primary-dark' />
-                </p>
-              </td>
-            </tr>
-          ))}
+                <td>
+                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
+                    {item.name}
+                  </p>
+                </td>
+                <td>
+                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
+                    {item.category?.name}
+                  </p>
+                </td>
+                <td>
+                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
+                    N{item.price.toLocaleString()}
+                  </p>
+                </td>
+                <td>
+                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
+                    {marketName}
+                  </p>
+                </td>
+                <td>
+                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize'>
+                    {item.store_id}
+                  </p>
+                </td>
+                <td>
+                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize'>
+                    {uploadDate}
+                  </p>
+                </td>
+                <td onClick={() => handleModal(item._id)}>
+                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize cursor-pointer'>
+                    <FaEllipsisH className='text-base text-primary-dark' />
+                  </p>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </MainTable>
