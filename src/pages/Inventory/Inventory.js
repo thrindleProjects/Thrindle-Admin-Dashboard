@@ -17,6 +17,7 @@ const Inventory = (props) => {
   const [modalId, setModalId] = useState("");
   const [activeTab, setActiveTab] = useState("Pending Products");
   const [filterValue, setFilterValue] = useState("");
+  const [isLoading, setIsLoading] = useState(true)
 
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
 
@@ -39,7 +40,8 @@ const Inventory = (props) => {
     setModalId(modalId);
   }, []);
 
-  const getAllUnverifiedStores = useCallback(async () => {
+  const getAllUnverifiedProducts = useCallback(async () => {
+    setIsLoading(true)
     try {
       const {
         data: { data },
@@ -47,24 +49,22 @@ const Inventory = (props) => {
       setUnverifiedProducts(data);
     } catch (error) {
       console.log(error);
+    }finally{
+      setIsLoading(false)
     }
   }, []);
 
   useEffect(() => {
-    getAllUnverifiedStores();
-  }, [getAllUnverifiedStores]);
-
-  useEffect(() => {
-    getAllUnverifiedStores();
-  }, [showModal, getAllUnverifiedStores]);
+    getAllUnverifiedProducts();
+  }, [getAllUnverifiedProducts, showModal]);
 
   return (
-    <MainContainer className="relative">
+    <MainContainer className='relative'>
       <FirstSection>
         {showModal && (
           <InventoryModal setModal={setShowModal} modalId={modalId} />
         )}
-        <ScreenHeader title="Inventory" value={4000} />
+        <ScreenHeader title='Inventory' value={4000} />
         <GeneralHeaderTab
           data={inventData}
           activeTab={activeTab}
@@ -76,16 +76,15 @@ const Inventory = (props) => {
           changeFilter={(val) => setFilterValue(val)}
         />
         <GeneralPagination noPag showButtons={false} pag={true} />
-        {unverifiedProducts.length > 0 ? (
+        {unverifiedProducts.length > 0 && !isLoading && (
           <InventoryTable
             showCheck
             tableHeaderData={inventTableHeader}
             tableData={unverifiedProducts}
             setModal={handleSetModal}
           />
-        ) : (
-          <Loader />
         )}
+        {isLoading && <Loader />}
       </FirstSection>
     </MainContainer>
   );

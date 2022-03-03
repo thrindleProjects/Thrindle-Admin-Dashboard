@@ -11,9 +11,9 @@ const InventoryModal = (props) => {
     success: false,
   });
 
-  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+  console.log(modalData);
 
-  console.log(modalData.length);
+  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -59,28 +59,28 @@ const InventoryModal = (props) => {
         setModalData([{ ...modalData[0], verified: true }]);
         return setStatusModal({ show: true, success: true });
       }
-      return setStatusModal({ show: true, success: false });
+      setStatusModal({ show: true, success: false });
+      return setTimeout(() => {
+        props.setModal(false)
+      }, 2000)
     } catch (error) {
       console.error(error);
       return setStatusModal({ show: true, success: false });
     } finally {
       setTimeout(() => {
         setStatusModal({ show: false, success: false });
-      }, 2000);
+      }, 1500);
     }
   };
 
   return (
     <ModalWrapper className='fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center'>
-      <ModalContainer
-        ref={modalRef}
-        className='lg:w-3/12 rounded-md py-12 px-8'
-      >
+      <ModalContainer ref={modalRef} className='rounded-md py-12 px-8'>
         {statusModal.show && (
           <div
             className={`fixed right-0 top-16 p-4 pr-6 lg:pr-24 font-bold text-xl rounded-md ${
               statusModal.success
-                ? "bg-primary-dark text-white-main"
+                ? "bg-secondary-success text-white-main"
                 : "bg-secondary-yellow"
             }`}
           >
@@ -95,7 +95,7 @@ const InventoryModal = (props) => {
                 key={item._id}
                 className='flex flex-col items-center flex flex-col gap-8'
               >
-                <div className='h-48 max-w-full overflow-hidden shadow rounded-md'>
+                <div className='h-52 overflow-hidden shadow rounded-md'>
                   <img
                     className='object-contain h-full'
                     src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${item.images[0]}`}
@@ -134,11 +134,17 @@ const InventoryModal = (props) => {
                     </span>
                   </p>
                   <p className='text-white-text'>
+                    Product Type:{" "}
+                    <span className='font-medium text-primary-dark'>
+                      {item.new ? "New" : "Used"}
+                    </span>
+                  </p>
+                  <p className='text-white-text'>
                     Status:{" "}
                     <span
                       className={`capitalize font-medium ${
                         item.verified
-                          ? "text-primary-dark"
+                          ? "text-secondary-success"
                           : "text-secondary-yellow"
                       }`}
                     >
@@ -174,10 +180,11 @@ const InventoryModal = (props) => {
 const ModalContainer = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
   background-color: #ffffff;
+  width: 30%;
   p {
     display: flex;
     gap: 0.75rem;
-    weight: 300;
+    font-weight: 300;
     font-size: 0.875;
   }
 `;
