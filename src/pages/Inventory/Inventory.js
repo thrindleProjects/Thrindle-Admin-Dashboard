@@ -6,6 +6,7 @@ import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFi
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import InventoryTable from "../../components/Common/GenralTable/InventoryTable";
 import InventoryModal from "../../components/Inventory/InventoryModal";
+import Loader from "../../components/Common/Loader/Loader";
 import { inventData, inventFilter, inventTableHeader } from "../../data";
 import styled from "styled-components";
 import axios from "axios";
@@ -33,9 +34,9 @@ const Inventory = (props) => {
     }
   }, [qty]);
 
-  const handleSetModal = useCallback((arg = true, modalItem) => {
-    setShowModal(arg);
-    setModalId(modalItem);
+  const handleSetModal = useCallback((show = true, modalId) => {
+    setShowModal(show);
+    setModalId(modalId);
   }, []);
 
   const getAllUnverifiedStores = useCallback(async () => {
@@ -47,15 +48,15 @@ const Inventory = (props) => {
     } catch (error) {
       console.log(error);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     getAllUnverifiedStores();
   }, [getAllUnverifiedStores]);
 
   useEffect(() => {
-    getAllUnverifiedStores()
-  }, [showModal, getAllUnverifiedStores])
+    getAllUnverifiedStores();
+  }, [showModal, getAllUnverifiedStores]);
 
   return (
     <MainContainer className='relative'>
@@ -83,11 +84,7 @@ const Inventory = (props) => {
             setModal={handleSetModal}
           />
         ) : (
-          <div className='w-full text-center h-32'>
-            <div className='text-4xl font-bold animate-pulse animate-bounce'>
-              Loading...
-            </div>
-          </div>
+          <Loader />
         )}
       </FirstSection>
     </MainContainer>

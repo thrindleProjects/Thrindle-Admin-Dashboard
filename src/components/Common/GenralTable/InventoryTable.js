@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
+import styled from "styled-components";
 import { FaEllipsisH } from "react-icons/fa";
 
 const InventoryTable = (props) => {
@@ -23,20 +23,24 @@ const InventoryTable = (props) => {
   };
 
   return (
-    <MainTable className='w-full rounded-md  py-10 mt-5 overflow-auto'>
-      <table className='w-full'>
-        <thead className='main-table-header  rounded-md flex flex-row'>
+    <MainTable className='w-full rounded-md py-10 mt-5 overflow-auto '>
+      <table className='w-full min-w-min max-w-full'>
+        <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-9 auto-cols-min gap-3 px-6'>
           {props.showCheck && (
-            <th>
-              <GeneralCheckBox />
-            </th>
+            <tr>
+              <th>
+                <GeneralCheckBox />
+              </th>
+            </tr>
           )}
           {props.tableHeaderData?.map((item, index) => (
-            <th key={index}>
-              <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
-                {item.title}
-              </p>
-            </th>
+            <tr key={index}>
+              <th>
+                <p className='table-head-text text-sm font-normal font-Regular text-center text-white-text'>
+                  {item.title}
+                </p>
+              </th>
+            </tr>
           ))}
         </thead>
         <tbody className='main-table-body'>
@@ -44,7 +48,10 @@ const InventoryTable = (props) => {
             let marketName = getMarketName(item.store_id);
             let uploadDate = getUploadDate(item.updatedAt);
             return (
-              <tr key={item._id} className='w-full flex flex-row'>
+              <tr
+                key={item._id}
+                className='w-full grid grid-flow-row grid-cols-9 gap-3 auto-cols-min px-6 py-3'
+              >
                 {props.showCheck && (
                   <td>
                     <GeneralCheckBox />
@@ -111,22 +118,22 @@ const MainTable = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
   .main-table-header {
     width: 100%;
-    padding: 0px 15px !important;
     height: 50px;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1.5px solid #f4f4f4;
     border-top: 1.5px solid #f4f4f4;
   }
-  tr:nth-child(even) {
+
+  tbody tr:nth-child(even) {
     background-color: #fafafa;
   }
   tr td {
-    padding: 0px 15px !important;
-    text-align: left;
+    padding: 0px !important;
+    text-align: center;
   }
   tr {
-    height: 50px;
+    height: max-content;
     align-items: center;
     justify-content: space-between;
   }

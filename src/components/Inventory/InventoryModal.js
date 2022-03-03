@@ -1,5 +1,6 @@
-import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
+import Loader from "../Common/Loader/Loader";
+import axios from "axios";
 import styled from "styled-components";
 
 const InventoryModal = (props) => {
@@ -11,6 +12,8 @@ const InventoryModal = (props) => {
   });
 
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+
+  console.log(modalData.length);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -69,27 +72,29 @@ const InventoryModal = (props) => {
 
   return (
     <ModalWrapper className='fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center'>
-      {modalData.map((item) => {
-        let uploadDate = getUploadDate(item.updatedAt);
-        return (
-          <ModalContainer
-            ref={modalRef}
-            className='lg:w-3/12 rounded-md py-12 px-8 flex flex-col items-center flex flex-col gap-8'
-            key={item._id}
+      <ModalContainer
+        ref={modalRef}
+        className='lg:w-3/12 rounded-md py-12 px-8'
+      >
+        {statusModal.show && (
+          <div
+            className={`fixed right-0 top-16 p-4 pr-6 lg:pr-24 font-bold text-xl rounded-md ${
+              statusModal.success
+                ? "bg-primary-dark text-white-main"
+                : "bg-secondary-yellow"
+            }`}
           >
-            {statusModal.show && (
+            {statusModal.success ? "Success!" : "Try Again :("}
+          </div>
+        )}
+        {modalData.length > 0 ? (
+          modalData.map((item) => {
+            const uploadDate = getUploadDate(item.updatedAt);
+            return (
               <div
-                className={`fixed right-0 top-16 p-4 pr-6 lg:pr-24 font-bold text-xl rounded-md ${
-                  statusModal.success
-                    ? "bg-primary-dark text-white-main"
-                    : "bg-secondary-yellow"
-                }`}
+                key={item._id}
+                className='flex flex-col items-center flex flex-col gap-8'
               >
-                {statusModal.success ? "Success!" : "Try Again :("}
-              </div>
-            )}
-            {modalData.length > 0 ? (
-              <>
                 <div className='h-48 max-w-full overflow-hidden shadow rounded-md'>
                   <img
                     className='object-contain h-full'
@@ -155,15 +160,13 @@ const InventoryModal = (props) => {
                     Approve
                   </ModalButton>
                 </div>
-              </>
-            ) : (
-              <div className='text-4xl font-bold animate-pulse animate-bounce'>
-                Loading ...
               </div>
-            )}
-          </ModalContainer>
-        );
-      })}
+            );
+          })
+        ) : (
+          <Loader />
+        )}
+      </ModalContainer>
     </ModalWrapper>
   );
 };
