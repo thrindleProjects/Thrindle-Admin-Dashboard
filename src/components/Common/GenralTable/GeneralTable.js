@@ -4,23 +4,22 @@ import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 
 const GeneralTable = (props) => {
   return (
-    <MainTable className='w-full rounded-md  py-10 mt-5 overflow-auto'>
-      <table className='w-full'>
-        <thead className='main-table-header  rounded-md flex flex-row'>
+    <MainTable className="w-full rounded-md  py-10 mt-5 overflow-auto">
+      <table className="w-full">
+        <thead className="main-table-header  rounded-md flex flex-row">
           {props.showCheck && <GeneralCheckBox />}
 
           {props.tableHeaderData?.map((item, index) => (
-            <th
-              className='table-head-text text-sm font-normal font-Regular text-left text-white-text'
-              key={index}
-            >
-              {item.title}
-            </th>
+            <tr key={index}>
+              <th className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+                {item.title}
+              </th>
+            </tr>
           ))}
         </thead>
-        <tbody className='main-table-body'>
+        <tbody className="main-table-body">
           {props.tableData?.map((item, index) => (
-            <tr key={index} className='w-full flex flex-row'>
+            <tr key={index} className="w-full flex flex-row">
               {props.showCheck && (
                 <td>
                   <GeneralCheckBox />
@@ -28,52 +27,52 @@ const GeneralTable = (props) => {
               )}
 
               <td>
-                <p className='status text-left text-sm text-white-text font-Regular'>
+                <p className="status text-left text-sm text-white-text font-Regular">
                   {item.status}
                 </p>
               </td>
               <td>
-                <p className='orderId text-left text-sm text-white-text font-Regular'>
+                <p className="orderId text-left text-sm text-white-text font-Regular">
                   {item.OrderID}
                 </p>
               </td>
               <td>
-                <p className='product text-left text-sm text-white-text font-Regular'>
+                <p className="product text-left text-sm text-white-text font-Regular">
                   {item.ProductTitle}
                 </p>
               </td>
               <td>
-                <p className='product text-left text-sm text-white-text font-Regular'>
+                <p className="product text-left text-sm text-white-text font-Regular">
                   {item.Price}
                 </p>
               </td>
               <td>
-                <p className='product text-left text-sm text-white-text font-Regular'>
+                <p className="product text-left text-sm text-white-text font-Regular">
                   {item.CustomerName}
                 </p>
               </td>
               <td>
-                <p className='product text-left text-sm text-white-text font-Regular'>
+                <p className="product text-left text-sm text-white-text font-Regular">
                   {item.PhoneNo}
                 </p>
               </td>
               <td>
-                <p className='product text-left text-sm text-white-text font-Regular'>
+                <p className="product text-left text-sm text-white-text font-Regular">
                   {item.Market}
                 </p>
               </td>
               <td>
-                <p className='product text-left text-sm text-white-text font-Regular'>
+                <p className="product text-left text-sm text-white-text font-Regular">
                   {item.Store}
                 </p>
               </td>
               <td>
-                <p className='product text-left text-sm text-white-text font-Regular'>
+                <p className="product text-left text-sm text-white-text font-Regular">
                   {item.Category}
                 </p>
               </td>
               <td>
-                <p className='product text-left text-sm text-white-text font-Regular'>
+                <p className="product text-left text-sm text-white-text font-Regular">
                   {item.OrderDate}
                 </p>
               </td>

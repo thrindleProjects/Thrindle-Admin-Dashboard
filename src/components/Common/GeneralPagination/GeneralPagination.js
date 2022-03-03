@@ -42,12 +42,12 @@ const GeneralPagination = (props) => {
             <span className='text-white-text font-Bold text-sm'>&nbsp;08</span>
           </div>
           {/* CONTROLS */}
-          <div className='controls flex flex-row items-center gap-4'>
-            <button className='single-controls flex flex-row rounded-md focus:outline-none outline-none'>
-              <FaAngleLeft className='text-base single-control-icon text-center text-white-main' />
+          <div className="controls flex flex-row">
+            <button className="single-controls flex flex-row rounded-md focus:outline-none outline-none">
+              <FaAngleLeft className="text-base single-control-icon text-center text-white-main" />
             </button>
-            <button className='single-controls flex flex-row rounded-md focus:outline-none outline-none '>
-              <FaAngleRight className='text-base single-control-icon text-center text-white-main' />
+            <button className="single-controls flex flex-row rounded-md focus:outline-none outline-none ">
+              <FaAngleRight className="text-base single-control-icon text-center text-white-main" />
             </button>
           </div>
         </div>
@@ -75,7 +75,6 @@ const MainPagination = styled.div`
   }
   .pagination {
     align-items: center;
-    margin-left: auto;
   }
   .num-cont,
   .controls {
@@ -85,8 +84,8 @@ const MainPagination = styled.div`
     align-items: center;
     justify-content: center;
     background: #fafafa;
-    width: 3rem;
-    height: 3rem;
+    width: 35px;
+    height: 35px;
   }
   .single-control-icon {
     color: #2f3133;

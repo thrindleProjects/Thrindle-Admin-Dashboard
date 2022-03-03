@@ -26,6 +26,21 @@ module.exports = {
         transparent: "transparent",
         "inventory-gray": "#C2C2C2",
       },
+      secondary: {
+        error: "#F5000F",
+        success: "#009E52",
+        yellow: "#F69F13",
+        other: "#4BC7EA",
+        purple: "#9E09E4cccc",
+      },
+      white: {
+        main: "#fff",
+        light: "#FAF9F9",
+        dim: "#F0F4F9",
+        text: "#464F54",
+        dark: "#1C1F37",
+      },
+      transparent: "transparent",
     },
   },
   variants: {
