@@ -39,7 +39,7 @@ function DoubleDropdown({
       <legend className="ml-4 px-1 opacity-75">{fieldset}</legend>
       <div className="px-2 py-1">
         <div className="flex justify-between">
-          <details className="relative w-[48%] border-[0.98px] border-primary-main px-2 py-1.5 rounded-md cursor-pointer">
+          <details className="relative w-48 border-0.98 border-primary-main px-2 py-1.5 rounded-md cursor-pointer">
             <summary className="text-primary-main cursor-pointer">
               {emptyState1}
             </summary>
@@ -62,7 +62,7 @@ function DoubleDropdown({
             </Box>
           </details>
 
-          <details className="relative w-[48%] border-[0.98px] border-primary-main px-2 py-1.5 rounded-md cursor-pointer">
+          <details className="relative w-48 border-0.98 border-primary-main px-2 py-1.5 rounded-md cursor-pointer">
             <summary className="text-primary-main cursor-pointer">
               {emptyState2}
             </summary>

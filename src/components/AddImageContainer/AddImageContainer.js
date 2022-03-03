@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const AddImageContainer = ({onChange, id, name, required}) => {
+const AddImageContainer = ({ onChange, id, name, required }) => {
   return (
-    <div className="relative w-[98%] mx-auto">
-      <MainContainer className="w-full cursor-pointer h-16 border border-solid border-white-border rounded-md flex flex-row relative items-center justify-between px-1 py-1 ">
+    <div className="relative w-11/12 mx-auto">
+      <MainContainer className="w-full cursor-pointer h-16 border border-white-border rounded-md flex flex-row relative items-center justify-between px-1 py-1 ">
         <p className="md:text-base text-sm text-white-text xl:pl-5 pl-2">
           Add Image
         </p>
@@ -19,7 +19,6 @@ const AddImageContainer = ({onChange, id, name, required}) => {
         name={name}
         onChange={onChange}
         required={required}
- 
       />
     </div>
   );

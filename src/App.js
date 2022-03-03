@@ -30,7 +30,8 @@ function App() {
     if (
       routeName === "/login" ||
       routeName === "/login/forget-password" ||
-      routeName === "/login/reset-password"
+      routeName === "/login/reset-password" ||
+      routeName === "/add-products"
     ) {
       setShow(true);
     } else {

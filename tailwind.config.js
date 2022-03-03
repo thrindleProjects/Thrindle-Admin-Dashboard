@@ -22,8 +22,17 @@ module.exports = {
           dim: "#F0F4F9",
           text: "#464F54",
           dark: "#1C1F37",
+          border: "#BDBDBD",
         },
         transparent: "transparent",
+      },
+      spacing: {
+        55: "55%",
+        40: "40%",
+        48: "48%",
+      },
+      borderWidth: {
+        0.98: "0.98px",
       },
     },
   },
