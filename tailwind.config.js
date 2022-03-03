@@ -14,7 +14,7 @@ module.exports = {
           success: "#009E52",
           yellow: "#F69F13",
           other: "#4BC7EA",
-          purple: "#9E09E4cccc",
+          purple: "#9E09E4",
         },
         white: {
           main: "#fff",
@@ -24,6 +24,7 @@ module.exports = {
           dark: "#1C1F37",
         },
         transparent: "transparent",
+        "inventory-gray": "#C2C2C2",
       },
     },
   },

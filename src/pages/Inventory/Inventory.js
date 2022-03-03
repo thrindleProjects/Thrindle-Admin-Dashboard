@@ -6,19 +6,18 @@ import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFi
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import InventoryTable from "../../components/Common/GenralTable/InventoryTable";
 import InventoryModal from "../../components/Inventory/InventoryModal";
-import {
-  inventData,
-  inventFilter,
-  inventTableHeader,
-  inventTableData,
-} from "../../data";
+import { inventData, inventFilter, inventTableHeader } from "../../data";
 import styled from "styled-components";
+import axios from "axios";
 
 const Inventory = (props) => {
+  const [unverifiedProducts, setUnverifiedProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [modalItem, setModalItem] = useState({});
+  const [modalId, setModalId] = useState("");
   const [activeTab, setActiveTab] = useState("Pending Products");
   const [filterValue, setFilterValue] = useState("");
+
+  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
 
   const qty = props.location.search
     ? props.location.search.split("=")[1]
@@ -27,28 +26,44 @@ const Inventory = (props) => {
   const changeTab = (val) => {
     setActiveTab(val);
   };
-  
+
   useEffect(() => {
     if (qty && qty !== "") {
       setActiveTab(qty);
     }
   }, [qty]);
 
-  const handleSetModal = useCallback(
-    (arg = true, modalItem = inventData[0]) => {
-      setShowModal(arg);
-      setModalItem(modalItem);
-    },
-    []
-  );
+  const handleSetModal = useCallback((arg = true, modalItem) => {
+    setShowModal(arg);
+    setModalId(modalItem);
+  }, []);
+
+  const getAllUnverifiedStores = useCallback(async () => {
+    try {
+      const {
+        data: { data },
+      } = await axios.get(`${url}/products/unverifiedproducts`);
+      setUnverifiedProducts(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [])
+
+  useEffect(() => {
+    getAllUnverifiedStores();
+  }, [getAllUnverifiedStores]);
+
+  useEffect(() => {
+    getAllUnverifiedStores()
+  }, [showModal, getAllUnverifiedStores])
 
   return (
-    <MainContainer className="relative">
+    <MainContainer className='relative'>
       <FirstSection>
         {showModal && (
-          <InventoryModal setModal={setShowModal} modalItem={modalItem} />
+          <InventoryModal setModal={setShowModal} modalId={modalId} />
         )}
-        <ScreenHeader title="Inventory" value={4000} />
+        <ScreenHeader title='Inventory' value={4000} />
         <GeneralHeaderTab
           data={inventData}
           activeTab={activeTab}
@@ -60,12 +75,20 @@ const Inventory = (props) => {
           changeFilter={(val) => setFilterValue(val)}
         />
         <GeneralPagination noPag showButtons={false} pag={true} />
-        <InventoryTable
-          showCheck
-          tableHeaderData={inventTableHeader}
-          tableData={inventTableData}
-          setModal={handleSetModal}
-        />
+        {unverifiedProducts.length > 0 ? (
+          <InventoryTable
+            showCheck
+            tableHeaderData={inventTableHeader}
+            tableData={unverifiedProducts}
+            setModal={handleSetModal}
+          />
+        ) : (
+          <div className='w-full text-center h-32'>
+            <div className='text-4xl font-bold animate-pulse animate-bounce'>
+              Loading...
+            </div>
+          </div>
+        )}
       </FirstSection>
     </MainContainer>
   );
