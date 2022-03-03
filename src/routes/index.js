@@ -1,14 +1,14 @@
 // import Login from "../pages/Auth/Login/Login";
 // import ForgetPassword from "../pages/Auth/ForgetPassword/ForgetPassword";
+import Inventory from "../pages/Inventory/Inventory";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Orders from "../pages/Orders/Orders";
 import Profile from "../pages/Profile/Profile";
 import Customers from "../pages/Customers/Customers";
 import Stores from "../pages/Stores/Stores";
 import Settings from "../pages/Settings/Settings";
-import Inventory from "../pages/Inventory/Inventory";
-import UnP from "../pages/U&P/UnP";
 import Shipment from "../pages/Shipment/Shipment";
+import UnP from "../pages/U&P/UnP";
 
 export const routes = [
   {
