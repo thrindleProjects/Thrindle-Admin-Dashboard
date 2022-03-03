@@ -5,10 +5,12 @@ import { HiDownload } from "react-icons/hi";
 
 const GeneralFilterTab = (props) => {
   const [show, setShow] = useState(false);
+
   const chooseFilter = (val) => {
     props.changeFilter(val);
     setShow(false);
   };
+
   return (
     <MainCont className="w-full flex flex-row mt-5 flex-wrap">
       {/* Search  */}

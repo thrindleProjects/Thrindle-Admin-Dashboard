@@ -8,7 +8,7 @@ import {
   storeFilter,
   sellerHeader,
   storeTableData,
-} from "../../data";
+} from "../../data/data";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import StoreTable from "../../components/Common/GenralTable/StoreTable";

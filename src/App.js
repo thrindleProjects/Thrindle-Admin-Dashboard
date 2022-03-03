@@ -15,20 +15,23 @@ import { useHistory } from "react-router-dom";
 function App() {
   const location = useLocation();
   const [show, setShow] = useState(false);
+
   AOS.init({
     easing: "ease-in-out",
   });
+
   const history = useHistory();
 
   const {
     location: { pathname: routeName },
   } = history;
-  console.log(routeName);
+
   useEffect(() => {
     if (
       routeName === "/login" ||
       routeName === "/login/forget-password" ||
-      routeName === "/login/reset-password"
+      routeName === "/login/reset-password" ||
+      routeName === "/add-products"
     ) {
       setShow(true);
     } else {

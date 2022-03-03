@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
-import { orderFilter, customerHeader, customerData } from "../../data";
+import { orderFilter, customerHeader, customerData } from "../../data/data";
 import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import CustomerTable from "../../components/Common/GenralTable/CustomerTable";

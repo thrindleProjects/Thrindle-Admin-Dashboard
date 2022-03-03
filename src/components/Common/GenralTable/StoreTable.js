@@ -5,20 +5,17 @@ import { FaEllipsisH } from "react-icons/fa";
 
 const StoreTable = (props) => {
   return (
-    <MainTable
-      className="w-full rounded-md  py-10 mt-5 overflow-auto"
-    >
+    <MainTable className="w-full rounded-md  py-10 mt-5 overflow-auto">
       <table className="w-full">
         <thead className="main-table-header  rounded-md flex flex-row">
           {props.showCheck && <GeneralCheckBox />}
 
           {props.tableHeaderData?.map((item, index) => (
-            <th
-              className="table-head-text text-sm font-normal font-Regular text-left text-white-text"
-              key={index}
-            >
-              {item.title}
-            </th>
+            <tr key={index}>
+              <th className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+                {item.title}
+              </th>
+            </tr>
           ))}
         </thead>
         <tbody className="main-table-body">
@@ -65,7 +62,7 @@ const StoreTable = (props) => {
                   {item.joined}
                 </p>
               </td>
-              <td className='pl-3'>
+              <td className="pl-3">
                 <FaEllipsisH className="text-base text-primary-dark" />
                 {/* <div className="w-full flex flex-row actionCont">
                   <p className="product text-left text-xs actionText text-secondary-success font-Regular">

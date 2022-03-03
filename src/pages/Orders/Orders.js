@@ -8,7 +8,7 @@ import {
   orderFilter,
   orderTableHeader,
   dashTableData,
-} from "../../data";
+} from "../../data/data";
 import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import GeneralTable from "../../components/Common/GenralTable/GeneralTable";

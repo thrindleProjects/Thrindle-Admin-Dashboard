@@ -10,12 +10,11 @@ const GeneralTable = (props) => {
           {props.showCheck && <GeneralCheckBox />}
 
           {props.tableHeaderData?.map((item, index) => (
-            <th
-              className="table-head-text text-sm font-normal font-Regular text-left text-white-text"
-              key={index}
-            >
-              {item.title}
-            </th>
+            <tr key={index}>
+              <th className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+                {item.title}
+              </th>
+            </tr>
           ))}
         </thead>
         <tbody className="main-table-body">

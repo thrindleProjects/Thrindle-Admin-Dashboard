@@ -10,14 +10,13 @@ const CustomerTable = (props) => {
           {props.showCheck && <GeneralCheckBox />}
 
           {props.tableHeaderData?.map((item, index) => (
-            <th
-             
-              key={index}
-            >
-              <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
-                {item.title}
-              </p>
-            </th>
+            <tr key={index}>
+              <th>
+                <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+                  {item.title}
+                </p>
+              </th>
+            </tr>
           ))}
         </thead>
         <tbody className="main-table-body">

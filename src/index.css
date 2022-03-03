@@ -3,40 +3,35 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
   font-family: "Avenir-Black";
-  src: local("font"),
-    url("./assests/fonts/Avenir-Black.otf") format("opentype");
+  src: local("font"), url("./assets/fonts/Avenir-Black.otf") format("opentype");
   font-weight: 800;
 }
 @font-face {
   font-family: "Avenir-Book";
-  src: local("font"),
-    url("./assests/fonts/Avenir-Roman.otf") format("opentype");
+  src: local("font"), url("./assets/fonts/Avenir-Roman.otf") format("opentype");
   font-weight: 300;
 }
 @font-face {
   font-family: "Avenir-Heavy";
-  src: local("font"),
-    url("./assests/fonts/Avenir-Heavy.ttf") format("truetype");
+  src: local("font"), url("./assets/fonts/Avenir-Heavy.ttf") format("truetype");
   font-weight: 700;
 }
 @font-face {
   font-family: "Avenir-Medium";
   src: local("font"),
-    url("./assests/fonts/Avenir-Medium.ttf") format("truetype");
+    url("./assets/fonts/Avenir-Medium.ttf") format("truetype");
   font-weight: 500;
 }
 @font-face {
   font-family: "Avenir-Regular";
   src: local("font"),
-    url("./assests/fonts/Avenir-Regular.ttf") format("truetype");
+    url("./assets/fonts/Avenir-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 @font-face {
   font-family: "Avenir-Light";
-  src: local("font"),
-    url("./assests/fonts/Avenir-Light.ttf") format("truetype");
+  src: local("font"), url("./assets/fonts/Avenir-Light.ttf") format("truetype");
   font-weight: 200;
 }

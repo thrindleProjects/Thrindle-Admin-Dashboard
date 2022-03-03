@@ -10,12 +10,11 @@ const DashboardTable = (props) => {
           {props.showCheck && <GeneralCheckBox />}
 
           {props.tableHeaderData.map((item, index) => (
-            <th
-              className="table-head-text text-sm font-normal font-Regular text-left text-white-text"
-              key={index}
-            >
-              {item.title}
-            </th>
+            <tr key={index}>
+              <th className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+                {item.title}
+              </th>
+            </tr>
           ))}
         </thead>
         <tbody className="main-table-body">
@@ -88,7 +87,7 @@ const DashboardTable = (props) => {
 export default DashboardTable;
 
 const MainTable = styled.div`
-//   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
+  //   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
   .main-table-header {
     width: 100%;
     padding: 0px 12px !important;

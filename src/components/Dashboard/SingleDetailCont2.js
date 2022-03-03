@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Image from "../../assests/images/das-product.svg";
+import Image from "../../assets/images/das-product.svg";
 import { NavLink } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa";
 

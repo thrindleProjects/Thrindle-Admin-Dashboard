@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Logo from "../../assests/images/About.png";
+import Logo from "../../assets/images/About.png";
 import { navData } from "./navData";
 import SingleNavItem from "../../components/Navbar/SingleNavItem";
 

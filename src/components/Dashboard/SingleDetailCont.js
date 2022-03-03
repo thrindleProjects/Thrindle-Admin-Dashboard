@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Image from "../../assests/images/dash-store.svg";
-import Image2 from "../../assests/images/Y.png";
+import Image from "../../assets/images/dash-store.svg";
+import Image2 from "../../assets/images/Y.png";
 import { NavLink } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa";
 

@@ -1,14 +1,14 @@
-import Image from "./assests/images/dash-order.svg";
-import Image2 from "./assests/images/dash-customers.svg";
-import Image3 from "./assests/images/dash-store.svg";
-import Image4 from "./assests/images/dash-returned-products.svg";
-import Image5 from "./assests/images/dash-pending-order.svg";
-import Image6 from "./assests/images/dash-delievered-order.svg";
-import Image7 from "./assests/images/dash-cancelled-order.svg";
-import Image8 from "./assests/images/inactive-orders.svg";
-import Image9 from "./assests/images/pending-store.svg";
-import Image10 from "./assests/images/inactive-store.svg";
-import Image11 from "./assests/images/approved-store.svg";
+import Image from "../assets/images/dash-order.svg";
+import Image2 from "../assets/images/dash-customers.svg";
+import Image3 from "../assets/images/dash-store.svg";
+import Image4 from "../assets/images/dash-returned-products.svg";
+import Image5 from "../assets/images/dash-pending-order.svg";
+import Image6 from "../assets/images/dash-delievered-order.svg";
+import Image7 from "../assets/images/dash-cancelled-order.svg";
+import Image8 from "../assets/images/inactive-orders.svg";
+import Image9 from "../assets/images/pending-store.svg";
+import Image10 from "../assets/images/inactive-store.svg";
+import Image11 from "../assets/images/approved-store.svg";
 
 export const dashData = [
   {
@@ -300,7 +300,70 @@ export const dashTableData = [
     Market: "Balogun",
     Store: "Yinka’s Store",
     Category: "Fashion",
-    OrderDate: "Oct 07, 2021",
+    OrderDate: "Oct 07, 2022",
+  },
+];
+
+export const shipmentData = [
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
+  },
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
+  },
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
+  },
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
+  },
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
+  },
+  {
+    customerName: "Dark Web",
+    orderID: "#456789",
+    carrier: "GIG",
+    orderDate: "Oct 07, 2021",
+    shippingDate: "Oct 07, 2021",
+    expected: "Oct 07, 2021",
+    carrierStatus: "Delivered",
+    paymentStatus: "Paid",
   },
 ];
 
@@ -365,6 +428,7 @@ export const orderData = [
     value: 100,
   },
 ];
+
 export const storeData = [
   {
     title: "Pending Stores",
@@ -378,6 +442,23 @@ export const storeData = [
     color: "#4BC7EA",
     icon: Image10,
     activeIcon: Image11,
+    value: 1000,
+  },
+];
+
+export const inventData = [
+  {
+    title: "Pending Products",
+    color: "#F69F13",
+    icon: Image8,
+    activeIcon: Image5,
+    value: 200,
+  },
+  {
+    title: "Approved Products",
+    color: "#009E52",
+    icon: Image8,
+    activeIcon: Image6,
     value: 1000,
   },
 ];
@@ -402,6 +483,21 @@ export const orderFilter = [
     title: "Location",
   },
 ];
+export const shipmentFilter = [
+  {
+    title: "Today",
+  },
+  {
+    title: "Last 3 days",
+  },
+  {
+    title: "Delivered",
+  },
+  {
+    title: "In progress",
+  },
+];
+
 export const storeFilter = [
   {
     title: "Seller Name",
@@ -421,6 +517,15 @@ export const storeFilter = [
   {
     title: "Choosen Market",
   },
+];
+
+export const inventFilter = [
+  { title: "Product Title" },
+  { title: "Category" },
+  { title: "Price" },
+  { title: "Market" },
+  { title: "Store" },
+  { title: "Upload date" },
 ];
 
 export const orderTableHeader = [
@@ -453,6 +558,33 @@ export const orderTableHeader = [
   },
   {
     title: "Order Date",
+  },
+];
+
+export const shipmentTableHeader = [
+  {
+    title: "Customer Name",
+  },
+  {
+    title: "Order ID",
+  },
+  {
+    title: "Carrier",
+  },
+  {
+    title: "Order Date",
+  },
+  {
+    title: "Shipping Date",
+  },
+  {
+    title: "Exp. Delivery Date",
+  },
+  {
+    title: "Carrier Status",
+  },
+  {
+    title: "Payment Status",
   },
 ];
 
@@ -508,6 +640,18 @@ export const sellerHeader = [
     title: "Action",
   },
 ];
+
+export const inventTableHeader = [
+  { title: "Status" },
+  { title: "Product Title" },
+  { title: "Category" },
+  { title: "Price" },
+  { title: "Market" },
+  { title: "Store" },
+  { title: "Upload Date" },
+  { title: "More" },
+];
+
 export const customerData = [
   {
     customerName: "Dark Web",
@@ -621,5 +765,53 @@ export const storeTableData = [
       approve: "Approve",
       decline: "Decline",
     },
+  },
+];
+
+export const inventTableData = [
+  {
+    status: "approved",
+    title: "Ladies Bouginy",
+    category: "Fashion",
+    price: 7500.0,
+    market: "Balogun",
+    store: "yinka’s store",
+    uploadDate: "Oct 07, 2021",
+  },
+  {
+    status: "pending",
+    title: "Ladies Bouginy",
+    category: "Fashion",
+    price: 7500.0,
+    market: "Balogun",
+    store: "yinka’s store",
+    uploadDate: "Oct 07, 2021",
+  },
+  {
+    status: "pending",
+    title: "Ladies Bouginy",
+    category: "Fashion",
+    price: 7500.0,
+    market: "Balogun",
+    store: "yinka’s store",
+    uploadDate: "Oct 07, 2021",
+  },
+  {
+    status: "pending",
+    title: "Ladies Bouginy",
+    category: "Fashion",
+    price: 7500.0,
+    market: "Balogun",
+    store: "yinka’s store",
+    uploadDate: "Oct 07, 2021",
+  },
+  {
+    status: "approved",
+    title: "Ladies Bouginy",
+    category: "Fashion",
+    price: 7500.0,
+    market: "Balogun",
+    store: "yinka’s store",
+    uploadDate: "Oct 07, 2021",
   },
 ];
