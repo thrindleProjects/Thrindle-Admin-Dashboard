@@ -1,14 +1,14 @@
-import Image from "./assests/images/dash-order.svg";
-import Image2 from "./assests/images/dash-customers.svg";
-import Image3 from "./assests/images/dash-store.svg";
-import Image4 from "./assests/images/dash-returned-products.svg";
-import Image5 from "./assests/images/dash-pending-order.svg";
-import Image6 from "./assests/images/dash-delievered-order.svg";
-import Image7 from "./assests/images/dash-cancelled-order.svg";
-import Image8 from "./assests/images/inactive-orders.svg";
-import Image9 from "./assests/images/pending-store.svg";
-import Image10 from "./assests/images/inactive-store.svg";
-import Image11 from "./assests/images/approved-store.svg";
+import Image from "../assets/images/dash-order.svg";
+import Image2 from "../assets/images/dash-customers.svg";
+import Image3 from "../assets/images/dash-store.svg";
+import Image4 from "../assets/images/dash-returned-products.svg";
+import Image5 from "../assets/images/dash-pending-order.svg";
+import Image6 from "../assets/images/dash-delievered-order.svg";
+import Image7 from "../assets/images/dash-cancelled-order.svg";
+import Image8 from "../assets/images/inactive-orders.svg";
+import Image9 from "../assets/images/pending-store.svg";
+import Image10 from "../assets/images/inactive-store.svg";
+import Image11 from "../assets/images/approved-store.svg";
 
 export const dashData = [
   {

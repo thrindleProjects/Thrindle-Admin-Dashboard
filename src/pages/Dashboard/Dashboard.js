@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import SingleDashboard from "../../components/Dashboard/SingleDashboard";
-import { dashData, dashTableData, orderTableHeader } from "../../data";
+import { dashData, dashTableData, orderTableHeader } from "../../data/data";
 import TableFilter from "../../components/Dashboard/TableFilter";
 // import TableHeader from "../../components/Dashboard/TableHeader";
 // import TableDatas from "../../components/Dashboard/TableDatas";

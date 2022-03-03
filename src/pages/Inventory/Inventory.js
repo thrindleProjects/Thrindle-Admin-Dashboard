@@ -7,7 +7,7 @@ import GeneralPagination from "../../components/Common/GeneralPagination/General
 import InventoryTable from "../../components/Common/GenralTable/InventoryTable";
 import InventoryModal from "../../components/Inventory/InventoryModal";
 import Loader from "../../components/Common/Loader/Loader";
-import { inventData, inventFilter, inventTableHeader } from "../../data";
+import { inventData, inventFilter, inventTableHeader } from "../../data/data";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -59,12 +59,12 @@ const Inventory = (props) => {
   }, [showModal, getAllUnverifiedStores]);
 
   return (
-    <MainContainer className='relative'>
+    <MainContainer className="relative">
       <FirstSection>
         {showModal && (
           <InventoryModal setModal={setShowModal} modalId={modalId} />
         )}
-        <ScreenHeader title='Inventory' value={4000} />
+        <ScreenHeader title="Inventory" value={4000} />
         <GeneralHeaderTab
           data={inventData}
           activeTab={activeTab}

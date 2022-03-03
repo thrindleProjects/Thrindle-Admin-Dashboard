@@ -8,13 +8,13 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import User from "../../../assests/images/image.jpg";
-import Image from "../../../assests/images/profile.svg";
-import Image1 from "../../../assests/images/settings2.svg";
-import Image2 from "../../../assests/images/logout.svg";
-import Image3 from "../../../assests/images/noti-settings.svg";
-import Image4 from "../../../assests/images/noti.svg";
-import Logo from "../../../assests/images/About.png";
+import User from "../../../assets/images/image.jpg";
+import Image from "../../../assets/images/profile.svg";
+import Image1 from "../../../assets/images/settings2.svg";
+import Image2 from "../../../assets/images/logout.svg";
+import Image3 from "../../../assets/images/noti-settings.svg";
+import Image4 from "../../../assets/images/noti.svg";
+import Logo from "../../../assets/images/About.png";
 import "./MainContainer.css";
 import SingleNavItem from "../../Navbar/SingleNavItem";
 import { data2 } from "../../Navbar/navData";
