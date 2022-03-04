@@ -4,7 +4,8 @@ import Inventory from "../pages/Inventory/Inventory";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Orders from "../pages/Orders/Orders";
 import Profile from "../pages/Profile/Profile";
-import Customers from "../pages/Customers/Customers";
+import Buyers from "../pages/Customers/Buyers";
+import Sellers from "../pages/Customers/Sellers";
 import Stores from "../pages/Stores/Stores";
 import Settings from "../pages/Settings/Settings";
 import Shipment from "../pages/Shipment/Shipment";
@@ -28,9 +29,14 @@ export const routes = [
     component: Profile,
   },
   {
-    title: "Customers",
-    path: "/customers",
-    component: Customers,
+    title: "Buyers",
+    path: "/buyers",
+    component: Buyers,
+  },
+  {
+    title: "Sellers",
+    path: "/sellers",
+    component: Sellers,
   },
   {
     title: "Stores",

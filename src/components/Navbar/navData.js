@@ -34,8 +34,14 @@ export const navData = [
         icon2: Active1,
       },
       {
-        title: "Customers",
-        path: "/customers",
+        title: "Buyers",
+        path: "/buyers",
+        icon: Image3,
+        icon2: Active2,
+      },
+      {
+        title: "Sellers",
+        path: "/sellers",
         icon: Image3,
         icon2: Active2,
       },

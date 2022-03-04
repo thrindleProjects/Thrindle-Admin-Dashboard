@@ -22,12 +22,12 @@ const Customers = () => {
     try {
       let {
         status: statusCode,
-        data: { data },
+        data: { data: allCustomers },
       } = await axios.get(`${url}/users/admin/sellers`);
       if (statusCode > 399)
         return setStatus({ isError: true, isLoading: false });
-      setCustomers(data);
-      setStatus({isError: false, isLoading: false})
+      setCustomers(allCustomers);
+      setStatus({ isError: false, isLoading: false });
     } catch (error) {
       setStatus({ isLoading: false, isError: true });
       throw new Error(error);
@@ -40,7 +40,7 @@ const Customers = () => {
 
   const [filterValue, setFilterValue] = useState("");
   return (
-    <MainContainer> 
+    <MainContainer>
       <FirstSection className='w-full'>
         <ScreenHeader title='Customers' value={1000} />
         <GeneralFilterTab
