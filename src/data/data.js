@@ -9,6 +9,7 @@ import Image8 from "../assets/images/inactive-orders.svg";
 import Image9 from "../assets/images/pending-store.svg";
 import Image10 from "../assets/images/inactive-store.svg";
 import Image11 from "../assets/images/approved-store.svg";
+// import GeneralCheckBox from "../components/Common/GeneralCheck/GeneralCheckBox";
 
 export const dashData = [
   {
@@ -562,6 +563,7 @@ export const orderTableHeader = [
 ];
 
 export const shipmentTableHeader = [
+ 
   {
     title: "Customer Name",
   },

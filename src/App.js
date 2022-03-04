@@ -11,6 +11,8 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import AOS from "aos";
 import { useHistory } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 function App() {
   const location = useLocation();
@@ -41,6 +43,7 @@ function App() {
 
   return (
     <>
+      <ToastContainer hideProgressBar={true} autoClose={3000} />
       {show ? "" : <Navbar />}
 
       <AnimatePresence exitBeforeEnter>

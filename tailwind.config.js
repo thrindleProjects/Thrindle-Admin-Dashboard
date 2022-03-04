@@ -36,6 +36,9 @@ module.exports = {
       borderWidth: {
         0.98: "0.98px",
       },
+      height: {
+        75: "80vh",
+      },
     },
   },
   variants: {
