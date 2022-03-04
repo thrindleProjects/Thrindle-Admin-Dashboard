@@ -11,21 +11,22 @@ const InventoryModal = (props) => {
     success: false,
   });
 
-  console.log(modalData);
-
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+
+  const { setModal } = props;
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
-        props.setModal(false);
+        setModal(false);
       }
+      return true;
     };
     document.addEventListener("click", handleClickOutside, true);
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [props]);
+  }, [setModal]);
 
   const getSingleProduct = useCallback(async (id) => {
     try {
@@ -61,8 +62,8 @@ const InventoryModal = (props) => {
       }
       setStatusModal({ show: true, success: false });
       return setTimeout(() => {
-        props.setModal(false)
-      }, 2000)
+        props.setModal(false);
+      }, 2000);
     } catch (error) {
       console.error(error);
       return setStatusModal({ show: true, success: false });
