@@ -22,7 +22,7 @@ const CustomerTable = (props) => {
   return (
     <MainTable className='w-full rounded-md py-10 mt-5 overflow-auto'>
       <table className='w-full min-w-min max-w-full'>
-        <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-8 auto-cols-min gap-3 px-6'>
+        <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-8 auto-cols-min gap-8 px-6'>
           {props.showCheck && (
             <tr>
               <th>
@@ -48,7 +48,7 @@ const CustomerTable = (props) => {
             return (
               <tr
                 key={item._id}
-                className='w-full grid grid-flow-row grid-cols-8 gap-3 auto-cols-min px-6 py-3 '
+                className='w-full grid grid-flow-row grid-cols-8 gap-8 auto-cols-min px-6 py-3 '
               >
                 {props.showCheck && (
                   <td>
