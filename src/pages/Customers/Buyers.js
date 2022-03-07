@@ -10,15 +10,28 @@ import Loader from "../../components/Common/Loader/Loader";
 import axios from "axios";
 
 const Customers = () => {
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState({
+    allCustomers: [],
+    paginatedCustomers: [],
+    pageIndex: 0,
+  });
   const [status, setStatus] = useState({ isLoading: true, isError: false });
+  const [filterValue, setFilterValue] = useState("");
+
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
 
-  console.log(customers);
+  // Break Customers Array into smaller arrays for pagination
+  const paginationArr = (arr, size) =>
+    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+      arr.slice(i * size, i * size + size)
+    );
 
+  // Get All Buyers
   const handleGetCustomers = useCallback(async () => {
     setStatus({ isLoading: true, isError: false });
-    setCustomers([]);
+    setCustomers((oldCustomers) => {
+      return { ...oldCustomers, paginatedCustomers: [], allCustomers: [] };
+    });
     try {
       let {
         status: statusCode,
@@ -26,40 +39,76 @@ const Customers = () => {
       } = await axios.get(`${url}/users/admin/buyers`);
       if (statusCode > 399)
         return setStatus({ isError: true, isLoading: false });
-      setCustomers(allCustomers);
-      setStatus({ isError: false, isLoading: false });
+      let paginatedCustomers = paginationArr(allCustomers, 20);
+      setCustomers((oldCustomers) => {
+        return { ...oldCustomers, paginatedCustomers, allCustomers };
+      });
+      return setStatus({ isError: false, isLoading: false });
     } catch (error) {
       setStatus({ isLoading: false, isError: true });
       throw new Error(error);
     }
   }, []);
 
+  // HandlePagination
+  const handlePagination = (type) => {
+    switch (type) {
+      case "NEXT_PAGE":
+        setCustomers((oldCustomers) => {
+          if (
+            oldCustomers.paginatedCustomers.length - 1 ===
+            oldCustomers.pageIndex
+          ) {
+            return oldCustomers;
+          }
+          return { ...oldCustomers, pageIndex: oldCustomers.pageIndex + 1 };
+        });
+        break;
+      case "PREVIOUS_PAGE":
+        setCustomers((oldCustomers) => {
+          if (oldCustomers.pageIndex === 0) {
+            return oldCustomers;
+          }
+          return { ...oldCustomers, pageIndex: oldCustomers.pageIndex - 1 };
+        });
+        break;
+      default:
+        console.log("Argumenet NOT handled");
+        break;
+    }
+  };
+
   useEffect(() => {
     handleGetCustomers();
   }, [handleGetCustomers]);
 
-  const [filterValue, setFilterValue] = useState("");
   return (
     <MainContainer>
       <FirstSection className='w-full'>
-        <ScreenHeader title='Customers' value={1000} />
+        <ScreenHeader title='Buyers' value={customers.allCustomers.length} />
         <GeneralFilterTab
           filter={filterValue}
           filterData={orderFilter}
           changeFilter={(val) => setFilterValue(val)}
         />
         <GeneralPagination
-          cancelText='Cancel Order'
-          deleteText='delete Order'
+          showButtons={false}
+          pag
+          handlePagination={handlePagination}
+          pageNumber={customers.pageIndex}
+          itemsNumber={customers.paginatedCustomers}
+          totalNumber={customers.allCustomers.length}
         />
         {status.isError && <div>Error! Please Reload the Page</div>}
-        {!status.isError && customers.length > 0 && (
-          <CustomerTable
-            tableHeaderData={customerHeader}
-            tableData={customers}
-            showCheck
-          />
-        )}
+        {!status.isError &&
+          !status.isLoading &&
+          customers.allCustomers.length > 0 && (
+            <CustomerTable
+              tableHeaderData={customerHeader}
+              tableData={customers.paginatedCustomers[customers.pageIndex]}
+              showCheck
+            />
+          )}
         {!status.isError && status.isLoading && <Loader />}
       </FirstSection>
     </MainContainer>

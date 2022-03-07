@@ -1,8 +1,25 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 
 const GeneralPagination = (props) => {
+  const [pageInfo, setPageInfo] = useState({
+    startNumber: 0,
+    endNumber: 0,
+    totalNumber: 0,
+  });
+
+  useEffect(() => {
+    if (props.itemsNumber && props.itemsNumber.length > 0) {
+      let startNumber = 1 + 20 * props.pageNumber;
+      let endNumber =
+        startNumber - 1 + props.itemsNumber[props.pageNumber].length;
+      let totalNumber = props.totalNumber;
+      return setPageInfo({ startNumber, endNumber, totalNumber });
+    }
+    return;
+  }, [props.itemsNumber, props.pageNumber, props.totalNumber]);
+
   return (
     <MainPagination className='w-full flex flex-row flex-wrap mt-14'>
       {props.showButtons === false ? (
@@ -33,21 +50,33 @@ const GeneralPagination = (props) => {
       )}
 
       {props.pag ? (
-        <div className='pagination flex flex-row '>
+        <div className='ml-auto pagination flex flex-row '>
           <div className='num-cont flex flex-row mr-10'>
-            <span className='text-white-text font-Bold text-sm'>01</span>
+            <span className='text-white-text font-Bold text-sm'>
+              {pageInfo.startNumber}
+            </span>
             <span className='text-white-text font-Bold text-sm mb-1'>-</span>
-            <span className='text-white-text font-Bold text-sm'>10</span>
+            <span className='text-white-text font-Bold text-sm'>
+              {pageInfo.endNumber}
+            </span>
             <span className='text-white-text font-Bold text-sm'>&nbsp;of</span>
-            <span className='text-white-text font-Bold text-sm'>&nbsp;08</span>
+            <span className='text-white-text font-Bold text-sm'>
+              &nbsp;{pageInfo.totalNumber}
+            </span>
           </div>
           {/* CONTROLS */}
-          <div className="controls flex flex-row">
-            <button className="single-controls flex flex-row rounded-md focus:outline-none outline-none">
-              <FaAngleLeft className="text-base single-control-icon text-center text-white-main" />
+          <div className='controls flex flex-row gap-4'>
+            <button
+              onClick={() => props.handlePagination("PREVIOUS_PAGE")}
+              className='single-controls flex flex-row w-12 h-12 p-3 rounded-md focus:outline-none outline-none'
+            >
+              <FaAngleLeft className='text-base single-control-icon text-center text-white-main' />
             </button>
-            <button className="single-controls flex flex-row rounded-md focus:outline-none outline-none ">
-              <FaAngleRight className="text-base single-control-icon text-center text-white-main" />
+            <button
+              onClick={() => props.handlePagination("NEXT_PAGE")}
+              className='single-controls flex flex-row p-3 w-12 h-12 p-3 rounded-md focus:outline-none outline-none '
+            >
+              <FaAngleRight className='text-base single-control-icon text-center text-white-main' />
             </button>
           </div>
         </div>
@@ -84,8 +113,6 @@ const MainPagination = styled.div`
     align-items: center;
     justify-content: center;
     background: #fafafa;
-    width: 35px;
-    height: 35px;
   }
   .single-control-icon {
     color: #2f3133;
