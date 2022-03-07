@@ -5,6 +5,9 @@
   box-sizing: border-box !important;
 }
 
+:root {
+  --primary-color: "red";
+}
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
@@ -17,7 +20,7 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #166CB4;
+  background: #166cb4;
   border-radius: 30px;
   min-height: 30px;
 }
@@ -34,7 +37,6 @@
 .ReactModal__Overlay--before-close {
   opacity: 0;
 }
-
 
 /* FONTS */
 .font-ExtraBold {

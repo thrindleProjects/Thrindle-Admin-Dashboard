@@ -10,6 +10,7 @@ import Settings from "../pages/Settings/Settings";
 import Shipment from "../pages/Shipment/Shipment";
 // import UnP from "../pages/U&P/UnP";
 import AddProducts from "../pages/AddProducts/addProducts";
+import StoreDetails from "../pages/StoreDetails/StoreDetails";
 
 export const routes = [
   {
@@ -56,5 +57,10 @@ export const routes = [
     title: "Add Products",
     path: "/add-products",
     component: AddProducts,
+  },
+  {
+    title: "Store Details",
+    path: "/store-details",
+    component: StoreDetails,
   },
 ];

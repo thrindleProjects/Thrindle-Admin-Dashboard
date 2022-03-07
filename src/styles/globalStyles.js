@@ -34,7 +34,7 @@ export const NewMainTable = styled.div`
   }
 
   tr {
-    height: 50px;
+    height: 80px;
     align-items: center;
   }
 `;
