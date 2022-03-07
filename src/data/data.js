@@ -6,9 +6,8 @@ import Image5 from "../assets/images/dash-pending-order.svg";
 import Image6 from "../assets/images/dash-delievered-order.svg";
 import Image7 from "../assets/images/dash-cancelled-order.svg";
 import Image8 from "../assets/images/inactive-orders.svg";
-import Image9 from "../assets/images/pending-store.svg";
-import Image10 from "../assets/images/inactive-store.svg";
-import Image11 from "../assets/images/approved-store.svg";
+
+// import GeneralCheckBox from "../components/Common/GeneralCheck/GeneralCheckBox";
 
 export const dashData = [
   {
@@ -429,23 +428,6 @@ export const orderData = [
   },
 ];
 
-export const storeData = [
-  {
-    title: "Pending Stores",
-    color: "#F69F13",
-    icon: Image10,
-    activeIcon: Image9,
-    value: 200,
-  },
-  {
-    title: "Approved Stores",
-    color: "#4BC7EA",
-    icon: Image10,
-    activeIcon: Image11,
-    value: 1000,
-  },
-];
-
 export const inventData = [
   {
     title: "Pending Products",
@@ -611,15 +593,9 @@ export const customerHeader = [
     title: "Joined",
   },
 ];
-export const sellerHeader = [
+export const storeHeader = [
   {
-    title: "Seller’s Name",
-  },
-  {
-    title: "Phone No",
-  },
-  {
-    title: "Email",
+    title: "Index",
   },
   {
     title: "Store Name",
@@ -628,11 +604,8 @@ export const sellerHeader = [
     title: "Category",
   },
   {
-    title: "Choosen Market",
+    title: "Market",
   },
-  // {
-  //   title: "Shop ID",
-  // },
   {
     title: "Joined",
   },
