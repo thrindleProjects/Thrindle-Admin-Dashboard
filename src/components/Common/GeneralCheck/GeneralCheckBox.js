@@ -1,15 +1,23 @@
-import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { FaCheck } from "react-icons/fa";
 
 const GeneralCheckBox = (props) => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleClicked = () => {
+    setIsChecked(!isChecked);
+  };
+
   return (
     <MainCheck
       check={props.check}
-      className="rounded-sm flex flex-row cursor-pointer"
-      onClick={props.toggleCheck}
+      className={`rounded-sm flex flex-row cursor-pointer ${
+        isChecked && "bg-primary-dark"
+      }`}
+      onClick={() => handleClicked()}
     >
-      {props.check && <FaCheck className="text-base text-white-main" />}
+      {isChecked && <FaCheck className='text-base text-white-main' />}
     </MainCheck>
   );
 };
