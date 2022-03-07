@@ -4,6 +4,7 @@ import { Redirect, Route } from "react-router-dom";
 const ProtectedRoutes = ({ component: Component, ...restOfProps }) => {
   let isAuthenticated = true;
   //   document.title = title || "Thrindle Dashboard";
+
   return (
     <Route
       {...restOfProps}

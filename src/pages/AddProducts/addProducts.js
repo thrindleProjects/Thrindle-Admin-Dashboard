@@ -12,8 +12,6 @@ import {
   mainColor,
 } from "../../data/sizeAndColor";
 import { Error } from "../../styles/globalStyles";
-// import { useDispatch } from "react-redux";
-// import { showNotification } from "../../redux/actions/statusNotifications";
 import AddProductBtn from "../../components/Common/Button/AddProductBtn";
 import Dropdown from "../../components/Common/Dropdown/Dropdown";
 import InputWithFieldSet from "../../components/Common/Input/InputWithFieldSet";
@@ -23,6 +21,7 @@ import SingleDropdown from "../../components/Common/Input/SingleDropdown";
 import DisplayImages from "../../components/DisplayImages/DisplayImages";
 import AddImageContainer from "../../components/AddImageContainer/AddImageContainer";
 import NavBar from "../../components/Common/NavBar/NavBar";
+import { toast } from "react-toastify";
 
 const AddProducts = () => {
   const [images, setImages] = useState([]);
@@ -47,8 +46,6 @@ const AddProducts = () => {
   const [storeID, setStoreID] = useState("");
   const productSizeArr = productSizes.map((item) => item.title);
   const productSizeArr2 = productSizes2.map((item) => item.title);
-
-  // const dispatch = useDispatch();
   const history = useHistory();
 
   // functions for image upload & delete
@@ -58,14 +55,7 @@ const AddProducts = () => {
       let updatedList = [...images, imageList];
       setImages(updatedList);
     } else {
-      // dispatch(
-      //   showNotification({
-      //     notify: {
-      //       status: 2,
-      //       message: "Please select a file of image type",
-      //     },
-      //   })
-      // );
+      toast.warning("Please select a file of image type");
     }
   };
 
@@ -160,43 +150,23 @@ const AddProducts = () => {
         formData
       );
 
-      console.log(data);
       if (data) {
+        toast.success("Product was successfully added");
         setTimeout(() => {
           setUploading(false);
-          history.push("/");
-          // dispatch(
-          //   showNotification({
-          //     notify: {
-          //       status: 1,
-          //       message: "Your product was successfully added",
-          //     },
-          //   })
-          // );
-        }, 3000);
+          history.go(0);
+        }, 1000);
       }
     } catch (error) {
       if (error.response) {
         console.log(error.response);
-        // dispatch(
-        //   showNotification({
-        //     notify: {
-        //       status: 2,
-        //       message: `${error.response.data.message}`,
-        //     },
-        //   })
-        // );
+        toast.warning(`${error.response.data.message}`);
       } else {
         console.log(error);
-        // dispatch(
-        //   showNotification({
-        //     notify: {
-        //       status: 0,
-        //       message: "Please check that you're connected",
-        //     },
-        //   })
-        // );
+        toast.error(`${error}`);
       }
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -356,9 +326,9 @@ const AddProducts = () => {
           setMarkets(markets);
         } catch (error) {
           if (error.response) {
-            console.log(error.response);
+            toast.warning(`${error.response.data.message}`);
           } else {
-            console.log(error);
+            toast.error(`${error}`);
           }
         }
       };
@@ -374,10 +344,10 @@ const AddProducts = () => {
   return (
     <>
       <NavBar />
-      <div className="w-11/12 pt-20 mx-auto">
+      <div className="w-11/12 pt-10 mx-auto">
         <form
           onSubmit={formik.handleSubmit}
-          className="w-full pb-20 lg:flex lg:justify-between lg:h-[75vh]"
+          className="w-full pb-20 lg:flex lg:justify-between lg:h-75"
         >
           <div className="w-full lg:w-55">
             <p className="text-white-text pb-4 font-Bold md:text-base text-sm">

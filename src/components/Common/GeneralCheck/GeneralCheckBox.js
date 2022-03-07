@@ -30,6 +30,6 @@ const MainCheck = styled.div`
   border: 1.5px solid #2f3133;
   background: ${({ check }) => (check ? "#16588F" : "")};
   align-items: center;
-  justify-content: center;
+  margin: 0 auto;
   transition: all 0.3s ease-in-out;
 `;
