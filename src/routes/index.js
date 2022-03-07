@@ -9,7 +9,7 @@ import Sellers from "../pages/Customers/Sellers";
 import Stores from "../pages/Stores/Stores";
 import Settings from "../pages/Settings/Settings";
 import Shipment from "../pages/Shipment/Shipment";
-// import UnP from "../pages/U&P/UnP";
+import UnP from "../pages/UnP/UnP";
 import AddProducts from "../pages/AddProducts/addProducts";
 
 export const routes = [
@@ -52,6 +52,11 @@ export const routes = [
     title: "Inventory",
     path: "/inventory",
     component: Inventory,
+  },
+  {
+    title: "Users & Permission",
+    path: "/users",
+    component : UnP,
   },
   {
     title: "Shipment",
