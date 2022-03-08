@@ -1,17 +1,18 @@
-import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
-import styled from "styled-components";
-import { FaEllipsisH } from "react-icons/fa";
+import GeneralCheckBox from '../GeneralCheck/GeneralCheckBox';
+import styled from 'styled-components';
+import { MdEdit } from 'react-icons/md';
+import { AiOutlineCheck } from 'react-icons/ai';
 
 const InventoryTable = (props) => {
-  const handleModal = (id) => {
-    return props.setModal(true, id);
+  const handleModal = (action, id) => {
+    return props.setModal(action, id);
   };
 
   const getMarketName = (storeId) => {
-    if (storeId.startsWith("CV")) return "Computer Village";
-    if (storeId.startsWith("BM")) return "Balogun Market";
-    if (storeId.startsWith("EM")) return "Eko Market";
-    return "Other Market";
+    if (storeId.startsWith('CV')) return 'Computer Village';
+    if (storeId.startsWith('BM')) return 'Balogun Market';
+    if (storeId.startsWith('EM')) return 'Eko Market';
+    return 'Other Market';
   };
 
   const getUploadDate = (updatedAt) => {
@@ -36,7 +37,7 @@ const InventoryTable = (props) => {
           {props.tableHeaderData?.map((item, index) => (
             <tr
               key={index}
-              className={`${["Action"].includes(item.title) && "col-span-2"}`}
+              className={`${['Action'].includes(item.title) && 'col-span-2'}`}
             >
               <th>
                 <p className='table-head-text text-sm font-normal font-Regular text-center text-white-text'>
@@ -53,60 +54,68 @@ const InventoryTable = (props) => {
             return (
               <tr
                 key={item._id}
-                className='w-full grid grid-flow-row grid-cols-10 gap-3 auto-cols-min px-6 py-3'
+                className='w-full grid grid-flow-row grid-cols-10 gap-3 auto-cols-min px-6 py-3 cursor-pointer'
               >
                 {props.showCheck && (
                   <td>
                     <GeneralCheckBox />
                   </td>
                 )}
-                <td>
+                <td onClick={() => handleModal(item._id)}>
                   <p
                     className={`status text-left text-sm font-Regular capitalize ${
                       item.verified
-                        ? "text-primary-dark"
-                        : "text-secondary-yellow"
+                        ? 'text-primary-dark'
+                        : 'text-secondary-yellow'
                     }`}
                   >
-                    {item.verified ? "Approved" : "Pending"}
+                    {item.verified ? 'Approved' : 'Pending'}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal(item._id)}>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
                     {item.name}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal(item._id)}>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
                     {item.category?.name}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal(item._id)}>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
                     N{item.price.toLocaleString()}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal(item._id)}>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
                     {marketName}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal(item._id)}>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize'>
                     {item.store_id}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal(item._id)}>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize'>
                     {uploadDate}
                   </p>
                 </td>
-                <td
-                  className='col-span-2'
-                  onClick={() => handleModal(item._id)}
-                >
-                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize cursor-pointer'>
-                    <FaEllipsisH className='text-base text-primary-dark' />
+                <td className='col-span-2'>
+                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text flex flex-row gap-8'>
+                    <span className='cursor-pointer flex flex-row gap-2 items-center'>
+                      <MdEdit className='text-2xl text-primary-dark' /> Edit
+                    </span>
+                    <span
+                      className='cursor-pointer flex flex-row gap-2 items-center'
+                      onClick={() =>
+                        handleModal('SHOW_VERIFIED_MODAL', item._id)
+                      }
+                    >
+                      <AiOutlineCheck className='text-2xl text-secondary-success' />{' '}
+                      Verify
+                    </span>
                   </p>
                 </td>
               </tr>

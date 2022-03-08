@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import Loader from "../Common/Loader/Loader";
-import axios from "axios";
-import styled from "styled-components";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Loader from '../Common/Loader/Loader';
+import axios from 'axios';
+import styled from 'styled-components';
 
 const InventoryModal = (props) => {
   const modalRef = useRef(null);
@@ -11,22 +11,22 @@ const InventoryModal = (props) => {
     success: false,
   });
 
-  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+  const url = 'https://thrindleservices.herokuapp.com/api/thrindle/sellers';
 
-  const { setModal } = props;
+  const { handleSetModal } = props;
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
-        setModal(false);
+        handleSetModal('CLOSE_ALL_MODALS');
       }
       return true;
     };
-    document.addEventListener("click", handleClickOutside, true);
+    document.addEventListener('click', handleClickOutside, true);
     return () => {
-      document.removeEventListener("click", handleClickOutside, true);
+      document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [setModal]);
+  }, [handleSetModal]);
 
   const getSingleProduct = useCallback(async (id) => {
     try {
@@ -81,11 +81,11 @@ const InventoryModal = (props) => {
           <div
             className={`fixed right-0 top-16 p-4 pr-6 lg:pr-24 font-bold text-xl rounded-md ${
               statusModal.success
-                ? "bg-secondary-success text-white-main"
-                : "bg-secondary-yellow"
+                ? 'bg-secondary-success text-white-main'
+                : 'bg-secondary-yellow'
             }`}
           >
-            {statusModal.success ? "Success!" : "Try Again :("}
+            {statusModal.success ? 'Success!' : 'Try Again :('}
           </div>
         )}
         {modalData.length > 0 ? (
@@ -105,67 +105,75 @@ const InventoryModal = (props) => {
                 </div>
                 <div className='w-full flex flex-col gap-2'>
                   <p className='text-white-text'>
-                    Category:{" "}
+                    Category:{' '}
                     <span className='font-medium text-primary-dark'>
                       {item.category.name}
                     </span>
                   </p>
                   <p className='text-white-text'>
-                    Product Title:{" "}
+                    Product Title:{' '}
                     <span className='font-medium text-primary-dark'>
                       {item.name}
                     </span>
                   </p>
                   <p className='text-white-text'>
-                    Price:{" "}
+                    Price:{' '}
                     <span className='font-medium text-primary-dark'>
                       N{item.price.toLocaleString()}
                     </span>
                   </p>
                   <p className='text-white-text'>
-                    Stock:{" "}
+                    Stock:{' '}
                     <span className='font-medium text-primary-dark'>
                       {item.no_in_stock}
                     </span>
                   </p>
                   <p className='text-white-text'>
-                    Upload Date:{" "}
+                    Upload Date:{' '}
                     <span className='font-medium text-primary-dark'>
                       {uploadDate}
                     </span>
                   </p>
                   <p className='text-white-text'>
-                    Product Type:{" "}
+                    Product Type:{' '}
                     <span className='font-medium text-primary-dark'>
-                      {item.new ? "New" : "Used"}
+                      {item.new ? 'New' : 'Used'}
                     </span>
                   </p>
                   <p className='text-white-text'>
-                    Status:{" "}
+                    Status:{' '}
                     <span
                       className={`capitalize font-medium ${
                         item.verified
-                          ? "text-secondary-success"
-                          : "text-secondary-yellow"
+                          ? 'text-secondary-success'
+                          : 'text-secondary-yellow'
                       }`}
                     >
-                      {item.verified ? "Approved" : "Pending"}
+                      {item.verified ? 'Approved' : 'Pending'}
                     </span>
                   </p>
                 </div>
                 <div className='w-full flex flex-row gap-4 justify-end'>
-                  <ModalButton
-                    className='border border-inventory-gray text-inventory-gray'
-                    onClick={() => props.setModal(false)}
-                  >
-                    Cancel
-                  </ModalButton>
-                  <ModalButton
-                    className='border border-primary-dark bg-primary-dark text-white-main'
-                    onClick={() => handleVerifyProduct(item._id)}
-                  >
-                    Approve
-                  </ModalButton>
+                  {item.verified ? (
+                    <ModalButton className='border border-primary-dark bg-primary-dark text-white-main'>
+                      Close
+                    </ModalButton>
+                  ) : (
+                    <>
+                      <ModalButton
+                        className='border border-inventory-gray text-inventory-gray'
+                        onClick={() => handleSetModal('CLOSE_ALL_MODALS')}
+                      >
+                        Cancel
+                      </ModalButton>
+                      <ModalButton
+                        className='border border-primary-dark bg-primary-dark text-white-main'
+                        onClick={() => handleVerifyProduct(item._id)}
+                      >
+                        Approve
+                      </ModalButton>
+                    </>
+                  )}
                 </div>
               </div>
             );

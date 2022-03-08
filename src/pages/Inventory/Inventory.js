@@ -17,7 +17,7 @@ const Inventory = (props) => {
     paginatedProducts: [],
     pageIndex: 0,
   });
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({verifiedModal: false, editModal: false});
   const [modalId, setModalId] = useState("");
   const [activeTab, setActiveTab] = useState("Pending Products");
   const [filterValue, setFilterValue] = useState("");
@@ -74,9 +74,18 @@ const Inventory = (props) => {
     }
   }, [qty]);
 
-  const handleSetModal = useCallback((show = true, modalId) => {
-    setShowModal(show);
-    setModalId(modalId);
+  const handleSetModal = useCallback((action, modalId) => {
+    switch (action) {
+      case "SHOW_VERIFIED_MODAL":
+        setShowModal({verifiedModal: true, editModal: false})
+        setModalId(modalId);
+        break;
+      case "CLOSE_ALL_MODALS": 
+        setShowModal({verifiedModal: false, editModal: false})
+        break
+      default:
+        break;
+    }
   }, []);
 
   const getAllUnverifiedProducts = useCallback(async () => {
@@ -111,13 +120,13 @@ const Inventory = (props) => {
 
   useEffect(() => {
     getAllUnverifiedProducts();
-  }, [showModal, getAllUnverifiedProducts]);
+  }, [getAllUnverifiedProducts]);
 
   return (
     <MainContainer className='relative'>
       <FirstSection>
-        {showModal && (
-          <InventoryModal setModal={setShowModal} modalId={modalId} />
+        {showModal.verifiedModal && (
+          <InventoryModal handleSetModal={handleSetModal} modalId={modalId} getAllUnverifiedProducts={getAllUnverifiedProducts}/>
         )}
         <ScreenHeader
           title='Inventory'
