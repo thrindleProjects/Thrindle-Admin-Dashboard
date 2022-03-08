@@ -347,7 +347,7 @@ const AddProducts = () => {
       <div className="w-11/12 pt-10 mx-auto">
         <form
           onSubmit={formik.handleSubmit}
-          className="w-full pb-20 lg:flex lg:justify-between lg:h-75"
+          className="w-full pb-20 lg:flex lg:justify-between lg:h-vh80"
         >
           <div className="w-full lg:w-55">
             <p className="text-white-text pb-4 font-Bold md:text-base text-sm">

@@ -2,18 +2,23 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NoNetwork from "../emptyStates/noNetwork";
 
-const Container = styled.div``;
+const Container = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
 
 const LoaderContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: inherit;
 `;
 
 const LoaderBox = styled.div`
   position: absolute;
   top: 50%;
-  left: 45%;
+  left: 50%;
   width: 3em;
   height: 3em;
   transform: translate(-50%, -50%);
@@ -53,21 +58,17 @@ const NewLoader = () => {
   });
 
   return (
-    <>
-      <LoaderContainer>
-        {!networkFailure ? (
-          <LoaderBox>
-            <Spin></Spin>
-          </LoaderBox>
-        ) : (
-          <>
-            <Container>
-              <NoNetwork />
-            </Container>
-          </>
-        )}
-      </LoaderContainer>
-    </>
+    <LoaderContainer>
+      {!networkFailure ? (
+        <LoaderBox>
+          <Spin></Spin>
+        </LoaderBox>
+      ) : (
+        <Container>
+          <NoNetwork />
+        </Container>
+      )}
+    </LoaderContainer>
   );
 };
 

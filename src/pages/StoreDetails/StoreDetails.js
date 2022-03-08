@@ -3,6 +3,7 @@ import { HiDownload } from "react-icons/hi";
 import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 import MerchantDetails from "../../components/MerchantDetails/MerchantDetails";
+import MerchantProducts from "../../components/MerchantDetails/MerchantProducts";
 
 function StoreDetails() {
   return (
@@ -17,6 +18,7 @@ function StoreDetails() {
       </div>
 
       <MerchantDetails />
+      <MerchantProducts />
     </MainContainer>
   );
 }
