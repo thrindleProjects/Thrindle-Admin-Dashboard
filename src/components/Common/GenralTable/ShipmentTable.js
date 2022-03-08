@@ -1,25 +1,31 @@
 import React from "react";
-import styled from "styled-components";
+import { NewMainTable } from "../../../styles/globalStyles";
 import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 
 const ShipmentTable = (props) => {
   return (
-    <MainTable className="w-full rounded-md  py-10 mt-5 overflow-auto">
+    <NewMainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
       <table className="w-full">
-        <thead className="main-table-header  rounded-md flex flex-row">
-          {props.showCheck && <GeneralCheckBox />}
+        <thead className="main-table-header rounded-md ">
+          <tr className="grid grid-cols-9">
+            <th>
+              <GeneralCheckBox />
+            </th>
 
-          {props.tableHeaderData?.map((item, index) => (
-            <tr key={index}>
-              <th className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+            {props.tableHeaderData?.map((item, index) => (
+              <th
+                key={index}
+                className="table-head-text text-sm font-normal font-Regular text-center text-white-text"
+              >
                 {item.title}
               </th>
-            </tr>
-          ))}
+            ))}
+          </tr>
         </thead>
+
         <tbody className="main-table-body">
           {props.tableData?.map((item, index) => (
-            <tr key={index} className="w-full flex flex-row text-center">
+            <tr key={index} className="w-full grid grid-cols-9">
               {props.showCheck && (
                 <td>
                   <GeneralCheckBox />
@@ -70,33 +76,9 @@ const ShipmentTable = (props) => {
           ))}
         </tbody>
       </table>
-    </MainTable>
+    </NewMainTable>
   );
 };
 
 export default ShipmentTable;
 
-const MainTable = styled.div`
-  box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
-  .main-table-header {
-    width: 100%;
-    padding: 0px 12px !important;
-    height: 50px;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1.5px solid #f4f4f4;
-    border-top: 1.5px solid #f4f4f4;
-  }
-  tr:nth-child(even) {
-    background-color: #fafafa;
-  }
-  tr td {
-    padding: 0px 10px !important;
-    text-align: left;
-  }
-  tr {
-    height: 50px;
-    align-items: center;
-    justify-content: space-evenly;
-  }
-`;

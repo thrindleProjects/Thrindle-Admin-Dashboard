@@ -26,11 +26,12 @@ const MainContainer = (props) => {
   const closeSideNav = () => {
     setShowSideNav(false);
   };
+
   const [noti, setNoti] = useState(false);
   document.title = props.title || "Thrindle Dashboard";
 
   return (
-    <MainCont showNav={showNav} className="w-full">
+    <MainCont showNav={showNav} className="w-full font-Regular">
       <TopNav className="w-full flex flex-row  px-9 fixed top-0 z-50 bg-white-main left-0 right-0">
         <div
           className={

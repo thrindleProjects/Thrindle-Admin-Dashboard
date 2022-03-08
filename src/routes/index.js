@@ -11,6 +11,7 @@ import Settings from "../pages/Settings/Settings";
 import Shipment from "../pages/Shipment/Shipment";
 import UnP from "../pages/UnP/UnP";
 import AddProducts from "../pages/AddProducts/addProducts";
+import StoreDetails from "../pages/StoreDetails/StoreDetails";
 
 export const routes = [
   {
@@ -38,11 +39,7 @@ export const routes = [
     path: "/sellers",
     component: Sellers,
   },
-  {
-    title: "Stores",
-    path: "/stores",
-    component: Stores,
-  },
+
   {
     title: "Settings",
     path: "/settings",
@@ -67,5 +64,15 @@ export const routes = [
     title: "Add Products",
     path: "/add-products",
     component: AddProducts,
+  },
+  {
+    title: "Stores",
+    path: "/stores",
+    component: Stores,
+  },
+  {
+    title: "Store Details",
+    path: "/store-details/:store_id",
+    component: StoreDetails,
   },
 ];

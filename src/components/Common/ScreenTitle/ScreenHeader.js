@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const ScreenHeader = (props) => {
   return (
-    <MainHeader className="w-full flex flex-row pt-5 pb-10">
+    <MainHeader className="flex flex-row pt-5 pb-10">
       <h2 className="text-left header text-3xl font-ExtraBold mr-5">
         {props.title}
       </h2>
@@ -17,7 +17,7 @@ const ScreenHeader = (props) => {
     </MainHeader>
   );
 };
- 
+
 export default ScreenHeader;
 
 const MainHeader = styled.div`

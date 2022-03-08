@@ -1,116 +1,102 @@
 import React from "react";
-import styled from "styled-components";
 import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
-import { FaEllipsisH } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { NewMainTable } from "../../../styles/globalStyles";
+import formatDate from "../../../utils/formatDate";
 
 const StoreTable = (props) => {
   return (
-    <MainTable className="w-full rounded-md  py-10 mt-5 overflow-auto">
+    <NewMainTable className="w-full rounded-md  py-10 mt-5 overflow-auto">
       <table className="w-full">
-        <thead className="main-table-header  rounded-md flex flex-row">
-          {props.showCheck && <GeneralCheckBox />}
+        <thead className="main-table-header rounded-md">
+          <tr className="grid grid-cols-7">
+            <th>
+              <></>
+            </th>
 
-          {props.tableHeaderData?.map((item, index) => (
-            <tr key={index}>
-              <th className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+            {props.tableHeaderData?.map((item, index) => (
+              <th
+                key={index}
+                className="table-head-text text-sm font-normal font-Regular text-center text-white-text"
+              >
                 {item.title}
               </th>
-            </tr>
-          ))}
+            ))}
+          </tr>
         </thead>
         <tbody className="main-table-body">
           {props.tableData?.map((item, index) => (
-            <tr key={index} className="w-full flex flex-row">
+            <tr key={index} className="w-full grid grid-cols-7 cursor-pointer">
               {props.showCheck && (
                 <td>
                   <GeneralCheckBox />
                 </td>
               )}
+              <td>
+                <Link to={`store-details/${item.store_id}`}>
+                  <p className="status text-center text-sm text-white-text font-Regular capitalize">
+                    {index + 1}
+                  </p>
+                </Link>
+              </td>
+              <td>
+                <Link to={`store-details/${item.store_id}`}>
+                  <p className="status text-center text-sm text-white-text font-Regular capitalize">
+                    {item.store_name}
+                  </p>
+                </Link>
+              </td>
 
               <td>
-                <p className="status text-left text-sm text-white-text font-Regular">
-                  {item.name}
-                </p>
-              </td>
-              <td>
-                <p className="orderId text-left text-sm text-white-text font-Regular">
-                  {item.phoneNumber}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.email}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.storeName}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.category}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.market}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left text-sm text-white-text font-Regular">
-                  {item.joined}
-                </p>
-              </td>
-              <td className="pl-3">
-                <FaEllipsisH className="text-base text-primary-dark" />
-                {/* <div className="w-full flex flex-row actionCont">
-                  <p className="product text-left text-xs actionText text-secondary-success font-Regular">
-                    {item.action.approve}
+                <Link to={`store-details/${item.store_id}`}>
+                  <p className="product text-center text-sm text-white-text font-Regular">
+                    {item.store_categories[0]?.name || (
+                      <span className="text-sm text-secondary-error font-Regular cursor-pointer">
+                        Not specified
+                      </span>
+                    )}
                   </p>
-                  <p className="product text-left text-xs actionText text-secondary-error font-Regular">
-                    {item.action.decline}
+                </Link>
+              </td>
+
+              <td>
+                <Link to={`store-details/${item.store_id}`}>
+                  <p className="product text-center text-sm text-white-text font-Regular">
+                    {item.store_id.startsWith("EM") && <span>Eko Market</span>}
+                    {item.store_id.startsWith("BM") && (
+                      <span>Balogun Market</span>
+                    )}
+                    {item.store_id.startsWith("CV") && (
+                      <span>Computer Village</span>
+                    )}
                   </p>
-                </div> */}
+                </Link>
+              </td>
+
+              <td>
+                <Link to={`store-details/${item.store_id}`}>
+                  <p className="product text-center text-sm text-white-text font-Regular">
+                    {formatDate(item.createdAt)}
+                  </p>
+                </Link>
+              </td>
+
+              <td>
+                <div className="w-full flex justify-center">
+                  <p className="product text-xs actionText text-secondary-success font-Regular cursor-pointer">
+                    Approve
+                  </p>
+                  <p className="product text-xs actionText text-secondary-error font-Regular cursor-pointer pl-2">
+                    Decline
+                  </p>
+                </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </MainTable>
+    </NewMainTable>
   );
 };
 
 export default StoreTable;
-
-const MainTable = styled.div`
-  box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
-  .main-table-header {
-    width: 100%;
-    padding: 0px 12px !important;
-    height: 50px;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1.5px solid #f4f4f4;
-    border-top: 1.5px solid #f4f4f4;
-  }
-  tr:nth-child(even) {
-    background-color: #fafafa;
-  }
-  tr td {
-    padding: 0px 10px !important;
-    text-align: left;
-  }
-  tr {
-    height: 50px;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .actionCont {
-    align-items: center;
-    justify-content: space-between;
-  }
-  .actionText {
-    font-size: 10px;
-  }
-`;
