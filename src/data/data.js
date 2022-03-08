@@ -649,7 +649,7 @@ export const inventTableHeader = [
   { title: "Market" },
   { title: "Store" },
   { title: "Upload Date" },
-  { title: "More" },
+  { title: "Action" },
 ];
 
 export const unpTableHeader = [

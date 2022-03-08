@@ -25,7 +25,7 @@ const InventoryTable = (props) => {
   return (
     <MainTable className='w-full rounded-md py-10 mt-5 overflow-auto '>
       <table className='w-full min-w-min max-w-full'>
-        <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-9 auto-cols-min gap-3 px-6'>
+        <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-10 auto-cols-min gap-3 px-6'>
           {props.showCheck && (
             <tr>
               <th>
@@ -34,7 +34,10 @@ const InventoryTable = (props) => {
             </tr>
           )}
           {props.tableHeaderData?.map((item, index) => (
-            <tr key={index}>
+            <tr
+              key={index}
+              className={`${["Action"].includes(item.title) && "col-span-2"}`}
+            >
               <th>
                 <p className='table-head-text text-sm font-normal font-Regular text-center text-white-text'>
                   {item.title}
@@ -50,7 +53,7 @@ const InventoryTable = (props) => {
             return (
               <tr
                 key={item._id}
-                className='w-full grid grid-flow-row grid-cols-9 gap-3 auto-cols-min px-6 py-3'
+                className='w-full grid grid-flow-row grid-cols-10 gap-3 auto-cols-min px-6 py-3'
               >
                 {props.showCheck && (
                   <td>
@@ -98,7 +101,10 @@ const InventoryTable = (props) => {
                     {uploadDate}
                   </p>
                 </td>
-                <td onClick={() => handleModal(item._id)}>
+                <td
+                  className='col-span-2'
+                  onClick={() => handleModal(item._id)}
+                >
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize cursor-pointer'>
                     <FaEllipsisH className='text-base text-primary-dark' />
                   </p>
