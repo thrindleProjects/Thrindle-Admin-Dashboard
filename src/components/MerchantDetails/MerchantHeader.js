@@ -5,17 +5,17 @@ import { useHistory } from "react-router-dom";
 function MerchantHeader({ text, backBtn }) {
   const history = useHistory();
   return (
-    <div className="flex items-center bg-secondary-header text-white-main my-2 py-2 pl-2 rounded-t-md">
+    <div className="flex items-center bg-secondary-header text-white-main p-4 rounded-t-md h-59.26">
       {backBtn && (
         <button
-          className="border border-white-main px-3 py-2 rounded-sm cursor-pointer"
+          className="border border-white-main px-3 py-2 rounded-sm cursor-pointer mr-4"
           onClick={() => history.go(-1)}
         >
           <HiOutlineArrowNarrowLeft className="inline mr-1 align-middle" />
           <span className="align-middle">Back</span>
         </button>
       )}
-      <p className="ml-4">{text}</p>
+      <p>{text}</p>
     </div>
   );
 }

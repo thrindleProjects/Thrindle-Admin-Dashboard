@@ -33,11 +33,7 @@ export const routes = [
     path: "/customers",
     component: Customers,
   },
-  {
-    title: "Stores",
-    path: "/stores",
-    component: Stores,
-  },
+
   {
     title: "Settings",
     path: "/settings",
@@ -59,8 +55,13 @@ export const routes = [
     component: AddProducts,
   },
   {
+    title: "Stores",
+    path: "/stores",
+    component: Stores,
+  },
+  {
     title: "Store Details",
-    path: "/store-details",
+    path: "/store-details/:store_id",
     component: StoreDetails,
   },
 ];

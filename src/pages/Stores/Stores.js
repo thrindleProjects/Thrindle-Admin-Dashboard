@@ -43,27 +43,33 @@ const Stores = () => {
 
   useEffect(() => {
     let mounted = true;
+    let cachedStores = JSON.parse(sessionStorage.getItem("allStores"));
 
     if (mounted) {
-      const fetchStores = async () => {
-        setLoadingStores(true);
-        try {
-          let res = await axiosInstance.get(`stores/allstores`);
-          console.log(res.data.data);
-          setLoadingStores(false);
-          setStoreTableData(res.data.data);
-        } catch (error) {
-          if (error.response) {
-            toast.warning(`${error.response.data.message}`);
-          } else {
-            toast.error(`${error}`);
+      if (cachedStores) {
+        setLoadingStores(false);
+        setStoreTableData(cachedStores);
+      } else {
+        const fetchStores = async () => {
+          setLoadingStores(true);
+          try {
+            let res = await axiosInstance.get(`stores/allstores`);
+            sessionStorage.setItem("allStores", JSON.stringify(res.data.data));
+            setLoadingStores(false);
+            setStoreTableData(res.data.data);
+          } catch (error) {
+            if (error.response) {
+              toast.warning(`${error.response.data.message}`);
+            } else {
+              toast.error(`${error}`);
+            }
+          } finally {
+            setLoadingStores(false);
           }
-        } finally {
-          setLoadingStores(false);
-        }
-      };
+        };
 
-      fetchStores();
+        fetchStores();
+      }
     }
 
     return () => {
@@ -75,7 +81,9 @@ const Stores = () => {
     <MainContainer>
       <FirstSection className="w-full">
         {loadingStores ? (
-          <NewLoader />
+          <div className="h-vh80">
+            <NewLoader />
+          </div>
         ) : (
           <>
             <ScreenHeader title="Stores" value={storeTableData.length} />

@@ -5,7 +5,6 @@ import noNetworkImage from "../../assets/images/noNetwork.svg";
 
 const Image = styled.img`
   width: 200px;
-  margin-top: 5em;
   margin-left: auto;
   margin-right: auto;
 `;
