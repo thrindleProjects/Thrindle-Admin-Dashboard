@@ -16,9 +16,9 @@ function MerchantDetails() {
     },
   ];
   return (
-    <div>
+    <div className="mb-12">
       <div className="rounded-md shadow-md">
-        <MerchantHeader text="Vendor's Details" backBtn={true} />
+        <MerchantHeader text="Merchant's Details" backBtn={true} />
         <div className="bg-white-main flex justify-between items-center w-85 mx-auto py-8 ">
           <div>
             <img src={avi} alt="merchant-avatar" className="w-36 h-36" />
