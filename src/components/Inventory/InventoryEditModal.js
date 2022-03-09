@@ -3,6 +3,9 @@ import Loader from '../Common/Loader/Loader';
 import axios from 'axios';
 import styled from 'styled-components';
 import axiosInstance from '../../utils/axiosInstance';
+import { toast } from 'react-toastify';
+// import { useFormik } from 'formik';
+// import * as Yup from "yup"
 
 const InventoryEditModal = (props) => {
   const modalRef = useRef(null);
@@ -18,14 +21,41 @@ const InventoryEditModal = (props) => {
     category: [],
     subcategory: [],
   });
+  // Keep track if form was updated
+  const [updated, setUpdated] = useState(false);
 
   const url = 'https://thrindleservices.herokuapp.com/api/thrindle/sellers';
   const { handleSetModal, getAllUnverifiedProducts } = props;
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    let formInfo = { ...modalData[0], ...formData };
-    console.log(formInfo);
+    let url =
+      'https://thrindleservices.herokuapp.com/api/thrindle/products/admin/updateproduct';
+    let formInfo = {
+      name: formData.name,
+      category: formData.category._id,
+      description: formData.description,
+      subcategory: formData.subcategory._id,
+    };
+    try {
+      let res = await axiosInstance.put(`${url}/${modalData[0]._id}`, formInfo);
+      if (res.status < 400) {
+        setUpdated(true);
+        return toast.success('Updated Successfully');
+      }
+      toast.error('Something went wrong...');
+    } catch (error) {
+      console.error(error);
+      toast.error('Something went wrong...');
+    }
+  };
+
+  const handleFormCancel = (e) => {
+    e.preventDefault();
+    if (updated) {
+      return triggerTableUpdate();
+    }
+    return handleSetModal('CLOSE_ALL_MODALS');
   };
 
   const getMarketName = (storeId) => {
@@ -78,18 +108,6 @@ const InventoryEditModal = (props) => {
 
   const getSingleProduct = useCallback(
     async (id) => {
-      setCategoryHandler({
-        marketName: '',
-        category: [],
-        subcategory: [],
-      });
-      setFormData({
-        description: '',
-        category: { _id: '', name: '' },
-        subcategory: { _id: '', name: '' },
-        name: '',
-      });
-      setModalData([]);
       try {
         const {
           data: { data },
@@ -117,19 +135,34 @@ const InventoryEditModal = (props) => {
     return `${newDay}/${newMonth}/${newYear}`;
   };
 
+  const getCategoryId = (category) => {
+    let marketData = JSON.parse(localStorage.getItem('marketCategories'));
+    let findMarket = marketData.find((item) => item.name === category);
+    return findMarket._id;
+  };
+
+  const getSubCategoryId = (subCategoryValue) => {
+    let findMarket = categoryHandler.subcategory.find(
+      (item) => item.name === subCategoryValue
+    );
+    return findMarket._id;
+  };
+
   const handleFormChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === 'category') {
+      let _id = getCategoryId(value);
       return setFormData({
         ...formData,
-        category: { ...formData.category, name: value },
+        category: { name: value, _id },
       });
     }
     if (name === 'subcategory') {
+      let _id = getSubCategoryId(value);
       return setFormData({
         ...formData,
-        subcategory: { ...formData.subcategory, name: value },
+        subcategory: { name: value, _id },
       });
     }
     return setFormData({ ...formData, [name]: value });
@@ -138,7 +171,7 @@ const InventoryEditModal = (props) => {
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
-        if (modalData.length > 0 && modalData[0].verified) {
+        if (modalData.length > 0 && updated) {
           return triggerTableUpdate();
         }
         handleSetModal('CLOSE_ALL_MODALS');
@@ -149,7 +182,7 @@ const InventoryEditModal = (props) => {
     return () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [handleSetModal, triggerTableUpdate, modalData]);
+  }, [handleSetModal, triggerTableUpdate, modalData, updated]);
 
   useEffect(() => {
     getSingleProduct(props.modalId);
@@ -305,10 +338,14 @@ const InventoryEditModal = (props) => {
                 </div>
                 <div className='w-full flex flex-row gap-4 justify-end'>
                   <ModalButton
-                    className='border border-inventory-gray text-inventory-gray'
-                    onClick={() => handleSetModal('CLOSE_ALL_MODALS')}
+                    className={`border ${
+                      updated
+                        ? 'bg-secondary-success text-white-main border-secondary-success'
+                        : 'bg-transparent border-inventory-gray text-inventory-gray'
+                    }`}
+                    onClick={handleFormCancel}
                   >
-                    Cancel
+                    {updated ? 'Close' : 'Cancel'}
                   </ModalButton>
                   <ModalButton
                     className='border border-primary-dark bg-primary-dark text-white-main'
