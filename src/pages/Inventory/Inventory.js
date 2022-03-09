@@ -1,15 +1,16 @@
-import { useState, useEffect, useCallback } from "react";
-import MainContainer from "../../components/Common/MainContainer/MainContainer";
-import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
-import GeneralHeaderTab from "../../components/Common/GeneralHeaderTab/GeneralHeaderTab";
-import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
-import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
-import InventoryTable from "../../components/Common/GenralTable/InventoryTable";
-import InventoryModal from "../../components/Inventory/InventoryModal";
-import Loader from "../../components/Common/Loader/Loader";
-import { inventData, inventFilter, inventTableHeader } from "../../data/data";
-import styled from "styled-components";
-import axios from "axios";
+import { useState, useEffect, useCallback } from 'react';
+import MainContainer from '../../components/Common/MainContainer/MainContainer';
+import ScreenHeader from '../../components/Common/ScreenTitle/ScreenHeader';
+import GeneralHeaderTab from '../../components/Common/GeneralHeaderTab/GeneralHeaderTab';
+import GeneralFilterTab from '../../components/Common/GeneralFilterTab/GeneralFilterTab';
+import GeneralPagination from '../../components/Common/GeneralPagination/GeneralPagination';
+import InventoryTable from '../../components/Common/GenralTable/InventoryTable';
+import InventoryModal from '../../components/Inventory/InventoryModal';
+import Loader from '../../components/Common/Loader/Loader';
+import { inventData, inventFilter, inventTableHeader } from '../../data/data';
+import styled from 'styled-components';
+import axios from 'axios';
+import InventoryEditModal from '../../components/Inventory/InventoryEditModal';
 
 const Inventory = (props) => {
   const [unverifiedProducts, setUnverifiedProducts] = useState({
@@ -17,18 +18,21 @@ const Inventory = (props) => {
     paginatedProducts: [],
     pageIndex: 0,
   });
-  const [showModal, setShowModal] = useState({verifiedModal: false, editModal: false});
-  const [modalId, setModalId] = useState("");
-  const [activeTab, setActiveTab] = useState("Pending Products");
-  const [filterValue, setFilterValue] = useState("");
+  const [showModal, setShowModal] = useState({
+    verifiedModal: false,
+    editModal: false,
+  });
+  const [modalId, setModalId] = useState('');
+  const [activeTab, setActiveTab] = useState('Pending Products');
+  const [filterValue, setFilterValue] = useState('');
   const [customerData, setCustomerData] = useState(inventData);
   const [status, setStatus] = useState({ isLoading: true, isError: false });
 
-  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+  const url = 'https://thrindleservices.herokuapp.com/api/thrindle/sellers';
 
   const qty = props.location.search
-    ? props.location.search.split("=")[1]
-    : "Pending Products";
+    ? props.location.search.split('=')[1]
+    : 'Pending Products';
 
   // Break Customers Array into smaller arrays for pagination
   const paginationArr = (arr, size) =>
@@ -39,7 +43,7 @@ const Inventory = (props) => {
   // HandlePagination
   const handlePagination = (type) => {
     switch (type) {
-      case "NEXT_PAGE":
+      case 'NEXT_PAGE':
         setUnverifiedProducts((oldProducts) => {
           if (
             oldProducts.paginatedProducts.length - 1 ===
@@ -50,7 +54,7 @@ const Inventory = (props) => {
           return { ...oldProducts, pageIndex: oldProducts.pageIndex + 1 };
         });
         break;
-      case "PREVIOUS_PAGE":
+      case 'PREVIOUS_PAGE':
         setUnverifiedProducts((oldProducts) => {
           if (oldProducts.pageIndex === 0) {
             return oldProducts;
@@ -59,7 +63,7 @@ const Inventory = (props) => {
         });
         break;
       default:
-        console.log("Argumenet NOT handled");
+        console.log('Argumenet NOT handled');
         break;
     }
   };
@@ -69,20 +73,24 @@ const Inventory = (props) => {
   };
 
   useEffect(() => {
-    if (qty && qty !== "") {
+    if (qty && qty !== '') {
       setActiveTab(qty);
     }
   }, [qty]);
 
   const handleSetModal = useCallback((action, modalId) => {
     switch (action) {
-      case "SHOW_VERIFIED_MODAL":
-        setShowModal({verifiedModal: true, editModal: false})
+      case 'SHOW_VERIFIED_MODAL':
+        setShowModal({ verifiedModal: true, editModal: false });
         setModalId(modalId);
         break;
-      case "CLOSE_ALL_MODALS": 
-        setShowModal({verifiedModal: false, editModal: false})
-        break
+      case 'SHOW_EDIT_MODAL':
+        setShowModal({ verifiedModal: false, editModal: true });
+        setModalId(modalId);
+        break;
+      case 'CLOSE_ALL_MODALS':
+        setShowModal({ verifiedModal: false, editModal: false });
+        break;
       default:
         break;
     }
@@ -96,14 +104,15 @@ const Inventory = (props) => {
     try {
       const {
         status: statusCode,
-        data: { data: allUnverifiedProducts },
+        data: { data },
       } = await axios.get(`${url}/products/unverifiedproducts`);
+      let allUnverifiedProducts = data.reverse();
       if (statusCode > 399)
         return setStatus({ isError: true, isLoading: false });
       let paginatedProducts = paginationArr(allUnverifiedProducts, 20);
       setCustomerData((oldState) => {
         let newState = oldState.map((item) => {
-          if (item.title !== "Pending Products") return item;
+          if (item.title !== 'Pending Products') return item;
           return { ...item, value: allUnverifiedProducts.length };
         });
         return newState;
@@ -123,10 +132,30 @@ const Inventory = (props) => {
   }, [getAllUnverifiedProducts]);
 
   return (
-    <MainContainer className='relative'>
-      <FirstSection>
+    <MainContainer
+      className={` relative ${
+        (showModal.editModal || showModal.verifiedModal) && 'overflow-y-hidden'
+      }`}
+    >
+      <FirstSection
+        className={`${
+          (showModal.editModal || showModal.verifiedModal) &&
+          'overflow-y-hidden'
+        }`}
+      >
         {showModal.verifiedModal && (
-          <InventoryModal handleSetModal={handleSetModal} modalId={modalId} getAllUnverifiedProducts={getAllUnverifiedProducts}/>
+          <InventoryModal
+            handleSetModal={handleSetModal}
+            modalId={modalId}
+            getAllUnverifiedProducts={getAllUnverifiedProducts}
+          />
+        )}
+        {showModal.editModal && (
+          <InventoryEditModal
+            handleSetModal={handleSetModal}
+            modalId={modalId}
+            getAllUnverifiedProducts={getAllUnverifiedProducts}
+          />
         )}
         <ScreenHeader
           title='Inventory'
@@ -165,7 +194,11 @@ const Inventory = (props) => {
               setModal={handleSetModal}
             />
           )}
-        {!status.isError && status.isLoading && <Loader />}
+        {!status.isError && status.isLoading && (
+          <div className='w-full mt-32'>
+            <Loader />
+          </div>
+        )}
       </FirstSection>
     </MainContainer>
   );

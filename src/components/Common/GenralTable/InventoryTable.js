@@ -10,7 +10,7 @@ const InventoryTable = (props) => {
 
   const getMarketName = (storeId) => {
     if (storeId.startsWith('CV')) return 'Computer Village';
-    if (storeId.startsWith('BM')) return 'Balogun Market';
+    if (storeId.startsWith('BM')) return 'Eko Market';
     if (storeId.startsWith('EM')) return 'Eko Market';
     return 'Other Market';
   };
@@ -29,7 +29,7 @@ const InventoryTable = (props) => {
         <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-10 auto-cols-min gap-3 px-6'>
           {props.showCheck && (
             <tr>
-              <th>
+              <th className='flex justify-center w-full'>
                 <GeneralCheckBox />
               </th>
             </tr>
@@ -61,7 +61,9 @@ const InventoryTable = (props) => {
                     <GeneralCheckBox />
                   </td>
                 )}
-                <td onClick={() => handleModal(item._id)}>
+                <td
+                  onClick={() => handleModal('SHOW_VERIFIED_MODAL', item._id)}
+                >
                   <p
                     className={`status text-left text-sm font-Regular capitalize ${
                       item.verified
@@ -72,42 +74,57 @@ const InventoryTable = (props) => {
                     {item.verified ? 'Approved' : 'Pending'}
                   </p>
                 </td>
-                <td onClick={() => handleModal(item._id)}>
+                <td
+                  onClick={() => handleModal('SHOW_VERIFIED_MODAL', item._id)}
+                >
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
                     {item.name}
                   </p>
                 </td>
-                <td onClick={() => handleModal(item._id)}>
+                <td
+                  onClick={() => handleModal('SHOW_VERIFIED_MODAL', item._id)}
+                >
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
                     {item.category?.name}
                   </p>
                 </td>
-                <td onClick={() => handleModal(item._id)}>
+                <td
+                  onClick={() => handleModal('SHOW_VERIFIED_MODAL', item._id)}
+                >
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
                     N{item.price.toLocaleString()}
                   </p>
                 </td>
-                <td onClick={() => handleModal(item._id)}>
+                <td
+                  onClick={() => handleModal('SHOW_VERIFIED_MODAL', item._id)}
+                >
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
                     {marketName}
                   </p>
                 </td>
-                <td onClick={() => handleModal(item._id)}>
+                <td
+                  onClick={() => handleModal('SHOW_VERIFIED_MODAL', item._id)}
+                >
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize'>
                     {item.store_id}
                   </p>
                 </td>
-                <td onClick={() => handleModal(item._id)}>
+                <td
+                  onClick={() => handleModal('SHOW_VERIFIED_MODAL', item._id)}
+                >
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize'>
                     {uploadDate}
                   </p>
                 </td>
                 <td className='col-span-2'>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text flex flex-row gap-8'>
-                    <span className='cursor-pointer flex flex-row gap-2 items-center'>
+                    <button
+                      className='cursor-pointer flex flex-row gap-2 items-center'
+                      onClick={() => handleModal('SHOW_EDIT_MODAL', item._id)}
+                    >
                       <MdEdit className='text-2xl text-primary-dark' /> Edit
-                    </span>
-                    <span
+                    </button>
+                    <button
                       className='cursor-pointer flex flex-row gap-2 items-center'
                       onClick={() =>
                         handleModal('SHOW_VERIFIED_MODAL', item._id)
@@ -115,7 +132,7 @@ const InventoryTable = (props) => {
                     >
                       <AiOutlineCheck className='text-2xl text-secondary-success' />{' '}
                       Verify
-                    </span>
+                    </button>
                   </p>
                 </td>
               </tr>
