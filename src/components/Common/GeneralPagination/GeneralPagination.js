@@ -74,7 +74,7 @@ const GeneralPagination = (props) => {
             </button>
             <button
               onClick={() => props.handlePagination("NEXT_PAGE")}
-              className='single-controls flex flex-row p-3 w-12 h-12 p-3 rounded-md focus:outline-none outline-none '
+              className='single-controls flex flex-row w-12 h-12 p-3 rounded-md focus:outline-none outline-none '
             >
               <FaAngleRight className='text-base single-control-icon text-center text-white-main' />
             </button>
