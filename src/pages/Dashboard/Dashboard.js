@@ -4,12 +4,9 @@ import styled from "styled-components";
 import SingleDashboard from "../../components/Dashboard/SingleDashboard";
 import { dashData, dashTableData, orderTableHeader } from "../../data/data";
 import TableFilter from "../../components/Dashboard/TableFilter";
-// import TableHeader from "../../components/Dashboard/TableHeader";
-// import TableDatas from "../../components/Dashboard/TableDatas";
 import SingleDetailCont from "../../components/Dashboard/SingleDetailCont";
 import SingleDetailCont2 from "../../components/Dashboard/SingleDetailCont2";
 import BarCharts from "../../components/Charts/BarCharts";
-// import MainTable from "../../components/Dashboard/MainTable";
 import DashboardTable from "../../components/Common/GenralTable/DashboardTable";
 
 const filterData1 = [
