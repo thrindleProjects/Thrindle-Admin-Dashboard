@@ -13,6 +13,7 @@ const UnP = () => {
     deleteUser: false,
     editUser: false,
   });
+  console.log(setModals);
   return (
     <MainContainer>
       <div>
