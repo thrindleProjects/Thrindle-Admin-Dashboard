@@ -1,15 +1,13 @@
-import React from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const ProtectedRoutes = ({ component: Component, ...restOfProps }) => {
-  let isAuthenticated = true;
-  //   document.title = title || "Thrindle Dashboard";
-
+  const { accessToken } = useSelector((state) => state.login);
   return (
     <Route
       {...restOfProps}
       render={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
+        accessToken ? <Component {...props} /> : <Redirect to='/login' />
       }
     />
   );

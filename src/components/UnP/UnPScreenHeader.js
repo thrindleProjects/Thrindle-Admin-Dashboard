@@ -1,4 +1,4 @@
-import ScreenHeader from "../components/Common/ScreenTitle/ScreenHeader";
+import ScreenHeader from "../Common/ScreenTitle/ScreenHeader";
 import { IoMdAdd } from "react-icons/io";
 const UnPScreenHeader = () => {
   return (

@@ -1,14 +1,14 @@
-import { useState } from "react";
-import MainContainer from "../../components/Common/MainContainer/MainContainer";
-import UnPScreenHeader from "../../UnP/UnPScreenHeader";
-import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
-import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
-import UnPTable from "../../components/Common/GenralTable/UnPTable";
-import { unpTableHeader, unpTableData } from "../../data/data";
-import styled from "styled-components";
+import { useState } from 'react';
+import MainContainer from '../../components/Common/MainContainer/MainContainer';
+import UnPScreenHeader from '../../components/UnP/UnPScreenHeader';
+import GeneralFilterTab from '../../components/Common/GeneralFilterTab/GeneralFilterTab';
+import GeneralPagination from '../../components/Common/GeneralPagination/GeneralPagination';
+import UnPTable from '../../components/Common/GenralTable/UnPTable';
+import { unpTableHeader, unpTableData } from '../../data/data';
+import styled from 'styled-components';
 
 const UnP = () => {
-  const [modals, setModals] = useState({
+  const [modals] = useState({
     createUser: false,
     deleteUser: false,
     editUser: false,
