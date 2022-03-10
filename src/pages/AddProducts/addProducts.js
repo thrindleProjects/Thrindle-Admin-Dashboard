@@ -320,8 +320,8 @@ const AddProducts = () => {
     if (mounted) {
       const getMarkets = async () => {
         try {
-          let res = await axiosInstance.get('markets/getAllMarkets');
-          localStorage.setItem('marketData', JSON.stringify(res.data.data));
+          let resp = await axiosInstance.get('markets/getAllMarkets');
+          localStorage.setItem('marketData', JSON.stringify(resp.data.data));
           let markets = res.data.data.map((item) => item.name);
           setMarkets(markets);
         } catch (error) {
