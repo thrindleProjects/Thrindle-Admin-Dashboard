@@ -1,15 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
+import React from 'react';
+import styled from 'styled-components';
+import GeneralCheckBox from '../GeneralCheck/GeneralCheckBox';
 
 const CustomerTable = (props) => {
-  const getMarketName = (storeId = "NA") => {
+  const getMarketName = (storeId = 'NA') => {
     if (storeId) {
-      if (storeId.startsWith("CV")) return "Computer Village";
-      if (storeId.startsWith("BM")) return "Balogun Market";
-      if (storeId.startsWith("EM")) return "Eko Market";
+      if (storeId.startsWith('CV')) return 'Computer Village';
+      if (storeId.startsWith('BM')) return 'Balogun Market';
+      if (storeId.startsWith('EM')) return 'Eko Market';
     }
-    return "Other Market";
+    return 'Other Market';
   };
   const getUploadDate = (updatedAt) => {
     const date = new Date(updatedAt);
@@ -22,7 +22,7 @@ const CustomerTable = (props) => {
   return (
     <MainTable className='w-full rounded-md py-10 mt-5 overflow-auto'>
       <table className='w-full min-w-min max-w-full'>
-        <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-8 auto-cols-min gap-8 px-6'>
+        <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-6 auto-cols-min gap-8 px-6'>
           {props.showCheck && (
             <tr>
               <th>
@@ -48,7 +48,7 @@ const CustomerTable = (props) => {
             return (
               <tr
                 key={item._id}
-                className='w-full grid grid-flow-row grid-cols-8 gap-8 auto-cols-min px-6 py-3 '
+                className='w-full grid grid-flow-row grid-cols-6 gap-8 auto-cols-min px-6 py-3 '
               >
                 {props.showCheck && (
                   <td>
@@ -71,16 +71,7 @@ const CustomerTable = (props) => {
                     {item.name}
                   </p>
                 </td>
-                <td>
-                  <p className='product text-left text-sm text-white-text font-Regular'>
-                    {"N/A"}
-                  </p>
-                </td>
-                <td>
-                  <p className='product text-left text-sm text-white-text font-Regular'>
-                    {"N/A"}
-                  </p>
-                </td>
+
                 <td>
                   <p className='product text-left text-sm text-white-text font-Regular'>
                     {marktetName}
