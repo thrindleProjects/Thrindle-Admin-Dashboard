@@ -7,7 +7,7 @@ const LoginBtn = (props) => {
     <MainPagination className='w-full'>
       <button
         type='submit'
-        className='flex flex-row w-full cancel rounded-md border border-secondary-yellow text-white-main outline-none focus:outline-none mr-5 lg:mb-0 mb-5 bg-secondary-yellow hover:opacity-80'
+        className='flex flex-row w-full cancel rounded-md border border-secondary-yellow text-white-main outline-none focus:outline-none mr-5 lg:mb-0 mb-5 bg-secondary-yellow hover:opacity-80 py-4'
         onClick={props.onClick}
       >
         {props.isLoading ? (
@@ -26,7 +26,7 @@ export default LoginBtn;
 
 const MainPagination = styled.div`
   .cancel {
-    height: 45px;
+    height: 70px;
     align-items: center;
     justify-content: center;
 
