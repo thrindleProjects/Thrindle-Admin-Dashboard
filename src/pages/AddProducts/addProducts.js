@@ -76,11 +76,11 @@ const AddProducts = () => {
     validationSchema: Yup.object().shape({
       title: Yup.string()
         .min(2, "Too Short")
-        .max(25, "Title cannot exceed 25 characters")
+        .max(50, "Title cannot exceed 50 characters")
         .required("Required"),
       description: Yup.string()
         .min(10, "Too Short")
-        .max(240, "Description cannot exceed 240 characters")
+        .max(300, "Description cannot exceed 300 characters")
         .required("Required"),
 
       productStock: Yup.number()
