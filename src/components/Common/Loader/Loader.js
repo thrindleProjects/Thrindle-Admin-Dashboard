@@ -1,11 +1,6 @@
-import LoadGif from '../../../assets/images/Loader.gif';
-
+import NewLoader from '../../newLoader/newLoader';
 const Loader = () => {
-  return (
-    <div className='flex items-center justify-center mx-auto w-16'>
-      <img src={LoadGif} alt='Loader' />
-    </div>
-  );
+  return <NewLoader />;
 };
 
 export default Loader;

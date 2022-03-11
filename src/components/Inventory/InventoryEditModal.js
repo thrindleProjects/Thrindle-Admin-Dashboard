@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import Loader from "../Common/Loader/Loader";
-import axios from "axios";
-import styled from "styled-components";
-import axiosInstance from "../../utils/axiosInstance";
-import { toast } from "react-toastify";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import Loader from '../Common/Loader/Loader';
+import axios from 'axios';
+import styled from 'styled-components';
+import axiosInstance from '../../utils/axiosInstance';
+import { toast } from 'react-toastify';
 // import { useFormik } from 'formik';
 // import * as Yup from "yup"
 
@@ -11,42 +11,46 @@ const InventoryEditModal = (props) => {
   const modalRef = useRef(null);
   const [modalData, setModalData] = useState([]);
   const [formData, setFormData] = useState({
-    description: "",
-    category: { _id: "", name: "" },
-    subcategory: { _id: "", name: "" },
-    name: "",
+    description: '',
+    category: { _id: '', name: '' },
+    subcategory: { _id: '', name: '' },
+    weight: 0,
+    name: '',
   });
   const [categoryHandler, setCategoryHandler] = useState({
-    marketName: "",
+    marketName: '',
     category: [],
     subcategory: [],
+    weight: [],
   });
+
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
-  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+  const url = 'https://thrindleservices.herokuapp.com/api/thrindle/sellers';
   const { handleSetModal, getAllUnverifiedProducts } = props;
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let url =
-      "https://thrindleservices.herokuapp.com/api/thrindle/products/admin/updateproduct";
+      'https://thrindleservices.herokuapp.com/api/thrindle/products/admin/updateproduct';
     let formInfo = {
       name: formData.name,
       category: formData.category._id,
       description: formData.description,
       subcategory: formData.subcategory._id,
+      weight: formData.weight,
     };
     try {
       let res = await axiosInstance.put(`${url}/${modalData[0]._id}`, formInfo);
       if (res.status < 400) {
         setUpdated(true);
-        return toast.success("Updated Successfully");
+        return toast.success('Updated Successfully');
       }
-      toast.error("Something went wrong...");
+      toast.error('Something went wrong...');
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong...");
+      toast.error('Something went wrong...');
     }
   };
 
@@ -55,19 +59,19 @@ const InventoryEditModal = (props) => {
     if (updated) {
       return triggerTableUpdate();
     }
-    return handleSetModal("CLOSE_ALL_MODALS");
+    return handleSetModal('CLOSE_ALL_MODALS');
   };
 
   const getMarketName = (storeId) => {
-    if (storeId.trim().startsWith("CV")) return "Computer Village";
-    if (storeId.trim().startsWith("BM")) return "Eko Market";
-    if (storeId.trim().startsWith("EM")) return "Eko Market";
-    return "Other Market";
+    if (storeId.trim().startsWith('CV')) return 'Computer Village';
+    if (storeId.trim().startsWith('BM')) return 'Eko Market';
+    if (storeId.trim().startsWith('EM')) return 'Eko Market';
+    return 'Other Market';
   };
 
   const getMarketID = (marketValue) => {
-    if (marketValue !== "") {
-      let marketData = JSON.parse(localStorage.getItem("marketData"));
+    if (marketValue !== '') {
+      let marketData = JSON.parse(localStorage.getItem('marketData'));
       let findMarket = marketData.find((item) => item.name === marketValue);
       return findMarket.id;
     }
@@ -75,17 +79,24 @@ const InventoryEditModal = (props) => {
   };
 
   const getSubCategories = useCallback((categoryValue) => {
-    let marketData = JSON.parse(localStorage.getItem("marketCategories"));
+    let marketData = JSON.parse(localStorage.getItem('marketCategories'));
     let findMarket = marketData.find((item) => item.name === categoryValue);
     let subcategory = findMarket.subcategories;
     return subcategory;
   }, []);
 
+  const getWeightClass = (categoryValue) => {
+    let marketData = JSON.parse(localStorage.getItem('marketCategories'));
+    let findMarket = marketData.find((item) => item.name === categoryValue);
+    let weightList = findMarket.weight.map((item) => item.name); // maps real-time weight class
+    return weightList; // renders real-time weight class
+  };
+
   const getMarketCategories = useCallback(async (marketValue) => {
     const marketID = getMarketID(marketValue);
     try {
       let res = await axiosInstance.get(`categories/market/${marketID}`);
-      localStorage.setItem("marketCategories", JSON.stringify(res.data.data));
+      localStorage.setItem('marketCategories', JSON.stringify(res.data.data));
       let category = res.data.data.map(({ name, _id }) => {
         return { name, _id };
       });
@@ -103,7 +114,7 @@ const InventoryEditModal = (props) => {
 
   const triggerTableUpdate = useCallback(() => {
     getAllUnverifiedProducts();
-    return handleSetModal("CLOSE_ALL_MODALS");
+    return handleSetModal('CLOSE_ALL_MODALS');
   }, [getAllUnverifiedProducts, handleSetModal]);
 
   const getSingleProduct = useCallback(
@@ -112,10 +123,11 @@ const InventoryEditModal = (props) => {
         const {
           data: { data },
         } = await axios.get(`${url}/products/unverifiedproduct/${id}`);
-        let { description, name, category, subcategory, store_id } = data[0];
+        let { description, name, category, subcategory, store_id, weight } =
+          data[0];
         let marketName = getMarketName(store_id);
         await getMarketCategories(marketName);
-        setFormData({ description, name, category, subcategory });
+        setFormData({ description, name, category, subcategory, weight });
         setModalData(data);
         setCategoryHandler((old) => {
           return { ...old, marketName };
@@ -136,7 +148,7 @@ const InventoryEditModal = (props) => {
   };
 
   const getCategoryId = (category) => {
-    let marketData = JSON.parse(localStorage.getItem("marketCategories"));
+    let marketData = JSON.parse(localStorage.getItem('marketCategories'));
     let findMarket = marketData.find((item) => item.name === category);
     return findMarket._id;
   };
@@ -151,14 +163,14 @@ const InventoryEditModal = (props) => {
   const handleFormChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    if (name === "category") {
+    if (name === 'category') {
       let _id = getCategoryId(value);
       return setFormData({
         ...formData,
         category: { name: value, _id },
       });
     }
-    if (name === "subcategory") {
+    if (name === 'subcategory') {
       let _id = getSubCategoryId(value);
       return setFormData({
         ...formData,
@@ -174,13 +186,13 @@ const InventoryEditModal = (props) => {
         if (modalData.length > 0 && updated) {
           return triggerTableUpdate();
         }
-        handleSetModal("CLOSE_ALL_MODALS");
+        handleSetModal('CLOSE_ALL_MODALS');
       }
       return true;
     };
-    document.addEventListener("click", handleClickOutside, true);
+    document.addEventListener('click', handleClickOutside, true);
     return () => {
-      document.removeEventListener("click", handleClickOutside, true);
+      document.removeEventListener('click', handleClickOutside, true);
     };
   }, [handleSetModal, triggerTableUpdate, modalData, updated]);
 
@@ -189,10 +201,11 @@ const InventoryEditModal = (props) => {
   }, [props.modalId, getSingleProduct]);
 
   useEffect(() => {
-    if (formData.category.name === "") return;
+    if (formData.category.name === '') return;
     let subcategory = getSubCategories(formData.category.name);
+    let weight = getWeightClass(formData.category.name);
     setCategoryHandler((old) => {
-      return { ...old, subcategory };
+      return { ...old, subcategory, weight };
     });
     return;
   }, [formData.category.name, getSubCategories]);
@@ -202,61 +215,60 @@ const InventoryEditModal = (props) => {
     try {
       await axios.put(`${url}/products/updateunverifedproduct/${id}`);
       setModalData([{ ...modalData[0], verified: true }]);
-      toast.success("Success");
+      toast.success('Success');
       triggerTableUpdate();
     } catch (error) {
       console.error(error);
-      toast.error("Oops! Something went wrong...");
+      toast.error('Oops! Something went wrong...');
     }
   };
 
   return (
-    <ModalWrapper className="fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center">
+    <ModalWrapper className='fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center'>
       <ModalContainer
         ref={modalRef}
-        className="rounded-md py-12 px-8 overflow-y-auto"
+        className='rounded-md py-12 px-8 overflow-y-auto'
       >
         {modalData.length > 0 ? (
           modalData.map((item, index) => {
             const uploadDate = getUploadDate(item.updatedAt);
-
             return (
               <React.Fragment key={index}>
-                <div className="flex justify-end mb-6 cursor-pointer">
+                <div className='flex justify-end mb-6 cursor-pointer'>
                   <svg
-                    className="relative w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+                    className='relative w-6 h-6'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                    xmlns='http://www.w3.org/2000/svg'
                     onClick={handleFormCancel}
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                       strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
+                      d='M6 18L18 6M6 6l12 12'
                     />
                   </svg>
                 </div>
                 <form
                   key={item._id}
-                  className="items-center flex flex-col gap-8"
+                  className='items-center flex flex-col gap-8'
                 >
-                  <div className="h-52 overflow-hidden shadow rounded-md">
+                  <div className='h-52 overflow-hidden shadow rounded-md'>
                     <img
-                      className="object-contain h-full"
+                      className='object-contain h-full'
                       src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${item.images[0]}`}
-                      alt="Pending Item"
+                      alt='Pending Item'
                     />
                   </div>
-                  <div className="w-full flex flex-col gap-2">
-                    <p className="text-white-text flex flex-col">
-                      Category:{" "}
+                  <div className='w-full flex flex-col gap-2'>
+                    <p className='text-white-text flex flex-col'>
+                      Category:{' '}
                       <select
-                        className="font-medium text-primary-dark"
-                        name="category"
-                        id="category"
+                        className='font-medium text-primary-dark'
+                        name='category'
+                        id='category'
                         value={formData.category.name}
                         onChange={handleFormChange}
                         required
@@ -281,11 +293,11 @@ const InventoryEditModal = (props) => {
                         )}
                       </select>
                     </p>
-                    <p className="text-white-text flex flex-col">
+                    <p className='text-white-text flex flex-col'>
                       Sub Categories:
                       <select
-                        name="subcategory"
-                        id="subcategory"
+                        name='subcategory'
+                        id='subcategory'
                         value={formData?.subcategory?.name}
                         onChange={handleFormChange}
                         required
@@ -312,75 +324,93 @@ const InventoryEditModal = (props) => {
                         )}
                       </select>
                     </p>
-                    <p className="text-white-text flex flex-col">
-                      Product Title:{" "}
+                    <p className='text-white-text flex flex-col'>
+                      Weight:{' '}
+                      <select name='weight' id='weight'>
+                        {categoryHandler?.weight?.length > 0 ? (
+                          categoryHandler.weight.map((item, index) => {
+                            return (
+                              <option key={index} value={item}>
+                                {item}
+                              </option>
+                            );
+                          })
+                        ) : (
+                          <option name='weight' value={formData.weight}>
+                            {formData.weight}
+                          </option>
+                        )}
+                      </select>
+                    </p>
+                    <p className='text-white-text flex flex-col'>
+                      Product Title:{' '}
                       <input
-                        className="font-medium text-primary-dark"
-                        type="text"
-                        name={"name"}
+                        className='font-medium text-primary-dark'
+                        type='text'
+                        name={'name'}
                         value={formData.name}
                         required
                         onChange={handleFormChange}
                       />
                     </p>
-                    <p className="text-white-text flex flex-col">
-                      Description:{" "}
+                    <p className='text-white-text flex flex-col'>
+                      Description:{' '}
                       <input
-                        className="font-medium text-primary-dark"
-                        type="text"
-                        name={"description"}
+                        className='font-medium text-primary-dark'
+                        type='text'
+                        name={'description'}
                         value={formData.description}
                         required
                         onChange={handleFormChange}
                       />
                     </p>
-                    <p className="text-white-text">
-                      Price:{" "}
-                      <span className="font-medium text-primary-dark">
+                    <p className='text-white-text'>
+                      Price:{' '}
+                      <span className='font-medium text-primary-dark'>
                         N{item.price.toLocaleString()}
                       </span>
                     </p>
-                    <p className="text-white-text">
-                      Stock:{" "}
-                      <span className="font-medium text-primary-dark">
+                    <p className='text-white-text'>
+                      Stock:{' '}
+                      <span className='font-medium text-primary-dark'>
                         {item.no_in_stock}
                       </span>
                     </p>
-                    <p className="text-white-text">
-                      Upload Date:{" "}
-                      <span className="font-medium text-primary-dark">
+                    <p className='text-white-text'>
+                      Upload Date:{' '}
+                      <span className='font-medium text-primary-dark'>
                         {uploadDate}
                       </span>
                     </p>
-                    <p className="text-white-text">
-                      Product Type:{" "}
-                      <span className="font-medium text-primary-dark">
-                        {item.new ? "New" : "Used"}
+                    <p className='text-white-text'>
+                      Product Type:{' '}
+                      <span className='font-medium text-primary-dark'>
+                        {item.new ? 'New' : 'Used'}
                       </span>
                     </p>
-                    <p className="text-white-text">
-                      Status:{" "}
+                    <p className='text-white-text'>
+                      Status:{' '}
                       <span
                         className={`capitalize font-medium ${
                           item.verified
-                            ? "text-secondary-success"
-                            : "text-secondary-yellow"
+                            ? 'text-secondary-success'
+                            : 'text-secondary-yellow'
                         }`}
                       >
-                        {item.verified ? "Approved" : "Pending"}
+                        {item.verified ? 'Approved' : 'Pending'}
                       </span>
                     </p>
                   </div>
-                  <div className="w-full flex flex-row gap-4 justify-end">
+                  <div className='w-full flex flex-row gap-4 justify-end'>
                     <ModalButton
-                      className="border border-primary-dark bg-primary-dark text-white-main cursor-pointer"
-                      type="submit"
+                      className='border border-primary-dark bg-primary-dark text-white-main cursor-pointer'
+                      type='submit'
                       onClick={handleFormSubmit}
                     >
                       Update
                     </ModalButton>
                     <ModalButton
-                      className="border text-white-main bg-secondary-success cursor-pointer"
+                      className='border text-white-main bg-secondary-success cursor-pointer'
                       onClick={(e) => handleVerifyProduct(e, item._id)}
                     >
                       Approve
