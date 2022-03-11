@@ -410,21 +410,21 @@ export const orderData = [
     color: '#F69F13',
     icon: Image8,
     activeIcon: Image5,
-    value: 200,
+    value: 0,
   },
   {
     title: 'Delivered Orders',
     color: '#009E52',
     icon: Image8,
     activeIcon: Image6,
-    value: 1000,
+    value: 0,
   },
   {
     title: 'Cancelled Orders',
     color: '#F5000F',
     icon: Image8,
     activeIcon: Image7,
-    value: 100,
+    value: 0,
   },
 ];
 
