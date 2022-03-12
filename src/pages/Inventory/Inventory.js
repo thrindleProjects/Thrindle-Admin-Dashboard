@@ -6,19 +6,31 @@ import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFi
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import InventoryTable from "../../components/Common/GenralTable/InventoryTable";
 import InventoryModal from "../../components/Inventory/InventoryModal";
-import Loader from "../../components/Common/Loader/Loader";
-import { inventData, inventFilter, inventTableHeader } from "../../data/data";
+import {
+  approvedProductHeader,
+  inventData,
+  inventFilter,
+  inventTableHeader,
+} from "../../data/data";
 import styled from "styled-components";
 import axios from "axios";
 import InventoryEditModal from "../../components/Inventory/InventoryEditModal";
 import ApprovedProducts from "../../components/Common/GenralTable/ApprovedProducts";
+import axiosInstance from "../../utils/axiosInstance";
+import { toast } from "react-toastify";
+import NewLoader from "../../components/newLoader/newLoader";
+import DeleteProductModal from "../../components/DeleteProductModal/DeleteProductModal";
 
 const Inventory = (props) => {
   const [unverifiedProducts, setUnverifiedProducts] = useState({
     allUnverifiedProducts: [],
     paginatedProducts: [],
+    approvedProducts: [],
     pageIndex: 0,
   });
+
+  const [approvedProducts, setApprovedProducts] = useState([]);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const [showModal, setShowModal] = useState({
     verifiedModal: false,
@@ -26,6 +38,7 @@ const Inventory = (props) => {
   });
   const [modalId, setModalId] = useState("");
   const [activeTab, setActiveTab] = useState("Pending Products");
+  const [activeID, setActiveID] = useState(null);
   const [filterValue, setFilterValue] = useState("");
   const [customerData, setCustomerData] = useState(inventData);
   const [status, setStatus] = useState({ isLoading: true, isError: false });
@@ -105,9 +118,11 @@ const Inventory = (props) => {
           data: { data },
         } = await axios.get(`${url}/products/unverifiedproducts`);
         let allUnverifiedProducts = data.reverse();
+
         if (statusCode > 399)
           return setStatus({ isError: true, isLoading: false });
         let paginatedProducts = paginationArr(allUnverifiedProducts, 20);
+
         setCustomerData((oldState) => {
           let newState = oldState.map((item) => {
             if (item.title !== "Pending Products") return item;
@@ -115,9 +130,11 @@ const Inventory = (props) => {
           });
           return newState;
         });
+
         setUnverifiedProducts((oldProducts) => {
           return { ...oldProducts, paginatedProducts, allUnverifiedProducts };
         });
+
         return setStatus({ isError: false, isLoading: false });
       } catch (error) {
         setStatus({ isLoading: false, isError: true });
@@ -126,7 +143,31 @@ const Inventory = (props) => {
     }
 
     if (activeTab === "Approved Products") {
-      setStatus({ isError: false, isLoading: false });
+      try {
+        let res = await axiosInstance.get("/products/search");
+        if (res.status === 200) {
+          setApprovedProducts(res.data.data.reverse());
+
+          setCustomerData((prevData) => {
+            let newData = prevData.map((item) => {
+              if (item.title === "Approved Products") {
+                return { ...item, value: res.data.data.length };
+              } else return item;
+            });
+
+            return newData;
+          });
+
+          setStatus({ isError: false, isLoading: false });
+        }
+      } catch (error) {
+        setStatus({ isError: true, isLoading: false });
+        if (error.response) {
+          toast.warning(`${error.response.data.message}`);
+        } else {
+          toast.error(`${error}`);
+        }
+      }
     }
   }, [activeTab]);
 
@@ -139,6 +180,11 @@ const Inventory = (props) => {
   useEffect(() => {
     getAllUnverifiedProducts();
   }, [getAllUnverifiedProducts, activeTab]);
+
+  const displayDeleteModal = (id) => {
+    setOpenDeleteModal(true);
+    setActiveID(id);
+  };
 
   return (
     <MainContainer
@@ -190,9 +236,11 @@ const Inventory = (props) => {
         />
         {!status.isError && status.isLoading && (
           <div className="w-full mt-32">
-            <Loader />
+            <NewLoader />
           </div>
         )}
+
+        {status.isError && <div>Error! Please Reload the Page</div>}
 
         {!status.isError &&
           !status.isLoading &&
@@ -213,10 +261,20 @@ const Inventory = (props) => {
         {!status.isError &&
           !status.isLoading &&
           activeTab === "Approved Products" && (
-            <ApprovedProducts tableHeaderData={inventTableHeader} />
+            <ApprovedProducts
+              tableHeaderData={approvedProductHeader}
+              tableData={approvedProducts}
+              openDeleteModal={openDeleteModal}
+              setOpenDeleteModal={setOpenDeleteModal}
+              displayDeleteModal={(id) => displayDeleteModal(id)}
+            />
           )}
-
-        {status.isError && <div>Error! Please Reload the Page</div>}
+        {openDeleteModal && (
+          <DeleteProductModal
+            setOpenDeleteModal={setOpenDeleteModal}
+            activeID={activeID}
+          />
+        )}
       </FirstSection>
     </MainContainer>
   );

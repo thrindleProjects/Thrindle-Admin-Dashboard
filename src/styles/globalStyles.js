@@ -38,3 +38,15 @@ export const NewMainTable = styled.div`
     align-items: center;
   }
 `;
+
+export const Modal = styled.div`
+  background: gray;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  opacity: 0.6;
+`;

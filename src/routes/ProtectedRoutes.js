@@ -1,5 +1,5 @@
-import { Redirect, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Redirect, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ProtectedRoutes = ({ component: Component, ...restOfProps }) => {
   const { accessToken } = useSelector((state) => state.login);
@@ -7,7 +7,7 @@ const ProtectedRoutes = ({ component: Component, ...restOfProps }) => {
     <Route
       {...restOfProps}
       render={(props) =>
-        accessToken ? <Component {...props} /> : <Redirect to='/login' />
+        accessToken ? <Component {...props} /> : <Redirect to="/login" />
       }
     />
   );

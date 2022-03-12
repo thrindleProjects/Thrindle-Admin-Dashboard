@@ -13,7 +13,7 @@ const Navbar = () => {
         </div>
         <nav className="w-full main-nav mt-10 pl-7">
           {navData.map((item, index) => (
-            <div  key={index}>
+            <div key={index}>
               <h6 className="text-primary-main text-sm font-Heavy mb-4">
                 {item.mainNav}
               </h6>
@@ -29,6 +29,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 const SideNav1 = styled.div`
   min-width: 21%;
   min-height: 100vh;
@@ -37,7 +38,7 @@ const SideNav1 = styled.div`
   top: 0 !important;
   position: fixed;
   transition: all 0.5 ease-in-out;
-  z-index: 100;
+  z-index: 4;
   transform: translateX(0%);
   //   padding-top: 10px;
 
