@@ -5,7 +5,6 @@ import GeneralHeaderTab from "../../components/Common/GeneralHeaderTab/GeneralHe
 import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import InventoryTable from "../../components/Common/GenralTable/InventoryTable";
-import InventoryModal from "../../components/Inventory/InventoryModal";
 import Loader from "../../components/Common/Loader/Loader";
 import { inventData, inventFilter, inventTableHeader } from "../../data/data";
 import styled from "styled-components";
@@ -21,7 +20,6 @@ const Inventory = (props) => {
   });
 
   const [showModal, setShowModal] = useState({
-    verifiedModal: false,
     editModal: false,
   });
   const [modalId, setModalId] = useState("");
@@ -76,16 +74,12 @@ const Inventory = (props) => {
 
   const handleSetModal = useCallback((action, modalId) => {
     switch (action) {
-      case "SHOW_VERIFIED_MODAL":
-        setShowModal({ verifiedModal: true, editModal: false });
-        setModalId(modalId);
-        break;
       case "SHOW_EDIT_MODAL":
-        setShowModal({ verifiedModal: false, editModal: true });
+        setShowModal({editModal: true });
         setModalId(modalId);
         break;
       case "CLOSE_ALL_MODALS":
-        setShowModal({ verifiedModal: false, editModal: false });
+        setShowModal({ editModal: false });
         break;
       default:
         break;
@@ -143,22 +137,15 @@ const Inventory = (props) => {
   return (
     <MainContainer
       className={` relative ${
-        (showModal.editModal || showModal.verifiedModal) && "overflow-y-hidden"
+        (showModal.editModal) && "overflow-y-hidden"
       }`}
     >
       <FirstSection
         className={`${
-          (showModal.editModal || showModal.verifiedModal) &&
+          (showModal.editModal) &&
           "overflow-y-hidden"
         }`}
       >
-        {showModal.verifiedModal && (
-          <InventoryModal
-            handleSetModal={handleSetModal}
-            modalId={modalId}
-            getAllUnverifiedProducts={getAllUnverifiedProducts}
-          />
-        )}
         {showModal.editModal && (
           <InventoryEditModal
             handleSetModal={handleSetModal}

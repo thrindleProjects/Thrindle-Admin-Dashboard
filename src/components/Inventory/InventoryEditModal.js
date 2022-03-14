@@ -119,7 +119,7 @@ const InventoryEditModal = (props) => {
 
   const getSingleProduct = useCallback(
     async (id) => {
-      try {
+      try { 
         const {
           data: { data },
         } = await axios.get(`${url}/products/unverifiedproduct/${id}`);

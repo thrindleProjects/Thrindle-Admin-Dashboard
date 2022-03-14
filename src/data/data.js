@@ -524,19 +524,13 @@ export const orderTableHeader = [
     title: 'Price',
   },
   {
-    title: 'Customer Name',
+    title: 'Total Price',
   },
   {
-    title: 'Phone No',
+    title: 'Quantity',
   },
   {
     title: 'Market',
-  },
-  {
-    title: 'Store',
-  },
-  {
-    title: 'Category',
   },
   {
     title: 'Order Date',
@@ -628,6 +622,37 @@ export const unpTableHeader = [
   { title: 'Status' },
   { title: 'Action' },
 ];
+
+export const orderDetailsTableHeader = [
+  { title: 'Order ID' },
+  { title: 'Product Title' },
+  { title: 'Price' },
+  { title: 'Ordered Date' },
+  { title: 'Payment Method' },
+  { title: 'Status' },
+  { title: 'Payment Status' },
+];
+
+export const orderCustomerDetailsTableHeader = [
+  { title: 'Name' },
+  { title: 'Email' },
+  { title: 'Phone' },
+  { title: 'Address' },
+  { title: 'Country' },
+  { title: 'City' },
+  { title: 'Postal Code' },
+];
+
+export const orderMerchantDetailsTableHeader = [
+  { title: 'Name' },
+  { title: 'Market' },
+  { title: 'Phone' },
+  { title: 'Address' },
+  { title: 'Country' },
+  { title: 'City' },
+  { title: 'Store ID' },
+];
+
 export const storeTableData = [
   {
     name: 'Yinka Olalere',
@@ -770,3 +795,33 @@ export const unpTableData = [
     status: 'Active',
   },
 ];
+
+export const orderDetailsTableData = {
+  _id: '020445A',
+  title: 'Ladies Bouginy',
+  total_price: '₦30,000',
+  created_at: '06/10/2019',
+  method: 'Flutterwave',
+  status: 'Pending',
+  pay_status: 'Paid',
+};
+
+export const orderCustomerDetailsTableData = {
+  name: 'Daniel Elayo',
+  email: 'danielelayo@gmail.com',
+  phone: '08023245611',
+  address: '14 Aremu Street. Victoria Island',
+  country: 'Nigeria',
+  city: 'Lagos',
+  postal_code: '100001',
+};
+
+export const orderMerchantDetailsTableData = {
+  name: 'Store Name',
+  market: 'Market Name',
+  phone: '08023245611',
+  address: '14 Aremu Street. Victoria Island',
+  country: 'Nigeria',
+  city: 'Lagos',
+  store_id: 'CV00001',
+};
