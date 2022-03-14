@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
+import { numberFormat } from "../../utils/formatPrice";
 
 const ModalContainer = styled.div`
   background: white;
@@ -31,14 +32,26 @@ const ModalContainer = styled.div`
   }
 `;
 
+const ProductView = styled.div`
+  .product-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+  }
+`;
+
 const Text = styled.p`
   opacity: ${(props) => (props.none ? 0 : 1)};
 `;
 
-function DeleteProductModal({ setOpenDeleteModal, activeID }) {
+function DeleteProductModal({
+  setOpenDeleteModal,
+  activeID,
+  activeDeleteProduct,
+}) {
   const [deleting, setDeleting] = useState(false);
   const history = useHistory();
-
+  console.log("ACTIVE PRODUCT", activeDeleteProduct);
   useEffect(() => {
     let mounted = true;
 
@@ -105,6 +118,20 @@ function DeleteProductModal({ setOpenDeleteModal, activeID }) {
           Are you sure you want to delete this product? You will permanently
           lose this data.
         </p>
+        <ProductView className="w-full my-3 flex flex-row">
+          <div className="product-image">
+            <img
+              src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${activeDeleteProduct?.images[0]}`}
+              className="w-full h-full rounded-xl"
+            />
+          </div>
+          <div className="ml-3">
+            <p className="text-sm text-white-text">
+              {activeDeleteProduct?.name}
+            </p>
+            <p> N{numberFormat(activeDeleteProduct?.price)}</p>
+          </div>
+        </ProductView>
 
         <div className="mt-6">
           <button className="border border-secondary-yellow text-secondary-yellow py-2 px-6 rounded-md cursor-pointer">
