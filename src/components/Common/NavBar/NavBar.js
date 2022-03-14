@@ -2,12 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-
 const Header = styled.header`
   position: -webkit-sticky;
   position: ${(props) => (props.fixed ? "static" : "sticky")};
   top: 0px;
-  z-index: 5;
+  z-index: 4;
   background: white;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 
@@ -33,7 +32,6 @@ const ThrindleLogo = styled(Link)`
   width: 114.31px;
   height: 28.99px;
 `;
-
 
 function NavBar() {
   return (

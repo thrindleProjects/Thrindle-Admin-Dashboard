@@ -1,12 +1,12 @@
-import * as constants from '../../constants/index';
+import * as constants from "../../constants/index";
 
 export const loginReducer = (
   state = {
     isLoading: false,
-    isError: '',
+    isError: "",
     user: {},
-    accessToken: '',
-    refreshToken: '',
+    accessToken: "",
+    refreshToken: "",
   },
   { type, payload }
 ) => {
@@ -24,8 +24,8 @@ export const loginReducer = (
         ...state,
         isError: payload,
         user: {},
-        accessToken: '',
-        refreshToken: '',
+        accessToken: "",
+        refreshToken: "",
         isLoading: false,
       };
     case constants.ADMIN_LOGOUT:
@@ -33,13 +33,13 @@ export const loginReducer = (
         ...state,
         isError: payload,
         user: {},
-        accessToken: '',
-        refreshToken: '',
+        accessToken: "",
+        refreshToken: "",
       };
     case constants.CLEAR_DETAILS:
       return {
         ...state,
-        isError: '',
+        isError: "",
         isLoading: false,
       };
     default:
