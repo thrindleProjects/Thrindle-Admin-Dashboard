@@ -537,6 +537,22 @@ export const orderTableHeader = [
   },
 ];
 
+export const approvedProductHeader = [
+  'Product Name',
+
+  'Category',
+
+  'Price',
+
+  'Store',
+
+  'Market',
+
+  'Upload Date',
+
+  'Delete',
+];
+
 export const shipmentTableHeader = [
   {
     title: 'Customer Name',

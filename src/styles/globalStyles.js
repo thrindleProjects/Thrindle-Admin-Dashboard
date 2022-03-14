@@ -38,3 +38,57 @@ export const NewMainTable = styled.div`
     align-items: center;
   }
 `;
+
+export const Modal = styled.div`
+  background: gray;
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  opacity: 0.6;
+`;
+
+export const CircularProgress = styled.span`
+  position: relative;
+  display: block;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    top: 4px;
+    left: 40%;
+    border-top: 2.5px solid white;
+    border-right: 2.5px solid white;
+    border-radius: 50%;
+
+    animation: spin 2s ease-in-out infinite;
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      50% {
+        transform: rotate(360deg);
+      }
+
+      100% {
+        transform: rotate(-360deg);
+      }
+    }
+  }
+`;
+
+export const Fieldset = styled.fieldset`
+  border: 0.98px solid #20639b;
+  color: #2f3133;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  padding: 0 5px 5px;
+`;

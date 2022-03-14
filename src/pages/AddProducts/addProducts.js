@@ -22,6 +22,7 @@ import DisplayImages from "../../components/DisplayImages/DisplayImages";
 import AddImageContainer from "../../components/AddImageContainer/AddImageContainer";
 import NavBar from "../../components/Common/NavBar/NavBar";
 import { toast } from "react-toastify";
+// import CustomDropdown from "../../components/Common/Dropdown/CustomDropdown";
 
 const AddProducts = () => {
   const [images, setImages] = useState([]);
@@ -44,6 +45,8 @@ const AddProducts = () => {
   const [stores, setStores] = useState([]);
   const [storeValue, setStoreValue] = useState("");
   const [storeID, setStoreID] = useState("");
+  // const [storeValueTest, setStoreValueTest] = useState("Choose a Store");
+  // const [openDropdown, setOpenDropdown] = useState(false);
   const productSizeArr = productSizes.map((item) => item.title);
   const productSizeArr2 = productSizes2.map((item) => item.title);
   const history = useHistory();
@@ -76,11 +79,11 @@ const AddProducts = () => {
     validationSchema: Yup.object().shape({
       title: Yup.string()
         .min(2, "Too Short")
-        .max(25, "Title cannot exceed 25 characters")
+        .max(50, "Title cannot exceed 50 characters")
         .required("Required"),
       description: Yup.string()
         .min(10, "Too Short")
-        .max(240, "Description cannot exceed 240 characters")
+        .max(300, "Description cannot exceed 300 characters")
         .required("Required"),
 
       productStock: Yup.number()
@@ -172,6 +175,7 @@ const AddProducts = () => {
 
   // helper function to get categories, getStoresPerMarket, subCategories, weightClass, productType
   const getMarketCategories = async (marketValue) => {
+    // setStoreValueTest("Choose a Store");
     const marketID = getMarketID(marketValue);
     try {
       let res = await axiosInstance.get(`categories/market/${marketID}`);
@@ -341,10 +345,44 @@ const AddProducts = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  /*
+  // toggle dropdown
+  const toggleOptions = (e) => {
+    e.stopPropagation();
+
+    if (!openDropdown) {
+      document.getElementById("stores-box").style.display = "block";
+    }
+
+    if (openDropdown) {
+      document.getElementById("stores-box").style.display = "none";
+    }
+
+    setOpenDropdown((prevState) => !prevState);
+  };
+
+  // select stores
+  const selectStoreTest = (index) => {
+    setStoreValueTest(document.getElementById(`store${index}`).dataset.value);
+    document.getElementById("stores-box").style.display = "none";
+    setOpenDropdown(false);
+  };
+
+  // Hide Dropdown
+  const hideDropdown = () => {
+    if (document.getElementById("stores-box").style.display === "block") {
+      document.getElementById("stores-box").style.display = "none";
+      setOpenDropdown(false);
+    }
+  };
+  */
   return (
     <>
       <NavBar />
-      <div className="w-11/12 pt-10 mx-auto">
+      <div
+        className="w-11/12 pt-10 mx-auto font-Regular"
+        // onClick={hideDropdown}
+      >
         <form
           onSubmit={formik.handleSubmit}
           className="w-full pb-20 lg:flex lg:justify-between lg:h-vh80"
@@ -427,12 +465,23 @@ const AddProducts = () => {
                 list={stores}
                 id="store"
                 name="store"
-                emptyValue="Choose a store"
+                emptyValue="Choose a Store"
                 value={storeValue}
                 onChange={(val) => selectStore(val)}
                 required={true}
               />
             </div>
+
+            {/* <div className="my-3 ">
+              <CustomDropdown
+                fieldset="Stores B"
+                list={stores}
+                value={storeValueTest}
+                setOpenDropdown={setOpenDropdown}
+                toggleOptions={(e) => toggleOptions(e)}
+                selectStoreTest={(index) => selectStoreTest(index)}
+              />
+            </div> */}
 
             <div className="my-3">
               <Dropdown

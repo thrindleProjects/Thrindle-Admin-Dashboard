@@ -1,15 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
-const Fieldset = styled.fieldset`
-  border: 0.98px solid #20639b;
-  color: #2f3133;
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-
-  padding: 0 5px 5px;
-`;
+import { Fieldset } from "../../../styles/globalStyles";
 
 const Select = styled.select`
   width: 100%;
@@ -42,11 +33,12 @@ function Dropdown({
       <legend className="ml-4 px-1 opacity-75">{fieldset}</legend>
       <Select
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
         id={id}
         name={name}
-        required={required}>
+        required={required}
+      >
         <Option value="">{emptyValue}</Option>
         {list.map((listItems, index) =>
           weightClass ? (
@@ -57,7 +49,7 @@ function Dropdown({
             <Option key={index} value={listItems}>
               {listItems}
             </Option>
-          ),
+          )
         )}
       </Select>
     </Fieldset>
