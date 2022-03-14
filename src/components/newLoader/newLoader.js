@@ -45,6 +45,7 @@ const Spin = styled.div`
 
 const NewLoader = () => {
   const [networkFailure, setNetworkFailure] = useState(false);
+  
   useEffect(() => {
     let mounted = true;
 
