@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useFormik } from "formik";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -22,7 +22,7 @@ import DisplayImages from "../../components/DisplayImages/DisplayImages";
 import AddImageContainer from "../../components/AddImageContainer/AddImageContainer";
 import NavBar from "../../components/Common/NavBar/NavBar";
 import { toast } from "react-toastify";
-// import CustomDropdown from "../../components/Common/Dropdown/CustomDropdown";
+import CustomDropdown from "../../components/Common/Dropdown/CustomDropdown";
 
 const AddProducts = () => {
   const [images, setImages] = useState([]);
@@ -43,10 +43,12 @@ const AddProducts = () => {
   const [otherValues, setOtherValues] = useState({});
   const [uploading, setUploading] = useState(false);
   const [stores, setStores] = useState([]);
-  const [storeValue, setStoreValue] = useState("");
+  const [allStores, setAllStores] = useState([]);
+  const [searchStoreValue, setSearchStoreValue] = useState("");
   const [storeID, setStoreID] = useState("");
-  // const [storeValueTest, setStoreValueTest] = useState("Choose a Store");
-  // const [openDropdown, setOpenDropdown] = useState(false);
+  const [storeValue, setStoreValue] = useState("");
+  const [currentStoreValue, setCurrentStoreValue] = useState("Choose a Store");
+  const [openDropdown, setOpenDropdown] = useState(false);
   const productSizeArr = productSizes.map((item) => item.title);
   const productSizeArr2 = productSizes2.map((item) => item.title);
   const history = useHistory();
@@ -79,7 +81,7 @@ const AddProducts = () => {
     validationSchema: Yup.object().shape({
       title: Yup.string()
         .min(2, "Too Short")
-        .max(25, "Title cannot exceed 25 characters")
+        .max(40, "Title cannot exceed 25 characters")
         .required("Required"),
       description: Yup.string()
         .min(10, "Too Short")
@@ -175,7 +177,8 @@ const AddProducts = () => {
 
   // helper function to get categories, getStoresPerMarket, subCategories, weightClass, productType
   const getMarketCategories = async (marketValue) => {
-    // setStoreValueTest("Choose a Store");
+    setStoreValue("");
+    setCurrentStoreValue("Choose a Store");
     const marketID = getMarketID(marketValue);
     try {
       let res = await axiosInstance.get(`categories/market/${marketID}`);
@@ -198,6 +201,7 @@ const AddProducts = () => {
       localStorage.setItem("storesPerMarket", JSON.stringify(res.data.data));
       let stores = res.data.data.map((item) => item.store_name);
       setStores(stores);
+      setAllStores(stores);
     } catch (error) {
       if (error.response) {
         console.log(error.response.status);
@@ -245,17 +249,25 @@ const AddProducts = () => {
     getWeightClass(value);
   };
 
+  // select stores
+  const selectStore = (e, index) => {
+    e.stopPropagation();
+
+    setStoreValue(document.getElementById(`store${index}`).dataset.value);
+    setCurrentStoreValue(
+      document.getElementById(`store${index}`).dataset.value
+    );
+
+    document.getElementById("stores-box").style.display = "none";
+    setOpenDropdown(false);
+  };
+
   const selectSubCategory = (value) => {
     setSubCategoryValue(value);
   };
 
   const selectWeightClass = (value) => {
     setWeightClassValue(value);
-  };
-
-  const selectStore = (value) => {
-    setStoreValue(value);
-    getStoreId(value);
   };
 
   const chooseSize1 = (value) => {
@@ -304,11 +316,11 @@ const AddProducts = () => {
     return findMarket._id;
   };
 
-  const getStoreId = (storeValue) => {
+  const getStoreId = useCallback((storeValue) => {
     const storesData = JSON.parse(localStorage.getItem("storesPerMarket"));
     const findStore = storesData.find((item) => item.store_name === storeValue);
     setStoreID(findStore.store_id);
-  };
+  }, []);
 
   const getMarketID = (marketValue) => {
     if (marketValue !== "") {
@@ -318,6 +330,48 @@ const AddProducts = () => {
     }
   };
 
+  // toggle dropdown
+  const toggleOptions = (e) => {
+    e.stopPropagation();
+
+    if (!openDropdown) {
+      document.getElementById("stores-box").style.display = "block";
+    }
+
+    if (openDropdown) {
+      document.getElementById("stores-box").style.display = "none";
+    }
+
+    setOpenDropdown((prevState) => !prevState);
+  };
+
+  // Hide Dropdown
+  const hideDropdown = (e) => {
+    e.stopPropagation();
+
+    if (e.currentTarget.dataset.closedropdown === "true") {
+      if (document.getElementById("stores-box").style.display === "block") {
+        document.getElementById("stores-box").style.display = "none";
+        setOpenDropdown(false);
+      }
+    }
+  };
+
+  // handle store search
+  const handleSearch = (value) => {
+    setSearchStoreValue(value);
+
+    if (value !== "") {
+      let filteredResult = allStores.filter(
+        (item) =>
+          item.includes(value.toLowerCase()) &&
+          item.indexOf(value.toLowerCase()[0]) === 0
+      );
+      setStores(filteredResult);
+    }
+  };
+
+  // get markets
   useEffect(() => {
     let mounted = true;
 
@@ -341,48 +395,53 @@ const AddProducts = () => {
     }
   }, []);
 
+  // compute storeID
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      if (storeValue !== "") {
+        getStoreId(storeValue);
+      }
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, [getStoreId, storeValue]);
+
+  // reset stores if search input is cleared
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      if (searchStoreValue === "") {
+        let stores = JSON.parse(localStorage.getItem("storesPerMarket")).map(
+          (item) => item.store_name
+        );
+
+        setStores(stores);
+      }
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, [searchStoreValue]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  /*
-  // toggle dropdown
-  const toggleOptions = (e) => {
-    e.stopPropagation();
-
-    if (!openDropdown) {
-      document.getElementById("stores-box").style.display = "block";
-    }
-
-    if (openDropdown) {
-      document.getElementById("stores-box").style.display = "none";
-    }
-
-    setOpenDropdown((prevState) => !prevState);
-  };
-
-  // select stores
-  const selectStoreTest = (index) => {
-    setStoreValueTest(document.getElementById(`store${index}`).dataset.value);
-    document.getElementById("stores-box").style.display = "none";
-    setOpenDropdown(false);
-  };
-
-  // Hide Dropdown
-  const hideDropdown = () => {
-    if (document.getElementById("stores-box").style.display === "block") {
-      document.getElementById("stores-box").style.display = "none";
-      setOpenDropdown(false);
-    }
-  };
-  */
   return (
     <>
       <NavBar />
       <div
-        className="w-11/12 pt-10 mx-auto font-Regular"
-        // onClick={hideDropdown}
-      >
+        data-closedropdown="true"
+        className="absolute w-full h-screen"
+        onClick={(e) => hideDropdown(e)}
+      ></div>
+      <div className="w-11/12 pt-10 mx-auto font-Regular">
         <form
           onSubmit={formik.handleSubmit}
           className="w-full pb-20 lg:flex lg:justify-between lg:h-vh80"
@@ -459,29 +518,22 @@ const AddProducts = () => {
               />
             </div>
 
-            <div className="my-3">
-              <Dropdown
+            <div className="my-3 ">
+              <CustomDropdown
                 fieldset="Stores"
                 list={stores}
-                id="store"
-                name="store"
-                emptyValue="Choose a Store"
-                value={storeValue}
-                onChange={(val) => selectStore(val)}
+                storeValue={storeValue}
+                currentStoreValue={currentStoreValue}
+                searchStoreValue={searchStoreValue}
+                setCurrentStoreValue={setCurrentStoreValue}
+                setStoreValue={setStoreValue}
+                setOpenDropdown={setOpenDropdown}
+                handleSearch={(value) => handleSearch(value)}
+                toggleOptions={(e) => toggleOptions(e)}
+                selectStore={(e, index) => selectStore(e, index)}
                 required={true}
               />
             </div>
-
-            {/* <div className="my-3 ">
-              <CustomDropdown
-                fieldset="Stores B"
-                list={stores}
-                value={storeValueTest}
-                setOpenDropdown={setOpenDropdown}
-                toggleOptions={(e) => toggleOptions(e)}
-                selectStoreTest={(index) => selectStoreTest(index)}
-              />
-            </div> */}
 
             <div className="my-3">
               <Dropdown
