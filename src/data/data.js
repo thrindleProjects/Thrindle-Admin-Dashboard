@@ -7,8 +7,6 @@ import Image6 from "../assets/images/dash-delievered-order.svg";
 import Image7 from "../assets/images/dash-cancelled-order.svg";
 import Image8 from "../assets/images/inactive-orders.svg";
 
-// import GeneralCheckBox from "../components/Common/GeneralCheck/GeneralCheckBox";
-
 export const dashData = [
   {
     title: "Total Orders",
