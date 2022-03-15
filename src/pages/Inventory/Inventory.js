@@ -1,24 +1,24 @@
-import { useState, useEffect, useCallback } from 'react';
-import MainContainer from '../../components/Common/MainContainer/MainContainer';
-import ScreenHeader from '../../components/Common/ScreenTitle/ScreenHeader';
-import GeneralHeaderTab from '../../components/Common/GeneralHeaderTab/GeneralHeaderTab';
-import GeneralFilterTab from '../../components/Common/GeneralFilterTab/GeneralFilterTab';
-import GeneralPagination from '../../components/Common/GeneralPagination/GeneralPagination';
-import InventoryTable from '../../components/Common/GenralTable/InventoryTable';
+import { useState, useEffect, useCallback } from "react";
+import MainContainer from "../../components/Common/MainContainer/MainContainer";
+import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
+import GeneralHeaderTab from "../../components/Common/GeneralHeaderTab/GeneralHeaderTab";
+import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
+import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
+import InventoryTable from "../../components/Common/GenralTable/InventoryTable";
 import {
   approvedProductHeader,
   inventData,
   inventFilter,
   inventTableHeader,
-} from '../../data/data';
-import styled from 'styled-components';
-import axios from 'axios';
-import InventoryEditModal from '../../components/Inventory/InventoryEditModal';
-import ApprovedProducts from '../../components/Common/GenralTable/ApprovedProducts';
-import axiosInstance from '../../utils/axiosInstance';
-import { toast } from 'react-toastify';
-import NewLoader from '../../components/newLoader/newLoader';
-import DeleteProductModal from '../../components/DeleteProductModal/DeleteProductModal';
+} from "../../data/data";
+import styled from "styled-components";
+import axios from "axios";
+import InventoryEditModal from "../../components/Inventory/InventoryEditModal";
+import ApprovedProducts from "../../components/Common/GenralTable/ApprovedProducts";
+import axiosInstance from "../../utils/axiosInstance";
+import { toast } from "react-toastify";
+import NewLoader from "../../components/newLoader/newLoader";
+import DeleteProductModal from "../../components/DeleteProductModal/DeleteProductModal";
 
 const Inventory = (props) => {
   const [unverifiedProducts, setUnverifiedProducts] = useState({
@@ -34,19 +34,19 @@ const Inventory = (props) => {
   const [showModal, setShowModal] = useState({
     editModal: false,
   });
-  const [modalId, setModalId] = useState('');
-  const [activeTab, setActiveTab] = useState('Pending Products');
+  const [modalId, setModalId] = useState("");
+  const [activeTab, setActiveTab] = useState("Pending Products");
   const [activeID, setActiveID] = useState(null);
   const [activeApprovedProduct, setActiveApprovedProducts] = useState({});
-  const [filterValue, setFilterValue] = useState('');
+  const [filterValue, setFilterValue] = useState("");
   const [customerData, setCustomerData] = useState(inventData);
   const [status, setStatus] = useState({ isLoading: true, isError: false });
 
-  const url = 'https://thrindleservices.herokuapp.com/api/thrindle/sellers';
+  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
 
   const qty = props.location.search
-    ? props.location.search.split('=')[1]
-    : 'Pending Products';
+    ? props.location.search.split("=")[1]
+    : "Pending Products";
 
   // Break Customers Array into smaller arrays for pagination
   const paginationArr = (arr, size) =>
@@ -57,7 +57,7 @@ const Inventory = (props) => {
   // HandlePagination
   const handlePagination = (type) => {
     switch (type) {
-      case 'NEXT_PAGE':
+      case "NEXT_PAGE":
         setUnverifiedProducts((oldProducts) => {
           if (
             oldProducts.paginatedProducts.length - 1 ===
@@ -68,7 +68,7 @@ const Inventory = (props) => {
           return { ...oldProducts, pageIndex: oldProducts.pageIndex + 1 };
         });
         break;
-      case 'PREVIOUS_PAGE':
+      case "PREVIOUS_PAGE":
         setUnverifiedProducts((oldProducts) => {
           if (oldProducts.pageIndex === 0) {
             return oldProducts;
@@ -77,7 +77,7 @@ const Inventory = (props) => {
         });
         break;
       default:
-        console.log('Argumenet NOT handled');
+        console.log("Argumenet NOT handled");
         break;
     }
   };
@@ -88,11 +88,11 @@ const Inventory = (props) => {
 
   const handleSetModal = useCallback((action, modalId) => {
     switch (action) {
-      case 'SHOW_EDIT_MODAL':
+      case "SHOW_EDIT_MODAL":
         setShowModal({ editModal: true });
         setModalId(modalId);
         break;
-      case 'CLOSE_ALL_MODALS':
+      case "CLOSE_ALL_MODALS":
         setShowModal({ editModal: false });
         break;
       default:
@@ -106,7 +106,7 @@ const Inventory = (props) => {
       return { ...oldProducts, paginatedProducts: [], allProducts: [] };
     });
 
-    if (activeTab === 'Pending Products') {
+    if (activeTab === "Pending Products") {
       try {
         const {
           status: statusCode,
@@ -120,7 +120,7 @@ const Inventory = (props) => {
 
         setCustomerData((oldState) => {
           let newState = oldState.map((item) => {
-            if (item.title !== 'Pending Products') return item;
+            if (item.title !== "Pending Products") return item;
             return { ...item, value: allUnverifiedProducts.length };
           });
           return newState;
@@ -137,15 +137,15 @@ const Inventory = (props) => {
       }
     }
 
-    if (activeTab === 'Approved Products') {
+    if (activeTab === "Approved Products") {
       try {
-        let res = await axiosInstance.get('/products/search');
+        let res = await axiosInstance.get("/products/search");
         if (res.status === 200) {
           setApprovedProducts(res.data.data.reverse());
 
           setCustomerData((prevData) => {
             let newData = prevData.map((item) => {
-              if (item.title === 'Approved Products') {
+              if (item.title === "Approved Products") {
                 return { ...item, value: res.data.data.length };
               } else return item;
             });
@@ -167,7 +167,7 @@ const Inventory = (props) => {
   }, [activeTab]);
 
   useEffect(() => {
-    if (qty && qty !== '') {
+    if (qty && qty !== "") {
       setActiveTab(qty);
     }
   }, [qty]);
@@ -184,9 +184,9 @@ const Inventory = (props) => {
 
   return (
     <MainContainer
-      className={` relative ${showModal.editModal && 'overflow-y-hidden'}`}
+      className={` relative ${showModal.editModal && "overflow-y-hidden"}`}
     >
-      <FirstSection className={`${showModal.editModal && 'overflow-y-hidden'}`}>
+      <FirstSection className={`${showModal.editModal && "overflow-y-hidden"}`}>
         {showModal.editModal && (
           <InventoryEditModal
             handleSetModal={handleSetModal}
@@ -195,7 +195,7 @@ const Inventory = (props) => {
           />
         )}
         <ScreenHeader
-          title='Inventory'
+          title="Inventory"
           value={unverifiedProducts.allUnverifiedProducts.length}
         />
         <GeneralHeaderTab
@@ -217,7 +217,7 @@ const Inventory = (props) => {
           totalNumber={unverifiedProducts.allUnverifiedProducts.length}
         />
         {!status.isError && status.isLoading && (
-          <div className='w-full mt-32'>
+          <div className="w-full mt-32">
             <NewLoader />
           </div>
         )}
@@ -226,7 +226,7 @@ const Inventory = (props) => {
 
         {!status.isError &&
           !status.isLoading &&
-          activeTab === 'Pending Products' &&
+          activeTab === "Pending Products" &&
           unverifiedProducts.allUnverifiedProducts.length > 0 && (
             <InventoryTable
               showCheck
@@ -236,13 +236,14 @@ const Inventory = (props) => {
                   unverifiedProducts.pageIndex
                 ]
               }
+              displayDeleteModal={displayDeleteModal}
               setModal={handleSetModal}
             />
           )}
 
         {!status.isError &&
           !status.isLoading &&
-          activeTab === 'Approved Products' && (
+          activeTab === "Approved Products" && (
             <ApprovedProducts
               tableHeaderData={approvedProductHeader}
               tableData={approvedProducts}
