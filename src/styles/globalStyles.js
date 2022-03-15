@@ -85,6 +85,7 @@ export const CircularProgress = styled.span`
 `;
 
 export const Fieldset = styled.fieldset`
+  position: relative;
   border: 0.98px solid #20639b;
   color: #2f3133;
   border-radius: 10px;
