@@ -123,6 +123,7 @@ function DeleteProductModal({
             <img
               src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${activeDeleteProduct?.images[0]}`}
               className="w-full h-full rounded-xl"
+              alt="Product"
             />
           </div>
           <div className="ml-3">
