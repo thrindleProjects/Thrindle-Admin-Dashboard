@@ -85,7 +85,9 @@ function ApprovedProducts({ tableHeaderData, tableData, displayDeleteModal }) {
                 <td>
                   <div
                     className="w-full flex justify-center"
-                    onClick={(e) => displayDeleteModal(e.currentTarget.id)}
+                    onClick={(e) =>
+                      displayDeleteModal(e.currentTarget.id, item)
+                    }
                     id={item._id}
                   >
                     <p>

@@ -39,6 +39,7 @@ const Inventory = (props) => {
   const [modalId, setModalId] = useState("");
   const [activeTab, setActiveTab] = useState("Pending Products");
   const [activeID, setActiveID] = useState(null);
+  const [activeApprovedProduct, setActiveApprovedProducts] = useState({});
   const [filterValue, setFilterValue] = useState("");
   const [customerData, setCustomerData] = useState(inventData);
   const [status, setStatus] = useState({ isLoading: true, isError: false });
@@ -181,9 +182,10 @@ const Inventory = (props) => {
     getAllUnverifiedProducts();
   }, [getAllUnverifiedProducts, activeTab]);
 
-  const displayDeleteModal = (id) => {
+  const displayDeleteModal = (id, data) => {
     setOpenDeleteModal(true);
     setActiveID(id);
+    setActiveApprovedProducts(data);
   };
 
   return (
@@ -266,13 +268,16 @@ const Inventory = (props) => {
               tableData={approvedProducts}
               openDeleteModal={openDeleteModal}
               setOpenDeleteModal={setOpenDeleteModal}
-              displayDeleteModal={(id) => displayDeleteModal(id)}
+              displayDeleteModal={(id, activeData) =>
+                displayDeleteModal(id, activeData)
+              }
             />
           )}
         {openDeleteModal && (
           <DeleteProductModal
             setOpenDeleteModal={setOpenDeleteModal}
             activeID={activeID}
+            activeDeleteProduct={activeApprovedProduct}
           />
         )}
       </FirstSection>
