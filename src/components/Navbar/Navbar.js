@@ -1,20 +1,20 @@
-import React from "react";
-import styled from "styled-components";
-import Logo from "../../assets/images/About.png";
-import { navData } from "./navData";
-import SingleNavItem from "../../components/Navbar/SingleNavItem";
+import React from 'react';
+import styled from 'styled-components';
+import Logo from '../../assets/images/About.png';
+import { navData } from './navData';
+import SingleNavItem from '../../components/Navbar/SingleNavItem';
 
 const Navbar = () => {
   return (
     <>
       <SideNav1>
-        <div className="imgCont py-3">
-          <img src={Logo} className="logo block" alt="Thrindle Logo" />
+        <div className='imgCont py-3'>
+          <img src={Logo} className='logo block' alt='Thrindle Logo' />
         </div>
-        <nav className="w-full main-nav mt-10 pl-7">
+        <nav className='w-full main-nav mt-10 pl-7 h-vh90 pb-20 overflow-y-auto'>
           {navData.map((item, index) => (
             <div key={index}>
-              <h6 className="text-primary-main text-sm font-Heavy mb-4">
+              <h6 className='text-primary-main text-sm font-Heavy mb-4'>
                 {item.mainNav}
               </h6>
               {item.subNav.map((item, index) => (

@@ -3,19 +3,18 @@ import MainContainer from '../../components/Common/MainContainer/MainContainer';
 import styled from 'styled-components';
 import ScreenHeader from '../../components/Common/ScreenTitle/ScreenHeader';
 import GeneralHeaderTab from '../../components/Common/GeneralHeaderTab/GeneralHeaderTab';
-import {
-  orderData,
-  orderFilter,
-  orderTableHeader,
-} from '../../data/data';
+import { orderData, orderFilter, orderTableHeader } from '../../data/data';
 import GeneralFilterTab from '../../components/Common/GeneralFilterTab/GeneralFilterTab';
 import GeneralPagination from '../../components/Common/GeneralPagination/GeneralPagination';
 import OrderTable from '../../components/Common/GenralTable/OrderTable';
 import axiosInstance from '../../utils/axiosInstance';
 import Loader from '../../components/Common/Loader/Loader';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Orders = (props) => {
   const [orders, setOrders] = useState({
+    generalOrders: [],
     allOrders: [],
     paginatedOrders: [],
     pageIndex: 0,
@@ -30,48 +29,101 @@ const Orders = (props) => {
     : 'Pending Orders';
   const changeTab = (val) => {
     setActiveTab(val);
+    setOrders({ ...orders, pageIndex: 0 });
   };
-
-  console.log(orders.paginatedOrders);
 
   // Break Customers Array into smaller arrays for pagination
   const paginationArr = (arr, size) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    Array.from({ length: Math.ceil(arr?.length / size) }, (v, i) =>
       arr.slice(i * size, i * size + size)
     );
+
+  // HandlePagination
+  const handlePagination = (type) => {
+    switch (type) {
+      case 'NEXT_PAGE':
+        setOrders((oldOrders) => {
+          if (oldOrders.paginatedOrders.length - 1 === oldOrders.pageIndex) {
+            return oldOrders;
+          }
+          return { ...oldOrders, pageIndex: oldOrders.pageIndex + 1 };
+        });
+        break;
+      case 'PREVIOUS_PAGE':
+        setOrders((oldOrders) => {
+          if (oldOrders.pageIndex === 0) {
+            return oldOrders;
+          }
+          return { ...oldOrders, pageIndex: oldOrders.pageIndex - 1 };
+        });
+        break;
+      default:
+        console.log('Argumenet NOT handled');
+        break;
+    }
+  };
 
   const getOrders = useCallback(async () => {
     setStatus({ isLoading: true, isError: false });
     setOrders((oldOrders) => {
-      return { ...oldOrders, paginatedOrders: [], allOrders: [] };
+      return {
+        ...oldOrders,
+        paginatedOrders: [],
+        allOrders: [],
+      };
     });
     let url = 'orders?type=';
-    if (activeTab === 'Pending Orders') {
-      url = `${url}pending`;
-    }
-    if (activeTab === 'Delivered Orders') {
-      url = `${url}completed`;
-    }
-    if (activeTab === 'Cancelled Orders') {
-      url = `${url}completed`;
-    }
-    if (activeTab === '') return;
+    let allUrl = [`${url}pending`, `${url}completed`, `${url}cancelled`];
 
     try {
-      let {
-        data: { data },
-      } = await axiosInstance.get(url);
-      let allOrders = data.reverse();
-      let paginatedOrders = paginationArr(allOrders, 20);
+      let allOrdersArr = await axios.all(
+        allUrl.map(async (endpoint) => {
+          try {
+            let {
+              data: { data },
+            } = await axiosInstance.get(endpoint);
+            return data;
+          } catch (error) {
+            toast.error('Something went wrong ...');
+          }
+        })
+      );
+      let [pending, completed, cancelled] = allOrdersArr.map((item) =>
+        item.reverse()
+      );
+      let paginatedOrders, allOrders;
+      if (activeTab === 'Pending Orders') {
+        paginatedOrders = paginationArr(pending, 20);
+        allOrders = pending;
+      }
+      if (activeTab === 'Delivered Orders') {
+        paginatedOrders = paginationArr(completed, 20);
+        allOrders = completed;
+      }
+      if (activeTab === 'Cancelled Orders') {
+        paginatedOrders = paginationArr(cancelled, 20);
+        allOrders = cancelled;
+      }
       setOrderTabData((oldState) => {
         let newState = oldState.map((item) => {
-          if (item.title !== activeTab) return item;
-          return { ...item, value: allOrders.length };
+          if (item.title === 'Pending Orders')
+            return { ...item, value: pending?.length };
+          if (item.title === 'Delivered Orders')
+            return { ...item, value: completed?.length };
+          if (item.title === 'Cancelled Orders')
+            return { ...item, value: cancelled?.length };
+          return item;
         });
         return newState;
       });
+
       setOrders((oldState) => {
-        return { ...oldState, allOrders, paginatedOrders };
+        return {
+          ...oldState,
+          paginatedOrders,
+          generalOrders: pending.concat(completed, cancelled),
+          allOrders,
+        };
       });
       return setStatus({ isError: false, isLoading: false });
     } catch (error) {
@@ -91,7 +143,7 @@ const Orders = (props) => {
   return (
     <MainContainer>
       <FirstSection className='w-full'>
-        <ScreenHeader title='Orders' value={1000} />
+        <ScreenHeader title='Orders' value={orders.generalOrders?.length} />
         <GeneralHeaderTab
           data={orderTabData}
           activeTab={activeTab}
@@ -105,6 +157,11 @@ const Orders = (props) => {
         <GeneralPagination
           cancelText='Cancel Order'
           deleteText='delete Order'
+          pag
+          handlePagination={handlePagination}
+          pageNumber={orders.pageIndex}
+          itemsNumber={orders.paginatedOrders}
+          totalNumber={orders.allOrders.length}
         />
         {status.isError && <div>Error! Please Reload the Page</div>}
         {!status.isError && status.isLoading && (
@@ -114,11 +171,11 @@ const Orders = (props) => {
         )}
         {!status.isError &&
           !status.isLoading &&
-          orders.allOrders.length > 0 && (
+          orders.allOrders?.length > 0 && (
             <OrderTable
-              tableHeaderData={orderTableHeader}
-              tableData={orders.allOrders}
               showCheck
+              tableHeaderData={orderTableHeader}
+              tableData={orders.paginatedOrders[orders.pageIndex]}
               activeTab={activeTab}
             />
           )}

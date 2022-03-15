@@ -1,7 +1,10 @@
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import GeneralCheckBox from '../GeneralCheck/GeneralCheckBox';
 
 const OrderTable = (props) => {
+  const history = useHistory();
+
   const getMarketName = (storeId) => {
     if (storeId.startsWith('CV')) return 'Computer Village';
     if (storeId.startsWith('BM')) return 'Eko Market';
@@ -20,7 +23,7 @@ const OrderTable = (props) => {
   return (
     <MainTable className='w-full rounded-md py-10 mt-5 overflow-auto '>
       <table className='w-full min-w-min max-w-full'>
-        <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-11 auto-cols-min gap-3 px-6'>
+        <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-9 auto-cols-min gap-3 px-6'>
           {props.tableHeaderData?.map((item, index) => (
             <tr
               key={index}
@@ -41,13 +44,16 @@ const OrderTable = (props) => {
             let storeId =
               item.product && item.product.store_id
                 ? item.product.store_id
-                : '';
+                : 'N/A';
             let marketName = getMarketName(storeId);
             let updatedAt = getUploadDate(item.updatedAt);
+            let productName =
+              item.product && item.product.name ? item.product.name : 'N/A';
             return (
               <tr
                 key={index}
-                className='w-full grid grid-flow-row grid-cols-11 gap-3 auto-cols-min px-6 py-3 cursor-pointer'
+                className='w-full grid grid-flow-row grid-cols-9 gap-3 auto-cols-min px-6 py-3 cursor-pointer'
+                onClick={() => history.push(`/orders/${item._id}`)}
               >
                 <td>
                   <GeneralCheckBox />
@@ -75,9 +81,7 @@ const OrderTable = (props) => {
                 </td>
                 <td>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
-                    {item.product && item.product.name
-                      ? item.product.name
-                      : 'N/A'}
+                    {productName}
                   </p>
                 </td>
                 <td>
@@ -89,27 +93,17 @@ const OrderTable = (props) => {
                 </td>
                 <td>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
-                    {'N/A'}
+                    {item.quantity}
                   </p>
                 </td>
                 <td>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
-                    {'N/A'}
+                    {item.total_price}
                   </p>
                 </td>
                 <td>
                   <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
                     {marketName}
-                  </p>
-                </td>
-                <td>
-                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
-                    {'N/A'}
-                  </p>
-                </td>
-                <td>
-                  <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
-                    {item.quantity}
                   </p>
                 </td>
                 <td>
