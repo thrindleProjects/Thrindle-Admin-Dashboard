@@ -194,7 +194,7 @@ const AddProducts = () => {
     }
   };
 
-  const getStoresPerMarket = async (marketValue) => {
+  const getStoresPerMarket = useCallback(async (marketValue) => {
     const marketID = getMarketID(marketValue);
     try {
       let res = await axiosInstance.get(`/stores/storespermarket/${marketID}`);
@@ -209,7 +209,7 @@ const AddProducts = () => {
         console.log(error);
       }
     }
-  };
+  }, []);
 
   const getSubCategories = (categoryValue) => {
     let marketData = JSON.parse(localStorage.getItem("marketCategories"));
@@ -349,11 +349,9 @@ const AddProducts = () => {
   const hideDropdown = (e) => {
     e.stopPropagation();
 
-    if (e.currentTarget.dataset.closedropdown === "true") {
-      if (document.getElementById("stores-box").style.display === "block") {
-        document.getElementById("stores-box").style.display = "none";
-        setOpenDropdown(false);
-      }
+    if (document.getElementById("stores-box").style.display === "block") {
+      document.getElementById("stores-box").style.display = "none";
+      setOpenDropdown(false);
     }
   };
 
@@ -410,24 +408,20 @@ const AddProducts = () => {
     };
   }, [getStoreId, storeValue]);
 
-  // reset stores if search input is cleared
+  // reset stores if search input is cleared and marketValue is defined
   useEffect(() => {
     let mounted = true;
 
     if (mounted) {
-      if (searchStoreValue === "") {
-        let stores = JSON.parse(localStorage.getItem("storesPerMarket")).map(
-          (item) => item.store_name
-        );
-
-        setStores(stores);
+      if (searchStoreValue === "" && marketValue !== "") {
+        getStoresPerMarket(marketValue);
       }
     }
 
     return () => {
       mounted = false;
     };
-  }, [searchStoreValue]);
+  }, [searchStoreValue, marketValue, getStoresPerMarket]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -436,17 +430,13 @@ const AddProducts = () => {
   return (
     <>
       <NavBar />
-      <div
-        data-closedropdown="true"
-        className="absolute w-full h-screen"
-        onClick={(e) => hideDropdown(e)}
-      ></div>
+
       <div className="w-11/12 pt-10 mx-auto font-Regular">
         <form
           onSubmit={formik.handleSubmit}
           className="w-full pb-20 lg:flex lg:justify-between lg:h-vh80"
         >
-          <div className="w-full lg:w-55">
+          <div className="w-full lg:w-55" onClick={(e) => hideDropdown(e)}>
             <p className="text-white-text pb-4 font-Bold md:text-base text-sm">
               Product Listing
             </p>

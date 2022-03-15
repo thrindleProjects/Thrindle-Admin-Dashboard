@@ -21,6 +21,13 @@ const Option = styled.div`
   &.store-option {
     padding: 0.1em 0.3em;
     margin: 5px;
+    z-index: 7;
+
+    &:hover {
+      background: #4165e8;
+      color: white;
+      border-radius: 4px;
+    }
   }
 `;
 
@@ -37,14 +44,6 @@ const OptionBox = styled.div`
   padding-top: 0.2em;
   box-shadow: -2px 1px 5px -1px #ccc, 2px 0px 5px -1px #ccc;
   cursor: pointer;
-
-  & > div {
-    &:hover {
-      background: #4165e8;
-      color: white;
-      border-radius: 4px;
-    }
-  }
 `;
 
 const Input = styled.input`
@@ -64,6 +63,7 @@ const SearchInput = styled.input`
   outline: none;
   border: 1px solid black;
   border-radius: inherit;
+  z-index: 7;
 
   &::placeholder {
     color: inherit;
