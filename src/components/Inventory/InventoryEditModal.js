@@ -108,7 +108,7 @@ const InventoryEditModal = (props) => {
   };
 
   const getMarketCategories = useCallback(async (marketValue) => {
-    const marketID = getMarketID(marketValue);
+    const marketID = await getMarketID(marketValue);
     try {
       let res = await axiosInstance.get(`categories/market/${marketID}`);
       localStorage.setItem("marketCategories", JSON.stringify(res.data.data));
@@ -617,6 +617,7 @@ const ModalContainer = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
   background-color: #ffffff;
   width: 30%;
+  min-height: 20rem;
   max-height: 85vh;
   p {
     display: flex;
