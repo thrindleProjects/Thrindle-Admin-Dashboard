@@ -51,7 +51,7 @@ function DeleteProductModal({
 }) {
   const [deleting, setDeleting] = useState(false);
   const history = useHistory();
-  console.log("ACTIVE PRODUCT", activeDeleteProduct);
+
   useEffect(() => {
     let mounted = true;
 
@@ -124,6 +124,7 @@ function DeleteProductModal({
               src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${activeDeleteProduct?.images[0]}`}
               className="w-full h-full rounded-xl"
               alt="Product"
+              loading="eager"
             />
           </div>
           <div className="ml-3">

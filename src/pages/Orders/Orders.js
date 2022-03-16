@@ -1,16 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
-import MainContainer from '../../components/Common/MainContainer/MainContainer';
-import styled from 'styled-components';
-import ScreenHeader from '../../components/Common/ScreenTitle/ScreenHeader';
-import GeneralHeaderTab from '../../components/Common/GeneralHeaderTab/GeneralHeaderTab';
-import { orderData, orderFilter, orderTableHeader } from '../../data/data';
-import GeneralFilterTab from '../../components/Common/GeneralFilterTab/GeneralFilterTab';
-import GeneralPagination from '../../components/Common/GeneralPagination/GeneralPagination';
-import OrderTable from '../../components/Common/GenralTable/OrderTable';
-import axiosInstance from '../../utils/axiosInstance';
-import Loader from '../../components/Common/Loader/Loader';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import { useState, useEffect, useCallback } from "react";
+import MainContainer from "../../components/Common/MainContainer/MainContainer";
+import styled from "styled-components";
+import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
+import GeneralHeaderTab from "../../components/Common/GeneralHeaderTab/GeneralHeaderTab";
+import { orderData, orderFilter, orderTableHeader } from "../../data/data";
+import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
+import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
+import OrderTable from "../../components/Common/GenralTable/OrderTable";
+import axiosInstance from "../../utils/axiosInstance";
+import Loader from "../../components/Common/Loader/Loader";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Orders = (props) => {
   const [orders, setOrders] = useState({
@@ -19,14 +19,14 @@ const Orders = (props) => {
     paginatedOrders: [],
     pageIndex: 0,
   });
-  const [activeTab, setActiveTab] = useState('Pending Orders');
-  const [filterValue, setFilterValue] = useState('');
+  const [activeTab, setActiveTab] = useState("Pending Orders");
+  const [filterValue, setFilterValue] = useState("");
   const [status, setStatus] = useState({ isLoading: true, isError: false });
   const [orderTabData, setOrderTabData] = useState(orderData);
 
   const qty = props.location.search
-    ? props.location.search.split('=')[1]
-    : 'Pending Orders';
+    ? props.location.search.split("=")[1]
+    : "Pending Orders";
   const changeTab = (val) => {
     setActiveTab(val);
     setOrders({ ...orders, pageIndex: 0 });
@@ -41,7 +41,7 @@ const Orders = (props) => {
   // HandlePagination
   const handlePagination = (type) => {
     switch (type) {
-      case 'NEXT_PAGE':
+      case "NEXT_PAGE":
         setOrders((oldOrders) => {
           if (oldOrders.paginatedOrders.length - 1 === oldOrders.pageIndex) {
             return oldOrders;
@@ -49,7 +49,7 @@ const Orders = (props) => {
           return { ...oldOrders, pageIndex: oldOrders.pageIndex + 1 };
         });
         break;
-      case 'PREVIOUS_PAGE':
+      case "PREVIOUS_PAGE":
         setOrders((oldOrders) => {
           if (oldOrders.pageIndex === 0) {
             return oldOrders;
@@ -58,7 +58,7 @@ const Orders = (props) => {
         });
         break;
       default:
-        console.log('Argumenet NOT handled');
+        console.log("Argumenet NOT handled");
         break;
     }
   };
@@ -72,7 +72,7 @@ const Orders = (props) => {
         allOrders: [],
       };
     });
-    let url = 'orders?type=';
+    let url = "orders?type=";
     let allUrl = [`${url}pending`, `${url}completed`, `${url}cancelled`];
 
     try {
@@ -84,33 +84,35 @@ const Orders = (props) => {
             } = await axiosInstance.get(endpoint);
             return data;
           } catch (error) {
-            toast.error('Something went wrong ...');
+            toast.error("Something went wrong ...");
           }
         })
       );
+
       let [pending, completed, cancelled] = allOrdersArr.map((item) =>
         item.reverse()
       );
+      
       let paginatedOrders, allOrders;
-      if (activeTab === 'Pending Orders') {
+      if (activeTab === "Pending Orders") {
         paginatedOrders = paginationArr(pending, 20);
         allOrders = pending;
       }
-      if (activeTab === 'Delivered Orders') {
+      if (activeTab === "Delivered Orders") {
         paginatedOrders = paginationArr(completed, 20);
         allOrders = completed;
       }
-      if (activeTab === 'Cancelled Orders') {
+      if (activeTab === "Cancelled Orders") {
         paginatedOrders = paginationArr(cancelled, 20);
         allOrders = cancelled;
       }
       setOrderTabData((oldState) => {
         let newState = oldState.map((item) => {
-          if (item.title === 'Pending Orders')
+          if (item.title === "Pending Orders")
             return { ...item, value: pending?.length };
-          if (item.title === 'Delivered Orders')
+          if (item.title === "Delivered Orders")
             return { ...item, value: completed?.length };
-          if (item.title === 'Cancelled Orders')
+          if (item.title === "Cancelled Orders")
             return { ...item, value: cancelled?.length };
           return item;
         });
@@ -136,14 +138,14 @@ const Orders = (props) => {
   }, [activeTab, getOrders]);
 
   useEffect(() => {
-    if (qty && qty !== '') {
+    if (qty && qty !== "") {
       setActiveTab(qty);
     }
   }, [qty]);
   return (
     <MainContainer>
-      <FirstSection className='w-full'>
-        <ScreenHeader title='Orders' value={orders.generalOrders?.length} />
+      <FirstSection className="w-full">
+        <ScreenHeader title="Orders" value={orders.generalOrders?.length} />
         <GeneralHeaderTab
           data={orderTabData}
           activeTab={activeTab}
@@ -155,8 +157,8 @@ const Orders = (props) => {
           changeFilter={(val) => setFilterValue(val)}
         />
         <GeneralPagination
-          cancelText='Cancel Order'
-          deleteText='delete Order'
+          cancelText="Cancel Order"
+          deleteText="delete Order"
           pag
           handlePagination={handlePagination}
           pageNumber={orders.pageIndex}
@@ -165,7 +167,7 @@ const Orders = (props) => {
         />
         {status.isError && <div>Error! Please Reload the Page</div>}
         {!status.isError && status.isLoading && (
-          <div className='w-full mt-32'>
+          <div className="w-full mt-32">
             <Loader />
           </div>
         )}
