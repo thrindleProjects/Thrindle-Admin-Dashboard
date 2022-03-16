@@ -1,52 +1,51 @@
-import { useState, useEffect, useCallback } from 'react';
-import MainContainer from '../../components/Common/MainContainer/MainContainer';
-import ScreenHeader from '../../components/Common/ScreenTitle/ScreenHeader';
-import GeneralHeaderTab from '../../components/Common/GeneralHeaderTab/GeneralHeaderTab';
-import GeneralFilterTab from '../../components/Common/GeneralFilterTab/GeneralFilterTab';
-import GeneralPagination from '../../components/Common/GeneralPagination/GeneralPagination';
-import InventoryTable from '../../components/Common/GenralTable/InventoryTable';
+import { useState, useEffect, useCallback } from "react";
+import MainContainer from "../../components/Common/MainContainer/MainContainer";
+import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
+import GeneralHeaderTab from "../../components/Common/GeneralHeaderTab/GeneralHeaderTab";
+import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
+import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
+import InventoryTable from "../../components/Common/GenralTable/InventoryTable";
 import {
   approvedProductHeader,
   inventData,
   inventFilter,
   inventTableHeader,
-} from '../../data/data';
-import styled from 'styled-components';
-import axios from 'axios';
-import InventoryEditModal from '../../components/Inventory/InventoryEditModal';
-import ApprovedProducts from '../../components/Common/GenralTable/ApprovedProducts';
-import axiosInstance from '../../utils/axiosInstance';
-import { toast } from 'react-toastify';
-import NewLoader from '../../components/newLoader/newLoader';
-import DeleteProductModal from '../../components/DeleteProductModal/DeleteProductModal';
+} from "../../data/data";
+import styled from "styled-components";
+import axios from "axios";
+import InventoryEditModal from "../../components/Inventory/InventoryEditModal";
+import ApprovedProducts from "../../components/Common/GenralTable/ApprovedProducts";
+import axiosInstance from "../../utils/axiosInstance";
+import { toast } from "react-toastify";
+import NewLoader from "../../components/newLoader/newLoader";
+import DeleteProductModal from "../../components/DeleteProductModal/DeleteProductModal";
 
 const Inventory = (props) => {
-  const [unverifiedProducts, setUnverifiedProducts] = useState({
-    allUnverifiedProducts: [],
+  const [products, setProducts] = useState({
+    allProducts: [],
     paginatedProducts: [],
-    approvedProducts: [],
     pageIndex: 0,
   });
 
-  const [approvedProducts, setApprovedProducts] = useState([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const [showModal, setShowModal] = useState({
     editModal: false,
   });
-  const [modalId, setModalId] = useState('');
-  const [activeTab, setActiveTab] = useState('Pending Products');
+  const [modalId, setModalId] = useState("");
+  const [activeTab, setActiveTab] = useState("Pending Products");
   const [activeID, setActiveID] = useState(null);
   const [activeApprovedProduct, setActiveApprovedProducts] = useState({});
-  const [filterValue, setFilterValue] = useState('');
-  const [customerData, setCustomerData] = useState(inventData);
+  const [filterValue, setFilterValue] = useState("");
+  const [inventoryData, setInventoryData] = useState(inventData);
+  const [allInventory, setAllInventory] = useState("");
   const [status, setStatus] = useState({ isLoading: true, isError: false });
 
-  const url = 'https://thrindleservices.herokuapp.com/api/thrindle/sellers';
+  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
 
   const qty = props.location.search
-    ? props.location.search.split('=')[1]
-    : 'Pending Products';
+    ? props.location.search.split("=")[1]
+    : "Pending Products";
 
   // Break Customers Array into smaller arrays for pagination
   const paginationArr = (arr, size) =>
@@ -57,8 +56,8 @@ const Inventory = (props) => {
   // HandlePagination
   const handlePagination = (type) => {
     switch (type) {
-      case 'NEXT_PAGE':
-        setUnverifiedProducts((oldProducts) => {
+      case "NEXT_PAGE":
+        setProducts((oldProducts) => {
           if (
             oldProducts.paginatedProducts.length - 1 ===
             oldProducts.pageIndex
@@ -68,8 +67,8 @@ const Inventory = (props) => {
           return { ...oldProducts, pageIndex: oldProducts.pageIndex + 1 };
         });
         break;
-      case 'PREVIOUS_PAGE':
-        setUnverifiedProducts((oldProducts) => {
+      case "PREVIOUS_PAGE":
+        setProducts((oldProducts) => {
           if (oldProducts.pageIndex === 0) {
             return oldProducts;
           }
@@ -77,7 +76,7 @@ const Inventory = (props) => {
         });
         break;
       default:
-        console.log('Argumenet NOT handled');
+        console.log("Argumenet NOT handled");
         break;
     }
   };
@@ -88,11 +87,11 @@ const Inventory = (props) => {
 
   const handleSetModal = useCallback((action, modalId) => {
     switch (action) {
-      case 'SHOW_EDIT_MODAL':
+      case "SHOW_EDIT_MODAL":
         setShowModal({ editModal: true });
         setModalId(modalId);
         break;
-      case 'CLOSE_ALL_MODALS':
+      case "CLOSE_ALL_MODALS":
         setShowModal({ editModal: false });
         break;
       default:
@@ -100,81 +99,100 @@ const Inventory = (props) => {
     }
   }, []);
 
-  const getAllUnverifiedProducts = useCallback(async () => {
-    setStatus({ isLoading: true, isError: false });
-    setUnverifiedProducts((oldProducts) => {
-      return { ...oldProducts, paginatedProducts: [], allProducts: [] };
-    });
+  const getAllProducts = useCallback(async () => {
+    if (activeTab) {
+      setProducts((oldProducts) => {
+        return {
+          ...oldProducts,
+          paginatedProducts: [],
+          allProducts: [],
+          pageIndex: 0,
+        };
+      });
 
-    if (activeTab === 'Pending Products') {
+      setStatus({ isLoading: true, isError: false });
+
+      let endpoints = [
+        `${url}/products/unverifiedproducts`,
+        `${url}/products/search`,
+      ];
+
       try {
-        const {
-          status: statusCode,
-          data: { data },
-        } = await axios.get(`${url}/products/unverifiedproducts`);
-        let allUnverifiedProducts = data.reverse();
+        let [allUnverifiedProducts, approvedProducts] = await axios.all(
+          endpoints.map(async (endpoint) => {
+            try {
+              let {
+                data: { data },
+              } = await axiosInstance.get(endpoint);
+              if (data) {
+                setStatus({ isLoading: false, isError: false });
+              }
+              return data.reverse();
+            } catch (error) {
+              toast.error("Something went wrong ...");
+            }
+          })
+        );
 
-        if (statusCode > 399)
-          return setStatus({ isError: true, isLoading: false });
-        let paginatedProducts = paginationArr(allUnverifiedProducts, 20);
+        // let allProducts, paginatedProducts;
 
-        setCustomerData((oldState) => {
-          let newState = oldState.map((item) => {
-            if (item.title !== 'Pending Products') return item;
-            return { ...item, value: allUnverifiedProducts.length };
+        if (activeTab === "Pending Products") {
+          // allProducts = allUnverifiedProducts;
+          // paginatedProducts =
+          setProducts((prevState) => {
+            return {
+              ...prevState,
+              allProducts: allUnverifiedProducts,
+              paginatedProducts: paginationArr(allUnverifiedProducts, 20),
+            };
           });
-          return newState;
+        }
+
+        if (activeTab === "Approved Products") {
+          setProducts((prevState) => {
+            return {
+              ...prevState,
+              allProducts: approvedProducts,
+              paginatedProducts: paginationArr(approvedProducts, 20),
+            };
+          });
+        }
+
+        setInventoryData((prevState) => {
+          let currentState = prevState.map((item) => {
+            if (item.title === "Pending Products") {
+              return { ...item, value: allUnverifiedProducts.length };
+            }
+
+            if (item.title === "Approved Products") {
+              return { ...item, value: approvedProducts.length };
+            }
+
+            return item;
+          });
+
+          return currentState;
         });
 
-        setUnverifiedProducts((oldProducts) => {
-          return { ...oldProducts, paginatedProducts, allUnverifiedProducts };
-        });
+        setAllInventory(allUnverifiedProducts.length + approvedProducts.length);
 
         return setStatus({ isError: false, isLoading: false });
       } catch (error) {
         setStatus({ isLoading: false, isError: true });
-        throw new Error(error);
-      }
-    }
-
-    if (activeTab === 'Approved Products') {
-      try {
-        let res = await axiosInstance.get('/products/search');
-        if (res.status === 200) {
-          setApprovedProducts(res.data.data.reverse());
-
-          setCustomerData((prevData) => {
-            let newData = prevData.map((item) => {
-              if (item.title === 'Approved Products') {
-                return { ...item, value: res.data.data.length };
-              } else return item;
-            });
-
-            return newData;
-          });
-
-          setStatus({ isError: false, isLoading: false });
-        }
-      } catch (error) {
-        setStatus({ isError: true, isLoading: false });
-        if (error.response) {
-          toast.warning(`${error.response.data.message}`);
-        } else {
-          toast.error(`${error}`);
-        }
+        toast.error("Something went wrong ...");
       }
     }
   }, [activeTab]);
 
   useEffect(() => {
-    if (qty && qty !== '') {
+    if (qty && qty !== "") {
       setActiveTab(qty);
     }
   }, [qty]);
 
   useEffect(() => {
-    getAllUnverifiedProducts();
-  }, [getAllUnverifiedProducts, activeTab]);
+    getAllProducts();
+  }, [getAllProducts]);
 
   const displayDeleteModal = (id, data) => {
     setOpenDeleteModal(true);
@@ -184,22 +202,19 @@ const Inventory = (props) => {
 
   return (
     <MainContainer
-      className={` relative ${showModal.editModal && 'overflow-y-hidden'}`}
+      className={` relative ${showModal.editModal && "overflow-y-hidden"}`}
     >
-      <FirstSection className={`${showModal.editModal && 'overflow-y-hidden'}`}>
+      <FirstSection className={`${showModal.editModal && "overflow-y-hidden"}`}>
         {showModal.editModal && (
           <InventoryEditModal
             handleSetModal={handleSetModal}
             modalId={modalId}
-            getAllUnverifiedProducts={getAllUnverifiedProducts}
+            getAllProducts={getAllProducts}
           />
         )}
-        <ScreenHeader
-          title='Inventory'
-          value={unverifiedProducts.allUnverifiedProducts.length}
-        />
+        <ScreenHeader title="Inventory" value={allInventory} />
         <GeneralHeaderTab
-          data={customerData}
+          data={inventoryData}
           activeTab={activeTab}
           changeTab={changeTab}
         />
@@ -212,12 +227,12 @@ const Inventory = (props) => {
           showButtons={false}
           pag
           handlePagination={handlePagination}
-          pageNumber={unverifiedProducts.pageIndex}
-          itemsNumber={unverifiedProducts.paginatedProducts}
-          totalNumber={unverifiedProducts.allUnverifiedProducts.length}
+          pageNumber={products.pageIndex}
+          itemsNumber={products.paginatedProducts}
+          totalNumber={products.allProducts.length}
         />
         {!status.isError && status.isLoading && (
-          <div className='w-full mt-32'>
+          <div className="w-full mt-32">
             <NewLoader />
           </div>
         )}
@@ -226,26 +241,21 @@ const Inventory = (props) => {
 
         {!status.isError &&
           !status.isLoading &&
-          activeTab === 'Pending Products' &&
-          unverifiedProducts.allUnverifiedProducts.length > 0 && (
+          activeTab === "Pending Products" && (
             <InventoryTable
               showCheck
               tableHeaderData={inventTableHeader}
-              tableData={
-                unverifiedProducts.paginatedProducts[
-                  unverifiedProducts.pageIndex
-                ]
-              }
+              tableData={products.paginatedProducts[products.pageIndex]}
               setModal={handleSetModal}
             />
           )}
 
         {!status.isError &&
           !status.isLoading &&
-          activeTab === 'Approved Products' && (
+          activeTab === "Approved Products" && (
             <ApprovedProducts
               tableHeaderData={approvedProductHeader}
-              tableData={approvedProducts}
+              tableData={products.paginatedProducts[products.pageIndex]}
               openDeleteModal={openDeleteModal}
               setOpenDeleteModal={setOpenDeleteModal}
               displayDeleteModal={(id, activeData) =>
@@ -268,3 +278,73 @@ const Inventory = (props) => {
 export default Inventory;
 
 const FirstSection = styled.div``;
+
+// if (activeTab === "Pending Products") {
+//   try {
+//     const {
+//       status: statusCode,
+//       data: { data },
+//     } = await axiosInstance.get(`${url}/products/unverifiedproducts`);
+//     let allUnverifiedProducts = data.reverse();
+
+//     if (statusCode > 399)
+// setStatus({ isError: true, isLoading: false });
+
+// let paginatedProducts = paginationArr(allUnverifiedProducts, 20);
+
+// setInventoryData((oldState) => {
+//   let newState = oldState.map((item) => {
+//     if (item.title !== "Pending Products") return item;
+//     return { ...item, value: allUnverifiedProducts.length };
+//   });
+//   return newState;
+// });
+
+// setProducts((oldProducts) => {
+//   return { ...oldProducts, paginatedProducts, allUnverifiedProducts };
+// });
+
+//       setApprovedProducts(res.data.data.reverse());
+
+//       // setInventoryData((prevData) => {
+//       //   let newData = prevData.map((item) => {
+//       //     if (item.title === "Approved Products") {
+//       //       return { ...item, value: res.data.data.length };
+//       //     } else return item;
+//       //   });
+
+//       //   return newData;
+//       // });
+
+//       setStatus({ isError: false, isLoading: false });
+//     }
+//   } catch (error) {
+//     setStatus({ isError: true, isLoading: false });
+//     if (error.response) {
+//       toast.warning(`${error.response.data.message}`);
+//     } else {
+//       toast.error(`${error}`);
+//     }
+//   }
+// }
+
+// useEffect(() => {
+//   axios
+//     .all(endpoints.map((endpoint) => axiosInstance.get(endpoint)))
+//     .then((res) => {
+//       console.log(res);
+
+//       // setInventoryData((oldState) => {
+//       //   let newState = oldState.map((item) => {
+//       //     if (item.title === "Pending Products") {
+//       //       return { ...item, value: res[0].data.data.length };
+//       //     }
+
+//       //     if (item.title === "Approved Products") {
+//       //       return { ...item, value: allUnverifiedProducts.length };
+//       //     }
+//       //   });
+//       //   return newState;
+//       // });
+//     });
+// }, []);
