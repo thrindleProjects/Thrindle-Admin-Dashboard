@@ -57,6 +57,16 @@ export const productSizes2 = [
   { title: "48", id: "48" },
   { title: "49", id: "49" },
   { title: "50", id: "50" },
+  { title: "51", id: "51" },
+  { title: "52", id: "52" },
+  { title: "53", id: "53" },
+  { title: "54", id: "54" },
+  { title: "55", id: "55" },
+  { title: "56", id: "56" },
+  { title: "57", id: "57" },
+  { title: "58", id: "58" },
+  { title: "59", id: "59" },
+  { title: "60", id: "60" },
 ];
 
 export const productTypeArr = ["New", "Used"];
