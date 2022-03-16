@@ -1,10 +1,9 @@
-import axios from 'axios';
-import { errorHandler } from '../../../utils/axiosUtils';
-import * as constants from '../../constants/index';
-export const HANDLE_AUTH = 'HANDLE_AUTH';
+import axios from "axios";
+import { errorHandler } from "../../../utils/axiosUtils";
+import * as constants from "../../constants/index";
+export const HANDLE_AUTH = "HANDLE_AUTH";
 
 export const login_admin = (email, password) => async (dispatch) => {
-  console.log(email, password);
   try {
     dispatch({
       type: constants.ADMIN_LOGIN_LOADING,
@@ -14,7 +13,7 @@ export const login_admin = (email, password) => async (dispatch) => {
         data: { user, access_token, refresh_token },
       },
     } = await axios.post(
-      'https://thrindleservices.herokuapp.com/api/thrindle/users/login',
+      "https://thrindleservices.herokuapp.com/api/thrindle/users/login",
       { email, password }
     );
     dispatch({

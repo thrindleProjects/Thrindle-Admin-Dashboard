@@ -3,7 +3,16 @@ import Loader from "../Common/Loader/Loader";
 import axios from "axios";
 import styled from "styled-components";
 import axiosInstance from "../../utils/axiosInstance";
+import {
+  mainColor,
+  productSizes,
+  productSizes2,
+} from "../../data/sizeAndColor";
 import { toast } from "react-toastify";
+import CustomInventoryDropdown from "./CustomInventoryDropdown";
+import CustomColorDropdown from "./CustomColorInventoryDropdown";
+import SelectedColors from "./SelectedColors";
+import SelectedSizes from "./SelectedSizes";
 
 const InventoryEditModal = (props) => {
   const modalRef = useRef(null);
@@ -14,10 +23,8 @@ const InventoryEditModal = (props) => {
     subcategory: { _id: "", name: "" },
     weight: 0,
     name: "",
-    details: { size: [] },
+    details: { size: [], color: [] },
     activeImage: "",
-    size: [],
-    color: [],
   });
   const [categoryHandler, setCategoryHandler] = useState({
     marketName: "",
@@ -44,6 +51,10 @@ const InventoryEditModal = (props) => {
       description: formData.description,
       subcategory: formData.subcategory._id,
       weight: formData.weight,
+      details: {
+        size: formData.details.size,
+        color: formData.details.color,
+      },
     };
     try {
       let res = await axiosInstance.put(`${url}/${modalData[0]._id}`, formInfo);
@@ -109,9 +120,9 @@ const InventoryEditModal = (props) => {
       });
     } catch (error) {
       if (error.response) {
-        console.log(error.response);
+        console.error(error.response);
       } else {
-        console.log(error);
+        console.error(error);
       }
     }
   }, []);
@@ -139,10 +150,10 @@ const InventoryEditModal = (props) => {
         } = data[0];
         let marketName = getMarketName(store_id);
         await getMarketCategories(marketName);
-        let size, color
+        let size, color;
 
-          size = (details && details?.size) ? details.size : []
-          color = (details && details?.color) ? details.color : []
+        size = details && details?.size ? details.size : [];
+        color = details && details?.color ? details.color : [];
 
         setFormData({
           description,
@@ -151,8 +162,10 @@ const InventoryEditModal = (props) => {
           subcategory,
           weight,
           activeImage: `https://thrindleservices.herokuapp.com/api/thrindle/images/${images[0]}`,
-          size,
-          color
+          details: {
+            size,
+            color,
+          },
         });
         setModalData(data);
         setCategoryHandler((old) => {
@@ -186,33 +199,56 @@ const InventoryEditModal = (props) => {
     return findMarket._id;
   };
 
-  // const chooseSize1 = (value) => {
-  //   if (size1.includes(value)) {
-  //     setSize1(size1.filter((item) => item !== value));
-  //   } else {
-  //     setSize1([...size1, value]);
-  //   }
-  // };
-
-  // const chooseSize2 = (value) => {
-  //   if (size2.includes(value)) {
-  //     setSize2(size2.filter((item) => item !== value));
-  //   } else {
-  //     setSize2([...size2, value]);
-  //   }
-  // };
-
-  // const chooseColor = (value) => {
-  //   if (colors.includes(value)) {
-  //     setColors(colors.filter((item) => item !== value));
-  //   } else {
-  //     setColors([...colors, value]);
-  //   }
-  // };
-
   const handleFormChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
+
+    if (e.target.type === "checkbox") {
+      let isChecked = e.target.checked;
+      if (name === "size") {
+        // If item is selected add new size to size arr
+        if (isChecked) {
+          return setFormData({
+            ...formData,
+            details: {
+              ...formData.details,
+              size: [...formData.details.size, value],
+            },
+          });
+        }
+        // if unselected remove old size from size arr
+        let newArr = formData.details.size.filter((item) => item !== value);
+        return setFormData({
+          ...formData,
+          details: {
+            ...formData.details,
+            size: newArr,
+          },
+        });
+      }
+      if (name === "color") {
+        // If item is selected add new color to color arr
+        if (isChecked) {
+          return setFormData({
+            ...formData,
+            details: {
+              ...formData.details,
+              color: [...formData.details.color, value],
+            },
+          });
+        }
+        // if unselected remove old size from size arr
+        let newArr = formData.details.color.filter((item) => item !== value);
+        return setFormData({
+          ...formData,
+          details: {
+            ...formData.details,
+            color: newArr,
+          },
+        });
+      }
+    }
+
     if (name === "category") {
       let _id = getCategoryId(value);
       return setFormData({
@@ -230,8 +266,27 @@ const InventoryEditModal = (props) => {
     return setFormData({ ...formData, [name]: value });
   };
 
+  const handleRemoveSize = (item) => {
+    let newSizes = formData.details.size.filter((size) => size !== item);
+    return setFormData({
+      ...formData,
+      details: { ...formData.details, size: newSizes },
+    });
+  };
+
+  const handleRemoveColor = (item) => {
+    let newColors = formData.details.color.filter((color) => item !== color);
+    return setFormData({
+      ...formData,
+      details: { ...formData.details, color: newColors },
+    });
+  };
+
   const handleImageChange = (e, url) => {
     e.preventDefault();
+    setFormData((old) => {
+      return { ...old, activeImage: url };
+    });
   };
 
   useEffect(() => {
@@ -258,9 +313,11 @@ const InventoryEditModal = (props) => {
     if (formData.category.name === "") return;
     let subcategory = getSubCategories(formData.category.name);
     let weight = getWeightClass(formData.category.name);
-    let size = 
+    let size = [productSizes, productSizes2];
+    let color = mainColor;
+
     setCategoryHandler((old) => {
-      return { ...old, subcategory, weight };
+      return { ...old, subcategory, weight, size, color };
     });
     return;
   }, [formData.category.name, getSubCategories]);
@@ -445,14 +502,48 @@ const InventoryEditModal = (props) => {
                         onChange={handleFormChange}
                       />
                     </p>
-                    <p className="text-white-text flex flex-col">
+                    <div className="text-white-text flex flex-col">
                       Size:
-                      <select name="size" id="size" multiple></select>
-                    </p>
-                    <p className="text-white-text flex flex-col">
+                      <span className="font-medium text-primary-dark custom-input">
+                        {formData?.details?.size?.length > 0 ? (
+                          <SelectedSizes
+                            sizes={formData.details.size}
+                            removeSize={handleRemoveSize}
+                          />
+                        ) : (
+                          "No Value Chosen Yet"
+                        )}
+                      </span>
+                      <CustomInventoryDropdown
+                        fieldset={"Choose Sizes"}
+                        list1={categoryHandler.size[0]}
+                        list2={categoryHandler.size[1]}
+                        emptyState1="e.g Small"
+                        emptyState2={"e.g 30"}
+                        onChange={handleFormChange}
+                        inputValue={formData.details.size}
+                      />
+                    </div>
+                    <div className="text-white-text flex flex-col">
                       Color:
-                      <select name="size" id="size" multiple></select>
-                    </p>
+                      <span className="font-medium text-primary-dark custom-input">
+                        {formData?.details?.color?.length > 0 ? (
+                          <SelectedColors
+                            colors={formData.details.color}
+                            removeColor={handleRemoveColor}
+                          />
+                        ) : (
+                          "No Value Chosen Yet"
+                        )}
+                      </span>
+                      <CustomColorDropdown
+                        fieldset={"Choose Colors"}
+                        list={categoryHandler.color}
+                        emptyState={"Select Color"}
+                        onChange={handleFormChange}
+                        inputValue={formData.details.color}
+                      />
+                    </div>
                     <p className="text-white-text">
                       Price:{" "}
                       <span className="font-medium text-primary-dark">
@@ -535,7 +626,8 @@ const ModalContainer = styled.div`
   }
   input,
   select,
-  textarea {
+  textarea,
+  .custom-input {
     padding: 0.5rem 1rem;
     border: 1px solid #16588f;
   }
