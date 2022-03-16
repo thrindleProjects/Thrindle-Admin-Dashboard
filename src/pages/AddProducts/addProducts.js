@@ -8,7 +8,7 @@ import {
   productTypeArr,
   unitsArr,
   productSizes,
-  productSizes2,
+  productSizes2, 
   mainColor,
 } from "../../data/sizeAndColor";
 import { Error } from "../../styles/globalStyles";

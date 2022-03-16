@@ -50,33 +50,33 @@ const GeneralPagination = (props) => {
       )}
 
       {props.pag ? (
-        <div className='ml-auto pagination flex flex-row '>
-          <div className='num-cont flex flex-row mr-10'>
-            <span className='text-white-text font-Bold text-sm'>
+        <div className="ml-auto pagination flex flex-row ">
+          <div className="num-cont flex flex-row mr-10">
+            <span className="text-white-text font-Bold text-sm">
               {pageInfo.startNumber}
             </span>
-            <span className='text-white-text font-Bold text-sm mb-1'>-</span>
-            <span className='text-white-text font-Bold text-sm'>
+            <span className="text-white-text font-Bold text-sm mb-1">-</span>
+            <span className="text-white-text font-Bold text-sm">
               {pageInfo.endNumber}
             </span>
-            <span className='text-white-text font-Bold text-sm'>&nbsp;of</span>
-            <span className='text-white-text font-Bold text-sm'>
+            <span className="text-white-text font-Bold text-sm">&nbsp;of</span>
+            <span className="text-white-text font-Bold text-sm">
               &nbsp;{pageInfo.totalNumber}
             </span>
           </div>
           {/* CONTROLS */}
-          <div className='controls flex flex-row gap-4'>
+          <div className="controls flex flex-row gap-4">
             <button
               onClick={() => props.handlePagination("PREVIOUS_PAGE")}
-              className='single-controls flex flex-row w-12 h-12 p-3 rounded-md focus:outline-none outline-none'
+              className="single-controls flex flex-row w-12 h-12 p-3 rounded-md focus:outline-none outline-none"
             >
-              <FaAngleLeft className='text-base single-control-icon text-center text-white-main' />
+              <FaAngleLeft className="text-base single-control-icon text-center text-white-main" />
             </button>
             <button
               onClick={() => props.handlePagination("NEXT_PAGE")}
-              className='single-controls flex flex-row w-12 h-12 p-3 rounded-md focus:outline-none outline-none '
+              className="single-controls flex flex-row w-12 h-12 p-3 rounded-md focus:outline-none outline-none "
             >
-              <FaAngleRight className='text-base single-control-icon text-center text-white-main' />
+              <FaAngleRight className="text-base single-control-icon text-center text-white-main" />
             </button>
           </div>
         </div>
