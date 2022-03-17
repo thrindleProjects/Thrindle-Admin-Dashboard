@@ -140,7 +140,6 @@ const Inventory = (props) => {
               } = await axiosInstance.get(endpoint);
 
               // Make request to get all market data
-              await getMarkets();
 
               if (data) {
                 setStatus({ isLoading: false, isError: false });
@@ -151,6 +150,7 @@ const Inventory = (props) => {
             }
           })
         );
+        await getMarkets();
 
         // let allProducts, paginatedProducts;
 
@@ -266,6 +266,7 @@ const Inventory = (props) => {
               tableData={products.paginatedProducts[products.pageIndex]}
               pageIndex={products.pageIndex}
               setModal={handleSetModal}
+              displayDeleteModal={displayDeleteModal}
             />
           )}
 
