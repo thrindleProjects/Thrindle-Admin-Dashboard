@@ -3,7 +3,7 @@ import formatDate from "../../../utils/formatDate";
 import { numberFormat } from "../../../utils/formatPrice";
 import { NewMainTable } from "../../../styles/globalStyles";
 
-function ApprovedProducts({ tableHeaderData, tableData, displayDeleteModal }) {
+function ApprovedProducts({ tableHeaderData, tableData, displayDeleteModal, pageIndex }) {
   return (
     <>
       <NewMainTable className="w-full rounded-md  py-10 mt-5 overflow-auto">
@@ -36,7 +36,7 @@ function ApprovedProducts({ tableHeaderData, tableData, displayDeleteModal }) {
               >
                 <td>
                   <p className="status text-center text-sm text-white-text font-Regular capitalize">
-                    {index + 1}
+                    {pageIndex * 20 + (index + 1)}
                   </p>
                 </td>
 

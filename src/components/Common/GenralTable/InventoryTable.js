@@ -49,6 +49,7 @@ const InventoryTable = (props) => {
           {props.tableData?.map((item, index) => {
             let marketName = getMarketName(item.store_id);
             let uploadDate = getUploadDate(item.updatedAt);
+            let serialNumber = props.pageIndex * 20 + (index + 1);
             return (
               <tr
                 key={item._id}
@@ -56,7 +57,7 @@ const InventoryTable = (props) => {
               >
                 {props.showCheck && (
                   <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
-                    {index + 1}
+                    {serialNumber}
                   </td>
                 )}
                 <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
