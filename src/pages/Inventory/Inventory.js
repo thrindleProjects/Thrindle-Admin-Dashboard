@@ -264,6 +264,7 @@ const Inventory = (props) => {
               showCheck
               tableHeaderData={inventTableHeader}
               tableData={products.paginatedProducts[products.pageIndex]}
+              pageIndex={products.pageIndex}
               setModal={handleSetModal}
             />
           )}
@@ -279,6 +280,7 @@ const Inventory = (props) => {
               displayDeleteModal={(id, activeData) =>
                 displayDeleteModal(id, activeData)
               }
+              pageIndex={products.pageIndex}
             />
           )}
         {openDeleteModal && (

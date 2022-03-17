@@ -21,7 +21,7 @@ const InventoryEditModal = (props) => {
     description: "",
     category: { _id: "", name: "" },
     subcategory: { _id: "", name: "" },
-    weight: 0,
+    weight: "0",
     name: "",
     details: { size: [], color: [] },
     activeImage: "",
@@ -35,11 +35,13 @@ const InventoryEditModal = (props) => {
     color: [],
   });
 
+  console.log(formData.weight);
+
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
-  const { handleSetModal, getAllUnverifiedProducts } = props;
+  const { handleSetModal, getAllProducts } = props;
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -128,9 +130,9 @@ const InventoryEditModal = (props) => {
   }, []);
 
   const triggerTableUpdate = useCallback(() => {
-    getAllUnverifiedProducts();
+    getAllProducts();
     return handleSetModal("CLOSE_ALL_MODALS");
-  }, [getAllUnverifiedProducts, handleSetModal]);
+  }, [getAllProducts, handleSetModal]);
 
   const getSingleProduct = useCallback(
     async (id) => {
@@ -151,6 +153,8 @@ const InventoryEditModal = (props) => {
         let marketName = getMarketName(store_id);
         await getMarketCategories(marketName);
         let size, color;
+
+        console.log(weight);
 
         size = details && details?.size ? details.size : [];
         color = details && details?.color ? details.color : [];
@@ -463,11 +467,17 @@ const InventoryEditModal = (props) => {
                     </p>
                     <p className="text-white-text flex flex-col">
                       Weight:{" "}
-                      <select name="weight" id="weight">
+                      <select
+                        name="weight"
+                        id="weight"
+                        value={formData.weight}
+                        onChange={handleFormChange}
+                        required
+                      >
                         {categoryHandler?.weight?.length > 0 ? (
                           categoryHandler.weight.map((item, index) => {
                             return (
-                              <option key={index} value={item}>
+                              <option key={index} name="weight" value={item}>
                                 {item}
                               </option>
                             );
