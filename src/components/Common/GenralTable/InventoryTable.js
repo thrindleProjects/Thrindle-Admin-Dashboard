@@ -1,6 +1,7 @@
 // import GeneralCheckBox from '../GeneralCheck/GeneralCheckBox';
 import styled from "styled-components";
 import { MdEdit } from "react-icons/md";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 const InventoryTable = (props) => {
   const handleModal = (action, id) => {
@@ -25,14 +26,17 @@ const InventoryTable = (props) => {
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
       <table className="w-full min-w-min max-w-full">
-        <thead className="main-table-header rounded-md grid grid-flow-row grid-cols-9 auto-cols-min gap-3 px-6">
+        <thead className="main-table-header rounded-md grid grid-flow-row grid-cols-10 auto-cols-min gap-3 px-6">
           {props.showCheck && (
             <tr>
               <></>
             </tr>
           )}
           {props.tableHeaderData?.map((item, index) => (
-            <tr key={index}>
+            <tr
+              key={index}
+              className={`${["Action"].includes(item.title) && "col-span-2"}`}
+            >
               <th>
                 <p className="table-head-text text-sm font-normal font-Regular text-center text-white-text">
                   {item.title}
@@ -45,14 +49,18 @@ const InventoryTable = (props) => {
           {props.tableData?.map((item, index) => {
             let marketName = getMarketName(item.store_id);
             let uploadDate = getUploadDate(item.updatedAt);
+            let serialNumber = props.pageIndex * 20 + (index + 1);
             return (
               <tr
                 key={item._id}
-                className="w-full grid grid-flow-row grid-cols-9 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
-                onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
+                className="w-full grid grid-flow-row grid-cols-10 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
               >
-                {props.showCheck && <td>{index + 1}</td>}
-                <td>
+                {props.showCheck && (
+                  <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
+                    {serialNumber}
+                  </td>
+                )}
+                <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
                   <p
                     className={`status text-left text-sm font-Regular capitalize ${
                       item.verified
@@ -63,40 +71,50 @@ const InventoryTable = (props) => {
                     {item.verified ? "Approved" : "Pending"}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
                   <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
                     {item.name}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
                   <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
                     {item.category?.name}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
                   <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
                     N{item.price.toLocaleString()}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
                   <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
                     {marketName}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
                   <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize">
                     {item.store_id}
                   </p>
                 </td>
-                <td>
+                <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
                   <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text capitalize">
                     {uploadDate}
                   </p>
                 </td>
-                <td>
+                <td className="col-span-2">
                   <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text flex flex-row gap-8">
-                    <button className="cursor-pointer flex flex-row gap-2 items-center">
+                    <button
+                      onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
+                      className="cursor-pointer flex flex-row gap-2 items-center"
+                    >
                       <MdEdit className="text-2xl text-primary-dark" /> Edit
+                    </button>
+                    <button
+                      className="cursor-pointer flex flex-row gap-2 items-center"
+                      onClick={() => props.displayDeleteModal(item._id, item)}
+                    >
+                      <AiFillCloseCircle className="text-2xl text-secondary-error" />{" "}
+                      Delete
                     </button>
                   </p>
                 </td>

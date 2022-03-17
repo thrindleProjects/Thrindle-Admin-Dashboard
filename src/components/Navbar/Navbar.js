@@ -20,7 +20,7 @@ const Navbar = () => {
               {item.subNav.map((item, index) => (
                 <SingleNavItem {...item} key={index} />
               ))}
-            </div>
+            </div>  
           ))}
         </nav>
       </SideNav1>

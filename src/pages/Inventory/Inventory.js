@@ -53,6 +53,20 @@ const Inventory = (props) => {
       arr.slice(i * size, i * size + size)
     );
 
+  // get Markets data and store in local storage
+  const getMarkets = async () => {
+    try {
+      let res = await axiosInstance.get("markets/getAllMarkets");
+      localStorage.setItem("marketData", JSON.stringify(res.data.data));
+    } catch (error) {
+      if (error.response) {
+        toast.warning(`${error.response.data.message}`);
+      } else {
+        toast.error(`${error}`);
+      }
+    }
+  };
+
   // HandlePagination
   const handlePagination = (type) => {
     switch (type) {
@@ -124,6 +138,10 @@ const Inventory = (props) => {
               let {
                 data: { data },
               } = await axiosInstance.get(endpoint);
+
+              // Make request to get all market data
+              await getMarkets();
+
               if (data) {
                 setStatus({ isLoading: false, isError: false });
               }
@@ -246,6 +264,7 @@ const Inventory = (props) => {
               showCheck
               tableHeaderData={inventTableHeader}
               tableData={products.paginatedProducts[products.pageIndex]}
+              pageIndex={products.pageIndex}
               setModal={handleSetModal}
             />
           )}
@@ -261,6 +280,7 @@ const Inventory = (props) => {
               displayDeleteModal={(id, activeData) =>
                 displayDeleteModal(id, activeData)
               }
+              pageIndex={products.pageIndex}
             />
           )}
         {openDeleteModal && (
