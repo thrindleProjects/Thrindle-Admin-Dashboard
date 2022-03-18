@@ -136,6 +136,8 @@ const InventoryEditModal = (props) => {
 
   const getSingleProduct = useCallback(
     async (id) => {
+      document.documentElement.style.overflow = "hidden";
+
       try {
         const {
           data: { data },
@@ -296,6 +298,8 @@ const InventoryEditModal = (props) => {
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
+        document.documentElement.style.overflow = "revert";
+
         if (modalData.length > 0 && updated) {
           return triggerTableUpdate();
         }
@@ -621,7 +625,7 @@ const InventoryEditModal = (props) => {
 export default InventoryEditModal;
 
 const ModalWrapper = styled.div`
-  z-index: 110;
+  z-index: 15;
 `;
 const ModalContainer = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
