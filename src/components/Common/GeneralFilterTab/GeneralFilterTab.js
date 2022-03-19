@@ -106,6 +106,7 @@ const MainCont = styled.div`
     justify-content: center;
     transition: all 0.3s ease-in-out;
     cursor: pointer !important;
+    z-index: 2;
   }
   .filter-dropdown {
     opacity: 0;

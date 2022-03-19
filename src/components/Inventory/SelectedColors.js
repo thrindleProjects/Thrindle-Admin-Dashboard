@@ -5,7 +5,7 @@ const SelectedColors = ({ colors, removeColor }) => {
         return (
           <div
             key={item}
-            className="w-8 h-8 rounded-full cursor-pointer"
+            className="w-8 h-8 rounded-full cursor-pointer border-0.98 border-white-tableHeader"
             style={{ backgroundColor: `${item}` }}
             onClick={() => removeColor(item)}
           ></div>

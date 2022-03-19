@@ -67,6 +67,10 @@ const Inventory = (props) => {
     }
   };
 
+  const resetPageIndex = () => {
+    setProducts({ ...products, pageIndex: 0 });
+  };
+
   // HandlePagination
   const handlePagination = (type) => {
     switch (type) {
@@ -96,6 +100,7 @@ const Inventory = (props) => {
   };
 
   const changeTab = (val) => {
+    resetPageIndex();
     setActiveTab(val);
   };
 
@@ -120,7 +125,6 @@ const Inventory = (props) => {
           ...oldProducts,
           paginatedProducts: [],
           allProducts: [],
-          pageIndex: 0,
         };
       });
 
@@ -140,7 +144,6 @@ const Inventory = (props) => {
               } = await axiosInstance.get(endpoint);
 
               // Make request to get all market data
-              await getMarkets();
 
               if (data) {
                 setStatus({ isLoading: false, isError: false });
@@ -151,6 +154,7 @@ const Inventory = (props) => {
             }
           })
         );
+        await getMarkets();
 
         // let allProducts, paginatedProducts;
 
@@ -158,6 +162,14 @@ const Inventory = (props) => {
           // allProducts = allUnverifiedProducts;
           // paginatedProducts =
           setProducts((prevState) => {
+            if (prevState?.pageIndex > allUnverifiedProducts?.length - 1) {
+              return {
+                ...prevState,
+                allProducts: allUnverifiedProducts,
+                paginatedProducts: paginationArr(allUnverifiedProducts, 20),
+                pageIndex: allUnverifiedProducts?.length - 1,
+              };
+            }
             return {
               ...prevState,
               allProducts: allUnverifiedProducts,
@@ -168,6 +180,14 @@ const Inventory = (props) => {
 
         if (activeTab === "Approved Products") {
           setProducts((prevState) => {
+            if (prevState?.pageIndex > approvedProducts?.length - 1) {
+              return {
+                ...prevState,
+                allProducts: approvedProducts,
+                paginatedProducts: paginationArr(approvedProducts, 20),
+                pageIndex: approvedProducts?.length - 1,
+              };
+            }
             return {
               ...prevState,
               allProducts: approvedProducts,
@@ -222,9 +242,9 @@ const Inventory = (props) => {
 
   return (
     <MainContainer
-      className={` relative ${showModal.editModal && "overflow-y-hidden"}`}
+      className={`relative`}
     >
-      <FirstSection className={`${showModal.editModal && "overflow-y-hidden"}`}>
+      <FirstSection>
         {showModal.editModal && (
           <InventoryEditModal
             handleSetModal={handleSetModal}
@@ -266,8 +286,10 @@ const Inventory = (props) => {
             <InventoryTable
               showCheck
               tableHeaderData={inventTableHeader}
-              tableData={products?.paginatedProducts[products?.pageIndex]}
+              tableData={products.paginatedProducts[products.pageIndex]}
+              pageIndex={products.pageIndex}
               setModal={handleSetModal}
+              displayDeleteModal={displayDeleteModal}
             />
           )}
 
@@ -282,6 +304,7 @@ const Inventory = (props) => {
               displayDeleteModal={(id, activeData) =>
                 displayDeleteModal(id, activeData)
               }
+              pageIndex={products.pageIndex}
             />
           )}
         {openDeleteModal && (

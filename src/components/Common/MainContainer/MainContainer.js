@@ -36,7 +36,7 @@ const MainContainer = (props) => {
 
   return (
     <MainCont showNav={showNav} className="w-full font-Regular">
-      <TopNav className="w-full flex flex-row  px-9 fixed top-0 z-2 bg-white-main left-0 right-0">
+      <TopNav className="w-full flex flex-row  px-9 fixed top-0 z-10 bg-white-main left-0 right-0">
         <div
           className={
             showNav
