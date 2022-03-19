@@ -240,9 +240,9 @@ const Inventory = (props) => {
 
   return (
     <MainContainer
-      className={` relative ${showModal.editModal && "overflow-y-hidden"}`}
+      className={`relative`}
     >
-      <FirstSection className={`${showModal.editModal && "overflow-y-hidden"}`}>
+      <FirstSection>
         {showModal.editModal && (
           <InventoryEditModal
             handleSetModal={handleSetModal}
