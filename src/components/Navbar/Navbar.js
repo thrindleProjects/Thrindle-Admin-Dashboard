@@ -38,7 +38,7 @@ const SideNav1 = styled.div`
   top: 0 !important;
   position: fixed;
   transition: all 0.5 ease-in-out;
-  z-index: 4;
+  z-index: 11;
   transform: translateX(0%);
   //   padding-top: 10px;
 
