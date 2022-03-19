@@ -613,6 +613,7 @@ export default InventoryEditModal;
 const ModalWrapper = styled.div`
   z-index: 110;
 `;
+
 const ModalContainer = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
   background-color: #ffffff;

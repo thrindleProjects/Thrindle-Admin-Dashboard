@@ -49,7 +49,7 @@ const Inventory = (props) => {
 
   // Break Customers Array into smaller arrays for pagination
   const paginationArr = (arr, size) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    Array.from({ length: Math.ceil(arr?.length / size) }, (v, i) =>
       arr.slice(i * size, i * size + size)
     );
 
@@ -124,12 +124,12 @@ const Inventory = (props) => {
         };
       });
 
-      setStatus({ isLoading: true, isError: false });
-
       let endpoints = [
         `${url}/products/unverifiedproducts`,
         `${url}/products/search`,
       ];
+
+      setStatus({ isError: false, isLoading: true });
 
       try {
         let [allUnverifiedProducts, approvedProducts] = await axios.all(
@@ -179,11 +179,11 @@ const Inventory = (props) => {
         setInventoryData((prevState) => {
           let currentState = prevState.map((item) => {
             if (item.title === "Pending Products") {
-              return { ...item, value: allUnverifiedProducts.length };
+              return { ...item, value: allUnverifiedProducts?.length };
             }
 
             if (item.title === "Approved Products") {
-              return { ...item, value: approvedProducts.length };
+              return { ...item, value: approvedProducts?.length };
             }
 
             return item;
@@ -192,7 +192,9 @@ const Inventory = (props) => {
           return currentState;
         });
 
-        setAllInventory(allUnverifiedProducts.length + approvedProducts.length);
+        setAllInventory(
+          allUnverifiedProducts?.length + approvedProducts?.length
+        );
 
         return setStatus({ isError: false, isLoading: false });
       } catch (error) {
@@ -245,12 +247,13 @@ const Inventory = (props) => {
           showButtons={false}
           pag
           handlePagination={handlePagination}
-          pageNumber={products.pageIndex}
-          itemsNumber={products.paginatedProducts}
-          totalNumber={products.allProducts.length}
+          pageNumber={products?.pageIndex}
+          itemsNumber={products?.paginatedProducts}
+          totalNumber={products?.allProducts?.length}
         />
+
         {!status.isError && status.isLoading && (
-          <div className="w-full mt-32">
+          <div className="w-full h-96">
             <NewLoader />
           </div>
         )}
@@ -263,7 +266,7 @@ const Inventory = (props) => {
             <InventoryTable
               showCheck
               tableHeaderData={inventTableHeader}
-              tableData={products.paginatedProducts[products.pageIndex]}
+              tableData={products?.paginatedProducts[products?.pageIndex]}
               setModal={handleSetModal}
             />
           )}
@@ -273,7 +276,7 @@ const Inventory = (props) => {
           activeTab === "Approved Products" && (
             <ApprovedProducts
               tableHeaderData={approvedProductHeader}
-              tableData={products.paginatedProducts[products.pageIndex]}
+              tableData={products?.paginatedProducts[products?.pageIndex]}
               openDeleteModal={openDeleteModal}
               setOpenDeleteModal={setOpenDeleteModal}
               displayDeleteModal={(id, activeData) =>
@@ -296,73 +299,3 @@ const Inventory = (props) => {
 export default Inventory;
 
 const FirstSection = styled.div``;
-
-// if (activeTab === "Pending Products") {
-//   try {
-//     const {
-//       status: statusCode,
-//       data: { data },
-//     } = await axiosInstance.get(`${url}/products/unverifiedproducts`);
-//     let allUnverifiedProducts = data.reverse();
-
-//     if (statusCode > 399)
-// setStatus({ isError: true, isLoading: false });
-
-// let paginatedProducts = paginationArr(allUnverifiedProducts, 20);
-
-// setInventoryData((oldState) => {
-//   let newState = oldState.map((item) => {
-//     if (item.title !== "Pending Products") return item;
-//     return { ...item, value: allUnverifiedProducts.length };
-//   });
-//   return newState;
-// });
-
-// setProducts((oldProducts) => {
-//   return { ...oldProducts, paginatedProducts, allUnverifiedProducts };
-// });
-
-//       setApprovedProducts(res.data.data.reverse());
-
-//       // setInventoryData((prevData) => {
-//       //   let newData = prevData.map((item) => {
-//       //     if (item.title === "Approved Products") {
-//       //       return { ...item, value: res.data.data.length };
-//       //     } else return item;
-//       //   });
-
-//       //   return newData;
-//       // });
-
-//       setStatus({ isError: false, isLoading: false });
-//     }
-//   } catch (error) {
-//     setStatus({ isError: true, isLoading: false });
-//     if (error.response) {
-//       toast.warning(`${error.response.data.message}`);
-//     } else {
-//       toast.error(`${error}`);
-//     }
-//   }
-// }
-
-// useEffect(() => {
-//   axios
-//     .all(endpoints.map((endpoint) => axiosInstance.get(endpoint)))
-//     .then((res) => {
-//       console.log(res);
-
-//       // setInventoryData((oldState) => {
-//       //   let newState = oldState.map((item) => {
-//       //     if (item.title === "Pending Products") {
-//       //       return { ...item, value: res[0].data.data.length };
-//       //     }
-
-//       //     if (item.title === "Approved Products") {
-//       //       return { ...item, value: allUnverifiedProducts.length };
-//       //     }
-//       //   });
-//       //   return newState;
-//       // });
-//     });
-// }, []);

@@ -2,13 +2,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useFormik } from "formik";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
-// import MainContainer from "../../../components/common/mainContainer/mainContainer";
 import axiosInstance from "../../utils/axiosInstance";
 import {
   productTypeArr,
   unitsArr,
   productSizes,
-  productSizes2, 
+  productSizes2,
   mainColor,
 } from "../../data/sizeAndColor";
 import { Error } from "../../styles/globalStyles";
@@ -36,8 +35,6 @@ const AddProducts = () => {
   const [weightClass, setWeightClass] = useState([]);
   const [unit, setUnit] = useState("");
   const [subCategory, setSubCategory] = useState([]);
-  const [size1, setSize1] = useState([]);
-  const [size2, setSize2] = useState([]);
   const [colors, setColors] = useState([]);
   const [productType, setProductType] = useState("");
   const [otherValues, setOtherValues] = useState({});
@@ -49,6 +46,10 @@ const AddProducts = () => {
   const [storeValue, setStoreValue] = useState("");
   const [currentStoreValue, setCurrentStoreValue] = useState("Choose a Store");
   const [openDropdown, setOpenDropdown] = useState(false);
+  const [currentSize, setCurrentSize] = useState({
+    size1: [],
+    size2: [],
+  });
   const productSizeArr = productSizes.map((item) => item.title);
   const productSizeArr2 = productSizes2.map((item) => item.title);
   const history = useHistory();
@@ -102,7 +103,7 @@ const AddProducts = () => {
         subCategory: getSubCategoryId(subCategoryValue),
         unit: unit,
         colors: colors,
-        size: [...size1, ...size2],
+        size: [...currentSize.size1, ...currentSize.size2],
         weight: weightClassValue,
         productTypeStatus: storeID.startsWith("EM")
           ? true
@@ -249,19 +250,6 @@ const AddProducts = () => {
     getWeightClass(value);
   };
 
-  // select stores
-  const selectStore = (e, index) => {
-    e.stopPropagation();
-
-    setStoreValue(document.getElementById(`store${index}`).dataset.value);
-    setCurrentStoreValue(
-      document.getElementById(`store${index}`).dataset.value
-    );
-
-    document.getElementById("stores-box").style.display = "none";
-    setOpenDropdown(false);
-  };
-
   const selectSubCategory = (value) => {
     setSubCategoryValue(value);
   };
@@ -271,19 +259,59 @@ const AddProducts = () => {
   };
 
   const chooseSize1 = (value) => {
-    if (size1.includes(value)) {
-      setSize1(size1.filter((item) => item !== value));
+    if (currentSize.size1.includes(value)) {
+      setCurrentSize((prevState) => {
+        return {
+          ...prevState,
+          size1: currentSize.size1.filter((item) => item !== value),
+        };
+      });
     } else {
-      setSize1([...size1, value]);
+      setCurrentSize((prevState) => {
+        return { ...prevState, size1: [...currentSize.size1, value] };
+      });
     }
   };
 
   const chooseSize2 = (value) => {
-    if (size2.includes(value)) {
-      setSize2(size2.filter((item) => item !== value));
+    if (currentSize.size2.includes(value)) {
+      setCurrentSize((prevState) => {
+        return {
+          ...prevState,
+          size2: currentSize.size2.filter((item) => item !== value),
+        };
+      });
     } else {
-      setSize2([...size2, value]);
+      setCurrentSize((prevState) => {
+        return { ...prevState, size2: [...currentSize.size2, value] };
+      });
     }
+  };
+
+  const removeSize1 = (value) => {
+    if (currentSize.size1.includes(value)) {
+      setCurrentSize((prevState) => {
+        return {
+          ...prevState,
+          size1: currentSize.size1.filter((item) => item !== value),
+        };
+      });
+    }
+
+    // document.getElementById(value).checked = false;
+  };
+
+  const removeSize2 = (value) => {
+    if (currentSize.size2.includes(value)) {
+      setCurrentSize((prevState) => {
+        return {
+          ...prevState,
+          size2: currentSize.size2.filter((item) => item !== value),
+        };
+      });
+    }
+
+    // document.getElementById(value).checked = false;
   };
 
   const chooseColor = (value) => {
@@ -292,6 +320,14 @@ const AddProducts = () => {
     } else {
       setColors([...colors, value]);
     }
+  };
+
+  const removeColor = (value) => {
+    if (colors.includes(value)) {
+      setColors(colors.filter((item) => item !== value));
+    }
+
+    // document
   };
 
   const selectProductType = (value) => {
@@ -330,31 +366,6 @@ const AddProducts = () => {
     }
   };
 
-  // toggle dropdown
-  const toggleOptions = (e) => {
-    e.stopPropagation();
-
-    if (!openDropdown) {
-      document.getElementById("stores-box").style.display = "block";
-    }
-
-    if (openDropdown) {
-      document.getElementById("stores-box").style.display = "none";
-    }
-
-    setOpenDropdown((prevState) => !prevState);
-  };
-
-  // Hide Dropdown
-  const hideDropdown = (e) => {
-    e.stopPropagation();
-
-    if (document.getElementById("stores-box").style.display === "block") {
-      document.getElementById("stores-box").style.display = "none";
-      setOpenDropdown(false);
-    }
-  };
-
   // handle store search
   const handleSearch = (value) => {
     setSearchStoreValue(value);
@@ -367,6 +378,19 @@ const AddProducts = () => {
       );
       setStores(filteredResult);
     }
+  };
+
+  // select stores
+  const selectStore = (e, index) => {
+    e.stopPropagation();
+
+    setStoreValue(document.getElementById(`store${index}`).dataset.value);
+    setCurrentStoreValue(
+      document.getElementById(`store${index}`).dataset.value
+    );
+
+    // document.getElementById("stores-box").style.display = "none";
+    setOpenDropdown(false);
   };
 
   // get markets
@@ -430,13 +454,12 @@ const AddProducts = () => {
   return (
     <>
       <NavBar />
-
       <div className="w-11/12 pt-10 mx-auto font-Regular">
         <form
           onSubmit={formik.handleSubmit}
           className="w-full pb-20 lg:flex lg:justify-between lg:h-vh80"
         >
-          <div className="w-full lg:w-55" onClick={(e) => hideDropdown(e)}>
+          <div className="w-full lg:w-55">
             <p className="text-white-text pb-4 font-Bold md:text-base text-sm">
               Product Listing
             </p>
@@ -517,10 +540,10 @@ const AddProducts = () => {
                 searchStoreValue={searchStoreValue}
                 setCurrentStoreValue={setCurrentStoreValue}
                 setStoreValue={setStoreValue}
+                openDropdown={openDropdown}
                 setOpenDropdown={setOpenDropdown}
                 handleSearch={(value) => handleSearch(value)}
-                toggleOptions={(e) => toggleOptions(e)}
-                selectStore={(e, index) => selectStore(e, index)}
+                selectStore={selectStore}
                 required={true}
               />
             </div>
@@ -638,15 +661,20 @@ const AddProducts = () => {
                 emptyState2="e.g 30"
                 onChange1={(value) => chooseSize1(value)}
                 onChange2={(value) => chooseSize2(value)}
+                currentSize={currentSize}
+                removeSize1={removeSize1}
+                removeSize2={removeSize2}
               />
             </div>
 
             <div className="flex my-3">
               <SingleDropdown
                 fieldset="Colors"
-                colors={mainColor}
+                mainColors={mainColor}
+                colors={colors}
                 emptyState="Product Color"
                 onChange={(value) => chooseColor(value)}
+                removeColor={removeColor}
               />
             </div>
 
@@ -667,3 +695,34 @@ const AddProducts = () => {
 };
 
 export default AddProducts;
+
+// if (size2.includes(value)) {
+//   setSize2(size2.filter((item) => item !== value));
+// } else {
+//   setSize2([...size2, value]);
+// }
+
+// // toggle dropdown
+// const toggleOptions = (e) => {
+//   e.stopPropagation();
+
+//   if (!openDropdown) {
+//     document.getElementById("stores-box").style.display = "block";
+//   }
+
+//   if (openDropdown) {
+//     document.getElementById("stores-box").style.display = "none";
+//   }
+
+//   setOpenDropdown((prevState) => !prevState);
+// };
+
+// // Hide Dropdown
+// const hideDropdown = (e) => {
+//   e.stopPropagation();
+
+//   if (document.getElementById("stores-box").style.display === "block") {
+//     document.getElementById("stores-box").style.display = "none";
+//     setOpenDropdown(false);
+//   }
+// };

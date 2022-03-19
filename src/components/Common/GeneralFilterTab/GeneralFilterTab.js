@@ -17,7 +17,7 @@ const GeneralFilterTab = (props) => {
       if (filterRef.current && !filterRef.current.contains(e.target)) {
         setShow(false);
       }
-      return true
+      return true;
     };
 
     document.addEventListener("click", handleClickOutside, true);
@@ -27,38 +27,39 @@ const GeneralFilterTab = (props) => {
   }, []);
 
   return (
-    <MainCont className='w-full flex flex-row mt-5 flex-wrap'>
+    <MainCont className="w-full flex flex-row mt-5 flex-wrap">
       {/* Search  */}
-      <div className='order-search-cont flex flex-row px-2 rounded-md  lg:mb-0 mb-8'>
-        <FaSearch className='text-base mr-2 text-white-text' />
+      <div className="order-search-cont flex flex-row px-2 rounded-md  lg:mb-0 mb-8">
+        <FaSearch className="text-base mr-2 text-white-text" />
         <input
-          type='text'
+          type="text"
           value={props.value}
-          className='order-custom-input bg-transparent focus:outline-none outline-none'
+          className="order-custom-input bg-transparent focus:outline-none outline-none"
           onChange={props.onChange}
-          placeholder='Search'
+          placeholder="Search"
         />
       </div>
       {/* FILTER  */}
+
       <div
         ref={filterRef}
-        className='filter-cont flex flex-row md:mx-3 lg:mx-5 rounded-md relative bg-primary-dark cursor-pointer lg:mb-0 mb-8'
+        className="filter-cont flex flex-row md:mx-3 lg:mx-5 rounded-md relative bg-primary-dark cursor-pointer lg:mb-0 mb-8"
         onClick={() => setShow(!show)}
       >
-        <p className='text-white-main font-Regular text-base mr-2'>Filter by</p>
-        <FaAngleDown className='text-base text-white-main cursor-pointer' />
+        <p className="text-white-main font-Regular text-base mr-2">Filter by</p>
+        <FaAngleDown className="text-base text-white-main cursor-pointer" />
         {show && (
           <div
             className={
               show
-                ? "w-full filter-dropdown active bg-white-main pt-7 pb-3 px-5 rounded-md absolute top-12 left-0 right-0 "
+                ? "w-full filter-dropdown active bg-white-main p-1 rounded-md absolute top-12 left-0 right-0 "
                 : "w-full filter-dropdown bg-white-main pt-7 pb-3 px-5 rounded-md absolute top-12 left-0 right-0 "
             }
           >
             {props.filterData.map((item, index) => (
               <p
                 key={index}
-                className='text-sm filter-text font-Regular text-white-text text-left mb-5'
+                className="text-sm filter-text font-Regular text-white-main text-left p-3 rounded-md hover:bg-primary-main hover:cursor-pointer"
                 onClick={() => chooseFilter(item.title)}
               >
                 {item.title}
@@ -67,10 +68,11 @@ const GeneralFilterTab = (props) => {
           </div>
         )}
       </div>
+
       {/* EXPORT */}
-      <div className='export-cont rounded-md flex flex-row '>
-        <HiDownload className='text-primary-main text-lg mr-2' />
-        <p className='text-primary-main font-Regular text-base mr-2'>Export</p>
+      <div className="export-cont rounded-md flex flex-row ">
+        <HiDownload className="text-primary-main text-lg mr-2" />
+        <p className="text-primary-main font-Regular text-base mr-2">Export</p>
       </div>
     </MainCont>
   );

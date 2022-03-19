@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef} from "react";
 import styled from "styled-components";
 import { Fieldset } from "../../../styles/globalStyles";
 
@@ -32,11 +32,10 @@ const Option = styled.div`
 `;
 
 const OptionBox = styled.div`
-  display: none;
   position: absolute;
   width: 100%;
   z-index: 3;
-  background: #ebe6e6;
+  background: white;
   color: black;
   border-radius: 8px;
   top: 2em;
@@ -77,12 +76,12 @@ const SearchInput = styled.input`
 
 function CustomDropdown({
   list,
-  setOpenDropdown,
-  selectStore,
   currentStoreValue,
   setCurrentStoreValue,
-  toggleOptions,
+  openDropdown,
+  setOpenDropdown,
   fieldset,
+  selectStore,
   storeValue,
   setStoreValue,
   searchStoreValue,
@@ -97,14 +96,30 @@ function CustomDropdown({
     setOpenDropdown(false);
   };
 
+  const storeRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (storeRef.current) {
+        if (!storeRef.current.contains(e.target)) {
+          setOpenDropdown(false);
+        } else if (storeRef.current.contains(e.target)) {
+          setOpenDropdown(true);
+        }
+      }
+    };
+    document.addEventListener("click", handleClickOutside, true);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  });
+
   return (
     <Fieldset>
       <legend className="ml-4 px-1 opacity-75">{fieldset}</legend>
-      <Select>
-        <div
-          className="flex justify-between items-center"
-          onClick={(e) => toggleOptions(e)}
-        >
+      <Select ref={storeRef}>
+        <div className="flex justify-between items-center">
           <Option>{currentStoreValue}</Option>
           <svg
             className="w-3.5 h-3.5 cursor-pointer"
@@ -122,28 +137,30 @@ function CustomDropdown({
           </svg>
         </div>
 
-        <OptionBox id="stores-box" className="font-Regular">
-          <SearchInput
-            type="text"
-            placeholder="Search by store name"
-            value={searchStoreValue}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
-          <Option className="store-option" onClick={handleReset}>
-            Choose a Store
-          </Option>
-          {list?.map((item, index) => (
-            <Option
-              key={index}
-              className="store-option"
-              onClick={(e) => selectStore(e, index)}
-              id={`store${index}`}
-              data-value={item}
-            >
-              {item}
+        {openDropdown && (
+          <OptionBox id="stores-box" className="font-Regular">
+            <SearchInput
+              type="text"
+              placeholder="Search by store name"
+              value={searchStoreValue}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+            <Option className="store-option" onClick={handleReset}>
+              Choose a Store
             </Option>
-          ))}
-        </OptionBox>
+            {list?.map((item, index) => (
+              <Option
+                key={index}
+                className="store-option stores-list"
+                onClick={(e) => selectStore(e, index)}
+                id={`store${index}`}
+                data-value={item}
+              >
+                {item}
+              </Option>
+            ))}
+          </OptionBox>
+        )}
       </Select>
       <Input
         type="text"

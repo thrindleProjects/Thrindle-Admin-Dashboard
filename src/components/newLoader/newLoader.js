@@ -45,16 +45,14 @@ const Spin = styled.div`
 
 const NewLoader = () => {
   const [networkFailure, setNetworkFailure] = useState(false);
-  
-  useEffect(() => {
-    let mounted = true;
 
-    if (mounted) {
-      setTimeout(() => setNetworkFailure(true), 30000);
-    }
+  useEffect(() => {
+    let timeoutID = setTimeout(() => {
+      setNetworkFailure(true);
+    }, 30000);
 
     return () => {
-      mounted = false;
+      clearTimeout(timeoutID);
     };
   });
 
