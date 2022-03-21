@@ -19,6 +19,7 @@ const Orders = (props) => {
     paginatedOrders: [],
     pageIndex: 0,
   });
+
   const [activeTab, setActiveTab] = useState("Pending Orders");
   const [filterValue, setFilterValue] = useState("");
   const [status, setStatus] = useState({ isLoading: true, isError: false });
@@ -92,7 +93,7 @@ const Orders = (props) => {
       let [pending, completed, cancelled] = allOrdersArr.map((item) =>
         item.reverse()
       );
-      
+
       let paginatedOrders, allOrders;
       if (activeTab === "Pending Orders") {
         paginatedOrders = paginationArr(pending, 20);
@@ -143,7 +144,7 @@ const Orders = (props) => {
     }
   }, [qty]);
   return (
-    <MainContainer>
+    <MainContainer className="relative">
       <FirstSection className="w-full">
         <ScreenHeader title="Orders" value={orders.generalOrders?.length} />
         <GeneralHeaderTab

@@ -5,40 +5,72 @@ import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFi
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import UnPTable from "../../components/Common/GenralTable/UnPTable";
 import { unpTableHeader, unpTableData } from "../../data/data";
-import styled from "styled-components";
+import UnPModals from "../../components/UnP/UnPModals";
 
 const UnP = () => {
-  const [modals] = useState({
+  const [modals, setModals] = useState({
     createUser: false,
     deleteUser: false,
     editUser: false,
   });
+
+  const handleSetModal = (action) => {
+    switch (action) {
+      case `SHOW_CREATE_USER`:
+        document.documentElement.style.overflow = "hidden";
+        return setModals({
+          ...modals,
+          deleteUser: false,
+          editUser: false,
+          createUser: true,
+        });
+      case `SHOW_DELETE_USER`:
+        document.documentElement.style.overflow = "hidden";
+
+        return setModals({
+          ...modals,
+          createUser: false,
+          editUser: false,
+          deleteUser: true,
+        });
+      case `SHOW_EDIT_USER`:
+        document.documentElement.style.overflow = "hidden";
+
+        return setModals({
+          ...modals,
+          createUser: false,
+          deleteUser: false,
+          editUser: true,
+        });
+      case `CLOSE_ALL_MODALS`:
+        document.documentElement.style.overflow = "revert";
+        return setModals({
+          ...modals,
+          createUser: false,
+          deleteUser: false,
+          editUser: false,
+        });
+      default:
+        throw new Error("ARGUMENT NOT HANDLED");
+    }
+  };
+
   return (
     <MainContainer>
       <div>
-        <UnPScreenHeader />
+        <UnPScreenHeader handleSetModal={handleSetModal} />
         <GeneralFilterTab />
         <GeneralPagination showButtons={false} pag />
-        <UnPTable tableHeaderData={unpTableHeader} tableData={unpTableData} />
-        {modals.createUser && <ModalWrapper>Create User</ModalWrapper>}
-        {modals.deleteUser && <ModalWrapper>Delete User</ModalWrapper>}
-        {modals.editUser && <ModalWrapper>editUser</ModalWrapper>}
+        <UnPTable
+          tableHeaderData={unpTableHeader}
+          tableData={unpTableData}
+          handleSetModal={handleSetModal}
+        />
+        {(modals.createUser || modals.editUser || modals.deleteUser) && (
+          <UnPModals modals={modals} handleSetModal={handleSetModal} />
+        )}
       </div>
     </MainContainer>
   );
 };
-
-const ModalWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  inset: 0;
-  z-index: 150;
-  background: #16588f;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 export default UnP;
