@@ -73,6 +73,8 @@ const InventoryEditModal = (props) => {
 
   const handleFormCancel = (e) => {
     e.preventDefault();
+    document.documentElement.style.overflow = "revert";
+
     if (updated) {
       return triggerTableUpdate();
     }
@@ -155,8 +157,6 @@ const InventoryEditModal = (props) => {
         let marketName = getMarketName(store_id);
         await getMarketCategories(marketName);
         let size, color;
-
-        console.log(weight);
 
         size = details && details?.size ? details.size : [];
         color = details && details?.color ? details.color : [];
@@ -615,7 +615,9 @@ const InventoryEditModal = (props) => {
             );
           })
         ) : (
-          <Loader />
+          <div className="h-52">
+            <Loader />
+          </div>
         )}
       </ModalContainer>
     </ModalWrapper>
