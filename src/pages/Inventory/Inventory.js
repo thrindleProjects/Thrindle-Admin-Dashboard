@@ -8,7 +8,6 @@ import InventoryTable from "../../components/Common/GenralTable/InventoryTable";
 import {
   approvedProductHeader,
   inventData,
-  inventFilter,
   inventTableHeader,
 } from "../../data/data";
 import styled from "styled-components";
@@ -19,13 +18,19 @@ import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import NewLoader from "../../components/newLoader/newLoader";
 import DeleteProductModal from "../../components/DeleteProductModal/DeleteProductModal";
+import paginationArr from "../../utils/pagination";
 
 const Inventory = (props) => {
   const [products, setProducts] = useState({
     allProducts: [],
     paginatedProducts: [],
     pageIndex: 0,
+    categories: [],
+    currentCategory: "",
+    allProductsImmutable: [],
   });
+
+  console.log(products);
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -47,11 +52,13 @@ const Inventory = (props) => {
     ? props.location.search.split("=")[1]
     : "Pending Products";
 
-  // Break Customers Array into smaller arrays for pagination
-  const paginationArr = (arr, size) =>
-    Array.from({ length: Math.ceil(arr?.length / size) }, (v, i) =>
-      arr.slice(i * size, i * size + size)
-    );
+  // // Break Customers Array into smaller arrays for pagination
+  // const paginationArr = (arr, size) => {
+
+  // }
+  //   Array.from({ length: Math.ceil(arr?.length / size) }, (v, i) =>
+  //     arr.slice(i * size, i * size + size)
+  //   );
 
   // get Markets data and store in local storage
   const getMarkets = async () => {
@@ -125,6 +132,7 @@ const Inventory = (props) => {
           ...oldProducts,
           paginatedProducts: [],
           allProducts: [],
+          currentCategory: "",
         };
       });
 
@@ -159,8 +167,6 @@ const Inventory = (props) => {
         // let allProducts, paginatedProducts;
 
         if (activeTab === "Pending Products") {
-          // allProducts = allUnverifiedProducts;
-          // paginatedProducts =
           setProducts((prevState) => {
             if (prevState?.pageIndex > allUnverifiedProducts?.length - 1) {
               return {
@@ -168,12 +174,14 @@ const Inventory = (props) => {
                 allProducts: allUnverifiedProducts,
                 paginatedProducts: paginationArr(allUnverifiedProducts, 20),
                 pageIndex: allUnverifiedProducts?.length - 1,
+                allProductsImmutable: allUnverifiedProducts,
               };
             }
             return {
               ...prevState,
               allProducts: allUnverifiedProducts,
               paginatedProducts: paginationArr(allUnverifiedProducts, 20),
+              allProductsImmutable: allUnverifiedProducts,
             };
           });
         }
@@ -186,12 +194,14 @@ const Inventory = (props) => {
                 allProducts: approvedProducts,
                 paginatedProducts: paginationArr(approvedProducts, 20),
                 pageIndex: approvedProducts?.length - 1,
+                allProductsImmutable: approvedProducts,
               };
             }
             return {
               ...prevState,
               allProducts: approvedProducts,
               paginatedProducts: paginationArr(approvedProducts, 20),
+              allProductsImmutable: approvedProducts,
             };
           });
         }
@@ -224,6 +234,23 @@ const Inventory = (props) => {
     }
   }, [activeTab]);
 
+  // get all categories
+  useEffect(() => {
+    const getCategories = () => {
+      setProducts((prevState) => {
+        return {
+          ...prevState,
+          categories: [
+            ...new Set(
+              products.allProductsImmutable?.map((item) => item.category.name)
+            ),
+          ],
+        };
+      });
+    };
+    getCategories();
+  }, [products.allProductsImmutable]);
+
   useEffect(() => {
     if (qty && qty !== "") {
       setActiveTab(qty);
@@ -241,9 +268,7 @@ const Inventory = (props) => {
   };
 
   return (
-    <MainContainer
-      className={`relative`}
-    >
+    <MainContainer className={`relative`}>
       <FirstSection>
         {showModal.editModal && (
           <InventoryEditModal
@@ -260,7 +285,9 @@ const Inventory = (props) => {
         />
         <GeneralFilterTab
           filter={filterValue}
-          filterData={inventFilter}
+          filterData={products?.categories}
+          products={products}
+          setProducts={setProducts}
           changeFilter={(val) => setFilterValue(val)}
         />
         <GeneralPagination
