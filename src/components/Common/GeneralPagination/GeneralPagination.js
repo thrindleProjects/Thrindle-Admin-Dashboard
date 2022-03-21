@@ -10,10 +10,10 @@ const GeneralPagination = (props) => {
   });
 
   useEffect(() => {
-    if (props.itemsNumber && props.itemsNumber.length > 0) {
+    if (props.itemsNumber && props.itemsNumber?.length > 0) {
       let startNumber = 1 + 20 * props.pageNumber;
       let endNumber =
-        startNumber - 1 + props.itemsNumber[props.pageNumber].length;
+        startNumber - 1 + props.itemsNumber[props.pageNumber]?.length;
       let totalNumber = props.totalNumber;
       return setPageInfo({ startNumber, endNumber, totalNumber });
     }
@@ -53,15 +53,15 @@ const GeneralPagination = (props) => {
         <div className="ml-auto pagination flex flex-row ">
           <div className="num-cont flex flex-row mr-10">
             <span className="text-white-text font-Bold text-sm">
-              {pageInfo.startNumber}
+              {pageInfo?.startNumber}
             </span>
             <span className="text-white-text font-Bold text-sm mb-1">-</span>
             <span className="text-white-text font-Bold text-sm">
-              {pageInfo.endNumber}
+              {pageInfo?.endNumber}
             </span>
             <span className="text-white-text font-Bold text-sm">&nbsp;of</span>
             <span className="text-white-text font-Bold text-sm">
-              &nbsp;{pageInfo.totalNumber}
+              &nbsp;{pageInfo?.totalNumber}
             </span>
           </div>
           {/* CONTROLS */}
