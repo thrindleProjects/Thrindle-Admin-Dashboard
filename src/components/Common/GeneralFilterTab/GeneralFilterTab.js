@@ -2,14 +2,39 @@ import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FaSearch, FaAngleDown } from "react-icons/fa";
 import { HiDownload } from "react-icons/hi";
+import paginationArr from "../../../utils/pagination";
 
-const GeneralFilterTab = (props) => {
+const GeneralFilterTab = ({ filterData, products, setProducts }) => {
   const filterRef = useRef(null);
   const [show, setShow] = useState(false);
 
-  const chooseFilter = (val) => {
-    props.changeFilter(val);
+  const FilterByCategory = (category) => {
+    setProducts((prevState) => {
+      let currentProducts = products.allProductsImmutable.filter(
+        (item) => item?.category?.name === category
+      );
+      return {
+        ...prevState,
+        allProducts: currentProducts,
+        paginatedProducts: paginationArr(currentProducts, 20),
+        currentCategory: category,
+        pageIndex: 0,
+      };
+    });
     setShow(false);
+  };
+
+  // reset all products
+  const getAllCategories = () => {
+    setProducts((prevState) => {
+      return {
+        ...prevState,
+        allProducts: products.allProductsImmutable,
+        paginatedProducts: paginationArr(products.allProductsImmutable, 20),
+        currentCategory: "All",
+        pageIndex: 0,
+      };
+    });
   };
 
   useEffect(() => {
@@ -30,12 +55,10 @@ const GeneralFilterTab = (props) => {
     <MainCont className="w-full flex flex-row mt-5 flex-wrap">
       {/* Search  */}
       <div className="order-search-cont flex flex-row px-2 rounded-md  lg:mb-0 mb-8">
-        <FaSearch className="text-base mr-2 text-white-text" />
+        <FaSearch className="text-sm mr-2 text-white-text" />
         <input
           type="text"
-          value={props.value}
           className="order-custom-input bg-transparent focus:outline-none outline-none"
-          onChange={props.onChange}
           placeholder="Search"
         />
       </div>
@@ -46,23 +69,41 @@ const GeneralFilterTab = (props) => {
         className="filter-cont flex flex-row md:mx-3 lg:mx-5 rounded-md relative bg-primary-dark cursor-pointer lg:mb-0 mb-8"
         onClick={() => setShow(!show)}
       >
-        <p className="text-white-main font-Regular text-base mr-2">Filter by</p>
-        <FaAngleDown className="text-base text-white-main cursor-pointer" />
+        {products?.currentCategory !== "" ? (
+          <p className="text-white-main mr-2 text-sm">
+            {products?.currentCategory}
+          </p>
+        ) : (
+          <>
+            {" "}
+            <p className="text-white-main font-Regular text-sm mr-2">
+              Filter by
+            </p>
+          </>
+        )}
+        <FaAngleDown className="text-sm text-white-main cursor-pointer" />
+
         {show && (
           <div
             className={
               show
-                ? "w-full filter-dropdown active bg-white-main p-1 rounded-md absolute top-12 left-0 right-0 "
+                ? "w-full filter-dropdown active bg-white-main p-1 rounded-md absolute top-12 left-0 right-0"
                 : "w-full filter-dropdown bg-white-main pt-7 pb-3 px-5 rounded-md absolute top-12 left-0 right-0 "
             }
           >
-            {props.filterData.map((item, index) => (
+            <p
+              className="filter-text text-xs font-Regular text-white-main text-left p-3 rounded-md hover:bg-primary-main hover:cursor-pointer"
+              onClick={getAllCategories}
+            >
+              All
+            </p>
+            {filterData.map((item, index) => (
               <p
                 key={index}
-                className="text-sm filter-text font-Regular text-white-main text-left p-3 rounded-md hover:bg-primary-main hover:cursor-pointer"
-                onClick={() => chooseFilter(item.title)}
+                className="filter-text text-xs font-Regular text-white-main text-left p-3 rounded-md hover:bg-primary-main hover:cursor-pointer"
+                onClick={() => FilterByCategory(item)}
               >
-                {item.title}
+                {item}
               </p>
             ))}
           </div>
@@ -72,7 +113,7 @@ const GeneralFilterTab = (props) => {
       {/* EXPORT */}
       <div className="export-cont rounded-md flex flex-row ">
         <HiDownload className="text-primary-main text-lg mr-2" />
-        <p className="text-primary-main font-Regular text-base mr-2">Export</p>
+        <p className="text-primary-main font-Regular text-sm mr-2">Export</p>
       </div>
     </MainCont>
   );
