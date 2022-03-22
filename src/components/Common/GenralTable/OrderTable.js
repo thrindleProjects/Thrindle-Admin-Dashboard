@@ -1,10 +1,12 @@
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSingleOrder } from "../../../redux/actions/orderActions/actions";
 import styled from "styled-components";
-import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
+// import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 
 const OrderTable = (props) => {
   const history = useHistory();
-
+  const dispatch = useDispatch();
   const getMarketName = (storeId) => {
     if (storeId.startsWith("CV")) return "Computer Village";
     if (storeId.startsWith("BM")) return "Eko Market";
@@ -20,10 +22,15 @@ const OrderTable = (props) => {
     return `${newDay}/${newMonth}/${newYear}`;
   };
 
+  const handleSetSingleOrder = (item) => {
+    dispatch(setSingleOrder(item));
+    return history.push(`/orders/${item._id}`);
+  };
+
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
-      <table className="w-full min-w-min max-w-full">
-        <thead className="main-table-header rounded-md grid grid-flow-row grid-cols-9 auto-cols-min gap-3 px-6">
+      <table className="w-max lg:w-full min-w-min lg:max-w-full overflow-y-auto">
+        <thead className="main-table-header rounded-md flex shrink-0 lg:grid lg:grid-flow-row lg:grid-cols-9 auto-cols-min gap-3 px-6">
           {props.tableHeaderData?.map((item, index) => (
             <tr
               key={index}
@@ -49,18 +56,15 @@ const OrderTable = (props) => {
             let updatedAt = getUploadDate(item.updatedAt);
             let productName =
               item.product && item.product.name ? item.product.name : "N/A";
-
-            console.log(item);
+            let serialNumber = props.pageIndex * 20 + (index + 1);
 
             return (
               <tr
                 key={index}
-                className="w-full grid grid-flow-row grid-cols-9 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
-                onClick={() => history.push(`/orders/${item._id}`)}
+                className="min-w-full w-max lg:w-full flex shrink-0 lg:grid lg:grid-flow-row grid-cols-9 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
+                onClick={() => handleSetSingleOrder(item)}
               >
-                <td>
-                  <GeneralCheckBox />
-                </td>
+                <td>{serialNumber}</td>
                 <td>
                   <p
                     className={`status text-left text-sm font-Regular capitalize ${

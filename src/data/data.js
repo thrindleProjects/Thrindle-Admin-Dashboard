@@ -639,8 +639,12 @@ export const unpTableHeader = [
 
 export const orderDetailsTableHeader = [
   { title: "Order ID" },
+  { title: "Order NO" },
   { title: "Product Title" },
+  { title: "Description" },
   { title: "Price" },
+  { title: "Quantity" },
+  { title: "Weight" },
   { title: "Ordered Date" },
   { title: "Payment Method" },
   { title: "Status" },
@@ -652,9 +656,6 @@ export const orderCustomerDetailsTableHeader = [
   { title: "Email" },
   { title: "Phone" },
   { title: "Address" },
-  { title: "Country" },
-  { title: "City" },
-  { title: "Postal Code" },
 ];
 
 export const orderMerchantDetailsTableHeader = [
@@ -662,8 +663,6 @@ export const orderMerchantDetailsTableHeader = [
   { title: "Market" },
   { title: "Phone" },
   { title: "Address" },
-  { title: "Country" },
-  { title: "City" },
   { title: "Store ID" },
 ];
 
