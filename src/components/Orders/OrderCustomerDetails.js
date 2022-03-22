@@ -2,6 +2,7 @@ import Wrapper from './OrderDetailsGeneralWrapper';
 import Header from './OrderDetailsGeneralHeader';
 
 const OrderCustomerDetails = ({ tableHeader, tableData }) => {
+  
   return (
     <Wrapper>
       <Header title="Customer's Details" />

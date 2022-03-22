@@ -73,27 +73,21 @@ const Orders = (props) => {
         allOrders: [],
       };
     });
-    let url = "orders?type=";
+    let url = "orders/admin/getOrders?type=";
     let allUrl = [`${url}pending`, `${url}completed`, `${url}cancelled`];
-
     try {
-      let allOrdersArr = await axios.all(
+      let [pending, completed, cancelled] = await axios.all(
         allUrl.map(async (endpoint) => {
           try {
             let {
               data: { data },
             } = await axiosInstance.get(endpoint);
-            return data;
+            return data.reverse();
           } catch (error) {
             toast.error("Something went wrong ...");
           }
         })
       );
-
-      let [pending, completed, cancelled] = allOrdersArr.map((item) =>
-        item.reverse()
-      );
-
       let paginatedOrders, allOrders;
       if (activeTab === "Pending Orders") {
         paginatedOrders = paginationArr(pending, 20);
@@ -119,6 +113,8 @@ const Orders = (props) => {
         });
         return newState;
       });
+
+      // console.log(pending);
 
       setOrders((oldState) => {
         return {

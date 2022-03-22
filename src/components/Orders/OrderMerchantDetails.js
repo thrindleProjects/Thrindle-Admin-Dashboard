@@ -4,7 +4,7 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
   return (
     <Wrapper>
       <Header title={"Merchant's Details"} />
-      <tbody className='table-wrapper'>
+      <table className='table-wrapper'>
         <thead className='body-wrapper'>
           {tableHeader.map((item, index) => {
             return (
@@ -37,7 +37,7 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
             <td>{tableData.store_id}</td>
           </tr>
         </tbody>
-      </tbody>
+      </table>
     </Wrapper>
   );
 };

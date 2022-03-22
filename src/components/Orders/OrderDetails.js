@@ -1,12 +1,23 @@
-import Wrapper from './OrderDetailsGeneralWrapper';
-import Header from './OrderDetailsGeneralHeader';
+import Wrapper from "./OrderDetailsGeneralWrapper";
+import Header from "./OrderDetailsGeneralHeader";
 
-const OrderDetails = ({ tableHeader, tableData }) => {
+const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
+  const getUploadDate = (updatedAt) => {
+    if (!updatedAt) return "N/A";
+    const date = new Date(updatedAt);
+    let newDay = date.getDate();
+    let newMonth = date.getMonth() + 1;
+    let newYear = date.getFullYear();
+    return `${newDay}/${newMonth}/${newYear}`;
+  };
+
+  console.log(orderInfo);
+
   return (
     <Wrapper>
-      <Header title={'Order'} />
-      <table className='table-wrapper'>
-        <thead className='body-wrapper'>
+      <Header title={"Order"} />
+      <table className="table-wrapper">
+        <thead className="body-wrapper">
           {tableHeader.map((item, index) => {
             return (
               <tr key={index} className={`font-medium`}>
@@ -15,36 +26,60 @@ const OrderDetails = ({ tableHeader, tableData }) => {
             );
           })}
         </thead>
-        <tbody className='body-wrapper'>
+        <tbody className="body-wrapper">
           <tr>
-            <td>{tableData._id}</td>
+            <td>{orderInfo?._id}</td>
           </tr>
           <tr>
-            <td>{tableData.title}</td>
+            <td>{orderInfo.order_no ? orderInfo.order_no : "N/A"}</td>
           </tr>
           <tr>
-            <td>{tableData.total_price}</td>
+            <td>{tableData.name ? tableData.name : "N/A"} </td>
           </tr>
           <tr>
-            <td>{tableData.created_at}</td>
+            <td>{tableData.description ? tableData.description : "N/A"}</td>
           </tr>
           <tr>
-            <td>{tableData.method}</td>
+            <td>{tableData.price ? tableData.price : "N/A"}</td>
+          </tr>
+          <tr>
+            <td>{orderInfo.quantity ? orderInfo.quantity : "N/A"}</td>
+          </tr>
+          <tr>
+            <td>{orderInfo.weight ? orderInfo.weight : "N/A"}</td>
+          </tr>
+          <tr>
+            <td>{getUploadDate(orderInfo.createdAt)}</td>
+          </tr>
+          <tr>
+            <td>{orderInfo?.payment?.verifiedTransaction?.card?.type}</td>
           </tr>
           <tr>
             <td
-              className={`${
-                tableData.status === 'Pending' && 'text-secondary-yellow'
-              } ${tableData.status === 'Cancelled' && 'text-secondary-error'} ${
-                tableData.status === 'Delivered Orders' &&
-                'text-secondary-success'
+              className={`capitalize ${
+                orderInfo.status === "pending" && "text-secondary-yellow"
+              } ${orderInfo.status === "cancelled" && "text-secondary-error"} ${
+                orderInfo.status === "completed" && "text-secondary-success"
               }`}
             >
-              {tableData.status}
+              {orderInfo?.status}
             </td>
           </tr>
           <tr>
-            <td>{tableData.pay_status}</td>
+            <td
+              className={`capitalize ${
+                orderInfo?.payment?.status === "pending" &&
+                "text-secondary-yellow"
+              } ${
+                orderInfo?.payment?.status === "failed" &&
+                "text-secondary-error"
+              } ${
+                orderInfo?.payment?.status === "success" &&
+                "text-secondary-success"
+              }`}
+            >
+              {orderInfo?.payment?.status}
+            </td>
           </tr>
         </tbody>
       </table>

@@ -639,8 +639,12 @@ export const unpTableHeader = [
 
 export const orderDetailsTableHeader = [
   { title: "Order ID" },
+  { title: "Order NO" },
   { title: "Product Title" },
+  { title: "Description" },
   { title: "Price" },
+  { title: "Quantity" },
+  { title: "Weight" },
   { title: "Ordered Date" },
   { title: "Payment Method" },
   { title: "Status" },

@@ -1,10 +1,12 @@
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSingleOrder } from "../../../redux/actions/orderActions/actions";
 import styled from "styled-components";
 import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 
 const OrderTable = (props) => {
   const history = useHistory();
-
+  const dispatch = useDispatch();
   const getMarketName = (storeId) => {
     if (storeId.startsWith("CV")) return "Computer Village";
     if (storeId.startsWith("BM")) return "Eko Market";
@@ -18,6 +20,11 @@ const OrderTable = (props) => {
     let newMonth = date.getMonth() + 1;
     let newYear = date.getFullYear();
     return `${newDay}/${newMonth}/${newYear}`;
+  };
+
+  const handleSetSingleOrder = (item) => {
+    dispatch(setSingleOrder(item));
+    return history.push(`/orders/${item._id}`);
   };
 
   return (
@@ -50,13 +57,11 @@ const OrderTable = (props) => {
             let productName =
               item.product && item.product.name ? item.product.name : "N/A";
 
-            console.log(item);
-
             return (
               <tr
                 key={index}
                 className="w-full grid grid-flow-row grid-cols-9 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
-                onClick={() => history.push(`/orders/${item._id}`)}
+                onClick={() => handleSetSingleOrder(item)}
               >
                 <td>
                   <GeneralCheckBox />

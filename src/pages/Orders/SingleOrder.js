@@ -1,9 +1,9 @@
 // import { useParams } from 'react-router-dom';
-import MainContainer from '../../components/Common/MainContainer/MainContainer';
-import SingleOrderHeader from '../../components/Orders/SingleOrderHeader';
-import OrderDetails from '../../components/Orders/OrderDetails';
-import OrderCustomerDetails from '../../components/Orders/OrderCustomerDetails';
-import OrderMerchantDetails from '../../components/Orders/OrderMerchantDetails';
+import MainContainer from "../../components/Common/MainContainer/MainContainer";
+import SingleOrderHeader from "../../components/Orders/SingleOrderHeader";
+import OrderDetails from "../../components/Orders/OrderDetails";
+import OrderCustomerDetails from "../../components/Orders/OrderCustomerDetails";
+import OrderMerchantDetails from "../../components/Orders/OrderMerchantDetails";
 import {
   orderDetailsTableHeader,
   orderDetailsTableData,
@@ -11,27 +11,33 @@ import {
   orderCustomerDetailsTableData,
   orderMerchantDetailsTableHeader,
   orderMerchantDetailsTableData,
-} from '../../data/data';
+} from "../../data/data";
+import { useSelector } from "react-redux";
 
 const SingleOrder = () => {
-  // let { orderId } = useParams();
+  const { singleOrder } = useSelector((state) => state.orders);
+
+  let { buyer, seller, product } = singleOrder;
 
   return (
     <MainContainer>
-      <div className='flex flex-col gap-12'>
+      <div className="flex flex-col gap-12">
         <SingleOrderHeader />
-        <div className='grid grid-cols-2 gap-x-24 gap-y-7'>
+        <div className="grid grid-cols-2 gap-x-24 gap-y-7">
           <OrderDetails
             tableHeader={orderDetailsTableHeader}
-            tableData={orderDetailsTableData}
+            tableData={product}
+            orderInfo={singleOrder}
           />
           <OrderCustomerDetails
             tableHeader={orderCustomerDetailsTableHeader}
-            tableData={orderCustomerDetailsTableData}
+            tableData={buyer}
+            orderInfo={singleOrder}
           />
           <OrderMerchantDetails
             tableHeader={orderMerchantDetailsTableHeader}
-            tableData={orderMerchantDetailsTableData}
+            tableData={seller}
+            orderInfo={singleOrder}
           />
         </div>
       </div>
