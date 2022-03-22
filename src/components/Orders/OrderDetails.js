@@ -12,8 +12,6 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
     return `${newDay}/${newMonth}/${newYear}`;
   };
 
-  console.log(tableData);
-
   return (
     <Wrapper>
       <Header title={"Order"} />
