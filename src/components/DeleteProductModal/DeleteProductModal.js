@@ -15,7 +15,7 @@ const ModalContainer = styled.div`
   top: 50%;
   left: 50%;
   opacity: 1;
-  z-index: 11;
+  z-index: 15;
   transform: translate(-50%, -50%);
   border-radius: 10px;
 

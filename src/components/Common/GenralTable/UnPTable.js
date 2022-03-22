@@ -61,13 +61,13 @@ const UnPTable = (props) => {
               </td>
               <td className='col-span-2'>
                 <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text flex flex-row gap-8'>
-                  <span className='cursor-pointer flex flex-row gap-2 items-center'>
+                  <button className='cursor-pointer flex flex-row gap-2 items-center' onClick={() => props.handleSetModal(`SHOW_EDIT_USER`)}>
                     <MdEdit className='text-2xl text-primary-dark' /> Edit
-                  </span>
-                  <span className='cursor-pointer flex flex-row gap-2 items-center'>
+                  </button>
+                  <button className='cursor-pointer flex flex-row gap-2 items-center' onClick={() => props.handleSetModal(`SHOW_DELETE_USER`)}>
                     <AiFillCloseCircle className='text-2xl text-secondary-error' />{" "}
                     Delete
-                  </span>
+                  </button>
                 </p>
               </td>
             </tr>
