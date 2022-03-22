@@ -130,6 +130,7 @@ const InventoryEditModal = (props) => {
   }, []);
 
   const triggerTableUpdate = useCallback(() => {
+    document.documentElement.style.overflow = "revert";
     getAllProducts();
     return handleSetModal("CLOSE_ALL_MODALS");
   }, [getAllProducts, handleSetModal]);
