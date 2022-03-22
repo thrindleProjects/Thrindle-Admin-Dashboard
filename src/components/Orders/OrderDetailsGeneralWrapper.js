@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const OrderDetailsGeneralWrapper = ({ children, ...others }) => {
   return <DetailContainer {...others}>{children}</DetailContainer>;
@@ -13,18 +13,18 @@ const DetailContainer = styled.div`
   border-radius: 0.375rem;
   overflow-y: auto;
   box-shadow: 0rem 0.25rem 0.5rem #b2acac;
-
+  max-width: 100%;
+  width: 100%;
   .table-wrapper {
-    display: flex;
-    gap: 0.5rem;
-    flex-flow: row nowrap;
-  }
-
-  .body-wrapper {
-    display: flex;
-    flex-flow: column nowrap;
+    display: grid;
+    grid-template-columns: auto 1fr;
     gap: 0.75rem;
+    flex-flow: row nowrap;
+    width: 100%;
     padding: 3rem 2rem;
+    & > * {
+      flex-shrink: 0;
+    }
   }
   tbody.body-wrapper {
     font-weight: 800;

@@ -35,8 +35,6 @@ const InventoryEditModal = (props) => {
     color: [],
   });
 
-  console.log(formData.weight);
-
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
@@ -132,6 +130,7 @@ const InventoryEditModal = (props) => {
   }, []);
 
   const triggerTableUpdate = useCallback(() => {
+    document.documentElement.style.overflow = "revert";
     getAllProducts();
     return handleSetModal("CLOSE_ALL_MODALS");
   }, [getAllProducts, handleSetModal]);
