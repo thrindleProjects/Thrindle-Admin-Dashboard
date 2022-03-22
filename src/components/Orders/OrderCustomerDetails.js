@@ -1,8 +1,31 @@
+import { useCallback, useEffect, useState } from "react";
 import Wrapper from "./OrderDetailsGeneralWrapper";
 import Header from "./OrderDetailsGeneralHeader";
 import styled from "styled-components";
+import axiosInstance from "../../utils/axiosInstance";
 
-const OrderCustomerDetails = ({ tableHeader, tableData }) => {
+const OrderCustomerDetails = ({ tableHeader, tableData, orderInfo }) => {
+  const [buyerData, setBuyerData] = useState({ address: "" });
+
+  const getBuyerData = useCallback(async () => {
+    try {
+      const {
+        data: { data },
+      } = await axiosInstance.get(
+        `delivery/admin/getDeliveries/${orderInfo.delivery._id}`
+      );
+      console.log(data);
+      setBuyerData(data.shipping);
+    } catch (error) {
+      setBuyerData({ address: "N/A" });
+      throw new Error(error);
+    }
+  }, [orderInfo.delivery._id]);
+
+  useEffect(() => {
+    getBuyerData();
+  }, [getBuyerData]);
+
   return (
     <Wrapper>
       <Header title="Customer's Details" />
@@ -27,7 +50,7 @@ const OrderCustomerDetails = ({ tableHeader, tableData }) => {
             <td>{tableData?.phone}</td>
           </tr>
           <tr>
-            <td>{tableData?.location ? tableData?.location : "N/A"}</td>
+            <td>{buyerData.address}</td>
           </tr>
         </tbody>
       </SingleOrderTable>
