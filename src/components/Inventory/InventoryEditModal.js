@@ -35,8 +35,6 @@ const InventoryEditModal = (props) => {
     color: [],
   });
 
-  console.log(formData.weight);
-
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
@@ -155,8 +153,6 @@ const InventoryEditModal = (props) => {
         let marketName = getMarketName(store_id);
         await getMarketCategories(marketName);
         let size, color;
-
-        console.log(weight);
 
         size = details && details?.size ? details.size : [];
         color = details && details?.color ? details.color : [];

@@ -6,11 +6,8 @@ import OrderCustomerDetails from "../../components/Orders/OrderCustomerDetails";
 import OrderMerchantDetails from "../../components/Orders/OrderMerchantDetails";
 import {
   orderDetailsTableHeader,
-  orderDetailsTableData,
   orderCustomerDetailsTableHeader,
-  orderCustomerDetailsTableData,
   orderMerchantDetailsTableHeader,
-  orderMerchantDetailsTableData,
 } from "../../data/data";
 import { useSelector } from "react-redux";
 
@@ -23,7 +20,7 @@ const SingleOrder = () => {
     <MainContainer>
       <div className="flex flex-col gap-12">
         <SingleOrderHeader />
-        <div className="grid grid-cols-2 gap-x-24 gap-y-7">
+        <div className="grid lg:grid-cols-2 gap-x-24 gap-y-7">
           <OrderDetails
             tableHeader={orderDetailsTableHeader}
             tableData={product}

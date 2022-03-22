@@ -656,9 +656,6 @@ export const orderCustomerDetailsTableHeader = [
   { title: "Email" },
   { title: "Phone" },
   { title: "Address" },
-  { title: "Country" },
-  { title: "City" },
-  { title: "Postal Code" },
 ];
 
 export const orderMerchantDetailsTableHeader = [
@@ -666,8 +663,6 @@ export const orderMerchantDetailsTableHeader = [
   { title: "Market" },
   { title: "Phone" },
   { title: "Address" },
-  { title: "Country" },
-  { title: "City" },
   { title: "Store ID" },
 ];
 

@@ -26,12 +26,6 @@ const DetailContainer = styled.div`
       flex-shrink: 0;
     }
   }
-
-  .body-wrapper {
-    display: grid;
-    grid-template-rows: repeat(11, minmax(0, 2.5rem));
-    gap: 0.75rem;
-  }
   tbody.body-wrapper {
     font-weight: 800;
   }

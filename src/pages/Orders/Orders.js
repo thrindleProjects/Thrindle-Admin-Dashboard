@@ -176,6 +176,7 @@ const Orders = (props) => {
               tableHeaderData={orderTableHeader}
               tableData={orders.paginatedOrders[orders.pageIndex]}
               activeTab={activeTab}
+              pageIndex={orders.pageIndex}
             />
           )}
       </FirstSection>
