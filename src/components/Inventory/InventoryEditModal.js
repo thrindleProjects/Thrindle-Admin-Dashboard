@@ -71,6 +71,8 @@ const InventoryEditModal = (props) => {
 
   const handleFormCancel = (e) => {
     e.preventDefault();
+    document.documentElement.style.overflow = "revert";
+
     if (updated) {
       return triggerTableUpdate();
     }
@@ -611,7 +613,9 @@ const InventoryEditModal = (props) => {
             );
           })
         ) : (
-          <Loader />
+          <div className="h-52">
+            <Loader />
+          </div>
         )}
       </ModalContainer>
     </ModalWrapper>
