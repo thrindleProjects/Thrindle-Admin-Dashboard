@@ -5,7 +5,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import styled from "styled-components";
 
 const OrderMerchantDetails = ({ tableHeader, tableData }) => {
-  const [storeData, setStoreData] = useState({ store_address: "" });
+  const [storeData, setStoreData] = useState({ store_address: "", store: "" });
 
   console.log(tableData);
   console.log(storeData);
@@ -27,7 +27,7 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
       );
       setStoreData(data);
     } catch (error) {
-      setStoreData({ store_address: "N/A" });
+      setStoreData({ store_address: "N/A", store_name: "N/A" });
       throw new Error(error);
     }
   }, [tableData?.store_id]);
