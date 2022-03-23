@@ -27,7 +27,7 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
       setStoreData({ store_address: "N/A" });
       throw new Error(error);
     }
-  }, [tableData.store_id]);
+  }, [tableData?.store_id]);
 
   useEffect(() => {
     getStoreAddress();

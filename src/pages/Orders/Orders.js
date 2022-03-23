@@ -22,7 +22,11 @@ const Orders = (props) => {
 
   const [activeTab, setActiveTab] = useState("Pending Orders");
   const [filterValue, setFilterValue] = useState("");
-  const [status, setStatus] = useState({ isLoading: true, isError: false });
+  const [status, setStatus] = useState({
+    isLoading: true,
+    isError: false,
+    isEmpty: false,
+  });
   const [orderTabData, setOrderTabData] = useState(orderData);
 
   const qty = props.location.search
@@ -65,7 +69,7 @@ const Orders = (props) => {
   };
 
   const getOrders = useCallback(async () => {
-    setStatus({ isLoading: true, isError: false });
+    setStatus({ isLoading: true, isError: false, isEmpty: false });
     setOrders((oldOrders) => {
       return {
         ...oldOrders,
@@ -114,8 +118,6 @@ const Orders = (props) => {
         return newState;
       });
 
-      // console.log(pending);
-
       setOrders((oldState) => {
         return {
           ...oldState,
@@ -124,8 +126,12 @@ const Orders = (props) => {
           allOrders,
         };
       });
-      return setStatus({ isError: false, isLoading: false });
+      if (allOrders.length === 0) {
+        return setStatus({ isEmpty: true, isError: false, isLoading: false });
+      }
+      return setStatus({ isEmpty: false, isError: false, isLoading: false });
     } catch (error) {
+      setStatus({ isEmpty: false, isLoading: false, isError: true });
       throw new Error(error);
     }
   }, [activeTab]);
@@ -162,11 +168,18 @@ const Orders = (props) => {
           itemsNumber={orders.paginatedOrders}
           totalNumber={orders.allOrders.length}
         />
-        {status.isError && <div>Error! Please Reload the Page</div>}
+        {status.isError && (
+          <div className="text-secondary-error flex justify-center items-center py-16 w-full font-bold text-2xl uppercase">
+            Error! Please Reload the Page
+          </div>
+        )}
         {!status.isError && status.isLoading && (
           <div className="w-full mt-32">
             <Loader />
           </div>
+        )}
+        {!status.isLoading && status.isEmpty && (
+          <div className="text-secondary-yellow flex justify-center items-center py-16 w-full font-bold text-2xl uppercase">{`No ${activeTab} to display`}</div>
         )}
         {!status.isError &&
           !status.isLoading &&
