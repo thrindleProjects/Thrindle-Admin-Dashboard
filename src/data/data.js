@@ -665,6 +665,7 @@ export const orderMerchantDetailsTableHeader = [
   { title: "Market" },
   { title: "Phone" },
   { title: "Address" },
+  { title: "Store Name" },
   { title: "Store ID" },
 ];
 

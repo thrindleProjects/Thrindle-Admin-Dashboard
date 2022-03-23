@@ -7,6 +7,9 @@ import styled from "styled-components";
 const OrderMerchantDetails = ({ tableHeader, tableData }) => {
   const [storeData, setStoreData] = useState({ store_address: "" });
 
+  console.log(tableData);
+  console.log(storeData);
+
   const getMarketName = (storeId) => {
     if (!storeId) return "N/A";
     if (storeId.trim().startsWith("CV")) return "Computer Village";
@@ -58,6 +61,9 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
           </tr>
           <tr className="capitalize">
             <td>{storeData.store_address}</td>
+          </tr>
+          <tr className="capitalize">
+            <td>{storeData.store_name}</td>
           </tr>
           <tr>
             <td>{tableData?.store_id}</td>
