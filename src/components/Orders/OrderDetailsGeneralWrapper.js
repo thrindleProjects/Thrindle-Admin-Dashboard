@@ -32,4 +32,7 @@ const DetailContainer = styled.div`
   thead.body-wrapper {
     font-weight: 500;
   }
+  img {
+    min-width: 10rem;
+  }
 `;

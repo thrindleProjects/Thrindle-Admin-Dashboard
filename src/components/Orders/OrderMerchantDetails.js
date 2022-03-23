@@ -1,11 +1,11 @@
-// import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Wrapper from "./OrderDetailsGeneralWrapper";
 import Header from "./OrderDetailsGeneralHeader";
-// import axiosInstance from "../../utils/axiosInstance";
+import axiosInstance from "../../utils/axiosInstance";
 import styled from "styled-components";
 
 const OrderMerchantDetails = ({ tableHeader, tableData }) => {
-  // const [storeData, setStoreData] = useState({});
+  const [storeData, setStoreData] = useState({ store_address: "" });
 
   const getMarketName = (storeId) => {
     if (!storeId) return "N/A";
@@ -15,18 +15,23 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
     return "Other Market";
   };
 
-  // const getStoreAddress = useCallback(async () => {
-  //   try {
-  //     let data = await axiosInstance.get(`stores/${tableData?.store_id}`);
-  //     console.log(data);
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
-  // }, [tableData.store_id]);
+  const getStoreAddress = useCallback(async () => {
+    try {
+      let {
+        data: { data },
+      } = await axiosInstance.get(
+        `stores/admin/getStoreDetails/${tableData?.store_id}`
+      );
+      setStoreData(data);
+    } catch (error) {
+      setStoreData({ store_address: "N/A" });
+      throw new Error(error);
+    }
+  }, [tableData?.store_id]);
 
-  // useEffect(() => {
-  //   getStoreAddress();
-  // }, [getStoreAddress]);
+  useEffect(() => {
+    getStoreAddress();
+  }, [getStoreAddress]);
 
   return (
     <Wrapper>
@@ -51,8 +56,8 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
           <tr>
             <td>{tableData?.phone}</td>
           </tr>
-          <tr>
-            <td>{tableData?.location ? tableData?.location : "N/A"}</td>
+          <tr className="capitalize">
+            <td>{storeData.store_address}</td>
           </tr>
           <tr>
             <td>{tableData?.store_id}</td>

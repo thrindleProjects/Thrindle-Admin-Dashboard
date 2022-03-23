@@ -30,8 +30,6 @@ const Inventory = (props) => {
     allProductsImmutable: [],
   });
 
-  console.log(products);
-
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const [showModal, setShowModal] = useState({
