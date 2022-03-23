@@ -63,8 +63,7 @@ const Orders = (props) => {
         });
         break;
       default:
-        console.log("Argumenet NOT handled");
-        break;
+        throw new Error("Argumenet NOT handled");
     }
   };
 

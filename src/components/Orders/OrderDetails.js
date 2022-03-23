@@ -1,8 +1,11 @@
+import { useEffect, useState } from "react";
 import Wrapper from "./OrderDetailsGeneralWrapper";
 import Header from "./OrderDetailsGeneralHeader";
 import styled from "styled-components";
 
 const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
+  const [orderDetails, setOrderDetails] = useState({ size: "", color: "" });
+
   const getUploadDate = (updatedAt) => {
     if (!updatedAt) return "N/A";
     const date = new Date(updatedAt);
@@ -11,6 +14,24 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
     let newYear = date.getFullYear();
     return `${newDay}/${newMonth}/${newYear}`;
   };
+
+  useEffect(() => {
+    if (orderInfo && orderInfo?.payment && orderInfo?.payment?.priceDetails) {
+      let newDetails = orderInfo.payment.priceDetails.find(
+        (item) => item?.productId === tableData?._id
+      );
+      let size =
+        newDetails?.size && newDetails.size.length > 0
+          ? newDetails.size
+          : "N/A";
+      let color =
+        newDetails?.color && newDetails.color.length > 0
+          ? newDetails.color
+          : "N/A";
+      return setOrderDetails({ size, color });
+    }
+    return setOrderDetails({ size: "N/A", color: "N/A" });
+  }, [orderInfo, tableData]);
 
   return (
     <Wrapper>
@@ -57,13 +78,23 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
             <td>{orderInfo?.quantity ? orderInfo?.quantity : "N/A"}</td>
           </tr>
           <tr>
+            <td>{orderDetails.size}</td>
+          </tr>
+          <tr>
+            <td>{orderDetails.color}</td>
+          </tr>
+          <tr>
             <td>{orderInfo?.weight ? orderInfo?.weight : "N/A"}</td>
           </tr>
           <tr>
             <td>{getUploadDate(orderInfo?.createdAt)}</td>
           </tr>
-          <tr>
-            <td>{orderInfo?.payment?.verifiedTransaction?.card?.type}</td>
+          <tr className="capitalize">
+            <td>
+              {orderInfo?.payment?.verifiedTransaction?.data?.payment_type
+                ? orderInfo?.payment?.verifiedTransaction?.data?.payment_type
+                : "N/A"}
+            </td>
           </tr>
           <tr>
             <td
@@ -105,7 +136,7 @@ export default OrderDetails;
 const SingleOrderTable = styled.table`
   .body-wrapper {
     display: grid;
-    grid-template-rows: repeat(5, minmax(0, 2.5rem));
+    grid-template-rows: repeat(5, 2rem);
     gap: 0.5rem;
   }
 `;

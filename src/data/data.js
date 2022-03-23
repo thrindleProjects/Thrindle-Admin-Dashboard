@@ -644,6 +644,8 @@ export const orderDetailsTableHeader = [
   { title: "Description" },
   { title: "Price" },
   { title: "Quantity" },
+  { title: "Size" },
+  { title: "Color" },
   { title: "Weight" },
   { title: "Ordered Date" },
   { title: "Payment Method" },
@@ -665,6 +667,7 @@ export const orderMerchantDetailsTableHeader = [
   { title: "Market" },
   { title: "Phone" },
   { title: "Address" },
+  { title: "Store Name" },
   { title: "Store ID" },
 ];
 
