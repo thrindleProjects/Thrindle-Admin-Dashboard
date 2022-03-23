@@ -644,6 +644,8 @@ export const orderDetailsTableHeader = [
   { title: "Description" },
   { title: "Price" },
   { title: "Quantity" },
+  { title: "Size" },
+  { title: "Color" },
   { title: "Weight" },
   { title: "Ordered Date" },
   { title: "Payment Method" },

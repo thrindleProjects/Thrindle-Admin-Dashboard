@@ -7,9 +7,6 @@ import styled from "styled-components";
 const OrderMerchantDetails = ({ tableHeader, tableData }) => {
   const [storeData, setStoreData] = useState({ store_address: "", store: "" });
 
-  console.log(tableData);
-  console.log(storeData);
-
   const getMarketName = (storeId) => {
     if (!storeId) return "N/A";
     if (storeId.trim().startsWith("CV")) return "Computer Village";
@@ -43,7 +40,12 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
         <thead className="body-wrapper">
           {tableHeader.map((item, index) => {
             return (
-              <tr key={index} className={`font-medium`}>
+              <tr
+                key={index}
+                className={`font-medium ${
+                  item?.title === "Address" ? "row-span-2" : ""
+                }`}
+              >
                 <th>{item?.title}</th>
               </tr>
             );
@@ -59,7 +61,7 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
           <tr>
             <td>{tableData?.phone}</td>
           </tr>
-          <tr className="capitalize">
+          <tr className="capitalize row-span-2">
             <td>{storeData.store_address}</td>
           </tr>
           <tr className="capitalize">
@@ -79,7 +81,7 @@ export default OrderMerchantDetails;
 const SingleOrderTable = styled.table`
   .body-wrapper {
     display: grid;
-    grid-template-rows: repeat(5, minmax(0, 2.5rem));
+    grid-template-rows: repeat(6, 1rem);
     gap: 0.5rem;
   }
 `;
