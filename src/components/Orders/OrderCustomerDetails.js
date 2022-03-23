@@ -5,22 +5,21 @@ import styled from "styled-components";
 import axiosInstance from "../../utils/axiosInstance";
 
 const OrderCustomerDetails = ({ tableHeader, tableData, orderInfo }) => {
-  const [buyerData, setBuyerData] = useState({ address: "" });
+  const [buyerData, setBuyerData] = useState({ address: "", city: "", state: "" });
 
   const getBuyerData = useCallback(async () => {
     try {
       const {
         data: { data },
       } = await axiosInstance.get(
-        `delivery/admin/getDeliveries/${orderInfo.delivery._id}`
+        `delivery/admin/getDeliveries/${orderInfo?.delivery?._id}`
       );
-      console.log(data);
-      setBuyerData(data.shipping);
+      setBuyerData(data?.shipping);
     } catch (error) {
-      setBuyerData({ address: "N/A" });
+      setBuyerData({ city: "N/A", state: "N/A", address: "N/A" });
       throw new Error(error);
     }
-  }, [orderInfo.delivery._id]);
+  }, [orderInfo?.delivery?._id]);
 
   useEffect(() => {
     getBuyerData();
@@ -50,7 +49,13 @@ const OrderCustomerDetails = ({ tableHeader, tableData, orderInfo }) => {
             <td>{tableData?.phone}</td>
           </tr>
           <tr>
-            <td>{buyerData.address}</td>
+            <td>{buyerData?.city}</td>
+          </tr>
+          <tr>
+            <td>{buyerData?.state}</td>
+          </tr>
+          <tr className="capitalize">
+            <td>{buyerData?.address}</td>
           </tr>
         </tbody>
       </SingleOrderTable>

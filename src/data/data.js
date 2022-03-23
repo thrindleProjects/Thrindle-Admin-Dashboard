@@ -522,10 +522,10 @@ export const orderTableHeader = [
     title: "Price",
   },
   {
-    title: "Total Price",
+    title: "Quantity",
   },
   {
-    title: "Quantity",
+    title: "Total Price",
   },
   {
     title: "Market",
@@ -655,6 +655,8 @@ export const orderCustomerDetailsTableHeader = [
   { title: "Name" },
   { title: "Email" },
   { title: "Phone" },
+  { title: "City" },
+  { title: "State" },
   { title: "Address" },
 ];
 
