@@ -5,7 +5,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import styled from "styled-components";
 
 const OrderMerchantDetails = ({ tableHeader, tableData }) => {
-  const [storeData, setStoreData] = useState({ store_address: "" });
+  const [storeData, setStoreData] = useState({ store_address: "", store: "" });
 
   const getMarketName = (storeId) => {
     if (!storeId) return "N/A";
@@ -24,7 +24,7 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
       );
       setStoreData(data);
     } catch (error) {
-      setStoreData({ store_address: "N/A" });
+      setStoreData({ store_address: "N/A", store_name: "N/A" });
       throw new Error(error);
     }
   }, [tableData?.store_id]);
@@ -40,7 +40,12 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
         <thead className="body-wrapper">
           {tableHeader.map((item, index) => {
             return (
-              <tr key={index} className={`font-medium`}>
+              <tr
+                key={index}
+                className={`font-medium ${
+                  item?.title === "Address" ? "row-span-2" : ""
+                }`}
+              >
                 <th>{item?.title}</th>
               </tr>
             );
@@ -56,8 +61,11 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
           <tr>
             <td>{tableData?.phone}</td>
           </tr>
-          <tr className="capitalize">
+          <tr className="capitalize row-span-2">
             <td>{storeData.store_address}</td>
+          </tr>
+          <tr className="capitalize">
+            <td>{storeData.store_name}</td>
           </tr>
           <tr>
             <td>{tableData?.store_id}</td>
@@ -73,7 +81,7 @@ export default OrderMerchantDetails;
 const SingleOrderTable = styled.table`
   .body-wrapper {
     display: grid;
-    grid-template-rows: repeat(5, minmax(0, 2.5rem));
+    grid-template-rows: repeat(6, 1rem);
     gap: 0.5rem;
   }
 `;
