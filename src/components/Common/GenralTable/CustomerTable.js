@@ -1,15 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
-import GeneralCheckBox from '../GeneralCheck/GeneralCheckBox';
+import React from "react";
+import styled from "styled-components";
 
 const CustomerTable = (props) => {
-  const getMarketName = (storeId = 'NA') => {
+  const getMarketName = (storeId = "NA") => {
     if (storeId) {
-      if (storeId.startsWith('CV')) return 'Computer Village';
-      if (storeId.startsWith('BM')) return 'Balogun Market';
-      if (storeId.startsWith('EM')) return 'Eko Market';
+      if (storeId.startsWith("CV")) return "Computer Village";
+      if (storeId.startsWith("BM")) return "Balogun Market";
+      if (storeId.startsWith("EM")) return "Eko Market";
     }
-    return 'Other Market';
+    return "Other Market";
   };
   const getUploadDate = (updatedAt) => {
     const date = new Date(updatedAt);
@@ -19,66 +18,64 @@ const CustomerTable = (props) => {
     return `${newDay}/${newMonth}/${newYear}`;
   };
 
+  console.log(props.tableData);
+
   return (
-    <MainTable className='w-full rounded-md py-10 mt-5 overflow-auto'>
-      <table className='w-full min-w-min max-w-full'>
-        <thead className='main-table-header rounded-md grid grid-flow-row grid-cols-6 auto-cols-min gap-8 px-6'>
+    <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
+      <table className="w-full min-w-min max-w-full">
+        <thead className="main-table-header rounded-md grid grid-flow-row grid-cols-6 auto-cols-min gap-8 px-6">
           {props.showCheck && (
             <tr>
-              <th>
-                <GeneralCheckBox />
-              </th>
+              <th></th>
             </tr>
           )}
 
           {props.tableHeaderData?.map((item, index) => (
             <tr key={index}>
               <th>
-                <p className='table-head-text text-sm font-normal font-Regular text-left text-white-text'>
+                <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
                   {item.title}
                 </p>
               </th>
             </tr>
           ))}
         </thead>
-        <tbody className='main-table-body'>
-          {props.tableData?.map((item) => {
+        <tbody className="main-table-body">
+          {props.tableData?.map((item, index) => {
             let marktetName = getMarketName(item.store_id);
             let uploadDate = getUploadDate(item.updatedAt);
+            let serialNumber = props.pageIndex * 20 + (index + 1);
+
             return (
               <tr
                 key={item._id}
-                className='w-full grid grid-flow-row grid-cols-6 gap-8 auto-cols-min px-6 py-3 '
+                className="w-full grid grid-flow-row grid-cols-6 gap-8 auto-cols-min px-6 py-3 "
               >
-                {props.showCheck && (
-                  <td>
-                    <GeneralCheckBox />
-                  </td>
-                )}
+                {props.showCheck && <td>{serialNumber}</td>}
 
                 <td>
-                  <p className='capitalize status text-left text-sm text-white-text font-Regular'>
+                  <p className="capitalize status text-left text-sm text-white-text font-Regular">
                     {item.name}
                   </p>
                 </td>
                 <td>
-                  <p className='orderId text-left text-sm text-white-text font-Regular'>
+                  <p className="orderId text-left text-sm text-white-text font-Regular">
                     {item.phone}
                   </p>
                 </td>
                 <td>
-                  <p className='product text-left text-sm text-white-text font-Regular'>
+                  <p className="product text-left text-sm text-white-text font-Regular">
                     {item.name}
                   </p>
                 </td>
 
                 <td>
-                  <p className='product text-left text-sm text-white-text font-Regular'>
+                  <p className="product text-left text-sm text-white-text font-Regular">
                     {marktetName}
                   </p>
                 </td>
                 <td>
-                  <p className='product text-left text-sm text-white-text font-Regular'>
+                  <p className="product text-left text-sm text-white-text font-Regular">
                     {uploadDate}
                   </p>
                 </td>

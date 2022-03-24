@@ -60,15 +60,12 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
         </thead>
         <tbody className="body-wrapper">
           <tr>
-            <td>{orderInfo?._id}</td>
-          </tr>
-          <tr>
             <td>{orderInfo?.order_no ? orderInfo?.order_no : "N/A"}</td>
           </tr>
           <tr>
             <td>{tableData?.name ? tableData?.name : "N/A"} </td>
           </tr>
-          <tr className="row-span-2">
+          <tr className="row-span-2 h-full overflow-y-auto">
             <td>{tableData?.description ? tableData?.description : "N/A"}</td>
           </tr>
           <tr>
