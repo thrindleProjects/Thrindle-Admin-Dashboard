@@ -1,4 +1,3 @@
-// import GeneralCheckBox from '../GeneralCheck/GeneralCheckBox';
 import styled from "styled-components";
 import { MdEdit } from "react-icons/md";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -26,24 +25,22 @@ const InventoryTable = (props) => {
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
       <table className="w-full min-w-min max-w-full">
-        <thead className="main-table-header rounded-md grid grid-flow-row grid-cols-10 auto-cols-min gap-3 px-6">
-          {props.showCheck && (
-            <tr>
-              <></>
-            </tr>
-          )}
-          {props.tableHeaderData?.map((item, index) => (
-            <tr
-              key={index}
-              className={`${["Action"].includes(item.title) && "col-span-2"}`}
-            >
-              <th>
-                <p className="table-head-text text-sm font-normal font-Regular text-center text-white-text">
+        <thead>
+          <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-10 auto-cols-min gap-3 px-6">
+            <th></th>
+            {props.tableHeaderData?.map((item, index) => (
+              <th
+                key={index}
+                className={`text-left ${
+                  ["Action"].includes(item.title) && "col-span-2 text-center"
+                }`}
+              >
+                <p className="table-head-text text-sm font-normal font-Regular text-white-text w-full">
                   {item.title}
                 </p>
               </th>
-            </tr>
-          ))}
+            ))}
+          </tr>
         </thead>
         <tbody className="main-table-body">
           {props.tableData?.map((item, index) => {

@@ -13,6 +13,7 @@ import {
 import styled from "styled-components";
 import axios from "axios";
 import InventoryEditModal from "../../components/Inventory/InventoryEditModal";
+import VerifiedEditModal from "../../components/Inventory/VerifiedEditProduct";
 import ApprovedProducts from "../../components/Common/GenralTable/ApprovedProducts";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
@@ -33,6 +34,7 @@ const Inventory = (props) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const [showModal, setShowModal] = useState({
+    verifiedEditModal: false,
     editModal: false,
   });
   const [modalId, setModalId] = useState("");
@@ -112,11 +114,15 @@ const Inventory = (props) => {
   const handleSetModal = useCallback((action, modalId) => {
     switch (action) {
       case "SHOW_EDIT_MODAL":
-        setShowModal({ editModal: true });
+        setShowModal({ editModal: true, verifiedEditModal: false });
+        setModalId(modalId);
+        break;
+      case "SHOW_VERIFIED_EDIT_MODAL":
+        setShowModal({ editModal: false, verifiedEditModal: true });
         setModalId(modalId);
         break;
       case "CLOSE_ALL_MODALS":
-        setShowModal({ editModal: false });
+        setShowModal({ editModal: false, verifiedEditModal: false });
         break;
       default:
         break;
@@ -275,6 +281,13 @@ const Inventory = (props) => {
             getAllProducts={getAllProducts}
           />
         )}
+        {showModal.verifiedEditModal && (
+          <VerifiedEditModal
+            handleSetModal={handleSetModal}
+            modalId={modalId}
+            getAllProducts={getAllProducts}
+          />
+        )}
         <ScreenHeader title="Inventory" value={allInventory} />
         <GeneralHeaderTab
           data={inventoryData}
@@ -329,6 +342,7 @@ const Inventory = (props) => {
               displayDeleteModal={(id, activeData) =>
                 displayDeleteModal(id, activeData)
               }
+              setModal={handleSetModal}
               pageIndex={products.pageIndex}
             />
           )}

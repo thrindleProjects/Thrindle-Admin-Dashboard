@@ -548,7 +548,7 @@ export const approvedProductHeader = [
 
   "Upload Date",
 
-  "Delete",
+  "Action",
 ];
 
 export const shipmentTableHeader = [
