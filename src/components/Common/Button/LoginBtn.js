@@ -1,19 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
-import Loader from '../Loader/Loader';
+import React from "react";
+import styled from "styled-components";
+import Loader from "../Loader/Loader";
 
 const LoginBtn = (props) => {
   return (
-    <MainPagination className='w-full'>
+    <MainPagination className="w-full">
       <button
-        type='submit'
-        className='flex flex-row w-full cancel rounded-md border border-secondary-yellow text-white-main outline-none focus:outline-none mr-5 lg:mb-0 mb-5 bg-secondary-yellow hover:opacity-80 py-4'
+        type="submit"
+        className="flex flex-row w-full cancel rounded-md border border-secondary-yellow text-white-main outline-none focus:outline-none mr-5 lg:mb-0 mb-5 bg-secondary-yellow hover:opacity-80 py-4"
         onClick={props.onClick}
       >
         {props.isLoading ? (
           <Loader />
         ) : (
-          <p className='text-base font-Regular text-center capitalize'>
+          <p className="text-base font-Regular text-center capitalize">
             {props.title}
           </p>
         )}
