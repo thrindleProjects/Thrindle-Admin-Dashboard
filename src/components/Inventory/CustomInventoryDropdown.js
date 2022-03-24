@@ -31,7 +31,6 @@ function DoubleDropdown({
     const handleClickOutside = (e) => {
       if (sizeRef1.current && sizeRef2.current) {
         if (!sizeRef1.current.contains(e.target)) {
-          console.log(e.target);
           sizeRef1.current.open = false;
         }
         if (!sizeRef2.current.contains(e.target)) {
@@ -39,9 +38,9 @@ function DoubleDropdown({
         }
       }
     };
-    document.addEventListener("click", handleClickOutside, true);
+    document.addEventListener("mousedown", handleClickOutside, true);
     return () => {
-      document.removeEventListener("click", handleClickOutside, true);
+      document.removeEventListener("mousedown", handleClickOutside, true);
     };
   }, []);
 

@@ -30,8 +30,6 @@ const Inventory = (props) => {
     allProductsImmutable: [],
   });
 
-  console.log(products);
-
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const [showModal, setShowModal] = useState({
@@ -43,7 +41,7 @@ const Inventory = (props) => {
   const [activeApprovedProduct, setActiveApprovedProducts] = useState({});
   const [filterValue, setFilterValue] = useState("");
   const [inventoryData, setInventoryData] = useState(inventData);
-  const [allInventory, setAllInventory] = useState("");
+  const [allInventory, setAllInventory] = useState(0);
   const [status, setStatus] = useState({ isLoading: true, isError: false });
 
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";

@@ -50,10 +50,10 @@ function SingleDropdown({
       }
     };
 
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   });
 
@@ -63,7 +63,7 @@ function SingleDropdown({
       <div className="px-2 py-1">
         <div>
           <details
-            className="relative w-full border-[0.98px] border-primary-main cursor-pointery-main px-2 py-1.5 rounded-md "
+            className="relative w-full border-[0.98px] border-primary-main cursor-pointer px-2 py-1.5 rounded-md "
             ref={colorRef}
           >
             {colors.length > 0 ? (

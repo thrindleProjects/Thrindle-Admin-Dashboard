@@ -35,8 +35,6 @@ const InventoryEditModal = (props) => {
     color: [],
   });
 
-  console.log(formData.weight);
-
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
@@ -307,9 +305,9 @@ const InventoryEditModal = (props) => {
       }
       return true;
     };
-    document.addEventListener("click", handleClickOutside, true);
+    document.addEventListener("mousedown", handleClickOutside, true);
     return () => {
-      document.removeEventListener("click", handleClickOutside, true);
+      document.removeEventListener("mousedown", handleClickOutside, true);
     };
   }, [handleSetModal, triggerTableUpdate, modalData, updated]);
 
