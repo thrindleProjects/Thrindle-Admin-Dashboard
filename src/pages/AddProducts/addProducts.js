@@ -86,7 +86,7 @@ const AddProducts = () => {
         .required("Required"),
       description: Yup.string()
         .min(10, "Too Short")
-        .max(300, "Description cannot exceed 300 characters")
+        .max(1000, "Description cannot exceed 1000 characters")
         .required("Required"),
 
       productStock: Yup.number()
