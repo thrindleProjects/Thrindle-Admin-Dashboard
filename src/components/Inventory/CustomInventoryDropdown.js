@@ -31,7 +31,6 @@ function DoubleDropdown({
     const handleClickOutside = (e) => {
       if (sizeRef1.current && sizeRef2.current) {
         if (!sizeRef1.current.contains(e.target)) {
-          console.log(e.target);
           sizeRef1.current.open = false;
         }
         if (!sizeRef2.current.contains(e.target)) {
