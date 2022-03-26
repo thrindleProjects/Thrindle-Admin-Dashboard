@@ -25,6 +25,9 @@ const VerifiedEditModal = (props) => {
     name: "",
     details: { size: [], color: [] },
     activeImage: "",
+    no_in_stock: 0,
+    price: 0,
+    itemStatus: false,
   });
   const [categoryHandler, setCategoryHandler] = useState({
     marketName: "",
@@ -55,6 +58,9 @@ const VerifiedEditModal = (props) => {
         size: formData.details.size,
         color: formData.details.color,
       },
+      no_in_stock: formData.no_in_stock,
+      price: formData.price,
+      // new: formData.itemStatus,
     };
     try {
       let res = await axiosInstance.put(`${url}/${modalData[0]._id}`, formInfo);
@@ -64,8 +70,12 @@ const VerifiedEditModal = (props) => {
         return triggerTableUpdate();
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong...");
+      if (error.message) {
+        toast.error(error.message);
+        throw new Error(error.message);
+      }
+      toast.error("Something went wrong");
+      throw new Error(error);
     }
   };
 
@@ -152,6 +162,9 @@ const VerifiedEditModal = (props) => {
           weight,
           images,
           details,
+          no_in_stock,
+          new: itemStatus,
+          price,
         } = data[0];
         let marketName = getMarketName(store_id);
         await getMarketCategories(marketName);
@@ -171,13 +184,21 @@ const VerifiedEditModal = (props) => {
             size,
             color,
           },
+          no_in_stock,
+          itemStatus,
+          price,
         });
         setModalData(data);
         setCategoryHandler((old) => {
           return { ...old, marketName };
         });
       } catch (error) {
-        console.error(error);
+        if (error.message) {
+          toast.error(error.message);
+          throw new Error(error.message);
+        }
+        toast.error("Something went wrong");
+        throw new Error(error);
       }
     },
     [getMarketCategories]
@@ -252,6 +273,9 @@ const VerifiedEditModal = (props) => {
           },
         });
       }
+      if (name === "itemStatus") {
+        return setFormData({ ...formData, itemStatus: isChecked });
+      }
     }
 
     if (name === "category") {
@@ -261,12 +285,17 @@ const VerifiedEditModal = (props) => {
         category: { name: value, _id },
       });
     }
+
     if (name === "subcategory") {
       let _id = getSubCategoryId(value);
       return setFormData({
         ...formData,
         subcategory: { name: value, _id },
       });
+    }
+
+    if (["no_in_stock", "price"].includes(name)) {
+      value = Number(value);
     }
     return setFormData({ ...formData, [name]: value });
   };
@@ -395,7 +424,7 @@ const VerifiedEditModal = (props) => {
                   </div>
                   <div className="w-full flex flex-col gap-2">
                     <p className="text-white-text flex flex-col">
-                      Category:{" "}
+                      <label htmlFor="category">Category: </label>
                       <select
                         className="font-medium text-primary-dark"
                         name="category"
@@ -425,7 +454,7 @@ const VerifiedEditModal = (props) => {
                       </select>
                     </p>
                     <p className="text-white-text flex flex-col">
-                      Sub Categories:
+                      <label htmlFor="subcategory">Sub Categories:</label>
                       <select
                         name="subcategory"
                         id="subcategory"
@@ -456,7 +485,7 @@ const VerifiedEditModal = (props) => {
                       </select>
                     </p>
                     <p className="text-white-text flex flex-col">
-                      Weight:{" "}
+                      <label htmlFor="weight">Weight:</label>
                       <select
                         name="weight"
                         id="weight"
@@ -480,10 +509,11 @@ const VerifiedEditModal = (props) => {
                       </select>
                     </p>
                     <p className="text-white-text flex flex-col">
-                      Product Title:{" "}
+                      <label htmlFor="name">Product Title:</label>
                       <input
                         className="font-medium text-primary-dark"
                         type="text"
+                        id="name"
                         name={"name"}
                         value={formData.name}
                         required
@@ -491,10 +521,11 @@ const VerifiedEditModal = (props) => {
                       />
                     </p>
                     <p className="text-white-text flex flex-col">
-                      Description:{" "}
+                      <label htmlFor="description">Description:</label>
                       <textarea
                         className="font-medium text-primary-dark h-max"
                         type="text"
+                        id="description"
                         name={"description"}
                         value={formData.description}
                         required
@@ -544,17 +575,31 @@ const VerifiedEditModal = (props) => {
                         inputValue={formData.details.color}
                       />
                     </div>
-                    <p className="text-white-text">
-                      Price:{" "}
-                      <span className="font-medium text-primary-dark">
-                        N{item.price.toLocaleString()}
-                      </span>
+                    <p className="text-white-text flex flex-col">
+                      <label htmlFor="price">Price: </label>
+                      <input
+                        type="number"
+                        min={0}
+                        name="price"
+                        id="price"
+                        value={formData.price}
+                        onChange={handleFormChange}
+                        required
+                        className="font-medium text-primary-dark"
+                      />
                     </p>
-                    <p className="text-white-text">
-                      Stock:{" "}
-                      <span className="font-medium text-primary-dark">
-                        {item.no_in_stock}
-                      </span>
+                    <p className="text-white-text flex flex-col">
+                      <label htmlFor="no_in_stock">Stock: </label>
+                      <input
+                        type="number"
+                        min={0}
+                        name="no_in_stock"
+                        id="no_in_stock"
+                        value={formData.no_in_stock}
+                        onChange={handleFormChange}
+                        required
+                        className="font-medium text-primary-dark"
+                      />
                     </p>
                     <p className="text-white-text">
                       Upload Date:{" "}
@@ -564,8 +609,15 @@ const VerifiedEditModal = (props) => {
                     </p>
                     <p className="text-white-text">
                       Product Type:{" "}
-                      <span className="font-medium text-primary-dark">
-                        {item.new ? "New" : "Used"}
+                      <span className="font-medium text-primary-dark flex flex-row gap-2 items-center">
+                        {/* <input
+                          type="checkbox"
+                          name="itemStatus"
+                          id="itemStatus"
+                          checked={formData.itemStatus}
+                          onChange={handleFormChange}
+                        /> */}
+                        {formData.itemStatus ? "New" : "Used"}
                       </span>
                     </p>
                     <p className="text-white-text">
