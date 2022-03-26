@@ -297,8 +297,6 @@ const AddProducts = () => {
         };
       });
     }
-
-    // document.getElementById(value).checked = false;
   };
 
   const removeSize2 = (value) => {
@@ -310,8 +308,6 @@ const AddProducts = () => {
         };
       });
     }
-
-    // document.getElementById(value).checked = false;
   };
 
   const chooseColor = (value) => {
@@ -326,8 +322,6 @@ const AddProducts = () => {
     if (colors.includes(value)) {
       setColors(colors.filter((item) => item !== value));
     }
-
-    // document
   };
 
   const selectProductType = (value) => {
