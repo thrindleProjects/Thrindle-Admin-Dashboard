@@ -1,30 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
 import Wrapper from "./OrderDetailsGeneralWrapper";
 import Header from "./OrderDetailsGeneralHeader";
 import styled from "styled-components";
-import axiosInstance from "../../utils/axiosInstance";
 
-const OrderCustomerDetails = ({ tableHeader, tableData, orderInfo }) => {
-  const [buyerData, setBuyerData] = useState({ address: "", city: "", state: "" });
-
-  const getBuyerData = useCallback(async () => {
-    try {
-      const {
-        data: { data },
-      } = await axiosInstance.get(
-        `delivery/admin/getDeliveries/${orderInfo?.delivery?._id}`
-      );
-      setBuyerData(data?.shipping);
-    } catch (error) {
-      setBuyerData({ city: "N/A", state: "N/A", address: "N/A" });
-      throw new Error(error);
-    }
-  }, [orderInfo?.delivery?._id]);
-
-  useEffect(() => {
-    getBuyerData();
-  }, [getBuyerData]);
-
+const OrderCustomerDetails = ({ tableHeader, tableData, buyerData }) => {
   return (
     <Wrapper>
       <Header title="Customer's Details" />
@@ -54,13 +32,13 @@ const OrderCustomerDetails = ({ tableHeader, tableData, orderInfo }) => {
             <td>{tableData?.phone}</td>
           </tr>
           <tr>
-            <td>{buyerData?.city}</td>
+            <td>{buyerData?.shipping?.city}</td>
           </tr>
           <tr>
-            <td>{buyerData?.state}</td>
+            <td>{buyerData?.shipping?.state}</td>
           </tr>
           <tr className="capitalize row-span-2">
-            <td>{buyerData?.address}</td>
+            <td>{buyerData?.shipping?.address}</td>
           </tr>
         </tbody>
       </SingleOrderTable>
