@@ -60,7 +60,7 @@ const InventoryEditModal = (props) => {
       },
       no_in_stock: formData.no_in_stock,
       price: formData.price,
-      // new: formData.itemStatus,
+      new: formData.itemStatus,
     };
 
     try {
@@ -169,7 +169,6 @@ const InventoryEditModal = (props) => {
         let marketName = getMarketName(store_id);
         await getMarketCategories(marketName);
         let size, color;
-        console.log(data);
         size = details && details?.size ? details.size : [];
         color = details && details?.color ? details.color : [];
 
@@ -624,13 +623,13 @@ const InventoryEditModal = (props) => {
                     <p className="text-white-text">
                       Product Type:{" "}
                       <span className="font-medium text-primary-dark flex flex-row gap-2 items-center">
-                        {/* <input
+                        <input
                           type="checkbox"
                           name="itemStatus"
                           id="itemStatus"
                           checked={formData.itemStatus}
                           onChange={handleFormChange}
-                        /> */}
+                        />
                         {formData.itemStatus ? "New" : "Used"}
                       </span>
                     </p>

@@ -60,7 +60,7 @@ const VerifiedEditModal = (props) => {
       },
       no_in_stock: formData.no_in_stock,
       price: formData.price,
-      // new: formData.itemStatus,
+      new: formData.itemStatus,
     };
     try {
       let res = await axiosInstance.put(`${url}/${modalData[0]._id}`, formInfo);
@@ -610,13 +610,13 @@ const VerifiedEditModal = (props) => {
                     <p className="text-white-text">
                       Product Type:{" "}
                       <span className="font-medium text-primary-dark flex flex-row gap-2 items-center">
-                        {/* <input
+                        <input
                           type="checkbox"
                           name="itemStatus"
                           id="itemStatus"
                           checked={formData.itemStatus}
                           onChange={handleFormChange}
-                        /> */}
+                        />
                         {formData.itemStatus ? "New" : "Used"}
                       </span>
                     </p>

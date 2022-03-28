@@ -1,12 +1,12 @@
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setSingleOrder } from "../../../redux/actions/orderActions/actions";
+// import { useDispatch } from "react-redux";
+// import { setSingleOrder } from "../../../redux/actions/orderActions/actions";
 import styled from "styled-components";
 // import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 
 const OrderTable = (props) => {
   const history = useHistory();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const getMarketName = (storeId) => {
     if (storeId.startsWith("CV")) return "Computer Village";
     if (storeId.startsWith("BM")) return "Eko Market";
@@ -23,7 +23,6 @@ const OrderTable = (props) => {
   };
 
   const handleSetSingleOrder = (item) => {
-    dispatch(setSingleOrder(item));
     return history.push(`/orders/${item._id}`);
   };
 

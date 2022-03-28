@@ -617,7 +617,7 @@ export const storeHeader = [
 ];
 
 export const inventTableHeader = [
-  { title: "Status" },
+  // { title: "Status" },
   { title: "Product Title" },
   { title: "Category" },
   { title: "Price" },

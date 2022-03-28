@@ -26,7 +26,7 @@ const InventoryTable = (props) => {
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
       <table className="w-full min-w-min max-w-full">
         <thead>
-          <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-10 auto-cols-min gap-3 px-6">
+          <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-9 auto-cols-min gap-3 px-6">
             <th></th>
             {props.tableHeaderData?.map((item, index) => (
               <th
@@ -50,14 +50,14 @@ const InventoryTable = (props) => {
             return (
               <tr
                 key={item._id}
-                className="w-full grid grid-flow-row grid-cols-10 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
+                className="w-full grid grid-flow-row grid-cols-9 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
               >
                 {props.showCheck && (
                   <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
                     {serialNumber}
                   </td>
                 )}
-                <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
+                {/* <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
                   <p
                     className={`status text-left text-sm font-Regular capitalize ${
                       item.verified
@@ -67,7 +67,7 @@ const InventoryTable = (props) => {
                   >
                     {item.verified ? "Approved" : "Pending"}
                   </p>
-                </td>
+                </td> */}
                 <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
                   <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
                     {item.name}

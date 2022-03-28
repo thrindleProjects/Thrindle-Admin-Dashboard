@@ -87,7 +87,12 @@ const Orders = (props) => {
             } = await axiosInstance.get(endpoint);
             return data.reverse();
           } catch (error) {
-            toast.error("Something went wrong ...");
+            if (error.message) {
+              toast.error(error.message);
+              throw new Error(error.message);
+            }
+            toast.error("Something went wrong");
+            throw new Error(error);
           }
         })
       );
@@ -131,6 +136,11 @@ const Orders = (props) => {
       return setStatus({ isEmpty: false, isError: false, isLoading: false });
     } catch (error) {
       setStatus({ isEmpty: false, isLoading: false, isError: true });
+      if (error.message) {
+        toast.error(error.message);
+        throw new Error(error.message);
+      }
+      toast.error("Something went wrong");
       throw new Error(error);
     }
   }, [activeTab]);
@@ -178,7 +188,9 @@ const Orders = (props) => {
           </div>
         )}
         {!status.isLoading && status.isEmpty && (
-          <div className="text-secondary-yellow flex justify-center items-center py-16 w-full font-bold text-2xl uppercase">{`No ${activeTab} to display`}</div>
+          <div className="text-secondary-yellow flex justify-center items-center py-16 w-full font-bold text-2xl uppercase">
+            {`No ${activeTab} to display`}
+          </div>
         )}
         {!status.isError &&
           !status.isLoading &&
