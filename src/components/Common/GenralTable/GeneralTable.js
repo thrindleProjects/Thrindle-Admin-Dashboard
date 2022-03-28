@@ -4,9 +4,9 @@ import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 
 const GeneralTable = (props) => {
   return (
-    <MainTable className="w-full rounded-md  py-10 mt-5 overflow-auto">
+    <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
       <table className="w-full">
-        <thead className="main-table-header  rounded-md flex flex-row">
+        <thead className="main-table-header rounded-md flex flex-row">
           {props.showCheck && <GeneralCheckBox />}
 
           {props.tableHeaderData?.map((item, index) => (

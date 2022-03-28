@@ -1,12 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
 import Wrapper from "./OrderDetailsGeneralWrapper";
 import Header from "./OrderDetailsGeneralHeader";
-import axiosInstance from "../../utils/axiosInstance";
 import styled from "styled-components";
 
-const OrderMerchantDetails = ({ tableHeader, tableData }) => {
-  const [storeData, setStoreData] = useState({ store_address: "", store: "" });
-
+const OrderMerchantDetails = ({ tableHeader, storeData }) => {
   const getMarketName = (storeId) => {
     if (!storeId) return "N/A";
     if (storeId.trim().startsWith("CV")) return "Computer Village";
@@ -14,24 +10,6 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
     if (storeId.trim().startsWith("EM")) return "Eko Market";
     return "Other Market";
   };
-
-  const getStoreAddress = useCallback(async () => {
-    try {
-      let {
-        data: { data },
-      } = await axiosInstance.get(
-        `stores/admin/getStoreDetails/${tableData?.store_id}`
-      );
-      setStoreData(data);
-    } catch (error) {
-      setStoreData({ store_address: "N/A", store_name: "N/A" });
-      throw new Error(error);
-    }
-  }, [tableData?.store_id]);
-
-  useEffect(() => {
-    getStoreAddress();
-  }, [getStoreAddress]);
 
   return (
     <Wrapper>
@@ -53,13 +31,13 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
         </thead>
         <tbody className="body-wrapper">
           <tr>
-            <td>{tableData?.name}</td>
+            <td>{storeData?.owner_id?.name}</td>
           </tr>
           <tr>
-            <td>{getMarketName(tableData?.store_id)}</td>
+            <td>{getMarketName(storeData?.store_id)}</td>
           </tr>
           <tr>
-            <td>{tableData?.phone}</td>
+            <td>{storeData?.owner_id?.phone}</td>
           </tr>
           <tr className="capitalize row-span-2">
             <td>{storeData.store_address}</td>
@@ -68,7 +46,7 @@ const OrderMerchantDetails = ({ tableHeader, tableData }) => {
             <td>{storeData.store_name}</td>
           </tr>
           <tr>
-            <td>{tableData?.store_id}</td>
+            <td>{storeData?.store_id}</td>
           </tr>
         </tbody>
       </SingleOrderTable>
