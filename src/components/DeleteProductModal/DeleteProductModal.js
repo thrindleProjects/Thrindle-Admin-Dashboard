@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CircularProgress, Modal } from "../../styles/globalStyles";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
@@ -48,25 +48,14 @@ function DeleteProductModal({
   setOpenDeleteModal,
   activeID,
   activeDeleteProduct,
+  getAllProducts,
+  openDeleteModal,
 }) {
   const [deleting, setDeleting] = useState(false);
-  const history = useHistory();
-
-  useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      document.documentElement.style.overflow = "hidden";
-    }
-
-    return () => {
-      mounted = false;
-    };
-  });
+  // const history = useHistory();
 
   const handleCloseModal = () => {
     setOpenDeleteModal(false);
-    document.documentElement.style.overflow = "revert";
   };
 
   const deleteProduct = async (id) => {
@@ -76,21 +65,40 @@ function DeleteProductModal({
       if (res.status === 200) {
         setDeleting(false);
         toast.success("Product was successfully deleted");
-        setTimeout(() => {
-          history.push("/inventory");
-        }, 3000);
+        getAllProducts();
+        setOpenDeleteModal(false);
       }
     } catch (error) {
       if (error.response) {
         toast.warning(`${error.response.data.message}`);
+        throw new Error(error);
       } else {
         toast.error(`${error}`);
+        throw new Error(error);
       }
     } finally {
       setDeleting(false);
-      document.documentElement.style.overflow = "revert";
+      // document.documentElement.style.overflow = "revert";
     }
   };
+
+  useEffect(() => {
+    let mounted = true;
+
+    console.log(openDeleteModal, "in");
+
+    if (mounted) {
+      if (openDeleteModal) {
+        document.documentElement.style.overflow = "hidden";
+      } else {
+        document.documentElement.style.overflow = "revert";
+      }
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, [openDeleteModal]);
 
   return (
     <>

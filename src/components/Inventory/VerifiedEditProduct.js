@@ -42,7 +42,9 @@ const VerifiedEditModal = (props) => {
   const [updated, setUpdated] = useState(false);
 
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
-  const { handleSetModal, getAllProducts } = props;
+  const { handleSetModal, getAllProducts, showModal } = props;
+
+  console.log("fire");
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -357,6 +359,22 @@ const VerifiedEditModal = (props) => {
     });
     return;
   }, [formData.category.name, getSubCategories]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      if (showModal.verifiedEditModal) {
+        document.documentElement.style.overflow = "hidden";
+      } else {
+        document.documentElement.style.overflow = "revert";
+      }
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, [showModal.verifiedEditModal]);
 
   return (
     <ModalWrapper className="fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center">
