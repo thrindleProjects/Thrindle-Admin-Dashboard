@@ -247,8 +247,6 @@ const Dashboard = () => {
           item.updatedAt.slice(0, 10).split("-").join("/") === getCurrentDate()
       );
 
-      console.log(data);
-
       setCurrentData((prevData) => {
         return {
           ...prevData,
