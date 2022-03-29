@@ -1,69 +1,7 @@
-import Image from "../assets/images/dash-order.svg";
-import Image2 from "../assets/images/dash-customers.svg";
-import Image3 from "../assets/images/dash-store.svg";
-import Image4 from "../assets/images/dash-returned-products.svg";
 import Image5 from "../assets/images/dash-pending-order.svg";
 import Image6 from "../assets/images/dash-delievered-order.svg";
 import Image7 from "../assets/images/dash-cancelled-order.svg";
 import Image8 from "../assets/images/inactive-orders.svg";
-
-export const dashData = [
-  {
-    title: "Total Orders",
-    img: Image,
-    color: "#16588F",
-    value: 0,
-  },
-  {
-    title: "Total Customers",
-    img: Image2,
-    color: "#166CB4",
-    value: 0,
-    path: "/customers",
-  },
-  {
-    title: "Total Stores",
-    img: Image3,
-    color: "#4BC7EA",
-    value: 0,
-    path: "/stores",
-  },
-  {
-    title: "Returned Products",
-    img: Image4,
-    color: "#9E09E4",
-    value: 0,
-    path: "/stores",
-  },
-  {
-    title: "Pending Orders",
-    img: Image5,
-    color: "#F69F13",
-    value: 0,
-    path: "/orders?status=Pending Orders",
-  },
-  {
-    title: "Delivered Orders",
-    img: Image6,
-    color: "#009E52",
-    value: 0,
-    path: "/orders?status=Delivered Orders",
-  },
-  {
-    title: "Cancelled Orders",
-    img: Image7,
-    color: "#F5000F",
-    value: 0,
-    path: "/orders?status=Cancelled Orders",
-  },
-  {
-    title: "New Customers",
-    img: Image2,
-    color: "#166CB4",
-    value: 0,
-    path: "/customers",
-  },
-];
 
 export const dashTableHeader = [
   {
