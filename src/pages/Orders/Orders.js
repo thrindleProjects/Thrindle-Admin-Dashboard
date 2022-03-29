@@ -69,6 +69,7 @@ const Orders = (props) => {
 
   const getOrders = useCallback(async () => {
     setStatus({ isLoading: true, isError: false, isEmpty: false });
+
     setOrders((oldOrders) => {
       return {
         ...oldOrders,
@@ -76,8 +77,10 @@ const Orders = (props) => {
         allOrders: [],
       };
     });
+
     let url = "orders/admin/getOrders?type=";
     let allUrl = [`${url}pending`, `${url}completed`, `${url}cancelled`];
+
     try {
       let [pending, completed, cancelled] = await axios.all(
         allUrl.map(async (endpoint) => {

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa";
+import SmallSpinner from "../newLoader/smallSpinner";
 
 const SingleDashboard = (props) => {
   return (
@@ -21,9 +22,16 @@ const SingleDashboard = (props) => {
         </div>
         {/* <p className="percent mt-1 font-Medium">+12%</p> */}
       </div>
-      <p className="text-3xl single-value font-ExtraBold text-left single-text">
-        {props.value}
-      </p>
+      {props.loading ? (
+        <div className="h-9">
+          <SmallSpinner />
+        </div>
+      ) : (
+        <p className="text-3xl single-value font-ExtraBold text-left single-text">
+          {props.value}
+        </p>
+      )}
+
       {props.path && (
         <NavLink
           to={props.path}
