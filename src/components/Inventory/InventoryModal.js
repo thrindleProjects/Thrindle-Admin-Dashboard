@@ -14,19 +14,19 @@ const InventoryModal = (props) => {
 
   const triggerTableUpdate = useCallback(() => {
     getAllUnverifiedProducts();
-    return handleSetModal("CLOSE_ALL_MODALS");
+    handleSetModal("CLOSE_ALL_MODALS");
   }, [getAllUnverifiedProducts, handleSetModal]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
         if (modalData.length > 0 && modalData[0].verified) {
-          return triggerTableUpdate();
+          triggerTableUpdate();
         }
         handleSetModal("CLOSE_ALL_MODALS");
       }
-      return true;
     };
+
     document.addEventListener("mousedown", handleClickOutside, true);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside, true);
@@ -43,10 +43,6 @@ const InventoryModal = (props) => {
       console.error(error);
     }
   }, []);
-
-  useEffect(() => {
-    getSingleProduct(props.modalId);
-  }, [props.modalId, getSingleProduct]);
 
   const getUploadDate = (updatedAt) => {
     const date = new Date(updatedAt);
@@ -71,6 +67,10 @@ const InventoryModal = (props) => {
       return toast.error("Oops! Something went wrong...");
     }
   };
+
+  useEffect(() => {
+    getSingleProduct(props.modalId);
+  }, [props.modalId, getSingleProduct]);
 
   return (
     <ModalWrapper className="fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center">

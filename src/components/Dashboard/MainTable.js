@@ -19,8 +19,8 @@ const MainTable = (props) => {
           key={index}
           className={`w-full single-details grid grid-rows-${props.headerData.length} gap-2 `}
         >
-            <p>Hello</p>
-            <p>Hello</p>
+          <p>Hello</p>
+          <p>Hello</p>
           {/* <p className="status text-left text-sm text-white-text font-Regular">
             {item.status}
           </p>
