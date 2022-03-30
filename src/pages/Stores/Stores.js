@@ -87,7 +87,7 @@ const Stores = () => {
         ) : (
           <>
             <ScreenHeader title="Stores" value={storeTableData.length} />
-            <GeneralHeaderTab
+            <GeneralHeaderTab 
               data={storeData}
               activeTab={activeTab}
               changeTab={(val) => changeTab(val)}

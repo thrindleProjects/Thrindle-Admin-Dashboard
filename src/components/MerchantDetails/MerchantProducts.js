@@ -7,6 +7,7 @@ import { numberFormat } from "../../utils/formatPrice";
 import NewLoader from "../newLoader/newLoader";
 import MerchantHeader from "./MerchantHeader";
 
+
 function MerchantProducts() {
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [products, setProducts] = useState([]);
@@ -47,7 +48,7 @@ function MerchantProducts() {
     window.scrollTo(0, 0);
   }, []);
 
-  return (
+  return ( 
     <div className="rounded-md shadow-md">
       <MerchantHeader text="Merchant's Products" />
       {loadingProducts ? (
