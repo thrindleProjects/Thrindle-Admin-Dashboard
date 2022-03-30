@@ -37,6 +37,7 @@ const Inventory = (props) => {
     verifiedEditModal: false,
     editModal: false,
   });
+
   const [modalId, setModalId] = useState("");
   const [activeTab, setActiveTab] = useState("Pending Products");
   const [activeID, setActiveID] = useState(null);
@@ -265,6 +266,27 @@ const Inventory = (props) => {
     getAllProducts();
   }, [getAllProducts]);
 
+  // handle overflow when modals are open
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      if (
+        showModal.editModal === true ||
+        showModal.verifiedEditModal === true ||
+        openDeleteModal === true
+      ) {
+        document.documentElement.style.overflow = "hidden";
+      } else {
+        document.documentElement.style.overflow = "visible";
+      }
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, [showModal.editModal, showModal.verifiedEditModal, openDeleteModal]);
+
   const displayDeleteModal = (id, data) => {
     setOpenDeleteModal(true);
     setActiveID(id);
@@ -279,6 +301,7 @@ const Inventory = (props) => {
             handleSetModal={handleSetModal}
             modalId={modalId}
             getAllProducts={getAllProducts}
+            showModal={showModal}
           />
         )}
         {showModal.verifiedEditModal && (
@@ -286,6 +309,7 @@ const Inventory = (props) => {
             handleSetModal={handleSetModal}
             modalId={modalId}
             getAllProducts={getAllProducts}
+            showModal={showModal}
           />
         )}
         <ScreenHeader title="Inventory" value={allInventory} />
@@ -327,7 +351,9 @@ const Inventory = (props) => {
               tableData={products.paginatedProducts[products.pageIndex]}
               pageIndex={products.pageIndex}
               setModal={handleSetModal}
-              displayDeleteModal={displayDeleteModal}
+              displayDeleteModal={(id, activeData) =>
+                displayDeleteModal(id, activeData)
+              }
             />
           )}
 
@@ -351,6 +377,8 @@ const Inventory = (props) => {
             setOpenDeleteModal={setOpenDeleteModal}
             activeID={activeID}
             activeDeleteProduct={activeApprovedProduct}
+            openDeleteModal={openDeleteModal}
+            getAllProducts={getAllProducts}
           />
         )}
       </FirstSection>
