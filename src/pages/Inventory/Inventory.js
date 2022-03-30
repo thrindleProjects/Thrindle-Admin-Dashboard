@@ -161,7 +161,7 @@ const Inventory = (props) => {
               if (data) {
                 setStatus({ isLoading: false, isError: false });
               }
-              return data;
+              return data.reverse();
             } catch (error) {
               toast.error("Something went wrong ...");
             }
