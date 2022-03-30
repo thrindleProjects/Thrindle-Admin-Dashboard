@@ -102,7 +102,7 @@ const Dashboard = () => {
       loading: currentData.allCustomers.loading,
     },
     {
-      title: "Total Sellers",
+      title: "Total Stores",
       img: Image3,
       color: "#4BC7EA",
       path: "/stores",
