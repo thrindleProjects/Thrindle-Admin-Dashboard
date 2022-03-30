@@ -5,7 +5,8 @@ import { NewMainTable } from "../../../styles/globalStyles";
 import formatDate from "../../../utils/formatDate";
 
 const StoreTable = (props) => {
-  return (
+
+  return ( 
     <NewMainTable className="w-full rounded-md  py-10 mt-5 overflow-auto">
       <table className="w-full">
         <thead className="main-table-header rounded-md">
@@ -33,14 +34,14 @@ const StoreTable = (props) => {
                 </td>
               )}
               <td>
-                <Link to={`store-details/${item.store_id}`}>
+                <Link to={`store-details/${item.owner_id.store_id}`}>
                   <p className="status text-center text-sm text-white-text font-Regular capitalize">
                     {index + 1}
                   </p>
                 </Link>
               </td>
               <td>
-                <Link to={`store-details/${item.store_id}`}>
+                <Link to={`store-details/${item.owner_id.store_id}`}>
                   <p className="status text-center text-sm text-white-text font-Regular capitalize">
                     {item.store_name}
                   </p>
@@ -60,7 +61,7 @@ const StoreTable = (props) => {
               </td> */}
 
               <td>
-                <Link to={`store-details/${item.store_id}`}>
+                <Link to={`store-details/${item.owner_id.store_id}`}>
                   <p className="product text-center text-sm text-white-text font-Regular">
                     {item?.owner_id?.store_id.startsWith("EM") && (
                       <span>Eko Market</span>
@@ -76,7 +77,7 @@ const StoreTable = (props) => {
               </td>
 
               <td>
-                <Link to={`store-details/${item.store_id}`}>
+                <Link to={`store-details/${item.owner_id.store_id}`}>
                   <p className="product text-center text-sm text-white-text font-Regular">
                     {formatDate(item?.owner_id?.updatedAt)}
                   </p>
