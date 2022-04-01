@@ -541,9 +541,6 @@ export const storeHeader = [
     title: "Store Name",
   },
   {
-    title: "Category",
-  },
-  {
     title: "Market",
   },
   {

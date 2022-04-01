@@ -42,7 +42,7 @@ const InventoryEditModal = (props) => {
   const [updated, setUpdated] = useState(false);
 
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
-  const { handleSetModal, getAllProducts } = props;
+  const { handleSetModal, getAllProducts, showModal } = props;
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -81,12 +81,12 @@ const InventoryEditModal = (props) => {
 
   const handleFormCancel = (e) => {
     e.preventDefault();
-    document.documentElement.style.overflow = "revert";
+    // document.documentElement.style.overflow = "revert";
 
     if (updated) {
-      return triggerTableUpdate();
+      triggerTableUpdate();
     }
-    return handleSetModal("CLOSE_ALL_MODALS");
+    handleSetModal("CLOSE_ALL_MODALS");
   };
 
   const getMarketName = (storeId) => {
@@ -140,14 +140,14 @@ const InventoryEditModal = (props) => {
   }, []);
 
   const triggerTableUpdate = useCallback(() => {
-    document.documentElement.style.overflow = "revert";
+    // document.documentElement.style.overflow = "revert";
     getAllProducts();
-    return handleSetModal("CLOSE_ALL_MODALS");
+    handleSetModal("CLOSE_ALL_MODALS");
   }, [getAllProducts, handleSetModal]);
 
   const getSingleProduct = useCallback(
     async (id) => {
-      document.documentElement.style.overflow = "hidden";
+      // document.documentElement.style.overflow = "hidden";
 
       try {
         const {
@@ -326,20 +326,35 @@ const InventoryEditModal = (props) => {
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
-        document.documentElement.style.overflow = "revert";
+        // document.documentElement.style.overflow = "revert";
 
         if (modalData.length > 0 && updated) {
-          return triggerTableUpdate();
+          triggerTableUpdate();
         }
+
         handleSetModal("CLOSE_ALL_MODALS");
       }
-      return true;
     };
+
     document.addEventListener("mousedown", handleClickOutside, true);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside, true);
     };
   }, [handleSetModal, triggerTableUpdate, modalData, updated]);
+
+  const handleVerifyProduct = async (e, id) => {
+    e.preventDefault();
+    try {
+      await axios.put(`${url}/products/updateunverifedproduct/${id}`);
+      setModalData([{ ...modalData[0], verified: true }]);
+      toast.success("Success");
+      triggerTableUpdate();
+    } catch (error) {
+      console.error(error);
+      toast.error("Oops! Something went wrong...");
+    }
+  };
 
   useEffect(() => {
     getSingleProduct(props.modalId);
@@ -358,18 +373,21 @@ const InventoryEditModal = (props) => {
     return;
   }, [formData.category.name, getSubCategories]);
 
-  const handleVerifyProduct = async (e, id) => {
-    e.preventDefault();
-    try {
-      await axios.put(`${url}/products/updateunverifedproduct/${id}`);
-      setModalData([{ ...modalData[0], verified: true }]);
-      toast.success("Success");
-      triggerTableUpdate();
-    } catch (error) {
-      console.error(error);
-      toast.error("Oops! Something went wrong...");
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      if (showModal.editModal) {
+        document.documentElement.style.overflow = "hidden";
+      } else {
+        document.documentElement.style.overflow = "revert";
+      }
     }
-  };
+
+    return () => {
+      mounted = false;
+    };
+  }, [showModal.editModal]);
 
   return (
     <ModalWrapper className="fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center">

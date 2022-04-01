@@ -94,7 +94,7 @@ const Dashboard = () => {
       loading: currentData.allOrders.loading,
     },
     {
-      title: "Total Customers",
+      title: "Total Users",
       img: Image2,
       color: "#166CB4",
       path: "/customers",
@@ -235,7 +235,7 @@ const Dashboard = () => {
     }
   }, []);
 
-  const getCustomer = useCallback(async () => {
+  const getUsers = useCallback(async () => {
     try {
       let {
         data: { data },
@@ -282,7 +282,7 @@ const Dashboard = () => {
     try {
       let {
         data: { data },
-      } = await axiosInstance.get(`users/admin/sellers`);
+      } = await axiosInstance.get(`stores/allstores`);
 
       setCurrentData((prevData) => {
         return {
@@ -313,10 +313,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     getOrders();
-    getCustomer();
+    getUsers();
     getStores();
     getCurrentDate();
-  }, [getOrders, getCustomer, getStores]);
+  }, [getOrders, getUsers, getStores]);
 
   return (
     <MainContainer>
