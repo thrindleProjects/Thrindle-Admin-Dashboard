@@ -65,8 +65,8 @@ function DeleteProductModal({
   });
 
   const handleCloseModal = () => {
-    setOpenDeleteModal(false);
     document.documentElement.style.overflow = "revert";
+    setOpenDeleteModal(false);
   };
 
   const deleteProduct = async (id) => {
