@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
-import { orderFilter, customerHeader } from "../../data/data";
-import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
+// orderFilter,
+import { customerHeader } from "../../data/data";
+// import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import CustomerTable from "../../components/Common/GenralTable/CustomerTable";
 import Loader from "../../components/Common/Loader/Loader";
@@ -16,7 +17,7 @@ const Customers = () => {
     pageIndex: 0,
   });
   const [status, setStatus] = useState({ isLoading: true, isError: false });
-  const [filterValue, setFilterValue] = useState("");
+  // const [filterValue, setFilterValue] = useState("");
 
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
 
@@ -84,13 +85,13 @@ const Customers = () => {
 
   return (
     <MainContainer>
-      <FirstSection className='w-full'>
-        <ScreenHeader title='Sellers' value={customers.allCustomers.length} />
-        <GeneralFilterTab
+      <FirstSection className="w-full">
+        <ScreenHeader title="Sellers" value={customers.allCustomers.length} />
+        {/* <GeneralFilterTab
           filter={filterValue}
           filterData={orderFilter}
           changeFilter={(val) => setFilterValue(val)}
-        />
+        /> */}
         <GeneralPagination
           showButtons={false}
           pag
