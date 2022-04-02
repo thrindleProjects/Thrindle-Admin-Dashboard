@@ -21,8 +21,8 @@ const CustomerTable = (props) => {
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
       <table className="w-full min-w-min max-w-full">
-        <thead className="main-table-header rounded-md grid grid-flow-row grid-cols-6 auto-cols-min gap-8 px-6">
-          <tr>
+        <thead>
+          <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-6 auto-cols-min gap-8 px-6">
             {props.showCheck && <th></th>}
             {props.tableHeaderData?.map((item, index) => (
               <th key={index}>

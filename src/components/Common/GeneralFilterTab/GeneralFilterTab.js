@@ -7,21 +7,100 @@ import paginationArr from "../../../utils/pagination";
 const GeneralFilterTab = ({ filterData, products, setProducts }) => {
   const filterRef = useRef(null);
   const [show, setShow] = useState(false);
+  const [nameFilter, setNameFilter] = useState("");
 
-  const FilterByCategory = (category) => {
-    setProducts((prevState) => {
-      let currentProducts = products.allProductsImmutable.filter(
-        (item) => item?.category?.name === category
-      );
-      return {
-        ...prevState,
-        allProducts: currentProducts,
-        paginatedProducts: paginationArr(currentProducts, 20),
-        currentCategory: category,
-        pageIndex: 0,
-      };
-    });
+  // Checks if the input value matches the item name
+  // const checkName = (name, str) => {
+  //   let pattern = str
+  //     .split("")
+  //     .map((x) => {
+  //       return `(?=.*${x})`;
+  //     })
+  //     .join("");
+  //   let regex = new RegExp(`${pattern}`, "g");
+  //   return name.match(regex);
+  // };
+
+  const filterByCategory = (category) => {
+    let currentProducts = products.allProductsImmutable.filter(
+      (item) => item?.category?.name === category
+    );
+
+    if (nameFilter === "") {
+      setProducts((prevState) => {
+        return {
+          ...prevState,
+          allProducts: currentProducts,
+          paginatedProducts: paginationArr(currentProducts, 20),
+          currentCategory: category,
+          pageIndex: 0,
+        };
+      });
+    } else {
+      currentProducts = currentProducts.filter((item) => {
+        return item.name.toLowerCase().includes(nameFilter.toLowerCase());
+      });
+      setProducts((prevState) => {
+        return {
+          ...prevState,
+          allProducts: currentProducts,
+          paginatedProducts: paginationArr(currentProducts, 20),
+          currentCategory: category,
+          pageIndex: 0,
+        };
+      });
+    }
     setShow(false);
+  };
+
+  const handleFilterNameChange = (e) => {
+    // store input value in a variable
+    let value = e?.target?.value;
+
+    setNameFilter(value);
+
+    // if input value is less than zero or for some reason is undefined
+    // set table data based on the active filter value e.g
+    let currentProducts;
+    if (["", "All"].includes(products.currentCategory)) {
+      currentProducts = products.allProductsImmutable;
+    } else {
+      currentProducts = products.allProductsImmutable.filter(
+        (item) => item?.category?.name === products.currentCategory
+      );
+    }
+
+    if (value.length === 0) {
+      setProducts((oldProducts) => {
+        return {
+          ...oldProducts,
+          allProducts: currentProducts,
+          paginatedProducts: paginationArr(currentProducts, 20),
+        };
+      });
+    } else {
+      // Filter products based on input value
+      const newProducts = currentProducts.filter((item) => {
+        return item.name.toLowerCase().includes(value.toLowerCase());
+      });
+      // if no items match input value set necessary values to empty state
+      if (newProducts.length === 0) {
+        return setProducts((oldProducts) => {
+          return {
+            ...oldProducts,
+            allProducts: newProducts,
+            paginatedProducts: newProducts,
+          };
+        });
+      }
+      return setProducts((oldProducts) => {
+        return {
+          ...oldProducts,
+          allProducts: newProducts,
+          paginatedProducts: paginationArr(newProducts, 20),
+        };
+      });
+    }
   };
 
   // reset all products
@@ -60,6 +139,8 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
           type="text"
           className="order-custom-input bg-transparent focus:outline-none outline-none"
           placeholder="Search"
+          value={nameFilter}
+          onChange={handleFilterNameChange}
         />
       </div>
       {/* FILTER  */}
@@ -85,11 +166,9 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
 
         {show && (
           <div
-            className={
-              show
-                ? "w-full filter-dropdown active bg-white-main p-1 rounded-md absolute top-12 left-0 right-0"
-                : "w-full filter-dropdown bg-white-main pt-7 pb-3 px-5 rounded-md absolute top-12 left-0 right-0 "
-            }
+            className={`w-full filter-dropdown bg-white-main rounded-md absolute top-12 left-0 right-0 max-h-44 overflow-y-auto ${
+              show ? " active p-1" : "pt-7 pb-3 px-5"
+            }`}
           >
             <p
               className="filter-text text-xs font-Regular text-white-main text-left p-3 rounded-md hover:bg-primary-main hover:cursor-pointer"
@@ -101,7 +180,7 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
               <p
                 key={index}
                 className="filter-text text-xs font-Regular text-white-main text-left p-3 rounded-md hover:bg-primary-main hover:cursor-pointer"
-                onClick={() => FilterByCategory(item)}
+                onClick={() => filterByCategory(item)}
               >
                 {item}
               </p>

@@ -55,10 +55,6 @@ function DeleteProductModal({
   // const history = useHistory();
 
   const handleCloseModal = () => {
-<<<<<<< HEAD
-    document.documentElement.style.overflow = "revert";
-=======
->>>>>>> 61889f11e2a38e2c25098408ed3bc8838bcb24e6
     setOpenDeleteModal(false);
   };
 

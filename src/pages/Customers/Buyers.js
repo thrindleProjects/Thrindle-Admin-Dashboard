@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import MainContainer from '../../components/Common/MainContainer/MainContainer';
-import styled from 'styled-components';
-import ScreenHeader from '../../components/Common/ScreenTitle/ScreenHeader';
-import { orderFilter, customerHeader } from '../../data/data';
-import GeneralFilterTab from '../../components/Common/GeneralFilterTab/GeneralFilterTab';
-import GeneralPagination from '../../components/Common/GeneralPagination/GeneralPagination';
-import CustomerTable from '../../components/Common/GenralTable/CustomerTable';
-import Loader from '../../components/Common/Loader/Loader';
-import axiosInstance from '../../utils/axiosInstance';
+import React, { useCallback, useEffect, useState } from "react";
+import MainContainer from "../../components/Common/MainContainer/MainContainer";
+import styled from "styled-components";
+import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
+// orderFilter
+import { customerHeader } from "../../data/data";
+// import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
+import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
+import CustomerTable from "../../components/Common/GenralTable/CustomerTable";
+import Loader from "../../components/Common/Loader/Loader";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Customers = () => {
   const [customers, setCustomers] = useState({
@@ -16,7 +17,7 @@ const Customers = () => {
     pageIndex: 0,
   });
   const [status, setStatus] = useState({ isLoading: true, isError: false });
-  const [filterValue, setFilterValue] = useState('');
+  // const [filterValue, setFilterValue] = useState("");
 
   // Break Customers Array into smaller arrays for pagination
   const paginationArr = (arr, size) =>
@@ -51,7 +52,7 @@ const Customers = () => {
   // HandlePagination
   const handlePagination = (type) => {
     switch (type) {
-      case 'NEXT_PAGE':
+      case "NEXT_PAGE":
         setCustomers((oldCustomers) => {
           if (
             oldCustomers.paginatedCustomers.length - 1 ===
@@ -62,7 +63,7 @@ const Customers = () => {
           return { ...oldCustomers, pageIndex: oldCustomers.pageIndex + 1 };
         });
         break;
-      case 'PREVIOUS_PAGE':
+      case "PREVIOUS_PAGE":
         setCustomers((oldCustomers) => {
           if (oldCustomers.pageIndex === 0) {
             return oldCustomers;
@@ -71,7 +72,7 @@ const Customers = () => {
         });
         break;
       default:
-        console.log('Argumenet NOT handled');
+        console.log("Argumenet NOT handled");
         break;
     }
   };
@@ -82,13 +83,13 @@ const Customers = () => {
 
   return (
     <MainContainer>
-      <FirstSection className='w-full'>
-        <ScreenHeader title='Buyers' value={customers.allCustomers.length} />
-        <GeneralFilterTab
+      <FirstSection className="w-full">
+        <ScreenHeader title="Buyers" value={customers.allCustomers.length} />
+        {/* <GeneralFilterTab
           filter={filterValue}
           filterData={orderFilter}
           changeFilter={(val) => setFilterValue(val)}
-        />
+        /> */}
         <GeneralPagination
           showButtons={false}
           pag
