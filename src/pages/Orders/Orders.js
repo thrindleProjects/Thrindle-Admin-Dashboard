@@ -3,8 +3,9 @@ import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 import GeneralHeaderTab from "../../components/Common/GeneralHeaderTab/GeneralHeaderTab";
-import { orderData, orderFilter, orderTableHeader } from "../../data/data";
-import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
+// orderFilter;
+import { orderData, orderTableHeader } from "../../data/data";
+// import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import OrderTable from "../../components/Common/GenralTable/OrderTable";
 import axiosInstance from "../../utils/axiosInstance";
@@ -21,7 +22,7 @@ const Orders = (props) => {
   });
 
   const [activeTab, setActiveTab] = useState("Pending Orders");
-  const [filterValue, setFilterValue] = useState("");
+  // const [filterValue, setFilterValue] = useState("");
   const [status, setStatus] = useState({
     isLoading: true,
     isError: false,
@@ -166,11 +167,11 @@ const Orders = (props) => {
           activeTab={activeTab}
           changeTab={(val) => changeTab(val)}
         />
-        <GeneralFilterTab
+        {/* <GeneralFilterTab
           filter={filterValue}
           filterData={orderFilter}
           changeFilter={(val) => setFilterValue(val)}
-        />
+        /> */}
         <GeneralPagination
           cancelText="Cancel Order"
           deleteText="delete Order"

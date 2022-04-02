@@ -10,12 +10,16 @@ const GeneralPagination = (props) => {
   });
 
   useEffect(() => {
-    if (props.itemsNumber && props.itemsNumber?.length > 0) {
-      let startNumber = 1 + 20 * props.pageNumber;
-      let endNumber =
-        startNumber - 1 + props.itemsNumber[props.pageNumber]?.length;
-      let totalNumber = props.totalNumber;
-      return setPageInfo({ startNumber, endNumber, totalNumber });
+    if (props.itemsNumber) {
+      if (props.itemsNumber?.length > 0) {
+        let startNumber = 1 + 20 * props.pageNumber;
+        let endNumber =
+          startNumber - 1 + props.itemsNumber[props.pageNumber]?.length;
+        let totalNumber = props.totalNumber;
+        return setPageInfo({ startNumber, endNumber, totalNumber });
+      } else {
+        return setPageInfo({ startNumber: 0, endNumber: 0, totalNumber: 0 });
+      }
     }
     return;
   }, [props.itemsNumber, props.pageNumber, props.totalNumber]);

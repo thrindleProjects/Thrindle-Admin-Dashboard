@@ -3,9 +3,9 @@ import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 import GeneralHeaderTab from "../../components/Common/GeneralHeaderTab/GeneralHeaderTab";
-import { storeFilter, storeHeader } from "../../data/data";
+import { storeHeader } from "../../data/data";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
-import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
+// import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import StoreTable from "../../components/Common/GenralTable/StoreTable";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ import NewLoader from "../../components/newLoader/newLoader";
 
 const Stores = () => {
   const [activeTab, setActiveTab] = useState("Pending Stores");
-  const [filterValue, setFilterValue] = useState("");
+  // const [filterValue, setFilterValue] = useState("");
   const [storeTableData, setStoreTableData] = useState([]);
   const [loadingStores, setLoadingStores] = useState(false);
 
@@ -87,16 +87,16 @@ const Stores = () => {
         ) : (
           <>
             <ScreenHeader title="Stores" value={storeTableData.length} />
-            <GeneralHeaderTab 
+            <GeneralHeaderTab
               data={storeData}
               activeTab={activeTab}
               changeTab={(val) => changeTab(val)}
             />
-            <GeneralFilterTab
+            {/* <GeneralFilterTab
               filter={filterValue}
               filterData={storeFilter}
               changeFilter={(val) => setFilterValue(val)}
-            />
+            /> */}
             <GeneralPagination
               cancelText="Cancel Order"
               deleteText="delete Order"
