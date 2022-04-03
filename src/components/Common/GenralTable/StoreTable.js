@@ -26,7 +26,6 @@ const StoreTable = (props) => {
         <tbody className="main-table-body">
           {props.tableData?.map((item, index) => (
             <tr key={index} className="w-full grid grid-cols-6 cursor-pointer">
-              
               <td>
                 <Link to={`store-details/${item.owner_id.store_id}`}>
                   <p className="status text-center text-sm text-white-text font-Regular capitalize">
@@ -48,19 +47,6 @@ const StoreTable = (props) => {
                   </p>
                 </Link>
               </td>
-
-              {/* <td>
-                <Link to={`store-details/${item.store_id}`}>
-                  <p className="product text-center text-sm text-white-text font-Regular">
-                    {item.store_categories[0]?.name || (
-                      <span className="text-sm text-secondary-error font-Regular cursor-pointer">
-                        Not specified
-                      </span>
-                    )}
-                  </p>
-                </Link>
-              </td> */}
-
               <td>
                 <Link to={`store-details/${item.owner_id.store_id}`}>
                   <p className="product text-center text-sm text-white-text font-Regular">

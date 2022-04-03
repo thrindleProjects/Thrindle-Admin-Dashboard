@@ -560,8 +560,9 @@ export const storeHeader = [
   {
     title: "Store Name",
   },
-  { title: "Store ID" },
-
+  {
+    title: "Store ID",
+  },
   {
     title: "Market",
   },
