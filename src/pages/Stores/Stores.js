@@ -53,10 +53,27 @@ const Stores = () => {
         const fetchStores = async () => {
           setLoadingStores(true);
           try {
-            let res = await axiosInstance.get(`stores/allstores`);
-            sessionStorage.setItem("allStores", JSON.stringify(res.data.data));
+            let {
+              data: { data },
+            } = await axiosInstance.get(`stores/allstores`);
+            sessionStorage.setItem("allStores", JSON.stringify(data));
             setLoadingStores(false);
-            setStoreTableData(res.data.data);
+            let sortAlphabetically = data.sort((a, b) => {
+              const nameA = a.store_name.toUpperCase(); // ignore upper and lowercase
+              const nameB = b.store_name.toUpperCase(); // ignore upper and lowercase
+              if (nameA < nameB) {
+                return -1;
+              }
+              if (nameA > nameB) {
+                return 1;
+              }
+
+              // names must be equal
+              return 0;
+            });
+
+            console.log(sortAlphabetically);
+            setStoreTableData(sortAlphabetically);
           } catch (error) {
             if (error.response) {
               toast.warning(`${error.response.data.message}`);
@@ -87,7 +104,7 @@ const Stores = () => {
         ) : (
           <>
             <ScreenHeader title="Stores" value={storeTableData.length} />
-            <GeneralHeaderTab 
+            <GeneralHeaderTab
               data={storeData}
               activeTab={activeTab}
               changeTab={(val) => changeTab(val)}
