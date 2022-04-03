@@ -2,6 +2,9 @@ import Image5 from "../assets/images/dash-pending-order.svg";
 import Image6 from "../assets/images/dash-delievered-order.svg";
 import Image7 from "../assets/images/dash-cancelled-order.svg";
 import Image8 from "../assets/images/inactive-orders.svg";
+import Image9 from "../assets/images/pending-store.svg";
+import Image10 from "../assets/images/inactive-store.svg";
+import Image11 from "../assets/images/approved-store.svg";
 
 export const dashTableHeader = [
   {
@@ -381,6 +384,23 @@ export const inventData = [
   },
 ];
 
+export const storeData = [
+  {
+    title: "Pending Stores",
+    color: "#F69F13",
+    icon: Image10,
+    activeIcon: Image9,
+    value: 0,
+  },
+  {
+    title: "Approved Stores",
+    color: "#4BC7EA",
+    icon: Image10,
+    activeIcon: Image11,
+    value: 0,
+  },
+];
+
 export const orderFilter = [
   {
     title: "Customer Name",
@@ -540,6 +560,8 @@ export const storeHeader = [
   {
     title: "Store Name",
   },
+  { title: "Store ID" },
+
   {
     title: "Market",
   },
