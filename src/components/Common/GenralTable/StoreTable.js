@@ -5,12 +5,11 @@ import { NewMainTable } from "../../../styles/globalStyles";
 import formatDate from "../../../utils/formatDate";
 
 const StoreTable = (props) => {
-
-  return ( 
-    <NewMainTable className="w-full rounded-md  py-10 mt-5 overflow-auto">
+  return (
+    <NewMainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
       <table className="w-full">
         <thead className="main-table-header rounded-md">
-          <tr className="grid grid-cols-6">
+          <tr className="grid grid-cols-7">
             <th>
               <></>
             </th>
@@ -27,7 +26,7 @@ const StoreTable = (props) => {
         </thead>
         <tbody className="main-table-body">
           {props.tableData?.map((item, index) => (
-            <tr key={index} className="w-full grid grid-cols-6 cursor-pointer">
+            <tr key={index} className="w-full grid grid-cols-7 cursor-pointer">
               {props.showCheck && (
                 <td>
                   <GeneralCheckBox />
@@ -48,17 +47,13 @@ const StoreTable = (props) => {
                 </Link>
               </td>
 
-              {/* <td>
+              <td>
                 <Link to={`store-details/${item.store_id}`}>
                   <p className="product text-center text-sm text-white-text font-Regular">
-                    {item.store_categories[0]?.name || (
-                      <span className="text-sm text-secondary-error font-Regular cursor-pointer">
-                        Not specified
-                      </span>
-                    )}
+                    {item?.owner_id?.store_id}
                   </p>
                 </Link>
-              </td> */}
+              </td>
 
               <td>
                 <Link to={`store-details/${item.owner_id.store_id}`}>
