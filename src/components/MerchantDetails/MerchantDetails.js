@@ -14,7 +14,6 @@ import NoImage from "../NoImage/NoImage";
 function MerchantDetails() {
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [profileData, setProfileData] = useState(null);
-  console.log(profileData);
 
   let { store_id } = useParams();
 
