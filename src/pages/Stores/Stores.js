@@ -16,7 +16,6 @@ import NewLoader from "../../components/newLoader/newLoader";
 
 const Stores = () => {
   const [activeTab, setActiveTab] = useState("Pending Stores");
-  // const [filterValue, setFilterValue] = useState("");
   const [storeTableData, setStoreTableData] = useState([]);
   const [loadingStores, setLoadingStores] = useState(false);
 
@@ -56,7 +55,7 @@ const Stores = () => {
             let {
               data: { data },
             } = await axiosInstance.get(`stores/allstores`);
-            sessionStorage.setItem("allStores", JSON.stringify(data));
+
             setLoadingStores(false);
             let sortAlphabetically = data.sort((a, b) => {
               const nameA = a.store_name.toUpperCase(); // ignore upper and lowercase
@@ -72,7 +71,10 @@ const Stores = () => {
               return 0;
             });
 
-            console.log(sortAlphabetically);
+            sessionStorage.setItem(
+              "allStores",
+              JSON.stringify(sortAlphabetically)
+            );
             setStoreTableData(sortAlphabetically);
           } catch (error) {
             if (error.response) {
