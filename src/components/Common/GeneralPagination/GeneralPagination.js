@@ -25,7 +25,11 @@ const GeneralPagination = (props) => {
   }, [props.itemsNumber, props.pageNumber, props.totalNumber]);
 
   return (
-    <MainPagination className="w-full flex flex-row flex-wrap mt-14">
+    <MainPagination
+      className={`w-full flex flex-row flex-wrap ${
+        props.nomargin ? "" : "mt-14"
+      }`}
+    >
       {props.showButtons === false ? (
         <></>
       ) : (

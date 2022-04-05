@@ -628,6 +628,17 @@ export const orderMerchantDetailsTableHeader = [
   { title: "Store ID" },
 ];
 
+export const merchantProductsTableHeader = [
+  { title: "Index" },
+  { title: "Image" },
+  { title: "Name" },
+  { title: "Stock" },
+  { title: "Category" },
+  { title: "Price" },
+  { title: "Upload Date" },
+  { title: "Action" },
+];
+
 export const storeTableData = [
   {
     name: "Yinka Olalere",
