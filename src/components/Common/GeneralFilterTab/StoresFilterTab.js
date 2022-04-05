@@ -4,48 +4,43 @@ import { FaSearch, FaAngleDown } from "react-icons/fa";
 import { HiDownload } from "react-icons/hi";
 import paginationArr from "../../../utils/pagination";
 
-const GeneralFilterTab = ({ filterData, products, setProducts }) => {
+const GeneralFilterTab = ({ filterData, stores, setStores }) => {
   const filterRef = useRef(null);
   const [show, setShow] = useState(false);
   const [nameFilter, setNameFilter] = useState("");
 
-  // Checks if the input value matches the item name using regex
-  // const checkName = (name, str) => {
-  //   let pattern = str
-  //     .split("")
-  //     .map((x) => {
-  //       return `(?=.*${x})`;
-  //     })
-  //     .join("");
-  //   let regex = new RegExp(`${pattern}`, "g");
-  //   return name.match(regex);
-  // };
+  const getMarketName = (storeId) => {
+    if (storeId.startsWith("CV")) return "Computer Village";
+    if (storeId.startsWith("BM")) return "Eko Market";
+    if (storeId.startsWith("EM")) return "Eko Market";
+    return "Other Market";
+  };
 
-  const filterByCategory = (category) => {
-    let currentProducts = products.allProductsImmutable.filter(
-      (item) => item?.category?.name === category
+  const filterByMarket = (category) => {
+    let currentStores = stores.allStoresImmutable.filter(
+      (item) => getMarketName(item?.owner_id?.store_id) === category
     );
 
     if (nameFilter === "") {
-      setProducts((prevState) => {
+      setStores((prevState) => {
         return {
           ...prevState,
-          allProducts: currentProducts,
-          paginatedProducts: paginationArr(currentProducts, 20),
-          currentCategory: category,
+          allStores: currentStores,
+          paginatedStores: paginationArr(currentStores, 20),
+          currentMarket: category,
           pageIndex: 0,
         };
       });
     } else {
-      currentProducts = currentProducts.filter((item) => {
-        return item.name.toLowerCase().includes(nameFilter.toLowerCase());
+      currentStores = currentStores.filter((item) => {
+        return item.store_name.toLowerCase().includes(nameFilter.toLowerCase());
       });
-      setProducts((prevState) => {
+      setStores((prevState) => {
         return {
           ...prevState,
-          allProducts: currentProducts,
-          paginatedProducts: paginationArr(currentProducts, 20),
-          currentCategory: category,
+          allStores: currentStores,
+          paginatedStores: paginationArr(currentStores, 20),
+          currentMarket: category,
           pageIndex: 0,
         };
       });
@@ -61,56 +56,57 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
 
     // if input value is less than zero or for some reason is undefined
     // set table data based on the active filter value e.g
-    let currentProducts;
-    if (["", "All"].includes(products.currentCategory)) {
-      currentProducts = products.allProductsImmutable;
+    let currentStores;
+    if (["", "All"].includes(stores.currentMarket)) {
+      currentStores = stores.allStoresImmutable;
     } else {
-      currentProducts = products.allProductsImmutable.filter(
-        (item) => item?.category?.name === products.currentCategory
+      currentStores = stores.allStoresImmutable.filter(
+        (item) =>
+          getMarketName(item?.owner_id?.store_id) === stores.currentMarket
       );
     }
 
     if (value.length === 0) {
-      setProducts((oldProducts) => {
+      setStores((oldStores) => {
         return {
-          ...oldProducts,
-          allProducts: currentProducts,
-          paginatedProducts: paginationArr(currentProducts, 20),
+          ...oldStores,
+          allStores: currentStores,
+          paginatedStores: paginationArr(currentStores, 20),
         };
       });
     } else {
-      // Filter products based on input value
-      const newProducts = currentProducts.filter((item) => {
-        return item.name.toLowerCase().includes(value.toLowerCase());
+      // Filter stores based on input value
+      const newStores = currentStores.filter((item) => {
+        return item.store_name.toLowerCase().includes(value.toLowerCase());
       });
       // if no items match input value set necessary values to empty state
-      if (newProducts.length === 0) {
-        return setProducts((oldProducts) => {
+      if (newStores.length === 0) {
+        return setStores((oldStores) => {
           return {
-            ...oldProducts,
-            allProducts: newProducts,
-            paginatedProducts: newProducts,
+            ...oldStores,
+            allStores: newStores,
+            paginatedStores: newStores,
           };
         });
       }
-      return setProducts((oldProducts) => {
+      return setStores((oldStores) => {
         return {
-          ...oldProducts,
-          allProducts: newProducts,
-          paginatedProducts: paginationArr(newProducts, 20),
+          ...oldStores,
+          allStores: newStores,
+          paginatedStores: paginationArr(newStores, 20),
         };
       });
     }
   };
 
-  // reset all products
-  const getAllCategories = () => {
-    setProducts((prevState) => {
+  // reset all stores
+  const getAllStores = () => {
+    setStores((prevState) => {
       return {
         ...prevState,
-        allProducts: products.allProductsImmutable,
-        paginatedProducts: paginationArr(products.allProductsImmutable, 20),
-        currentCategory: "All",
+        allStores: stores.allStoresImmutable,
+        paginatedStores: paginationArr(stores.allStoresImmutable, 20),
+        currentMarket: "All",
         pageIndex: 0,
       };
     });
@@ -150,9 +146,9 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
         className="filter-cont flex flex-row md:mx-3 lg:mx-5 rounded-md relative bg-primary-dark cursor-pointer lg:mb-0 mb-8"
         onClick={() => setShow(!show)}
       >
-        {products?.currentCategory !== "" ? (
+        {stores?.currentMarket !== "" ? (
           <p className="text-white-main mr-2 text-sm">
-            {products?.currentCategory}
+            {stores?.currentMarket}
           </p>
         ) : (
           <>
@@ -172,7 +168,7 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
           >
             <p
               className="filter-text text-xs font-Regular text-white-main text-left p-3 rounded-md hover:bg-primary-main hover:cursor-pointer"
-              onClick={getAllCategories}
+              onClick={getAllStores}
             >
               All
             </p>
@@ -180,7 +176,7 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
               <p
                 key={index}
                 className="filter-text text-xs font-Regular text-white-main text-left p-3 rounded-md hover:bg-primary-main hover:cursor-pointer"
-                onClick={() => filterByCategory(item)}
+                onClick={() => filterByMarket(item)}
               >
                 {item}
               </p>
