@@ -13,12 +13,12 @@ const MerchantProductsTable = ({
   handlePagination,
 }) => {
   return (
-    <table className="bg-white-main w-full">
-      <caption className="text-left p-4 font-Bold flex flex-row">
+    <table className="bg-white-main w-full flex flex-col">
+      <caption className="text-left p-4 font-Bold flex flex-row items-center">
         <span className="shrink-0 min-w-max">
           {products.length > 1
-            ? `${productsInfo.allProductsImmutable.length} products found`
-            : `${productsInfo.allProductsImmutable.length} product found`}
+            ? `${productsInfo.allProducts.length} products found`
+            : `${productsInfo.allProducts.length} product found`}
         </span>
         <GeneralPagination
           showButtons={false}

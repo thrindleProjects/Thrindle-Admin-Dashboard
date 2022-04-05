@@ -9,6 +9,7 @@ import DeleteProductModal from "../DeleteProductModal/DeleteProductModal";
 import VerifiedEditModal from "../Inventory/VerifiedEditProduct";
 import MerchantProductsTable from "./MerchantProductsTable";
 import paginationArr from "../../utils/pagination";
+import GeneralFilterTab from "../Common/GeneralFilterTab/GeneralFilterTab";
 
 function MerchantProducts() {
   const [loadingProducts, setLoadingProducts] = useState(false);
@@ -27,6 +28,7 @@ function MerchantProducts() {
     editModal: false,
   });
   const [activeProduct, setActiveProduct] = useState({});
+  const [filterValue, setFilterValue] = useState("");
 
   let { store_id } = useParams();
 
@@ -185,6 +187,23 @@ function MerchantProducts() {
     window.scrollTo(0, 0);
   }, []);
 
+  // get all categories
+  useEffect(() => {
+    const getCategories = () => {
+      setProducts((prevState) => {
+        return {
+          ...prevState,
+          categories: [
+            ...new Set(
+              products.allProductsImmutable?.map((item) => item.category.name)
+            ),
+          ],
+        };
+      });
+    };
+    getCategories();
+  }, [products.allProductsImmutable]);
+
   return (
     <div className="rounded-md shadow-md">
       <MerchantHeader text="Merchant's Products" />
@@ -205,6 +224,17 @@ function MerchantProducts() {
           showModal={showModal}
         />
       )}
+      <div className="w-full mb-4 px-4">
+      {products.allProductsImmutable.length > 0 && (
+        <GeneralFilterTab
+          filterValue={filterValue}
+          filterData={products.categories}
+          products={products}
+          setProducts={setProducts}
+          changeFilter={setFilterValue}
+        />
+      )}
+      </div>
       {loadingProducts ? (
         <div className="h-vh40">
           <NewLoader />
