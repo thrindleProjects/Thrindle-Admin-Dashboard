@@ -33,7 +33,12 @@ const GeneralFilterTab = ({ filterData, stores, setStores }) => {
       });
     } else {
       currentStores = currentStores.filter((item) => {
-        return item.store_name.toLowerCase().includes(nameFilter.toLowerCase());
+        return (
+          item.store_name.toLowerCase().includes(nameFilter.toLowerCase()) ||
+          item.owner_id.store_id
+            .toLowerCase()
+            .includes(nameFilter.toLowerCase())
+        );
       });
       setStores((prevState) => {
         return {
@@ -77,7 +82,10 @@ const GeneralFilterTab = ({ filterData, stores, setStores }) => {
     } else {
       // Filter stores based on input value
       const newStores = currentStores.filter((item) => {
-        return item.store_name.toLowerCase().includes(value.toLowerCase());
+        return (
+          item.store_name.toLowerCase().includes(value.toLowerCase()) ||
+          item.owner_id.store_id.toLowerCase().includes(value.toLowerCase())
+        );
       });
       // if no items match input value set necessary values to empty state
       if (newStores.length === 0) {

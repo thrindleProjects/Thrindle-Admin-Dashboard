@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FaSearch, FaAngleDown } from "react-icons/fa";
-import { HiDownload } from "react-icons/hi";
+// import { HiDownload } from "react-icons/hi";
 import paginationArr from "../../../utils/pagination";
 
 const GeneralFilterTab = ({ filterData, products, setProducts }) => {
@@ -190,10 +190,11 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
       </div>
 
       {/* EXPORT */}
-      <div className="export-cont rounded-md flex flex-row ">
+
+      {/* <div className="export-cont rounded-md flex flex-row ">
         <HiDownload className="text-primary-main text-lg mr-2" />
         <p className="text-primary-main font-Regular text-sm mr-2">Export</p>
-      </div>
+      </div> */}
     </MainCont>
   );
 };
