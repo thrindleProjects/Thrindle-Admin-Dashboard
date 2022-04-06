@@ -44,8 +44,6 @@ const VerifiedEditModal = (props) => {
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
   const { handleSetModal, getAllProducts, showModal } = props;
 
-  console.log("fire");
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let url =

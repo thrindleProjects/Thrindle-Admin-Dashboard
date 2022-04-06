@@ -156,7 +156,7 @@ const Stores = () => {
           totalNumber={stores?.allStores?.length}
         />
         {loadingStores && (
-          <div className="h-vh80">
+          <div className="h-52 flex items-center justify-center">
             <NewLoader />
           </div>
         )}

@@ -7,7 +7,7 @@ import formatDate from "../../../utils/formatDate";
 const StoreTable = (props) => {
   return (
     <NewMainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
-      <table className="w-full">
+      <table className="w-full"> 
         <thead className="main-table-header rounded-md">
           <tr className="grid grid-cols-6">
             {/* <th>

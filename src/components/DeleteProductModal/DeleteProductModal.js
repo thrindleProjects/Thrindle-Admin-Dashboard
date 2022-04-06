@@ -55,6 +55,7 @@ function DeleteProductModal({
   // const history = useHistory();
 
   const handleCloseModal = () => {
+    document.documentElement.style.overflow = "scroll";
     setOpenDeleteModal(false);
   };
 
@@ -66,6 +67,7 @@ function DeleteProductModal({
         setDeleting(false);
         toast.success("Product was successfully deleted");
         getAllProducts();
+        document.documentElement.style.overflow = "scroll";
         setOpenDeleteModal(false);
       }
     } catch (error) {
@@ -84,9 +86,6 @@ function DeleteProductModal({
 
   useEffect(() => {
     let mounted = true;
-
-    console.log(openDeleteModal, "in");
-
     if (mounted) {
       if (openDeleteModal) {
         document.documentElement.style.overflow = "hidden";
