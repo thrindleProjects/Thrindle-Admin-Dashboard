@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
-// orderFilter import from data 
+// orderFilter import from data
 import { customerHeader } from "../../data/data";
 // import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import CustomerTable from "../../components/Common/GenralTable/CustomerTable";
-import Loader from "../../components/Common/Loader/Loader";
 import axiosInstance from "../../utils/axiosInstance";
+import NewLoader from "../../components/newLoader/newLoader";
 
 const Customers = () => {
   const [customers, setCustomers] = useState({
@@ -33,11 +33,9 @@ const Customers = () => {
     });
     try {
       let {
-        status: statusCode,
         data: { data: allCustomers },
       } = await axiosInstance.get(`users/admin/buyers`);
-      if (statusCode > 399)
-        return setStatus({ isError: true, isLoading: false });
+
       let paginatedCustomers = paginationArr(allCustomers, 20);
       setCustomers((oldCustomers) => {
         return { ...oldCustomers, paginatedCustomers, allCustomers };
@@ -109,7 +107,11 @@ const Customers = () => {
               pageIndex={customers.pageIndex}
             />
           )}
-        {!status.isError && status.isLoading && <Loader />}
+        {!status.isError && status.isLoading && (
+          <div className="h-96">
+            <NewLoader />
+          </div>
+        )}
       </FirstSection>
     </MainContainer>
   );

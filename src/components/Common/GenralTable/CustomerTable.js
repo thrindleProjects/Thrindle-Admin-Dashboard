@@ -10,6 +10,7 @@ const CustomerTable = (props) => {
     }
     return "Other Market";
   };
+
   const getUploadDate = (updatedAt) => {
     const date = new Date(updatedAt);
     let newDay = date.getDate();

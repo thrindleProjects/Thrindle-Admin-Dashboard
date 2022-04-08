@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Loader from "../Loader/Loader";
+import NewLoader from "../../../components/newLoader/newLoader";
 
 const LoginBtn = (props) => {
   return (
@@ -11,7 +11,7 @@ const LoginBtn = (props) => {
         onClick={props.onClick}
       >
         {props.isLoading ? (
-          <Loader />
+          <NewLoader login={true} />
         ) : (
           <p className="text-base font-Regular text-center capitalize">
             {props.title}

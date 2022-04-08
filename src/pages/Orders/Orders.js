@@ -9,9 +9,9 @@ import { orderData, orderTableHeader } from "../../data/data";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import OrderTable from "../../components/Common/GenralTable/OrderTable";
 import axiosInstance from "../../utils/axiosInstance";
-import Loader from "../../components/Common/Loader/Loader";
 import axios from "axios";
 import { toast } from "react-toastify";
+import NewLoader from "../../components/newLoader/newLoader";
 
 const Orders = (props) => {
   const [orders, setOrders] = useState({
@@ -187,8 +187,8 @@ const Orders = (props) => {
           </div>
         )}
         {!status.isError && status.isLoading && (
-          <div className="w-full mt-32">
-            <Loader />
+          <div className="h-96">
+            <NewLoader />
           </div>
         )}
         {!status.isLoading && status.isEmpty && (

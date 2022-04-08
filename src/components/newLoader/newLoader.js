@@ -19,16 +19,19 @@ const LoaderBox = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 3em;
-  height: 3em;
+  width: 2em;
+  height: 2em;
   transform: translate(-50%, -50%);
 `;
 
 const Spin = styled.div`
   width: 100%;
   height: 100%;
-  border: 2px solid #20639b;
-  border-color: #20639b transparent #20639b transparent;
+  border: ${(props) => (props.login ? "2px solid white" : "2px solid #20639b")};
+  border-color: ${(props) =>
+    props.login
+      ? "white transparent white transparent"
+      : "#20639b transparent #20639b transparent"};
   border-radius: 50%;
   animation: spin 1s linear infinite;
 
@@ -43,7 +46,7 @@ const Spin = styled.div`
   }
 `;
 
-const NewLoader = () => {
+const NewLoader = ({ login }) => {
   const [networkFailure, setNetworkFailure] = useState(false);
 
   useEffect(() => {
@@ -60,7 +63,7 @@ const NewLoader = () => {
     <LoaderContainer>
       {!networkFailure ? (
         <LoaderBox>
-          <Spin></Spin>
+          <Spin login={login}></Spin>
         </LoaderBox>
       ) : (
         <Container>

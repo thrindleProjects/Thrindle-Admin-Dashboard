@@ -1,23 +1,23 @@
-import * as constants from '../../../redux/constants/index';
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import Bg from '../../../assets/images/Login.png';
-import Logo from '../../../assets/images/thrindle.png';
-import LoginBtn from '../../../components/Common/Button/LoginBtn';
-import LoginInput from '../../../components/Common/CustomInput/LoginInput';
-import LoginPasswordInput from '../../../components/Common/CustomInput/LoginPasswordInput';
-import { NavLink } from 'react-router-dom';
+import * as constants from "../../../redux/constants/index";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import Bg from "../../../assets/images/Login.png";
+import Logo from "../../../assets/images/thrindle.png";
+import LoginBtn from "../../../components/Common/Button/LoginBtn";
+import LoginInput from "../../../components/Common/CustomInput/LoginInput";
+import LoginPasswordInput from "../../../components/Common/CustomInput/LoginPasswordInput";
+import { NavLink } from "react-router-dom";
 // import { useFormik } from 'formik';
 // import * as Yup from 'yup';
-import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import { login_admin } from '../../../redux/actions/authActions/actions';
-import { useHistory } from 'react-router-dom';
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { login_admin } from "../../../redux/actions/authActions/actions";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const history = useHistory();
   const dispatch = useDispatch();
@@ -48,13 +48,13 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (accessToken && accessToken !== '') {
-      history.push('/');
+    if (accessToken && accessToken !== "") {
+      history.push("/");
       dispatch({
         type: constants.CLEAR_DETAILS,
       });
     }
-    if (isError && isError !== '') {
+    if (isError && isError !== "") {
       toast.error(`${isError}`);
       dispatch({
         type: constants.CLEAR_DETAILS,
@@ -63,52 +63,52 @@ const Login = () => {
   }, [accessToken, history, isError, dispatch]);
 
   return (
-    <MainCont className='w-screen h-screen flex flex-col'>
-      <div className='logo-cont'>
-        <img src={Logo} alt='Thrindle Logo' className='block' />
+    <MainCont className="w-screen h-screen flex flex-col">
+      <div className="logo-cont">
+        <img src={Logo} alt="Thrindle Logo" className="block" />
       </div>
-      <h6 className='text-lg text-white-main text-center font-Bold mt-5 tracking-widest'>
+      <h6 className="text-lg text-white-main text-center font-Bold mt-5 tracking-widest">
         Thrindle Admin Dashboard
       </h6>
       <form
-        className=' mt-10 w-1/2 login-input flex flex-col'
+        className="mt-10 w-1/2 login-input flex flex-col"
         onSubmit={handleFormSubmit}
       >
         <LoginInput
-          name='email'
+          name="email"
           value={formData.email}
           onChange={handleFormChange}
-          placeholder='Email Address'
+          placeholder="Email Address"
         />
         <LoginPasswordInput
-          name='password'
+          name="password"
           value={formData.password}
           onChange={handleFormChange}
-          placeholder='Password'
+          placeholder="Password"
         />
-        <div className='w-full forget-cont'>
-          <NavLink to='/login/forget-password'>
-            <p className='text-sm cursor-pointer text-secondary-yellow text-right'>
+        <div className="w-full forget-cont">
+          <NavLink to="/login/forget-password">
+            <p className="text-sm cursor-pointer text-secondary-yellow text-right">
               Forgot Password?
             </p>
           </NavLink>
         </div>
-        <div className='login-btn mt-10'>
+        <div className="login-btn mt-10">
           <LoginBtn
             isLoading={isLoading}
             onClick={handleFormSubmit}
-            title='Login to Dashboard'
+            title="Login to Dashboard"
           />
         </div>
       </form>
-      <div className='flex flex-row absolute login-footer bottom-10'>
-        <p className='md:text-base text-sm text-white-main font-Regular md:mr-10 mr-5'>
+      <div className="flex flex-row absolute login-footer bottom-10">
+        <p className="md:text-base text-sm text-white-main font-Regular md:mr-10 mr-5">
           © thrindle
         </p>
-        <p className='md:text-base text-sm text-white-main font-Regular md:mr-10 mr-5'>
+        <p className="md:text-base text-sm text-white-main font-Regular md:mr-10 mr-5">
           Privacy & Terms
         </p>
-        <p className='md:text-base text-sm text-white-main font-Regular'>
+        <p className="md:text-base text-sm text-white-main font-Regular">
           Contact us
         </p>
       </div>

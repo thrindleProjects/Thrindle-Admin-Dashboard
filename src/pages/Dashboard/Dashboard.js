@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import SingleDashboard from "../../components/Dashboard/SingleDashboard";
-import { dashTableData, orderTableHeader } from "../../data/data";
+import { orderTableHeader } from "../../data/data";
 import TableFilter from "../../components/Dashboard/TableFilter";
 import SingleDetailCont from "../../components/Dashboard/SingleDetailCont";
 import SingleDetailCont2 from "../../components/Dashboard/SingleDetailCont2";
@@ -82,6 +82,10 @@ const Dashboard = () => {
       total: 0,
       loading: true,
     },
+    recentProducts: {
+      data: [],
+      loading: true,
+    },
   });
 
   const dashData = [
@@ -97,7 +101,7 @@ const Dashboard = () => {
       title: "Total Users",
       img: Image2,
       color: "#166CB4",
-      path: "/customers",
+      path: "/buyers",
       value: currentData.allCustomers.total,
       loading: currentData.allCustomers.loading,
     },
@@ -145,7 +149,7 @@ const Dashboard = () => {
       title: "New Customers",
       img: Image2,
       color: "#166CB4",
-      path: "/customers",
+      path: "/buyers",
       value: currentData.newCustomers.total,
       loading: currentData.newCustomers.loading,
     },
@@ -311,12 +315,50 @@ const Dashboard = () => {
     }
   }, []);
 
+  const getProducts = useCallback(async () => {
+    try {
+      let {
+        data: { data },
+      } = await axiosInstance.get("/products/search");
+
+      console.log(data.reverse().slice(0, 10));
+      setCurrentData((prevData) => {
+        return {
+          ...prevData,
+          recentProducts: {
+            data: data.reverse().slice(0, 10),
+            loading: false,
+          },
+        };
+      });
+    } catch (error) {
+      if (error.message) {
+        toast.error(error.message);
+        throw new Error(error.message);
+      } else {
+        toast.error("Something went wrong");
+        throw new Error(error);
+      }
+    } finally {
+      setCurrentData((prevData) => {
+        return {
+          ...prevData,
+          recentProducts: {
+            ...prevData.recentProducts,
+            loading: false,
+          },
+        };
+      });
+    }
+  }, []);
+
   useEffect(() => {
     getOrders();
     getUsers();
     getStores();
     getCurrentDate();
-  }, [getOrders, getUsers, getStores]);
+    getProducts();
+  }, [getOrders, getUsers, getStores, getProducts]);
 
   return (
     <MainContainer>
@@ -341,10 +383,11 @@ const Dashboard = () => {
         <div className="w-full px-3 ">
           <DashboardTable
             tableHeaderData={orderTableHeader}
-            tableData={dashTableData}
+            tableData={currentData.recentProducts.data}
           />
         </div>
       </SecondSection>
+
       <ThirdSection
         data-aos="fade-up"
         data-aos-duration="1000"
@@ -354,6 +397,7 @@ const Dashboard = () => {
         <SingleDetailCont title="Store Perfomance" />
         <SingleDetailCont2 title="Returned Products" />
       </ThirdSection>
+
       <FourthSection
         data-aos="fade-up"
         data-aos-duration="2000"

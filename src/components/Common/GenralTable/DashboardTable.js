@@ -1,5 +1,6 @@
-    import React from "react";
+import React from "react";
 import styled from "styled-components";
+import { numberFormat } from "../../../utils/formatPrice";
 import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 
 const DashboardTable = (props) => {
@@ -27,28 +28,18 @@ const DashboardTable = (props) => {
               )}
 
               <td>
-                <p className="status text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.status}
-                </p>
-              </td>
-              <td>
-                <p className="orderId text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.OrderID}
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
+                  {item?.name}
                 </p>
               </td>
               <td>
                 <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.ProductTitle}
+                  N{numberFormat(item?.price)}
                 </p>
               </td>
               <td>
                 <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.Price}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.CustomerName}
+                  {item?.no_in_stock}
                 </p>
               </td>
               <td>
