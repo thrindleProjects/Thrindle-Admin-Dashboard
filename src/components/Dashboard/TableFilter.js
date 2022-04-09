@@ -2,10 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const TableFilter = (props) => {
-  const dataLength = props.data.length;
   return (
     <MainCont
-      length={dataLength}
       color={props.color}
       className="w-full md:flex md:flex-row flex-wrap px-3 md:mb-0 mb-14"
     >
@@ -30,7 +28,7 @@ const TableFilter = (props) => {
           </div>
         )}
       </div>
-      <div className="filter-tab-cont rounded-md flex flex-row px-1 ">
+      {/* <div className="filter-tab-cont rounded-md flex flex-row px-1 ">
         {props.data.map((item, index) => (
           <div
             key={index}
@@ -52,7 +50,7 @@ const TableFilter = (props) => {
             </p>
           </div>
         ))}
-      </div>
+      </div> */}
     </MainCont>
   );
 };
@@ -71,7 +69,7 @@ const MainCont = styled.div`
     background: #fafafa;
   }
   .single-tab {
-    width: ${({ length }) => (length ? `${100 / length}%` : "50%")};
+    /* width: ${({ length }) => (length ? `${100 / length}%` : "50%")}; */
     align-items: center;
     justify-content: center;
     height: 80%;
@@ -112,7 +110,7 @@ const MainCont = styled.div`
       margin-top: 20px;
     }
     .single-tab {
-      width: ${({ length }) => (length ? `${100 / length}%` : "50%")};
+      /* width: ${({ length }) => (length ? `${100 / length}%` : "50%")}; */
       align-items: center;
       justify-content: center;
       height: 90%;

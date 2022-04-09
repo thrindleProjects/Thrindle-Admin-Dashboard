@@ -30,8 +30,8 @@ const Spin = styled.div`
   border: ${(props) => (props.login ? "2px solid white" : "2px solid #20639b")};
   border-color: ${(props) =>
     props.login
-      ? "white transparent white transparent"
-      : "#20639b transparent #20639b transparent"};
+      ? "white white transparent  transparent"
+      : "#20639b #20639b transparent  transparent"};
   border-radius: 50%;
   animation: spin 1s linear infinite;
 

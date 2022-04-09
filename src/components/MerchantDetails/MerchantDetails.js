@@ -97,7 +97,9 @@ function MerchantDetails() {
                         Email
                       </span>
                     </div>
-                    <p className="capitalize">{profileData?.owner_id?.email}</p>
+                    <p className="capitalize">
+                      {profileData?.owner_id?.email || "N/A"}
+                    </p>
                   </div>
 
                   <div className="flex justify-between items-center p-4">
@@ -153,7 +155,7 @@ function MerchantDetails() {
         )}
       </div>
 
-      {/* <MerchantHeader text="Vendor's Products" /> */}
+    
     </div>
   );
 }

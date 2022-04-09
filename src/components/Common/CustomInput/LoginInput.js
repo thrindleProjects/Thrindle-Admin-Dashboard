@@ -14,7 +14,7 @@ const LoginInput = (props) => {
       <p className="text-sm common-input-placeholder text-white-main sm:text-base lg:text-base xl:text-base font-Medium  mb-2">
         {props.placeholder}
       </p>
-      <div className="w-full main-common-input-cont rounded-md pl-5 flex flex-row px-5">
+      <div className="w-full main-common-input-cont rounded-md flex flex-row">
         <input
           id={props.id}
           type={"email"}
@@ -22,7 +22,7 @@ const LoginInput = (props) => {
           placeholder={props.placeholder2}
           onChange={props.onChange}
           name={props.name}
-          className="main-input h-full outline-none focus:outline-none"
+          className="main-input h-full outline-none focus:outline-none px-5"
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
           required
@@ -63,6 +63,17 @@ const MainInput = styled.div`
     width: 100%;
     background-color: inherit;
     color: white;
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      box-shadow: 0 0 0 30px #0d497a inset !important;
+    }
+
+    :-webkit-autofill {
+      -webkit-text-fill-color: white !important;
+    }
   }
 
   @media (min-width: 2000px) {

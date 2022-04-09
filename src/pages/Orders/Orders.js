@@ -33,6 +33,7 @@ const Orders = (props) => {
   const qty = props.location.search
     ? props.location.search.split("=")[1]
     : "Pending Orders";
+    
   const changeTab = (val) => {
     setActiveTab(val);
     setOrders({ ...orders, pageIndex: 0 });

@@ -18,6 +18,7 @@ import Image4 from "../../assets/images/dash-returned-products.svg";
 import Image5 from "../../assets/images/dash-pending-order.svg";
 import Image6 from "../../assets/images/dash-delievered-order.svg";
 import Image7 from "../../assets/images/dash-cancelled-order.svg";
+import NewLoader from "../../components/newLoader/newLoader";
 
 const filterData1 = [
   {
@@ -321,12 +322,12 @@ const Dashboard = () => {
         data: { data },
       } = await axiosInstance.get("/products/search");
 
-      console.log(data.reverse().slice(0, 10));
+      let newlyApproved = data.reverse().slice(0, 10);
       setCurrentData((prevData) => {
         return {
           ...prevData,
           recentProducts: {
-            data: data.reverse().slice(0, 10),
+            data: newlyApproved,
             loading: false,
           },
         };
@@ -380,12 +381,18 @@ const Dashboard = () => {
           title="Recent Product"
           changeTab={(val) => changeColor(val)}
         />
-        <div className="w-full px-3 ">
-          <DashboardTable
-            tableHeaderData={orderTableHeader}
-            tableData={currentData.recentProducts.data}
-          />
-        </div>
+        {currentData.recentProducts.loading ? (
+          <div className="h-52">
+            <NewLoader />
+          </div>
+        ) : (
+          <div className="w-full px-3 ">
+            <DashboardTable
+              tableHeaderData={orderTableHeader}
+              tableData={currentData.recentProducts.data}
+            />
+          </div>
+        )}
       </SecondSection>
 
       <ThirdSection

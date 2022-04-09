@@ -139,23 +139,6 @@ function MerchantProducts() {
         };
       });
 
-      // console.log(res);
-      // setProducts(
-      //   res.data.data.sort((a, b) => {
-      //     const dateA = a.createdAt;
-      //     const dateB = b.createdAt;
-
-      //     if (dateA > dateB) {
-      //       return -1;
-      //     }
-
-      //     if (dateA < dateB) {
-      //       return 1;
-      //     }
-
-      //     return 0;
-      //   })
-      // );
       setLoadingProducts(false);
     } catch (error) {
       if (error.response) {
@@ -174,14 +157,13 @@ function MerchantProducts() {
 
     if (mounted) {
       setLoadingProducts(true);
-
       fetchProducts();
     }
 
     return () => {
       mounted = false;
     };
-  }, [store_id, fetchProducts]);
+  }, [fetchProducts]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -225,15 +207,15 @@ function MerchantProducts() {
         />
       )}
       <div className="w-full mb-4 px-4">
-      {products.allProductsImmutable.length > 0 && (
-        <GeneralFilterTab
-          filterValue={filterValue}
-          filterData={products.categories}
-          products={products}
-          setProducts={setProducts}
-          changeFilter={setFilterValue}
-        />
-      )}
+        {products.allProductsImmutable.length > 0 && (
+          <GeneralFilterTab
+            filterValue={filterValue}
+            filterData={products.categories}
+            products={products}
+            setProducts={setProducts}
+            changeFilter={setFilterValue}
+          />
+        )}
       </div>
       {loadingProducts ? (
         <div className="h-vh40">
