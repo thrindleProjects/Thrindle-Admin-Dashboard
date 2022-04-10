@@ -11,6 +11,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import paginationArr from "../../utils/pagination";
 import { toast } from "react-toastify";
 import NewLoader from "../../components/newLoader/newLoader";
+import getMarketName from "../../utils/getMarketName";
 
 const Stores = () => {
   const [activeTab, setActiveTab] = useState("Approved Stores");
@@ -55,13 +56,6 @@ const Stores = () => {
         console.log("Argumenet NOT handled");
         break;
     }
-  };
-  // Get Market Name from Store Id
-  const getMarketName = (storeId) => {
-    if (storeId.startsWith("CV")) return "Computer Village";
-    if (storeId.startsWith("BM")) return "Eko Market";
-    if (storeId.startsWith("EM")) return "Eko Market";
-    return "Other Market";
   };
 
   // Sort stores alphabetically
