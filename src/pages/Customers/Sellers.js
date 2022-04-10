@@ -7,8 +7,8 @@ import { customerHeader } from "../../data/data";
 // import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import CustomerTable from "../../components/Common/GenralTable/CustomerTable";
-import Loader from "../../components/Common/Loader/Loader";
 import axios from "axios";
+import NewLoader from "../../components/newLoader/newLoader";
 
 const Customers = () => {
   const [customers, setCustomers] = useState({
@@ -111,7 +111,11 @@ const Customers = () => {
               pageIndex={customers.pageIndex}
             />
           )}
-        {!status.isError && status.isLoading && <Loader />}
+        {!status.isError && status.isLoading && (
+          <div className="h-96">
+            <NewLoader />
+          </div>
+        )}
       </FirstSection>
     </MainContainer>
   );

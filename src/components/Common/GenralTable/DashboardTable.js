@@ -1,17 +1,23 @@
-    import React from "react";
+import React from "react";
 import styled from "styled-components";
-import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
+import { numberFormat } from "../../../utils/formatPrice";
+import getMarketName from "../../../utils/getMarketName";
+import formatDate from "../../../utils/formatDate";
 
 const DashboardTable = (props) => {
+  const longerColumns = ["Product Title", "Category", "Sub Category"];
   return (
     <MainTable className="w-full mt-2 overflow-auto">
       <table className="w-full">
-        <thead className="main-table-header  rounded-md flex flex-row">
-          {props.showCheck && <GeneralCheckBox />}
-
+        <thead className="main-table-header rounded-md grid grid-cols-11">
           {props.tableHeaderData.map((item, index) => (
-            <tr key={index}>
-              <th className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+            <tr
+              key={index}
+              className={`block mx-auto ${
+                longerColumns.includes(item.title) ? "col-span-2" : ""
+              }`}
+            >
+              <th className="text-sm font-normal font-Regular text-center text-white-text">
                 {item.title}
               </th>
             </tr>
@@ -19,61 +25,51 @@ const DashboardTable = (props) => {
         </thead>
         <tbody className="main-table-body">
           {props.tableData.map((item, index) => (
-            <tr key={index} className="w-full flex flex-row">
-              {props.showCheck && (
-                <td>
-                  <GeneralCheckBox />
-                </td>
-              )}
-
+            <tr key={index} className="tableRowBottom w-full grid grid-cols-11">
               <td>
-                <p className="status text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.status}
-                </p>
+                <img
+                  src={
+                    "https://thrindleservices.herokuapp.com/api/thrindle/images/" +
+                    item?.images[0]
+                  }
+                  className="w-12 h-12 mx-auto rounded-sm"
+                  loading="eager"
+                  alt={`product${index + 1}`}
+                />
               </td>
-              <td>
-                <p className="orderId text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.OrderID}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.ProductTitle}
+              <td className="col-span-2">
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular ">
+                  {item?.name}
                 </p>
               </td>
               <td>
                 <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.Price}
+                  N{numberFormat(item?.price)}
                 </p>
               </td>
               <td>
                 <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.CustomerName}
+                  {item?.no_in_stock}
                 </p>
               </td>
               <td>
                 <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.PhoneNo}
+                  {getMarketName(item?.store_id)}
+                </p>
+              </td>
+              <td className=" col-span-2">
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
+                  {item?.category?.name || "N/A"}
+                </p>
+              </td>
+              <td className="col-span-2">
+                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
+                  {item?.subcategory?.name || "N/A"}
                 </p>
               </td>
               <td>
                 <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.Market}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.Store}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.Category}
-                </p>
-              </td>
-              <td>
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
-                  {item.OrderDate}
+                  {formatDate(item?.createdAt)}
                 </p>
               </td>
             </tr>
@@ -90,23 +86,24 @@ const MainTable = styled.div`
   //   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
   .main-table-header {
     width: 100%;
-    padding: 0px 12px !important;
     height: 50px;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1.5px solid #f4f4f4;
     border-top: 1.5px solid #f4f4f4;
   }
+
   tr:nth-child(even) {
     background-color: #fafafa;
   }
-  tr td {
-    padding: 0px 10px !important;
-    text-align: left;
-  }
-  tr {
-    height: 50px;
+
+  .tableRowBottom {
+    height: 80px;
     align-items: center;
     justify-content: space-evenly;
+  }
+
+  .tableRowBottom > td {
+    margin: 0 auto;
   }
 `;

@@ -3,18 +3,12 @@ import styled from "styled-components";
 import { FaSearch, FaAngleDown } from "react-icons/fa";
 import { HiDownload } from "react-icons/hi";
 import paginationArr from "../../../utils/pagination";
+import getMarketName from "../../../utils/getMarketName";
 
 const GeneralFilterTab = ({ filterData, stores, setStores }) => {
   const filterRef = useRef(null);
   const [show, setShow] = useState(false);
   const [nameFilter, setNameFilter] = useState("");
-
-  const getMarketName = (storeId) => {
-    if (storeId.startsWith("CV")) return "Computer Village";
-    if (storeId.startsWith("BM")) return "Eko Market";
-    if (storeId.startsWith("EM")) return "Eko Market";
-    return "Other Market";
-  };
 
   const filterByMarket = (category) => {
     let currentStores = stores.allStoresImmutable.filter(

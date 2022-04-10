@@ -4,7 +4,7 @@ import styled from "styled-components";
 import noNetworkImage from "../../assets/images/noNetwork.svg";
 
 const Image = styled.img`
-  width: 200px;
+  width: 150px;
   margin-left: auto;
   margin-right: auto;
 `;

@@ -13,7 +13,7 @@ import {
 import axiosInstance from "../../utils/axiosInstance";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Loader from "../../components/Common/Loader/Loader";
+import NewLoader from "../../components/newLoader/newLoader";
 
 const SingleOrder = () => {
   const { orderId } = useParams();
@@ -98,7 +98,7 @@ const SingleOrder = () => {
       )}
       {!status.isError && status.isLoading && (
         <div className="w-full mt-32">
-          <Loader />
+          <NewLoader />
         </div>
       )}
       {!status.isLoading && status.isEmpty && (

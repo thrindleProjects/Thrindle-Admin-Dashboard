@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Loader from "../Common/Loader/Loader";
 import axios from "axios";
 import styled from "styled-components";
 import axiosInstance from "../../utils/axiosInstance";
@@ -13,6 +12,7 @@ import CustomInventoryDropdown from "./CustomInventoryDropdown";
 import CustomColorDropdown from "./CustomColorInventoryDropdown";
 import SelectedColors from "./SelectedColors";
 import SelectedSizes from "./SelectedSizes";
+import NewLoader from "../newLoader/newLoader";
 
 const InventoryEditModal = (props) => {
   const modalRef = useRef(null);
@@ -685,7 +685,7 @@ const InventoryEditModal = (props) => {
           })
         ) : (
           <div className="h-52">
-            <Loader />
+            <NewLoader />
           </div>
         )}
       </ModalContainer>

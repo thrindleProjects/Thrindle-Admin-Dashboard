@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import Loader from "../Common/Loader/Loader";
 import axios from "axios";
 import styled from "styled-components";
 import { toast } from "react-toastify";
+import NewLoader from "../newLoader/newLoader";
 
 const InventoryModal = (props) => {
   const modalRef = useRef(null);
@@ -172,7 +172,7 @@ const InventoryModal = (props) => {
             );
           })
         ) : (
-          <Loader />
+          <NewLoader />
         )}
       </ModalContainer>
     </ModalWrapper>
