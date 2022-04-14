@@ -23,10 +23,15 @@ const CustomerTable = (props) => {
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
       <table className="w-full min-w-min max-w-full">
         <thead>
-          <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-6 auto-cols-min gap-8 px-6">
+          <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-8 auto-cols-min gap-8 px-6">
             {props.showCheck && <th></th>}
             {props.tableHeaderData?.map((item, index) => (
-              <th key={index}>
+              <th
+                key={index}
+                className={`${
+                  ["Email"].includes(item.title) ? "col-span-2" : ""
+                }`}
+              >
                 <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
                   {item.title}
                 </p>
@@ -39,11 +44,11 @@ const CustomerTable = (props) => {
             let marktetName = getMarketName(item.store_id);
             let uploadDate = getUploadDate(item.updatedAt);
             let serialNumber = props.pageIndex * 20 + (index + 1);
-
+            console.log(item);
             return (
               <tr
                 key={item._id}
-                className="w-full grid grid-flow-row grid-cols-6 gap-8 auto-cols-min px-6 py-3 "
+                className="w-full grid grid-flow-row grid-cols-8 gap-8 auto-cols-min px-6 py-3 "
               >
                 {props.showCheck && <td>{serialNumber}</td>}
 
@@ -62,7 +67,11 @@ const CustomerTable = (props) => {
                     {item.name}
                   </p>
                 </td>
-
+                <td className="col-span-2">
+                  <p className="product text-left text-sm text-white-text font-Regular">
+                    {item.email}
+                  </p>
+                </td>
                 <td>
                   <p className="product text-left text-sm text-white-text font-Regular">
                     {marktetName}

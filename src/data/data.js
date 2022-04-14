@@ -547,6 +547,9 @@ export const customerHeader = [
     title: "User Name",
   },
   {
+    title: "Email",
+  },
+  {
     title: "Location",
   },
   {
