@@ -1,6 +1,7 @@
-import React, { useEffect, useRef} from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Fieldset } from "../../../styles/globalStyles";
+import AsyncSelect from "react-select/async";
 
 const Select = styled.div`
   position: relative;
@@ -118,7 +119,14 @@ function CustomDropdown({
   return (
     <Fieldset>
       <legend className="ml-4 px-1 opacity-75">{fieldset}</legend>
-      <Select ref={storeRef}>
+      <AsyncSelect
+        cacheOptions
+        onInputChange={handleSearch}
+        // loadOptions={list}
+        // defaultOptions
+      />
+
+      {/* <Select ref={storeRef}>
         <div className="flex justify-between items-center">
           <Option>{currentStoreValue}</Option>
           <svg
@@ -136,7 +144,6 @@ function CustomDropdown({
             />
           </svg>
         </div>
-
         {openDropdown && (
           <OptionBox id="stores-box" className="font-Regular">
             <SearchInput
@@ -161,7 +168,7 @@ function CustomDropdown({
             ))}
           </OptionBox>
         )}
-      </Select>
+      </Select> */}
       <Input
         type="text"
         value={storeValue}

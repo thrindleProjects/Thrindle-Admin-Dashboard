@@ -201,6 +201,7 @@ const AddProducts = () => {
       let res = await axiosInstance.get(`/stores/storespermarket/${marketID}`);
       localStorage.setItem("storesPerMarket", JSON.stringify(res.data.data));
       let stores = res.data.data.map((item) => item.store_name);
+      console.log(stores);
       setStores(stores);
       setAllStores(stores);
     } catch (error) {
@@ -362,8 +363,8 @@ const AddProducts = () => {
 
   // handle store search
   const handleSearch = (value) => {
+    console.log(value);
     setSearchStoreValue(value);
-
     if (value !== "") {
       let filteredResult = allStores.filter(
         (item) =>
@@ -371,7 +372,9 @@ const AddProducts = () => {
           item.indexOf(value.toLowerCase()[0]) === 0
       );
       setStores(filteredResult);
+      return filteredResult;
     }
+    return "";
   };
 
   // select stores
