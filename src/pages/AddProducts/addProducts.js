@@ -45,7 +45,7 @@ const AddProducts = () => {
   const [storeID, setStoreID] = useState("");
   const [storeValue, setStoreValue] = useState("");
   const [currentStoreValue, setCurrentStoreValue] = useState("Choose a Store");
-  const [openDropdown, setOpenDropdown] = useState(false);
+  // const [openDropdown, setOpenDropdown] = useState(false);
   const [currentSize, setCurrentSize] = useState({
     size1: [],
     size2: [],
@@ -201,7 +201,6 @@ const AddProducts = () => {
       let res = await axiosInstance.get(`/stores/storespermarket/${marketID}`);
       localStorage.setItem("storesPerMarket", JSON.stringify(res.data.data));
       let stores = res.data.data.map((item) => item.store_name);
-      console.log(stores);
       setStores(stores);
       setAllStores(stores);
     } catch (error) {
@@ -363,7 +362,6 @@ const AddProducts = () => {
 
   // handle store search
   const handleSearch = (value) => {
-    console.log(value);
     setSearchStoreValue(value);
     if (value !== "") {
       let filteredResult = allStores.filter(
@@ -387,7 +385,7 @@ const AddProducts = () => {
     );
 
     // document.getElementById("stores-box").style.display = "none";
-    setOpenDropdown(false);
+    // setOpenDropdown(false);
   };
 
   // get markets
@@ -537,8 +535,6 @@ const AddProducts = () => {
                 searchStoreValue={searchStoreValue}
                 setCurrentStoreValue={setCurrentStoreValue}
                 setStoreValue={setStoreValue}
-                openDropdown={openDropdown}
-                setOpenDropdown={setOpenDropdown}
                 handleSearch={(value) => handleSearch(value)}
                 selectStore={selectStore}
                 required={true}
