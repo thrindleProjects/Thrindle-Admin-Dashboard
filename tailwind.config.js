@@ -30,6 +30,7 @@ module.exports = {
           lightGrey: "#B2ACAC",
           lightGrey2: "#F4F4F4",
           lightGrey3: "#C2C2C2",
+          lightGrey4: "#CDCCCC",
           borderGrey: "#E1E1E1",
           tableHeader: "#2F3133",
         },

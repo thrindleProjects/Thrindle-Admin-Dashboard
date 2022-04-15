@@ -33,7 +33,7 @@ const Orders = (props) => {
   const qty = props.location.search
     ? props.location.search.split("=")[1]
     : "Pending Orders";
-    
+
   const changeTab = (val) => {
     setActiveTab(val);
     setOrders({ ...orders, pageIndex: 0 });
@@ -93,10 +93,8 @@ const Orders = (props) => {
             return data.reverse();
           } catch (error) {
             if (error.message) {
-              toast.error(error.message);
               throw new Error(error.message);
             }
-            toast.error("Something went wrong");
             throw new Error(error);
           }
         })

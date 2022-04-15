@@ -468,6 +468,33 @@ export const inventFilter = [
 
 export const orderTableHeader = [
   {
+    title: "Index",
+  },
+  {
+    title: "Status",
+  },
+  {
+    title: "Order No",
+  },
+  {
+    title: "Product Name",
+  },
+  {
+    title: "Price",
+  },
+  {
+    title: "Quantity",
+  },
+  {
+    title: "Market",
+  },
+  {
+    title: "Upload Date",
+  },
+];
+
+export const dashbordHeader = [
+  {
     title: "Image",
   },
   {

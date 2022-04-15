@@ -2,11 +2,11 @@ import { useHistory } from "react-router-dom";
 // import { useDispatch } from "react-redux";
 // import { setSingleOrder } from "../../../redux/actions/orderActions/actions";
 import styled from "styled-components";
+import { numberFormat } from "../../../utils/formatPrice";
 // import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
 
 const OrderTable = (props) => {
   const history = useHistory();
-  // const dispatch = useDispatch();
   const getMarketName = (storeId) => {
     if (storeId.startsWith("CV")) return "Computer Village";
     if (storeId.startsWith("BM")) return "Eko Market";
@@ -29,21 +29,21 @@ const OrderTable = (props) => {
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
       <table className="w-max lg:w-full min-w-min lg:max-w-full overflow-y-auto">
-        <thead className="main-table-header rounded-md flex shrink-0 lg:grid lg:grid-flow-row lg:grid-cols-9 auto-cols-min gap-3 px-6">
-          {props.tableHeaderData?.map((item, index) => (
-            <tr
-              key={index}
-              className={`${["Action"].includes(item.title) && "col-span-2"} ${
-                index === 0 && "col-start-2"
-              }`}
-            >
-              <th>
-                <p className="table-head-text text-sm font-normal font-Regular text-center text-white-text">
-                  {item.title}
-                </p>
+        <thead>
+          <tr className="main-table-header rounded-md lg:grid lg:grid-flow-row lg:grid-cols-10 auto-cols-min gap-3 px-6">
+            {props.tableHeaderData?.map((item, index) => (
+              <th
+                key={index}
+                className={`text-sm font-normal font-Regular text-center text-white-text ${
+                  ["Action", "Order No", "Product Name"].includes(item.title) &&
+                  "col-span-2"
+                } 
+              `}
+              >
+                {item.title}
               </th>
-            </tr>
-          ))}
+            ))}
+          </tr>
         </thead>
         <tbody className="main-table-body">
           {props.tableData?.map((item, index) => {
@@ -60,7 +60,7 @@ const OrderTable = (props) => {
             return (
               <tr
                 key={index}
-                className="min-w-full w-max lg:w-full flex shrink-0 lg:grid lg:grid-flow-row grid-cols-9 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
+                className="min-w-full w-max lg:w-full flex shrink-0 lg:grid lg:grid-flow-row grid-cols-10 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
                 onClick={() => handleSetSingleOrder(item)}
               >
                 <td>{serialNumber}</td>
@@ -77,43 +77,38 @@ const OrderTable = (props) => {
                       "text-secondary-success"
                     }`}
                   >
-                    {item.status}
+                    {item?.status}
                   </p>
                 </td>
-                <td>
-                  <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
-                    {item._id.substring(0, 5)}...
+                <td className="col-span-2">
+                  <p className="text-sm font-normal font-Regular text-white-text ">
+                    {item?.order_no}
                   </p>
                 </td>
-                <td>
-                  <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+                <td className="col-span-2">
+                  <p className="text-sm font-normal font-Regular text-white-text">
                     {productName}
                   </p>
                 </td>
+
                 <td>
-                  <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
-                    {item.product && item.product.price
-                      ? item.product.price
-                      : "N/A"}
+                  <p className="text-sm font-normal font-Regular text-white-text">
+                    N{numberFormat(item?.total_price)}
                   </p>
                 </td>
                 <td>
-                  <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
-                    {item.quantity}
+                  <p className="text-sm font-normal font-Regular text-white-text">
+                    {item?.quantity}
                   </p>
                 </td>
+
                 <td>
-                  <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
-                    {item.total_price}
-                  </p>
-                </td>
-                <td>
-                  <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+                  <p className="text-sm font-normal font-Regular text-white-text">
                     {marketName}
                   </p>
                 </td>
                 <td>
-                  <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+                  <p className="text-sm font-normal font-Regular text-left text-white-text">
                     {updatedAt}
                   </p>
                 </td>
@@ -130,11 +125,11 @@ export default OrderTable;
 
 const MainTable = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
+
   .main-table-header {
     width: 100%;
     height: 50px;
     align-items: center;
-    justify-content: space-between;
     border-bottom: 1.5px solid #f4f4f4;
     border-top: 1.5px solid #f4f4f4;
   }
@@ -142,13 +137,15 @@ const MainTable = styled.div`
   tbody tr:nth-child(even) {
     background-color: #fafafa;
   }
-  tr td {
+
+  td,
+  th {
     padding: 0px !important;
     text-align: center;
   }
+
   tr {
-    height: max-content;
+    height: 80px;
     align-items: center;
-    justify-content: space-between;
   }
 `;

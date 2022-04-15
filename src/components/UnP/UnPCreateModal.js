@@ -62,6 +62,7 @@ export default UnPCreateModal;
 const CreateModal = styled.div`
   width: 70vw;
 `;
+
 const InputWrapper = styled.div`
   display: flex;
   flex-flow: column nowrap;

@@ -163,7 +163,7 @@ const Inventory = (props) => {
               }
               return data.reverse();
             } catch (error) {
-              toast.error("Something went wrong ...");
+              throw new Error(error);
             }
           })
         );

@@ -28,6 +28,7 @@ const SingleOrder = () => {
     setStatus({ isLoading: true, isEmpty: true, isError: false });
     let url = "orders/admin/getOrders?type=";
     let allUrl = [`${url}pending`, `${url}completed`, `${url}cancelled`];
+
     try {
       let [pending, completed, cancelled] = await axios.all(
         allUrl.map(async (endpoint) => {
@@ -64,14 +65,14 @@ const SingleOrder = () => {
             return data;
           } catch (error) {
             if (error.message) {
-              toast.error(error.message);
               throw new Error(error.message);
+            } else {
+              throw new Error(error);
             }
-            toast.error("Something went wrong");
-            throw new Error(error);
           }
         })
       );
+
       setSingleOrder({ ...currentOrder, buyerData, storeData });
       return setStatus({ isLoading: false, isEmpty: false, isError: false });
     } catch (error) {
@@ -79,9 +80,10 @@ const SingleOrder = () => {
       if (error.message) {
         toast.error(error.message);
         throw new Error(error.message);
+      } else {
+        toast.error("Something went wrong");
+        throw new Error(error);
       }
-      toast.error("Something went wrong");
-      throw new Error(error);
     }
   }, [orderId]);
 

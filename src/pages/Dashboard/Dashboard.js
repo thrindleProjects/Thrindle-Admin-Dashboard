@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import SingleDashboard from "../../components/Dashboard/SingleDashboard";
-import { orderTableHeader } from "../../data/data";
+import { dashbordHeader } from "../../data/data";
 import TableFilter from "../../components/Dashboard/TableFilter";
 import SingleDetailCont from "../../components/Dashboard/SingleDetailCont";
 import SingleDetailCont2 from "../../components/Dashboard/SingleDetailCont2";
@@ -191,10 +191,8 @@ const Dashboard = () => {
             return data.length;
           } catch (error) {
             if (error.message) {
-              toast.error(error.message);
               throw new Error(error.message);
             } else {
-              toast.error("Something went wrong");
               throw new Error(error.message);
             }
           }
@@ -388,7 +386,7 @@ const Dashboard = () => {
         ) : (
           <div className="w-full px-3 ">
             <DashboardTable
-              tableHeaderData={orderTableHeader}
+              tableHeaderData={dashbordHeader}
               tableData={currentData.recentProducts.data}
             />
           </div>

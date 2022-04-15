@@ -54,6 +54,7 @@ const Login = () => {
         type: constants.CLEAR_DETAILS,
       });
     }
+    
     if (isError && isError !== "") {
       toast.error(`${isError}`);
       dispatch({
