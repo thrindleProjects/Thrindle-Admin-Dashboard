@@ -55,6 +55,9 @@ module.exports = {
         59.26: "59.26px",
         vh40: "50vh",
       },
+      margin: {
+        5: "5px",
+      },
     },
   },
   variants: {

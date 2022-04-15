@@ -57,7 +57,7 @@ const NewLoader = ({ login }) => {
     return () => {
       clearTimeout(timeoutID);
     };
-  });
+  }, []);
 
   return (
     <LoaderContainer>

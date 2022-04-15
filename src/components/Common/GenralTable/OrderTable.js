@@ -1,9 +1,9 @@
 import { useHistory } from "react-router-dom";
-// import { useDispatch } from "react-redux";
-// import { setSingleOrder } from "../../../redux/actions/orderActions/actions";
 import styled from "styled-components";
 import { numberFormat } from "../../../utils/formatPrice";
 // import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
+// import { useDispatch } from "react-redux";
+// import { setSingleOrder } from "../../../redux/actions/orderActions/actions";
 
 const OrderTable = (props) => {
   const history = useHistory();
