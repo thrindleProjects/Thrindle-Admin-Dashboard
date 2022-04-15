@@ -66,7 +66,7 @@ const OrderTable = (props) => {
                 <td>{serialNumber}</td>
                 <td>
                   <p
-                    className={`status text-left text-sm font-Regular capitalize ${
+                    className={`status text-sm font-Regular capitalize ${
                       props.activeTab === "Pending Orders" &&
                       "text-secondary-yellow"
                     } ${
