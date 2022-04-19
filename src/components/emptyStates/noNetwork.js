@@ -4,7 +4,7 @@ import styled from "styled-components";
 import noNetworkImage from "../../assets/images/noNetwork.svg";
 
 const Image = styled.img`
-  width: 150px;
+  width: 100px;
   margin-left: auto;
   margin-right: auto;
 `;
@@ -18,6 +18,7 @@ const Button = styled.button`
   width: max-content;
   margin: 2em auto;
   transition: all 0.5s ease-in-out;
+  font-size: 14px;
 
   &:hover {
     color: white;

@@ -8,7 +8,6 @@ import OrderMerchantDetails from "../../components/Orders/OrderMerchantDetails";
 import {
   orderDetailsTableHeader,
   orderCustomerDetailsTableHeader,
-  orderMerchantDetailsTableHeader,
 } from "../../data/data";
 import axiosInstance from "../../utils/axiosInstance";
 import axios from "axios";
@@ -122,10 +121,7 @@ const SingleOrder = () => {
               tableData={singleOrder?.buyer}
               buyerData={singleOrder?.buyerData}
             />
-            <OrderMerchantDetails
-              tableHeader={orderMerchantDetailsTableHeader}
-              storeData={singleOrder?.storeData}
-            />
+            <OrderMerchantDetails storeData={singleOrder?.storeData} />
           </div>
         </div>
       )}

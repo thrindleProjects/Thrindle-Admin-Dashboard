@@ -44,7 +44,7 @@ const CustomerTable = (props) => {
             let marktetName = getMarketName(item.store_id);
             let uploadDate = getUploadDate(item.updatedAt);
             let serialNumber = props.pageIndex * 20 + (index + 1);
-            console.log(item);
+
             return (
               <tr
                 key={item._id}
@@ -69,7 +69,7 @@ const CustomerTable = (props) => {
                 </td>
                 <td className="col-span-2">
                   <p className="product text-left text-sm text-white-text font-Regular">
-                    {item.email}
+                    {item.email ? item.email : "N/A"}
                   </p>
                 </td>
                 <td>
