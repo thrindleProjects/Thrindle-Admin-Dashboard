@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NoNetwork from "../emptyStates/noNetwork";
 
+const LoaderContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: inherit;
+`;
+
 const Container = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-`;
-
-const LoaderContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: inherit;
 `;
 
 const LoaderBox = styled.div`

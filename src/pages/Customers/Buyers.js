@@ -36,7 +36,7 @@ const Customers = () => {
         data: { data: allCustomers },
       } = await axiosInstance.get(`users/admin/buyers`);
 
-      let paginatedCustomers = paginationArr(allCustomers, 20);
+      let paginatedCustomers = paginationArr(allCustomers.reverse(), 20);
       setCustomers((oldCustomers) => {
         return { ...oldCustomers, paginatedCustomers, allCustomers };
       });

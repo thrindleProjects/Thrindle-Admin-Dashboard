@@ -40,7 +40,7 @@ const Customers = () => {
       } = await axios.get(`${url}/users/admin/sellers`);
       if (statusCode > 399)
         return setStatus({ isError: true, isLoading: false });
-      let paginatedCustomers = paginationArr(allCustomers, 20);
+      let paginatedCustomers = paginationArr(allCustomers.reverse(), 20);
       setCustomers((oldCustomers) => {
         return { ...oldCustomers, paginatedCustomers, allCustomers };
       });

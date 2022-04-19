@@ -1,8 +1,7 @@
 import Wrapper from "./OrderDetailsGeneralWrapper";
 import Header from "./OrderDetailsGeneralHeader";
-import styled from "styled-components";
 
-const OrderMerchantDetails = ({ tableHeader, storeData }) => {
+const OrderMerchantDetails = ({ storeData }) => {
   const getMarketName = (storeId) => {
     if (!storeId) return "N/A";
     if (storeId.trim().startsWith("CV")) return "Computer Village";
@@ -14,52 +13,57 @@ const OrderMerchantDetails = ({ tableHeader, storeData }) => {
   return (
     <Wrapper>
       <Header title={"Merchant's Details"} />
-      <SingleOrderTable className="table-wrapper">
-        <thead className="body-wrapper">
-          {tableHeader.map((item, index) => {
-            return (
-              <tr
-                key={index}
-                className={`font-medium ${
-                  item?.title === "Address" ? "row-span-2" : ""
-                }`}
-              >
-                <th>{item?.title}</th>
-              </tr>
-            );
-          })}
-        </thead>
-        <tbody className="body-wrapper">
-          <tr>
-            <td>{storeData?.owner_id?.name}</td>
-          </tr>
-          <tr>
-            <td>{getMarketName(storeData?.store_id)}</td>
-          </tr>
-          <tr>
-            <td>{storeData?.owner_id?.phone}</td>
-          </tr>
-          <tr className="capitalize row-span-2">
-            <td>{storeData.store_address}</td>
-          </tr>
-          <tr className="capitalize">
-            <td>{storeData.store_name}</td>
-          </tr>
-          <tr>
-            <td>{storeData?.store_id}</td>
-          </tr>
-        </tbody>
-      </SingleOrderTable>
+
+      <div className="w-4/5 mx-auto my-4">
+        <div className="flex gap-2 justify-between my-2">
+          <div> Name</div>
+          <div>{storeData?.owner_id?.name}</div>
+        </div>
+        <div className="flex gap-2 justify-between my-2">
+          <div> Market</div>
+          <div>{getMarketName(storeData?.store_id)}</div>
+        </div>
+        <div className="flex gap-2 justify-between my-2">
+          <div>Phone</div>
+          <div>{storeData?.owner_id?.phone}</div>
+        </div>
+        <div className="flex gap-2 justify-between my-2">
+          <div>Store Address</div>
+          <div className="capitalize text-right">{storeData.store_address}</div>
+        </div>
+        <div className="flex gap-2 justify-between my-2">
+          <div>Store Name</div>
+          <div>{storeData.store_name}</div>
+        </div>
+        <div className="flex gap-2 justify-between my-2">
+          <div>Store ID</div>
+          <div>{storeData?.store_id}</div>
+        </div>
+      </div>
     </Wrapper>
   );
 };
 
 export default OrderMerchantDetails;
 
-const SingleOrderTable = styled.table`
-  .body-wrapper {
-    display: grid;
-    grid-template-rows: repeat(6, 1rem);
-    gap: 0.5rem;
-  }
-`;
+// const SingleOrderTable = styled.div`
+//   .body-wrapper {
+//     /* display: grid;
+//     gap: 0.5rem; */
+//   }
+// `;
+
+/* <div>
+          {tableHeader.map((item, index) => {
+            return (
+              <div
+                key={index}
+                // className={`font-medium ${
+                //   item?.title === "Address" ? "row-span-2" : ""
+                // }`}
+              >
+                {item?.title}
+              </div>
+            );
+          })}
+        </div> */

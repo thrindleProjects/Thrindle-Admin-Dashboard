@@ -4,9 +4,6 @@ import styled from "styled-components";
 import SingleDashboard from "../../components/Dashboard/SingleDashboard";
 import { dashbordHeader } from "../../data/data";
 import TableFilter from "../../components/Dashboard/TableFilter";
-import SingleDetailCont from "../../components/Dashboard/SingleDetailCont";
-import SingleDetailCont2 from "../../components/Dashboard/SingleDetailCont2";
-import BarCharts from "../../components/Charts/BarCharts";
 import DashboardTable from "../../components/Common/GenralTable/DashboardTable";
 import axiosInstance from "../../utils/axiosInstance";
 import axios from "axios";
@@ -19,6 +16,9 @@ import Image5 from "../../assets/images/dash-pending-order.svg";
 import Image6 from "../../assets/images/dash-delievered-order.svg";
 import Image7 from "../../assets/images/dash-cancelled-order.svg";
 import NewLoader from "../../components/newLoader/newLoader";
+// import SingleDetailCont from "../../components/Dashboard/SingleDetailCont";
+// import SingleDetailCont2 from "../../components/Dashboard/SingleDetailCont2";
+// import BarCharts from "../../components/Charts/BarCharts";
 
 const filterData1 = [
   {
@@ -35,24 +35,24 @@ const filterData1 = [
   },
 ];
 
-const filterData2 = [
-  {
-    title: "Daily",
-    color: "#16588F",
-  },
-  {
-    title: "Weekly",
-    color: "#16588F",
-  },
-  {
-    title: "Monthly",
-    color: "#16588F",
-  },
-];
+// const filterData2 = [
+//   {
+//     title: "Daily",
+//     color: "#16588F",
+//   },
+//   {
+//     title: "Weekly",
+//     color: "#16588F",
+//   },
+//   {
+//     title: "Monthly",
+//     color: "#16588F",
+//   },
+// ];
 
 const Dashboard = () => {
   const [filter, setFilter] = useState("Pending");
-  const [filter2, setFilter2] = useState("Daily");
+  // const [filter2, setFilter2] = useState("Daily");
   const [activeColor, setActiveColor] = useState("#F69F13");
   const [currentData, setCurrentData] = useState({
     allOrders: {
@@ -167,9 +167,9 @@ const Dashboard = () => {
     }
   };
 
-  const changeColor2 = (val) => {
-    setFilter2(val);
-  };
+  // const changeColor2 = (val) => {
+  //   setFilter2(val);
+  // };
 
   // returns today's date
   const getCurrentDate = () => {
@@ -333,7 +333,7 @@ const Dashboard = () => {
     } catch (error) {
       if (error.message) {
         toast.error(error.message);
-        throw new Error(error.message);
+        throw new Error(error);
       } else {
         toast.error("Something went wrong");
         throw new Error(error);
@@ -370,7 +370,7 @@ const Dashboard = () => {
         data-aos="fade-up"
         data-aos-duration="1000"
         data-aos-delay="1000"
-        className="w-full bg-white-main rounded-md pt-10 pb-10"
+        className="w-full bg-white-main rounded-md py-4 px-2"
       >
         <TableFilter
           data={filterData1}
@@ -380,7 +380,7 @@ const Dashboard = () => {
           changeTab={(val) => changeColor(val)}
         />
         {currentData.recentProducts.loading ? (
-          <div className="h-52">
+          <div className="h-60">
             <NewLoader />
           </div>
         ) : (
@@ -393,7 +393,7 @@ const Dashboard = () => {
         )}
       </SecondSection>
 
-      <ThirdSection
+      {/* <ThirdSection
         data-aos="fade-up"
         data-aos-duration="1000"
         data-aos-delay="1000"
@@ -401,9 +401,9 @@ const Dashboard = () => {
       >
         <SingleDetailCont title="Store Perfomance" />
         <SingleDetailCont2 title="Returned Products" />
-      </ThirdSection>
+      </ThirdSection> */}
 
-      <FourthSection
+      {/* <FourthSection
         data-aos="fade-up"
         data-aos-duration="2000"
         data-aos-delay="1000"
@@ -420,7 +420,7 @@ const Dashboard = () => {
         <div className="bar-chart-sec mt-20 md:mt-10 w-full px-3">
           <BarCharts />
         </div>
-      </FourthSection>
+      </FourthSection> */}
     </MainContainer>
   );
 };
@@ -431,10 +431,11 @@ const FirstSection = styled.div``;
 const SecondSection = styled.div`
   box-shadow: 0px 30px 40px rgba(0, 0, 0, 0.04);
 `;
-const ThirdSection = styled.div``;
-const FourthSection = styled.div`
-  box-shadow: 0px 30px 40px rgba(0, 0, 0, 0.04);
-`;
+
+// const ThirdSection = styled.div``;
+// const FourthSection = styled.div`
+//   box-shadow: 0px 30px 40px rgba(0, 0, 0, 0.04);
+// `;
 
 // {
 //   /* <MainTable headerData={dashTableHeader} tableData={dashTableHeader} /> */

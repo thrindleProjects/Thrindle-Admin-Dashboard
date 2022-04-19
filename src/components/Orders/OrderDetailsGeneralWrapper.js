@@ -15,6 +15,7 @@ const DetailContainer = styled.div`
   box-shadow: 0rem 0.25rem 0.5rem #b2acac;
   max-width: 100%;
   width: 100%;
+  
   .table-wrapper {
     display: grid;
     grid-template-columns: auto 1fr;
