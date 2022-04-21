@@ -57,7 +57,6 @@ function SingleDropdown({
     };
   });
 
-  console.log(colors);
   return (
     <Fieldset>
       <legend className="ml-4 px-1 opacity-75">{fieldset}</legend>

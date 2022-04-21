@@ -4,11 +4,12 @@ import store from "../redux/store/store";
 import { toast } from "react-toastify";
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.thrindle.com/api/thrindle",
+  baseURL: "https://thrindleservices.herokuapp.com/api/thrindle/",
   headers: {},
 });
+
 // Defaults timeout when unable to connect to server
-axiosInstance.defaults.timeout = 30000;
+axiosInstance.defaults.timeout = 50000;
 axiosInstance.defaults.timeoutErrorMessage =
   "Cannot connect to server. Please check your network";
 

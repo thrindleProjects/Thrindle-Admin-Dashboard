@@ -178,7 +178,7 @@ const InventoryEditModal = (props) => {
           category,
           subcategory,
           weight,
-          activeImage: `https://thrindleservices.herokuapp.com/api/thrindle/images/${images[0]}`,
+          activeImage: `https://api.thrindle.com/api/thrindle/images/${images[0]}`,
           details: {
             size,
             color,
@@ -439,12 +439,12 @@ const InventoryEditModal = (props) => {
                               onClick={(e) =>
                                 handleImageChange(
                                   e,
-                                  `https://thrindleservices.herokuapp.com/api/thrindle/images/${item}`
+                                  `https://api.thrindle.com/api/thrindle/images/${item}`
                                 )
                               }
                             >
                               <img
-                                src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${item}`}
+                                src={`https://api.thrindle.com/api/thrindle/images/${item}`}
                                 alt="Pending Item"
                               />
                             </button>

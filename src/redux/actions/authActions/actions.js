@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../../utils/axiosInstance";
 import { errorHandler } from "../../../utils/axiosUtils";
 import * as constants from "../../constants/index";
 export const HANDLE_AUTH = "HANDLE_AUTH";
@@ -12,10 +12,7 @@ export const login_admin = (email, password) => async (dispatch) => {
       data: {
         data: { user, access_token, refresh_token },
       },
-    } = await axios.post(
-      "https://thrindleservices.herokuapp.com/api/thrindle/users/login",
-      { email, password }
-    );
+    } = await axiosInstance.post("/users/login", { email, password });
     dispatch({
       type: constants.ADMIN_LOGIN_SUCCESS,
       payload: {

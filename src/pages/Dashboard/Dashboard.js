@@ -331,13 +331,8 @@ const Dashboard = () => {
         };
       });
     } catch (error) {
-      if (error.message) {
-        toast.error(error.message);
-        throw new Error(error);
-      } else {
-        toast.error("Something went wrong");
-        throw new Error(error);
-      }
+      toast.error("Something went wrong");
+      throw new Error(error);
     } finally {
       setCurrentData((prevData) => {
         return {
@@ -392,35 +387,6 @@ const Dashboard = () => {
           </div>
         )}
       </SecondSection>
-
-      {/* <ThirdSection
-        data-aos="fade-up"
-        data-aos-duration="1000"
-        data-aos-delay="1000"
-        className="w-full lg:grid lg:grid-cols-2 gap-10 pt-10 pb-10 mt-10"
-      >
-        <SingleDetailCont title="Store Perfomance" />
-        <SingleDetailCont2 title="Returned Products" />
-      </ThirdSection> */}
-
-      {/* <FourthSection
-        data-aos="fade-up"
-        data-aos-duration="2000"
-        data-aos-delay="1000"
-        className="w-full mt-10 rounded-md bg-white-main pb-10 pt-10"
-      >
-        <TableFilter
-          data={filterData2}
-          value={filter2}
-          color="#16588F"
-          title="Website Visits"
-          changeTab={(val) => changeColor2(val)}
-          show
-        />
-        <div className="bar-chart-sec mt-20 md:mt-10 w-full px-3">
-          <BarCharts />
-        </div>
-      </FourthSection> */}
     </MainContainer>
   );
 };
@@ -449,3 +415,32 @@ const SecondSection = styled.div`
 //             tab={filter}
 //           /> */
 // }
+
+/* <ThirdSection
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="1000"
+        className="w-full lg:grid lg:grid-cols-2 gap-10 pt-10 pb-10 mt-10"
+      >
+        <SingleDetailCont title="Store Perfomance" />
+        <SingleDetailCont2 title="Returned Products" />
+      </ThirdSection> */
+
+/* <FourthSection
+        data-aos="fade-up"
+        data-aos-duration="2000"
+        data-aos-delay="1000"
+        className="w-full mt-10 rounded-md bg-white-main pb-10 pt-10"
+      >
+        <TableFilter
+          data={filterData2}
+          value={filter2}
+          color="#16588F"
+          title="Website Visits"
+          changeTab={(val) => changeColor2(val)}
+          show
+        />
+        <div className="bar-chart-sec mt-20 md:mt-10 w-full px-3">
+          <BarCharts />
+        </div>
+      </FourthSection> */
