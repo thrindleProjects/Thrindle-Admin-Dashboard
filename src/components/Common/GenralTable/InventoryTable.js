@@ -3,6 +3,7 @@ import { MdEdit } from "react-icons/md";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 const InventoryTable = (props) => {
+  console.log(props.tableData, "table");
   const handleModal = (action, id) => {
     return props.setModal(action, id);
   };

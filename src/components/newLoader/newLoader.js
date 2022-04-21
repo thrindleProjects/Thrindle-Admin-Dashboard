@@ -52,7 +52,7 @@ const NewLoader = ({ login }) => {
   useEffect(() => {
     let timeoutID = setTimeout(() => {
       setNetworkFailure(true);
-    }, 30000);
+    }, 50000);
 
     return () => {
       clearTimeout(timeoutID);
