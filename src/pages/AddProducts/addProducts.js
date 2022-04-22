@@ -45,7 +45,7 @@ const AddProducts = () => {
   const [storeID, setStoreID] = useState("");
   const [storeValue, setStoreValue] = useState("");
   const [currentStoreValue, setCurrentStoreValue] = useState("Choose a Store");
-  // const [openDropdown, setOpenDropdown] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(false);
   const [currentSize, setCurrentSize] = useState({
     size1: [],
     size2: [],
@@ -384,9 +384,19 @@ const AddProducts = () => {
       document.getElementById(`store${index}`).dataset.value
     );
 
-    // document.getElementById("stores-box").style.display = "none";
-    // setOpenDropdown(false);
+    document.getElementById("stores-box").style.display = "none";
+    setOpenDropdown(false);
   };
+
+  // // Hide Dropdown
+  // const hideDropdown = (e) => {
+  //   e.stopPropagation();
+
+  //   if (document.getElementById("stores-box").style.display === "block") {
+  //     document.getElementById("stores-box").style.display = "none";
+  //     setOpenDropdown(false);
+  //   }
+  // };
 
   // get markets
   useEffect(() => {
@@ -419,6 +429,8 @@ const AddProducts = () => {
     if (mounted) {
       if (storeValue !== "") {
         getStoreId(storeValue);
+      } else if (storeValue === "") {
+        setStoreID("");
       }
     }
 
@@ -532,6 +544,8 @@ const AddProducts = () => {
                 list={stores}
                 storeValue={storeValue}
                 currentStoreValue={currentStoreValue}
+                openDropdown={openDropdown}
+                setOpenDropdown={setOpenDropdown}
                 searchStoreValue={searchStoreValue}
                 setCurrentStoreValue={setCurrentStoreValue}
                 setStoreValue={setStoreValue}
@@ -708,14 +722,4 @@ export default AddProducts;
 //   }
 
 //   setOpenDropdown((prevState) => !prevState);
-// };
-
-// // Hide Dropdown
-// const hideDropdown = (e) => {
-//   e.stopPropagation();
-
-//   if (document.getElementById("stores-box").style.display === "block") {
-//     document.getElementById("stores-box").style.display = "none";
-//     setOpenDropdown(false);
-//   }
 // };

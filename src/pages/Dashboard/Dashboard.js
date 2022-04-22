@@ -225,9 +225,10 @@ const Dashboard = () => {
       if (error.message) {
         toast.error(error.message);
         throw new Error(error.message);
+      } else {
+        toast.error("Something went wrong");
+        throw new Error(error);
       }
-      toast.error("Something went wrong");
-      throw new Error(error);
     } finally {
       setCurrentData((prevData) => {
         return {

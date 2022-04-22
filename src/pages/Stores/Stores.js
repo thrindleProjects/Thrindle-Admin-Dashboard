@@ -70,6 +70,7 @@ const Stores = () => {
     }
     return 0;
   };
+  
   useEffect(() => {
     let mounted = true;
     if (mounted) {

@@ -1,7 +1,6 @@
 import * as constants from "../redux/constants/index";
 import axios from "axios";
 import store from "../redux/store/store";
-import { toast } from "react-toastify";
 
 const axiosInstance = axios.create({
   baseURL: "https://thrindleservices.herokuapp.com/api/thrindle/",
@@ -25,6 +24,7 @@ axiosInstance.interceptors.request.use(
     Promise.reject(error);
   }
 );
+
 axiosInstance.interceptors.response.use(
   (res) => res,
   async (err) => {
@@ -41,7 +41,7 @@ axiosInstance.interceptors.response.use(
       ) {
         originalConfig._retry = true;
         store.dispatch({ type: constants.ADMIN_LOGOUT });
-        toast.error("Session terminated. Login Again");
+        // toast.error("Session terminated. Login Again");
         return Promise.reject(err);
       }
     }
