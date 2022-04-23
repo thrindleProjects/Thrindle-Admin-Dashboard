@@ -1,5 +1,5 @@
 import * as constants from "../../../redux/constants/index";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Bg from "../../../assets/images/Login.png";
 import Logo from "../../../assets/images/thrindle.png";
@@ -7,11 +7,10 @@ import LoginBtn from "../../../components/Common/Button/LoginBtn";
 import LoginInput from "../../../components/Common/CustomInput/LoginInput";
 import LoginPasswordInput from "../../../components/Common/CustomInput/LoginPasswordInput";
 import { NavLink } from "react-router-dom";
-// import { useFormik } from 'formik';
-// import * as Yup from 'yup';
-import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { login_admin } from "../../../redux/actions/authActions/actions";
+// import { login_admin } from "../../../redux/actions/authActions/actions";
+import axiosInstance from "../../../utils/axiosInstance";
+import { errorHandler } from "../../../utils/axiosUtils";
 import { useHistory } from "react-router-dom";
 
 const Login = () => {
@@ -19,22 +18,11 @@ const Login = () => {
     email: "",
     password: "",
   });
+
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isLoading, isError, accessToken } = useSelector(
-    (state) => state.login
-  );
 
-  // const formik = useFormik({
-  //   initialValues: formData,
-  //   validationSchema: Yup.object().shape({
-  //     email: Yup.string().email('Invalid email').required('Required'),
-  //     password: Yup.string().required('This field is required'),
-  //   }),
-  //   onSubmit: (values) => {
-  //     console.log('something');
-  //   },
-  // });
+  const { isLoading } = useSelector((state) => state.login);
 
   const handleFormChange = (e) => {
     let name = e.target.name;
@@ -44,24 +32,41 @@ const Login = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    const login_admin = (email, password) => async (dispatch) => {
+      try {
+        dispatch({
+          type: constants.ADMIN_LOGIN_LOADING,
+        });
+        
+        const {
+          data: {
+            data: { user, access_token, refresh_token },
+          },
+        } = await axiosInstance.post("/users/login", { email, password });
+
+        if (user && access_token && refresh_token) {
+          dispatch({
+            type: constants.ADMIN_LOGIN_SUCCESS,
+            payload: {
+              user,
+              accessToken: access_token,
+              refreshToken: refresh_token,
+            },
+          });
+          history.push("/");
+        }
+      } catch (error) {
+        errorHandler(error, dispatch);
+      } finally {
+        dispatch({
+          type: constants.CLEAR_DETAILS,
+        });
+      }
+    };
+
     dispatch(login_admin(formData.email, formData.password));
   };
-
-  useEffect(() => {
-    if (accessToken && accessToken !== "") {
-      history.push("/");
-      dispatch({
-        type: constants.CLEAR_DETAILS,
-      });
-    }
-    
-    if (isError && isError !== "") {
-      toast.error(`${isError}`);
-      dispatch({
-        type: constants.CLEAR_DETAILS,
-      });
-    }
-  }, [accessToken, history, isError, dispatch]);
 
   return (
     <MainCont className="w-screen h-screen flex flex-col">
@@ -161,3 +166,24 @@ const MainCont = styled.div`
     }
   }
 `;
+
+// const formik = useFormik({
+//   initialValues: formData,
+//   validationSchema: Yup.object().shape({
+//     email: Yup.string().email('Invalid email').required('Required'),
+//     password: Yup.string().required('This field is required'),
+//   }),
+//   onSubmit: (values) => {
+//     console.log('something');
+//   },
+// });
+
+// useEffect(() => {
+//   // if (isError && isError !== "") {
+//   //   toast.error(`${isError}`);
+//   // }
+
+//   dispatch({
+//     type: constants.CLEAR_DETAILS,
+//   });
+// }, [accessToken, isError, dispatch]);

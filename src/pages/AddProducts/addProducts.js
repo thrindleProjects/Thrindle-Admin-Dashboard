@@ -373,6 +373,8 @@ const AddProducts = () => {
     if (mounted) {
       if (storeValue !== "") {
         getStoreId(storeValue);
+      } else if (storeValue === "") {
+        setStoreID("");
       }
     }
 
