@@ -39,13 +39,9 @@ const AddProducts = () => {
   const [productType, setProductType] = useState("");
   const [otherValues, setOtherValues] = useState({});
   const [uploading, setUploading] = useState(false);
-  const [stores, setStores] = useState([]);
-  const [allStores, setAllStores] = useState([]);
   const [searchStoreValue, setSearchStoreValue] = useState("");
   const [storeID, setStoreID] = useState("");
   const [storeValue, setStoreValue] = useState("");
-  const [currentStoreValue, setCurrentStoreValue] = useState("Choose a Store");
-  const [openDropdown, setOpenDropdown] = useState(false);
   const [currentSize, setCurrentSize] = useState({
     size1: [],
     size2: [],
@@ -105,7 +101,7 @@ const AddProducts = () => {
         colors: colors,
         size: [...currentSize.size1, ...currentSize.size2],
         weight: weightClassValue,
-        productTypeStatus: storeID.startsWith("EM")
+        productTypeStatus: storeID?.startsWith("EM")
           ? true
           : getProductTypeBoolean(productType),
       };
@@ -179,7 +175,6 @@ const AddProducts = () => {
   // helper function to get categories, getStoresPerMarket, subCategories, weightClass, productType
   const getMarketCategories = async (marketValue) => {
     setStoreValue("");
-    setCurrentStoreValue("Choose a Store");
     const marketID = getMarketID(marketValue);
     try {
       let res = await axiosInstance.get(`categories/market/${marketID}`);
@@ -194,23 +189,6 @@ const AddProducts = () => {
       }
     }
   };
-
-  const getStoresPerMarket = useCallback(async (marketValue) => {
-    const marketID = getMarketID(marketValue);
-    try {
-      let res = await axiosInstance.get(`/stores/storespermarket/${marketID}`);
-      localStorage.setItem("storesPerMarket", JSON.stringify(res.data.data));
-      let stores = res.data.data.map((item) => item.store_name);
-      setStores(stores);
-      setAllStores(stores);
-    } catch (error) {
-      if (error.response) {
-        console.log(error.response.status);
-      } else {
-        console.log(error);
-      }
-    }
-  }, []);
 
   const getSubCategories = (categoryValue) => {
     let marketData = JSON.parse(localStorage.getItem("marketCategories"));
@@ -241,7 +219,6 @@ const AddProducts = () => {
     setMarketValue(value);
     getMarketCategories(value);
     getMarketID(value);
-    getStoresPerMarket(value);
   };
 
   const selectCategory = (value) => {
@@ -349,7 +326,7 @@ const AddProducts = () => {
   const getStoreId = useCallback((storeValue) => {
     const storesData = JSON.parse(localStorage.getItem("storesPerMarket"));
     const findStore = storesData.find((item) => item.store_name === storeValue);
-    setStoreID(findStore.store_id);
+    setStoreID(findStore?.store_id);
   }, []);
 
   const getMarketID = (marketValue) => {
@@ -363,42 +340,9 @@ const AddProducts = () => {
   // handle store search
   const handleSearch = (value) => {
     setSearchStoreValue(value);
-    if (value !== "") {
-      let filteredResult = allStores.filter(
-        (item) =>
-          item.includes(value.toLowerCase()) &&
-          item.indexOf(value.toLowerCase()[0]) === 0
-      );
-      setStores(filteredResult);
-      return filteredResult;
-    }
-    return "";
+    return value;
   };
 
-  // select stores
-  const selectStore = (e, index) => {
-    e.stopPropagation();
-
-    setStoreValue(document.getElementById(`store${index}`).dataset.value);
-    setCurrentStoreValue(
-      document.getElementById(`store${index}`).dataset.value
-    );
-
-    document.getElementById("stores-box").style.display = "none";
-    setOpenDropdown(false);
-  };
-
-  // // Hide Dropdown
-  // const hideDropdown = (e) => {
-  //   e.stopPropagation();
-
-  //   if (document.getElementById("stores-box").style.display === "block") {
-  //     document.getElementById("stores-box").style.display = "none";
-  //     setOpenDropdown(false);
-  //   }
-  // };
-
-  // get markets
   useEffect(() => {
     let mounted = true;
 
@@ -438,21 +382,6 @@ const AddProducts = () => {
       mounted = false;
     };
   }, [getStoreId, storeValue]);
-
-  // reset stores if search input is cleared and marketValue is defined
-  useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      if (searchStoreValue === "" && marketValue !== "") {
-        getStoresPerMarket(marketValue);
-      }
-    }
-
-    return () => {
-      mounted = false;
-    };
-  }, [searchStoreValue, marketValue, getStoresPerMarket]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -541,17 +470,11 @@ const AddProducts = () => {
             <div className="my-3 ">
               <CustomDropdown
                 fieldset="Stores"
-                list={stores}
-                storeValue={storeValue}
-                currentStoreValue={currentStoreValue}
-                openDropdown={openDropdown}
-                setOpenDropdown={setOpenDropdown}
+                marketValue={marketValue}
+                getMarketID={getMarketID}
                 searchStoreValue={searchStoreValue}
-                setCurrentStoreValue={setCurrentStoreValue}
                 setStoreValue={setStoreValue}
                 handleSearch={(value) => handleSearch(value)}
-                selectStore={selectStore}
-                required={true}
               />
             </div>
 
@@ -595,7 +518,7 @@ const AddProducts = () => {
               />
             </div>
 
-            {storeID.startsWith("CV") && (
+            {storeID?.startsWith("CV") && (
               <div className="my-3">
                 <Dropdown
                   fieldset="Product type"
@@ -702,24 +625,3 @@ const AddProducts = () => {
 };
 
 export default AddProducts;
-
-// if (size2.includes(value)) {
-//   setSize2(size2.filter((item) => item !== value));
-// } else {
-//   setSize2([...size2, value]);
-// }
-
-// // toggle dropdown
-// const toggleOptions = (e) => {
-//   e.stopPropagation();
-
-//   if (!openDropdown) {
-//     document.getElementById("stores-box").style.display = "block";
-//   }
-
-//   if (openDropdown) {
-//     document.getElementById("stores-box").style.display = "none";
-//   }
-
-//   setOpenDropdown((prevState) => !prevState);
-// };
