@@ -128,6 +128,7 @@ export default InventoryTable;
 
 const MainTable = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
+  
   .main-table-header {
     width: 100%;
     height: 50px;
@@ -144,6 +145,7 @@ const MainTable = styled.div`
     padding: 0px !important;
     text-align: center;
   }
+
   tr {
     height: max-content;
     align-items: center;

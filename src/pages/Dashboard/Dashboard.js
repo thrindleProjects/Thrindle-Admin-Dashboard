@@ -191,13 +191,16 @@ const Dashboard = () => {
             return data.length;
           } catch (error) {
             if (error.message) {
+              console.log(error.message);
               throw new Error(error.message);
             } else {
+              console.log(error.message);
               throw new Error(error.message);
             }
           }
         })
       );
+      
       setCurrentData((prevData) => {
         return {
           ...prevData,
@@ -223,9 +226,11 @@ const Dashboard = () => {
       });
     } catch (error) {
       if (error.message) {
+        console.log(error.message)
         toast.error(error.message);
         throw new Error(error.message);
       } else {
+        console.log(error)
         toast.error("Something went wrong");
         throw new Error(error);
       }
@@ -332,8 +337,13 @@ const Dashboard = () => {
         };
       });
     } catch (error) {
-      toast.error("Something went wrong");
-      throw new Error(error);
+      if (error.message) {
+        toast.error(error.message);
+        throw new Error(error.message);
+      } else {
+        toast.error("Something went wrong");
+        throw new Error(error);
+      }
     } finally {
       setCurrentData((prevData) => {
         return {

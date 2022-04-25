@@ -1,35 +1,22 @@
 import React from "react";
 import styled from "styled-components";
+import formatDate from "../../../utils/formatDate";
 
 const CustomerTable = (props) => {
-  const getMarketName = (storeId = "NA") => {
-    if (storeId) {
-      if (storeId.startsWith("CV")) return "Computer Village";
-      if (storeId.startsWith("BM")) return "Balogun Market";
-      if (storeId.startsWith("EM")) return "Eko Market";
-    }
-    return "Other Market";
-  };
-
-  const getUploadDate = (updatedAt) => {
-    const date = new Date(updatedAt);
-    let newDay = date.getDate();
-    let newMonth = date.getMonth() + 1;
-    let newYear = date.getFullYear();
-    return `${newDay}/${newMonth}/${newYear}`;
-  };
+  console.log(props.tableData);
 
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
       <table className="w-full min-w-min max-w-full">
         <thead>
-          <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-8 auto-cols-min gap-8 px-6">
-            {props.showCheck && <th></th>}
+          <tr className="main-table-header rounded-md grid gap-3 grid-cols-8 px-6">
             {props.tableHeaderData?.map((item, index) => (
               <th
                 key={index}
                 className={`${
-                  ["Email"].includes(item.title) ? "col-span-2" : ""
+                  ["Email", "Customer Name"].includes(item.title)
+                    ? "col-span-2"
+                    : ""
                 }`}
               >
                 <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
@@ -41,18 +28,20 @@ const CustomerTable = (props) => {
         </thead>
         <tbody className="main-table-body">
           {props.tableData?.map((item, index) => {
-            let marktetName = getMarketName(item.store_id);
-            let uploadDate = getUploadDate(item.updatedAt);
             let serialNumber = props.pageIndex * 20 + (index + 1);
 
             return (
               <tr
                 key={item._id}
-                className="w-full grid grid-flow-row grid-cols-8 gap-8 auto-cols-min px-6 py-3 "
+                className="w-full grid grid-flow-row grid-cols-8 gap-3 px-6 py-3 "
               >
-                {props.showCheck && <td>{serialNumber}</td>}
-
                 <td>
+                  <p className="capitalize status text-left text-sm text-white-text font-Regular">
+                    {serialNumber}
+                  </p>
+                </td>
+
+                <td className="col-span-2">
                   <p className="capitalize status text-left text-sm text-white-text font-Regular">
                     {item.name}
                   </p>
@@ -62,11 +51,7 @@ const CustomerTable = (props) => {
                     {item.phone}
                   </p>
                 </td>
-                <td>
-                  <p className="product text-left text-sm text-white-text font-Regular">
-                    {item.name}
-                  </p>
-                </td>
+
                 <td className="col-span-2">
                   <p className="product text-left text-sm text-white-text font-Regular">
                     {item.email ? item.email : "N/A"}
@@ -74,12 +59,12 @@ const CustomerTable = (props) => {
                 </td>
                 <td>
                   <p className="product text-left text-sm text-white-text font-Regular">
-                    {marktetName}
+                    {item.referralCode || "N/A"}
                   </p>
                 </td>
                 <td>
                   <p className="product text-left text-sm text-white-text font-Regular">
-                    {uploadDate}
+                    {formatDate(item.updatedAt)}
                   </p>
                 </td>
               </tr>
@@ -95,24 +80,26 @@ export default CustomerTable;
 
 const MainTable = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
+
   .main-table-header {
     width: 100%;
     height: 50px;
-    align-items: center;
-    justify-content: space-between;
     border-bottom: 1.5px solid #f4f4f4;
     border-top: 1.5px solid #f4f4f4;
   }
+
   tbody tr:nth-child(even) {
     background-color: #fafafa;
   }
-  tr td {
-    padding: 0px !important;
-    text-align: center;
+
+  td {
+    height: 50px;
   }
-  tr {
-    height: max-content;
+
+  td,
+  th {
+    display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
   }
 `;

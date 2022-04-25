@@ -103,7 +103,6 @@ const Customers = () => {
             <CustomerTable
               tableHeaderData={customerHeader}
               tableData={customers.paginatedCustomers[customers.pageIndex]}
-              showCheck
               pageIndex={customers.pageIndex}
             />
           )}
