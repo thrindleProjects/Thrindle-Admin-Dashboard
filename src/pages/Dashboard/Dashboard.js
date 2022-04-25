@@ -16,9 +16,7 @@ import Image5 from "../../assets/images/dash-pending-order.svg";
 import Image6 from "../../assets/images/dash-delievered-order.svg";
 import Image7 from "../../assets/images/dash-cancelled-order.svg";
 import NewLoader from "../../components/newLoader/newLoader";
-// import SingleDetailCont from "../../components/Dashboard/SingleDetailCont";
-// import SingleDetailCont2 from "../../components/Dashboard/SingleDetailCont2";
-// import BarCharts from "../../components/Charts/BarCharts";
+
 
 const filterData1 = [
   {
@@ -258,7 +256,7 @@ const Dashboard = () => {
       });
     } catch (error) {
       if (error.message) {
-        toast.error(error.message);
+        toast.error(`${error.message}`);
         throw new Error(error.message);
       } else {
         toast.error("Something went wrong");
@@ -291,7 +289,7 @@ const Dashboard = () => {
       });
     } catch (error) {
       if (error.message) {
-        toast.error(error.message);
+        toast.error(`${error.message}`);
         throw new Error(error.message);
       } else {
         toast.error("Something went wrong");
@@ -325,7 +323,7 @@ const Dashboard = () => {
       });
     } catch (error) {
       if (error.message) {
-        toast.error(error.message);
+        toast.error(`${error.message}`);
         throw new Error(error.message);
       } else {
         toast.error("Something went wrong");
