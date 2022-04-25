@@ -565,19 +565,19 @@ export const shipmentTableHeader = [
 
 export const customerHeader = [
   {
+    title: "Index",
+  },
+  {
     title: "Customer Name",
   },
   {
     title: "Phone No",
   },
   {
-    title: "User Name",
-  },
-  {
     title: "Email",
   },
   {
-    title: "Location",
+    title: "Referral Code",
   },
   {
     title: "Joined",

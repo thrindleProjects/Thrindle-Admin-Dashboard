@@ -11,9 +11,7 @@ const StoreTable = (props) => {
       <table className="w-full">
         <thead className="main-table-header rounded-md">
           <tr className="grid grid-cols-6">
-            {/* <th>
-              <></>
-            </th> */}
+        
             {props.tableHeaderData?.map((item, index) => (
               <th
                 key={index}
