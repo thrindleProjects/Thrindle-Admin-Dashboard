@@ -42,6 +42,7 @@ axiosInstance.interceptors.response.use(
         originalConfig._retry = true;
         store.dispatch({ type: constants.ADMIN_LOGOUT });
         // toast.error("Session terminated. Login Again");
+        console.log(err);
         return Promise.reject(err);
       }
     }

@@ -177,71 +177,58 @@ const Dashboard = () => {
     return date.toLocaleDateString();
   };
 
-  const getOrders = useCallback(async () => {
+  const getOrders = useCallback(() => {
     let url = "orders/admin/getOrders?type=";
     let allUrl = [`${url}pending`, `${url}completed`, `${url}cancelled`];
 
-    try {
-      let [pending, completed, cancelled] = await axios.all(
-        allUrl.map(async (endpoint) => {
-          try {
-            let {
-              data: { data },
-            } = await axiosInstance.get(endpoint);
-            return data.length;
-          } catch (error) {
-            if (error.message) {
-              console.log(error.message);
-              throw new Error(error.message);
-            } else {
-              console.log(error.message);
-              throw new Error(error.message);
-            }
-          }
+    axios
+      .all(allUrl.map((endpoint) => axiosInstance.get(endpoint)))
+      .then(
+        axios.spread((pending, completed, cancelled) => {
+          let {
+            data: { data: pendingArr },
+          } = pending;
+
+          let {
+            data: { data: completedArr },
+          } = completed;
+
+          let {
+            data: { data: cancelledArr },
+          } = cancelled;
+
+          setCurrentData((prevData) => {
+            return {
+              ...prevData,
+              allOrders: {
+                total:
+                  pendingArr?.length +
+                  completedArr?.length +
+                  cancelledArr?.length,
+                loading: false,
+              },
+              pendingOrders: {
+                total: pendingArr?.length,
+                loading: false,
+              },
+
+              completedOrders: {
+                total: completedArr?.length,
+                loading: false,
+              },
+
+              cancelledOrders: {
+                total: cancelledArr?.length,
+                loading: false,
+              },
+            };
+          });
         })
-      );
-      
-      setCurrentData((prevData) => {
-        return {
-          ...prevData,
-          allOrders: {
-            total: pending + completed + cancelled,
-            loading: false,
-          },
-          pendingOrders: {
-            total: pending,
-            loading: false,
-          },
-
-          completedOrders: {
-            total: completed,
-            loading: false,
-          },
-
-          cancelledOrders: {
-            total: cancelled,
-            loading: false,
-          },
-        };
-      });
-    } catch (error) {
-      if (error.message) {
-        console.log(error.message)
-        toast.error(error.message);
-        throw new Error(error.message);
-      } else {
-        console.log(error)
-        toast.error("Something went wrong");
+      )
+      .catch((error) => {
+        toast.error(`${error}`);
         throw new Error(error);
-      }
-    } finally {
-      setCurrentData((prevData) => {
-        return {
-          ...prevData,
-          allOrders: { ...prevData.allOrders, loading: false },
-        };
       });
-    }
   }, []);
 
   const getUsers = useCallback(async () => {
@@ -455,3 +442,42 @@ const SecondSection = styled.div`
           <BarCharts />
         </div>
       </FourthSection> */
+
+// try {
+//   let [pending, completed, cancelled] = await axios.all(
+//     allUrl.map(async (endpoint) => {
+//       try {
+//         let {
+//           data: { data },
+//         } = await axiosInstance.get(endpoint);
+//         return data.length;
+//       } catch (error) {
+//         if (error.message) {
+//           console.log(error.message);
+//           throw new Error(error.message);
+//         } else {
+//           console.log(error.message);
+//           throw new Error(error.message);
+//         }
+//       }
+//     })
+//   );
+
+// } catch (error) {
+//   if (error.message) {
+//     console.log(error.message)
+//     toast.error(error.message);
+//     throw new Error(error.message);
+//   } else {
+//     console.log(error)
+//     toast.error("Something went wrong");
+//     throw new Error(error);
+//   }
+// } finally {
+//   setCurrentData((prevData) => {
+//     return {
+//       ...prevData,
+//       allOrders: { ...prevData.allOrders, loading: false },
+//     };
+//   });
+// }
