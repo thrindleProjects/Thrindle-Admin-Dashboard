@@ -63,18 +63,18 @@ export const navData = [
   {
     mainNav: "Business",
     subNav: [
-      {
-        title: "Shipment/Delivery",
-        path: "/shipment",
-        icon: Image5,
-        icon2: Active4,
-      },
-      {
-        title: "Audit",
-        path: "/audit",
-        icon: Image6,
-        icon2: Active5,
-      },
+      // {
+      //   title: "Shipment/Delivery",
+      //   path: "/shipment",
+      //   icon: Image5,
+      //   icon2: Active4,
+      // },
+      // {
+      //   title: "Audit",
+      //   path: "/audit",
+      //   icon: Image6,
+      //   icon2: Active5,
+      // },
       {
         title: "Inventory",
         path: "/inventory",
@@ -84,23 +84,23 @@ export const navData = [
     ],
   },
 
-  {
-    mainNav: "Admistration",
-    subNav: [
-      {
-        title: "Users & Permission",
-        path: "/users",
-        icon: Image8,
-        icon2: Active7,
-      },
-      {
-        title: "Settings",
-        path: "/settings",
-        icon: Image9,
-        icon2: Active8,
-      },
-    ],
-  },
+  // {
+  //   mainNav: "Admistration",
+  //   subNav: [
+  //     {
+  //       title: "Users & Permission",
+  //       path: "/users",
+  //       icon: Image8,
+  //       icon2: Active7,
+  //     },
+  //     {
+  //       title: "Settings",
+  //       path: "/settings",
+  //       icon: Image9,
+  //       icon2: Active8,
+  //     },
+  //   ],
+  // },
 ];
 
 export const data2 = [

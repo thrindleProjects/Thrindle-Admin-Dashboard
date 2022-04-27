@@ -17,7 +17,6 @@ import Image6 from "../../assets/images/dash-delievered-order.svg";
 import Image7 from "../../assets/images/dash-cancelled-order.svg";
 import NewLoader from "../../components/newLoader/newLoader";
 
-
 const filterData1 = [
   {
     title: "Pending",
@@ -33,24 +32,8 @@ const filterData1 = [
   },
 ];
 
-// const filterData2 = [
-//   {
-//     title: "Daily",
-//     color: "#16588F",
-//   },
-//   {
-//     title: "Weekly",
-//     color: "#16588F",
-//   },
-//   {
-//     title: "Monthly",
-//     color: "#16588F",
-//   },
-// ];
-
 const Dashboard = () => {
   const [filter, setFilter] = useState("Pending");
-  // const [filter2, setFilter2] = useState("Daily");
   const [activeColor, setActiveColor] = useState("#F69F13");
   const [currentData, setCurrentData] = useState({
     allOrders: {
@@ -165,190 +148,149 @@ const Dashboard = () => {
     }
   };
 
-  // const changeColor2 = (val) => {
-  //   setFilter2(val);
-  // };
-
   // returns today's date
   const getCurrentDate = () => {
     let date = new Date();
     return date.toLocaleDateString();
   };
 
-  const getOrders = useCallback(() => {
+  const getAllData = useCallback(() => {
     let url = "orders/admin/getOrders?type=";
-    let allUrl = [`${url}pending`, `${url}completed`, `${url}cancelled`];
+    let allUrl = [
+      `${url}pending`,
+      `${url}completed`,
+      `${url}cancelled`,
+      "users/admin/buyers",
+      "stores/allstores",
+      "/products/search",
+    ];
 
     axios
       .all(allUrl.map((endpoint) => axiosInstance.get(endpoint)))
       .then(
-        axios.spread((pending, completed, cancelled) => {
-          let {
-            data: { data: pendingArr },
-          } = pending;
+        axios.spread(
+          (pending, completed, cancelled, newUsers, allStores, allProducts) => {
+            // destructing responses from axios.all
+            let {
+              data: { data: pendingArr },
+            } = pending;
 
-          let {
-            data: { data: completedArr },
-          } = completed;
+            let {
+              data: { data: completedArr },
+            } = completed;
 
-          let {
-            data: { data: cancelledArr },
-          } = cancelled;
+            let {
+              data: { data: cancelledArr },
+            } = cancelled;
 
-          setCurrentData((prevData) => {
-            return {
-              ...prevData,
-              allOrders: {
-                total:
-                  pendingArr?.length +
-                  completedArr?.length +
-                  cancelledArr?.length,
-                loading: false,
-              },
-              pendingOrders: {
-                total: pendingArr?.length,
-                loading: false,
-              },
+            let {
+              data: { data: newUsersArr },
+            } = newUsers;
 
-              completedOrders: {
-                total: completedArr?.length,
-                loading: false,
-              },
+            let {
+              data: { data: allStoresArr },
+            } = allStores;
 
-              cancelledOrders: {
-                total: cancelledArr?.length,
-                loading: false,
-              },
-            };
-          });
-        })
+            let {
+              data: { data: allProductsArr },
+            } = allProducts;
+
+            // filters customers by today's date
+            let newCustomers = newUsersArr.filter(
+              (item) =>
+                item.updatedAt.slice(0, 10).split("-").join("/") ===
+                getCurrentDate()
+            );
+
+            // slicing first ten of newly approved products
+            let newlyApproved = allProductsArr.reverse().slice(0, 10);
+
+            // mutating all state at once
+            setCurrentData((prevData) => {
+              return {
+                ...prevData,
+
+                allOrders: {
+                  total:
+                    pendingArr?.length +
+                    completedArr?.length +
+                    cancelledArr?.length,
+                  loading: false,
+                },
+
+                pendingOrders: {
+                  total: pendingArr?.length,
+                  loading: false,
+                },
+
+                completedOrders: {
+                  total: completedArr?.length,
+                  loading: false,
+                },
+
+                cancelledOrders: {
+                  total: cancelledArr?.length,
+                  loading: false,
+                },
+
+                allCustomers: {
+                  total: newUsersArr.length,
+                  loading: false,
+                },
+
+                newCustomers: {
+                  total: newCustomers.length,
+                  loading: false,
+                },
+
+                allStores: {
+                  total: allStoresArr.length,
+                  loading: false,
+                },
+
+                recentProducts: {
+                  data: newlyApproved,
+                  loading: false,
+                },
+              };
+            });
+          }
+        )
       )
       .catch((error) => {
-        toast.error(`${error}`);
-        throw new Error(error);
+        // single error block
+        if (error.response) {
+          toast.error(error.response.data.message);
+          throw new Error(error);
+        } else {
+          toast.error("Please check that you're connected");
+          throw new Error(error);
+        }
+      })
+      .finally(() => {
+        // close all loaders
+        setCurrentData((prevData) => {
+          return {
+            ...prevData,
+            allOrders: { ...prevData.allOrders, loading: false },
+            pendingOrders: { ...prevData.pendingOrders, loading: false },
+            completedOrders: { ...prevData.completedOrders, loading: false },
+            cancelledOrders: { ...prevData.cancelledOrders, loading: false },
+            allCustomers: { ...prevData.allCustomers, loading: false },
+            allStores: { ...prevData.allStores, loading: false },
+            newCustomers: { ...prevData.newCustomers, loading: false },
+            recentProducts: {
+              ...prevData.recentProducts,
+              loading: false,
+            },
+          };
+        });
       });
-  }, []);
-
-  const getUsers = useCallback(async () => {
-    try {
-      let {
-        data: { data },
-      } = await axiosInstance.get(`users/admin/buyers`);
-
-      // filters customers by today's date
-      let newCustomers = data.filter(
-        (item) =>
-          item.updatedAt.slice(0, 10).split("-").join("/") === getCurrentDate()
-      );
-
-      setCurrentData((prevData) => {
-        return {
-          ...prevData,
-          allCustomers: {
-            total: data.length,
-            loading: false,
-          },
-          newCustomers: {
-            total: newCustomers.length,
-            loading: false,
-          },
-        };
-      });
-    } catch (error) {
-      if (error.message) {
-        toast.error(`${error.message}`);
-        throw new Error(error.message);
-      } else {
-        toast.error("Something went wrong");
-        throw new Error(error);
-      }
-    } finally {
-      setCurrentData((prevData) => {
-        return {
-          ...prevData,
-          allCustomers: { ...prevData.allCustomers, loading: false },
-        };
-      });
-    }
-  }, []);
-
-  const getStores = useCallback(async () => {
-    try {
-      let {
-        data: { data },
-      } = await axiosInstance.get(`stores/allstores`);
-
-      setCurrentData((prevData) => {
-        return {
-          ...prevData,
-          allStores: {
-            total: data.length,
-            loading: false,
-          },
-        };
-      });
-    } catch (error) {
-      if (error.message) {
-        toast.error(`${error.message}`);
-        throw new Error(error.message);
-      } else {
-        toast.error("Something went wrong");
-        throw new Error(error);
-      }
-    } finally {
-      setCurrentData((prevData) => {
-        return {
-          ...prevData,
-          allStores: { ...prevData.allStores, loading: false },
-        };
-      });
-    }
-  }, []);
-
-  const getProducts = useCallback(async () => {
-    try {
-      let {
-        data: { data },
-      } = await axiosInstance.get("/products/search");
-
-      let newlyApproved = data.reverse().slice(0, 10);
-      setCurrentData((prevData) => {
-        return {
-          ...prevData,
-          recentProducts: {
-            data: newlyApproved,
-            loading: false,
-          },
-        };
-      });
-    } catch (error) {
-      if (error.message) {
-        toast.error(`${error.message}`);
-        throw new Error(error.message);
-      } else {
-        toast.error("Something went wrong");
-        throw new Error(error);
-      }
-    } finally {
-      setCurrentData((prevData) => {
-        return {
-          ...prevData,
-          recentProducts: {
-            ...prevData.recentProducts,
-            loading: false,
-          },
-        };
-      });
-    }
   }, []);
 
   useEffect(() => {
-    getOrders();
-    getUsers();
-    getStores();
-    getCurrentDate();
-    getProducts();
-  }, [getOrders, getUsers, getStores, getProducts]);
+    getAllData();
+  }, [getAllData]);
 
   return (
     <MainContainer>
@@ -479,3 +421,140 @@ const SecondSection = styled.div`
 //     };
 //   });
 // }
+
+// const changeColor2 = (val) => {
+//   setFilter2(val);
+// };
+
+// const filterData2 = [
+//   {
+//     title: "Daily",
+//     color: "#16588F",
+//   },
+//   {
+//     title: "Weekly",
+//     color: "#16588F",
+//   },
+//   {
+//     title: "Monthly",
+//     color: "#16588F",
+//   },
+// ];
+
+// const getUsers = useCallback(async () => {
+//   try {
+//     let {
+//       data: { data },
+//     } = await axiosInstance.get(`users/admin/buyers`);
+
+//     // filters customers by today's date
+//     let newCustomers = data.filter(
+//       (item) =>
+//         item.updatedAt.slice(0, 10).split("-").join("/") === getCurrentDate()
+//     );
+
+//     setCurrentData((prevData) => {
+//       return {
+//         ...prevData,
+//         allCustomers: {
+//           total: data.length,
+//           loading: false,
+//         },
+//         newCustomers: {
+//           total: newCustomers.length,
+//           loading: false,
+//         },
+//       };
+//     });
+//   } catch (error) {
+//     if (error.response) {
+//       toast.error(error.response.data.message);
+//       throw new Error(error);
+//     } else {
+//       toast.error("Please, Check that you're connected");
+//       throw new Error(error);
+//     }
+//   } finally {
+//     setCurrentData((prevData) => {
+//       return {
+//         ...prevData,
+//         allCustomers: { ...prevData.allCustomers, loading: false },
+//       };
+//     });
+//   }
+// }, []);
+
+// const getStores = useCallback(async () => {
+//   try {
+//     let {
+//       data: { data },
+//     } = await axiosInstance.get(`stores/allstores`);
+
+//     setCurrentData((prevData) => {
+//       return {
+//         ...prevData,
+//         allStores: {
+//           total: data.length,
+//           loading: false,
+//         },
+//       };
+//     });
+//   } catch (error) {
+//     if (error.response) {
+//       toast.error(error.response.data.message);
+//       throw new Error(error);
+//     } else {
+//       toast.error("Please, Check that you're connected");
+//       throw new Error(error);
+//     }
+//   } finally {
+//     setCurrentData((prevData) => {
+//       return {
+//         ...prevData,
+//         allStores: { ...prevData.allStores, loading: false },
+//       };
+//     });
+//   }
+// }, []);
+
+// const getProducts = useCallback(async () => {
+//   try {
+//     let {
+//       data: { data },
+//     } = await axiosInstance.get("/products/search");
+
+//     let newlyApproved = data.reverse().slice(0, 10);
+//     setCurrentData((prevData) => {
+//       return {
+//         ...prevData,
+//         recentProducts: {
+//           data: newlyApproved,
+//           loading: false,
+//         },
+//       };
+//     });
+//   } catch (error) {
+//     if (error.response) {
+//       toast.error(error.response.data.message);
+//       throw new Error(error);
+//     } else {
+//       toast.error("Please, Check that you're connected");
+//       throw new Error(error);
+//     }
+//   } finally {
+//     setCurrentData((prevData) => {
+//       return {
+//         ...prevData,
+//         recentProducts: {
+//           ...prevData.recentProducts,
+//           loading: false,
+//         },
+//       };
+//     });
+//   }
+// }, []);
+
+// getUsers();
+// getStores();
+// getCurrentDate();
+// getProducts();

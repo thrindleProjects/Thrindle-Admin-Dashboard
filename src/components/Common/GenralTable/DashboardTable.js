@@ -38,37 +38,37 @@ const DashboardTable = (props) => {
                 />
               </td>
               <td className="col-span-2">
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular ">
+                <p className="lg:text-sm text-xs text-white-text font-Regular ">
                   {item?.name}
                 </p>
               </td>
               <td>
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
+                <p className="lg:text-sm text-xs text-white-text font-Regular">
                   N{numberFormat(item?.price)}
                 </p>
               </td>
               <td>
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
+                <p className="lg:text-sm text-xs text-white-text font-Regular">
                   {item?.no_in_stock}
                 </p>
               </td>
               <td>
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
+                <p className="lg:text-sm text-xs text-white-text font-Regular">
                   {getMarketName(item?.store_id)}
                 </p>
               </td>
               <td className=" col-span-2">
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
+                <p className="lg:text-sm text-xs text-white-text font-Regular">
                   {item?.category?.name || "N/A"}
                 </p>
               </td>
               <td className="col-span-2">
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
+                <p className="lg:text-sm text-xs text-white-text font-Regular">
                   {item?.subcategory?.name || "N/A"}
                 </p>
               </td>
               <td>
-                <p className="product text-left lg:text-sm text-xs text-white-text font-Regular">
+                <p className="lg:text-sm text-xs text-white-text font-Regular">
                   {formatDate(item?.createdAt)}
                 </p>
               </td>
@@ -99,11 +99,12 @@ const MainTable = styled.div`
 
   .tableRowBottom {
     height: 80px;
-    align-items: center;
-    justify-content: space-evenly;
   }
 
-  .tableRowBottom > td {
-    margin: 0 auto;
+  td,
+  th {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;

@@ -54,7 +54,7 @@ const SmallSpinner = () => {
   useEffect(() => {
     let timeoutID = setTimeout(() => {
       setNetworkFailure(true);
-    }, 30000);
+    }, 60000);
 
     return () => {
       clearTimeout(timeoutID);
