@@ -3,7 +3,6 @@ import styled from "styled-components";
 import formatDate from "../../../utils/formatDate";
 
 const CustomerTable = (props) => {
-  console.log(props.tableData);
 
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto">

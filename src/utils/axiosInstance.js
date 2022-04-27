@@ -3,7 +3,8 @@ import axios from "axios";
 import store from "../redux/store/store";
 
 const axiosInstance = axios.create({
-  baseURL: "https://thrindleservices.herokuapp.com/api/thrindle/",
+  // baseURL: "https://thrindleservices.herokuapp.com/api/thrindle/",
+  baseURL: "https://api.thrindle.com/api/thrindle",
   headers: {},
 });
 
@@ -34,14 +35,10 @@ axiosInstance.interceptors.response.use(
       (originalConfig.url !== "/forgot-password" && err.response)
     ) {
       // Access Token was expired
-      if (
-        err.response.status === 401 &&
-        !originalConfig._retry &&
-        err.response?.data?.message !== "user needs to be verified"
-      ) {
+      if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
         store.dispatch({ type: constants.ADMIN_LOGOUT });
-        // toast.error("Session terminated. Login Again");
+        // toast.error("Session terminated, Please login.");
         console.log(err);
         return Promise.reject(err);
       }
@@ -52,3 +49,5 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
+
+// err.response?.data?.message == "user needs to be verified" &&
