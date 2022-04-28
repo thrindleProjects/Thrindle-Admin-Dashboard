@@ -33,9 +33,15 @@ export const NewMainTable = styled.div`
     align-items: center;
   }
 
-  tr {
+  tr,
+  th {
     height: 80px;
     align-items: center;
+  }
+
+  th,
+  td {
+    display: flex;
   }
 `;
 
@@ -93,5 +99,3 @@ export const Fieldset = styled.fieldset`
   -moz-border-radius: 10px;
   padding: 0 5px 5px;
 `;
-
-
