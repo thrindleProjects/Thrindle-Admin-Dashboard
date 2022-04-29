@@ -3,21 +3,24 @@ import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 // orderFilter import from data
-import { customerHeader } from "../../data/data";
-// import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
+import { buyersHeader } from "../../data/data";
+import BuyersFilterTab from "../../components/Common/GeneralFilterTab/BuyersFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
-import CustomerTable from "../../components/Common/GenralTable/CustomerTable";
+import BuyersTable from "../../components/Common/GenralTable/BuyersTable";
 import axiosInstance from "../../utils/axiosInstance";
 import NewLoader from "../../components/newLoader/newLoader";
 
 const Customers = () => {
   const [customers, setCustomers] = useState({
     allCustomers: [],
+    allCustomersImmutable: [],
     paginatedCustomers: [],
     pageIndex: 0,
+    code: [],
+    currentCode: "",
   });
   const [status, setStatus] = useState({ isLoading: true, isError: false });
-  // const [filterValue, setFilterValue] = useState("");
+  const [filterValue, setFilterValue] = useState("");
 
   // Break Customers Array into smaller arrays for pagination
   const paginationArr = (arr, size) =>
@@ -29,7 +32,12 @@ const Customers = () => {
   const handleGetCustomers = useCallback(async () => {
     setStatus({ isLoading: true, isError: false });
     setCustomers((oldCustomers) => {
-      return { ...oldCustomers, paginatedCustomers: [], allCustomers: [] };
+      return {
+        ...oldCustomers,
+        paginatedCustomers: [],
+        allCustomers: [],
+        code: [],
+      };
     });
     try {
       let {
@@ -37,8 +45,25 @@ const Customers = () => {
       } = await axiosInstance.get(`users/admin/buyers`);
 
       let paginatedCustomers = paginationArr(allCustomers.reverse(), 20);
+      let code = Array.from(
+        new Set(
+          allCustomers?.map((item) => {
+            let refCode =
+              !item?.referralCode || item?.referralCode === ""
+                ? "No Code"
+                : item.referralCode.trim().toUpperCase();
+            return refCode;
+          })
+        )
+      );
       setCustomers((oldCustomers) => {
-        return { ...oldCustomers, paginatedCustomers, allCustomers };
+        return {
+          ...oldCustomers,
+          paginatedCustomers,
+          allCustomers,
+          code,
+          allCustomersImmutable: allCustomers,
+        };
       });
       return setStatus({ isError: false, isLoading: false });
     } catch (error) {
@@ -83,11 +108,13 @@ const Customers = () => {
     <MainContainer>
       <FirstSection className="w-full">
         <ScreenHeader title="Buyers" value={customers.allCustomers.length} />
-        {/* <GeneralFilterTab
+        <BuyersFilterTab
           filter={filterValue}
-          filterData={orderFilter}
+          filterData={customers?.code}
+          customers={customers}
+          setCustomers={setCustomers}
           changeFilter={(val) => setFilterValue(val)}
-        /> */}
+        />
         <GeneralPagination
           showButtons={false}
           pag
@@ -100,8 +127,8 @@ const Customers = () => {
         {!status.isError &&
           !status.isLoading &&
           customers.allCustomers.length > 0 && (
-            <CustomerTable
-              tableHeaderData={customerHeader}
+            <BuyersTable
+              tableHeaderData={buyersHeader}
               tableData={customers.paginatedCustomers[customers.pageIndex]}
               pageIndex={customers.pageIndex}
             />

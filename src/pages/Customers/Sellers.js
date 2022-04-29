@@ -3,10 +3,10 @@ import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 // orderFilter,
-import { customerHeader } from "../../data/data";
+import { sellersHeader } from "../../data/data";
 // import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
-import CustomerTable from "../../components/Common/GenralTable/CustomerTable";
+import SellersTable from "../../components/Common/GenralTable/SellerTable";
 import axios from "axios";
 import NewLoader from "../../components/newLoader/newLoader";
 
@@ -18,7 +18,7 @@ const Customers = () => {
   });
   const [status, setStatus] = useState({ isLoading: true, isError: false });
   // const [filterValue, setFilterValue] = useState("");
-
+  console.log(customers);
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
 
   // Break Customers Array into smaller arrays for pagination
@@ -104,8 +104,8 @@ const Customers = () => {
         {!status.isError &&
           !status.isLoading &&
           customers.allCustomers.length > 0 && (
-            <CustomerTable
-              tableHeaderData={customerHeader}
+            <SellersTable
+              tableHeaderData={sellersHeader}
               tableData={customers.paginatedCustomers[customers.pageIndex]}
               showCheck
               pageIndex={customers.pageIndex}
