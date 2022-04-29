@@ -521,6 +521,8 @@ export const dashbordHeader = [
 ];
 
 export const approvedProductHeader = [
+  "Index",
+
   "Product Name",
 
   "Category",
@@ -603,7 +605,7 @@ export const storeHeader = [
 ];
 
 export const inventTableHeader = [
-  // { title: "Status" },
+  { title: "Index" },
   { title: "Product Title" },
   { title: "Category" },
   { title: "Price" },

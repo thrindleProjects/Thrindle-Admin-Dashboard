@@ -58,6 +58,12 @@ module.exports = {
       margin: {
         5: "5px",
       },
+      gridTemplateColumns: {
+        13: "repeat(13, minmax(0, 1fr))",
+      },
+      fontSize: {
+        small: "12px",
+      },
     },
   },
   variants: {

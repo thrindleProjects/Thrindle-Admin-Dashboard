@@ -47,7 +47,7 @@ const Inventory = (props) => {
   const [allInventory, setAllInventory] = useState(0);
   const [status, setStatus] = useState({ isLoading: true, isError: false });
 
-  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+  // const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
 
   const qty = props.location.search
     ? props.location.search.split("=")[1]
@@ -141,101 +141,112 @@ const Inventory = (props) => {
         };
       });
 
-      let endpoints = [
-        `${url}/products/unverifiedproducts`,
-        `${url}/products/search`,
-      ];
-
       setStatus({ isError: false, isLoading: true });
 
-      try {
-        let [allUnverifiedProducts, approvedProducts] = await axios.all(
-          endpoints.map(async (endpoint) => {
-            try {
-              let {
-                data: { data },
-              } = await axiosInstance.get(endpoint);
+      let endpoints = ["/products/unverifiedproducts", "/products/search"];
 
-              // Make request to get all market data
+      axios
+        .all(endpoints.map((endpoint) => axiosInstance.get(endpoint)))
+        .then(
+          axios.spread((unverifiedProducts, approvedProducts) => {
+            // destructing responses from axios.all
+            let {
+              data: { data: unverifiedProductsArr },
+            } = unverifiedProducts;
 
-              if (data) {
-                setStatus({ isLoading: false, isError: false });
-              }
-              return data.reverse();
-            } catch (error) {
-              throw new Error(error);
+            let {
+              data: { data: approvedProductsArr },
+            } = approvedProducts;
+
+            getMarkets();
+
+            // mutating all state at once
+            if (activeTab === "Pending Products") {
+              setProducts((prevState) => {
+                if (prevState?.pageIndex > unverifiedProductsArr?.length - 1) {
+                  return {
+                    ...prevState,
+                    allProducts: unverifiedProductsArr,
+                    paginatedProducts: paginationArr(unverifiedProductsArr, 20),
+                    pageIndex: unverifiedProductsArr?.length - 1,
+                    allProductsImmutable: unverifiedProductsArr,
+                  };
+                }
+
+                return {
+                  ...prevState,
+                  allProducts: unverifiedProductsArr,
+                  paginatedProducts: paginationArr(unverifiedProductsArr, 20),
+                  allProductsImmutable: unverifiedProductsArr,
+                };
+              });
             }
+
+            if (activeTab === "Approved Products") {
+              setProducts((prevState) => {
+                if (prevState?.pageIndex > approvedProductsArr?.length - 1) {
+                  return {
+                    ...prevState,
+                    allProducts: approvedProductsArr,
+                    paginatedProducts: paginationArr(approvedProductsArr, 20),
+                    pageIndex: approvedProductsArr?.length - 1,
+                    allProductsImmutable: approvedProductsArr,
+                  };
+                }
+
+                return {
+                  ...prevState,
+                  allProducts: approvedProductsArr,
+                  paginatedProducts: paginationArr(approvedProductsArr, 20),
+                  allProductsImmutable: approvedProductsArr,
+                };
+              });
+            }
+
+            setInventoryData((prevState) => {
+              let currentState = prevState.map((item) => {
+                if (item.title === "Pending Products") {
+                  return { ...item, value: unverifiedProductsArr?.length };
+                }
+
+                if (item.title === "Approved Products") {
+                  return { ...item, value: approvedProductsArr?.length };
+                }
+
+                return item;
+              });
+
+              return currentState;
+            });
+
+            setAllInventory(
+              unverifiedProductsArr?.length + approvedProductsArr?.length
+            );
+
+            setStatus({ isError: false, isLoading: false });
           })
-        );
-        await getMarkets();
+        )
+        .catch((error) => {
+          // single error block
 
-        // let allProducts, paginatedProducts;
-
-        if (activeTab === "Pending Products") {
-          setProducts((prevState) => {
-            if (prevState?.pageIndex > allUnverifiedProducts?.length - 1) {
-              return {
-                ...prevState,
-                allProducts: allUnverifiedProducts,
-                paginatedProducts: paginationArr(allUnverifiedProducts, 20),
-                pageIndex: allUnverifiedProducts?.length - 1,
-                allProductsImmutable: allUnverifiedProducts,
-              };
-            }
-            return {
-              ...prevState,
-              allProducts: allUnverifiedProducts,
-              paginatedProducts: paginationArr(allUnverifiedProducts, 20),
-              allProductsImmutable: allUnverifiedProducts,
-            };
-          });
-        }
-
-        if (activeTab === "Approved Products") {
-          setProducts((prevState) => {
-            if (prevState?.pageIndex > approvedProducts?.length - 1) {
-              return {
-                ...prevState,
-                allProducts: approvedProducts,
-                paginatedProducts: paginationArr(approvedProducts, 20),
-                pageIndex: approvedProducts?.length - 1,
-                allProductsImmutable: approvedProducts,
-              };
-            }
-            return {
-              ...prevState,
-              allProducts: approvedProducts,
-              paginatedProducts: paginationArr(approvedProducts, 20),
-              allProductsImmutable: approvedProducts,
-            };
-          });
-        }
-
-        setInventoryData((prevState) => {
-          let currentState = prevState.map((item) => {
-            if (item.title === "Pending Products") {
-              return { ...item, value: allUnverifiedProducts?.length };
-            }
-
-            if (item.title === "Approved Products") {
-              return { ...item, value: approvedProducts?.length };
-            }
-
-            return item;
+          setStatus((prevState) => {
+            return { ...prevState, isError: true };
           });
 
-          return currentState;
+          if (error.response) {
+            toast.error(error.response.data.message);
+            throw new Error(error);
+          } else {
+            toast.error("Please check that you're connected");
+            throw new Error(error);
+          }
+        })
+        .finally(() => {
+          // close all loaders
+          setStatus((prevState) => {
+            return { ...prevState, isLoading: false };
+          });
         });
-
-        setAllInventory(
-          allUnverifiedProducts?.length + approvedProducts?.length
-        );
-
-        return setStatus({ isError: false, isLoading: false });
-      } catch (error) {
-        setStatus({ isLoading: false, isError: true });
-        toast.error("Something went wrong ...");
-      }
     }
   }, [activeTab]);
 
@@ -342,36 +353,34 @@ const Inventory = (props) => {
 
         {status.isError && <div>Error! Please Reload the Page</div>}
 
-        {!status.isError &&
-          !status.isLoading &&
-          activeTab === "Pending Products" && (
-            <InventoryTable
-              showCheck
-              tableHeaderData={inventTableHeader}
-              tableData={products.paginatedProducts[products.pageIndex]}
-              pageIndex={products.pageIndex}
-              setModal={handleSetModal}
-              displayDeleteModal={(id, activeData) =>
-                displayDeleteModal(id, activeData)
-              }
-            />
-          )}
+        {activeTab === "Pending Products" && (
+          <InventoryTable
+            showCheck
+            tableHeaderData={inventTableHeader}
+            tableData={products.paginatedProducts[products.pageIndex]}
+            pageIndex={products.pageIndex}
+            setModal={handleSetModal}
+            displayDeleteModal={(id, activeData) =>
+              displayDeleteModal(id, activeData)
+            }
+            status={status}
+          />
+        )}
 
-        {!status.isError &&
-          !status.isLoading &&
-          activeTab === "Approved Products" && (
-            <ApprovedProducts
-              tableHeaderData={approvedProductHeader}
-              tableData={products?.paginatedProducts[products?.pageIndex]}
-              openDeleteModal={openDeleteModal}
-              setOpenDeleteModal={setOpenDeleteModal}
-              displayDeleteModal={(id, activeData) =>
-                displayDeleteModal(id, activeData)
-              }
-              setModal={handleSetModal}
-              pageIndex={products.pageIndex}
-            />
-          )}
+        {activeTab === "Approved Products" && (
+          <ApprovedProducts
+            tableHeaderData={approvedProductHeader}
+            tableData={products?.paginatedProducts[products?.pageIndex]}
+            openDeleteModal={openDeleteModal}
+            setOpenDeleteModal={setOpenDeleteModal}
+            displayDeleteModal={(id, activeData) =>
+              displayDeleteModal(id, activeData)
+            }
+            setModal={handleSetModal}
+            pageIndex={products.pageIndex}
+            status={status}
+          />
+        )}
         {openDeleteModal && (
           <DeleteProductModal
             setOpenDeleteModal={setOpenDeleteModal}
@@ -389,3 +398,93 @@ const Inventory = (props) => {
 export default Inventory;
 
 const FirstSection = styled.div``;
+
+// try {
+//   let [allUnverifiedProducts, approvedProducts] = await axios.all(
+//     endpoints.map(async (endpoint) => {
+//       try {
+//         let {
+//           data: { data },
+//         } = await axiosInstance.get(endpoint);
+
+//         // Make request to get all market data
+
+//         // if (data) {
+//         //   setStatus({ isLoading: false, isError: false });
+//         // }
+//         return data.reverse();
+//       } catch (error) {
+//         throw new Error(error);
+//       }
+//     })
+//   );
+
+//   await getMarkets();
+
+//   // let allProducts, paginatedProducts;
+
+//   if (activeTab === "Pending Products") {
+//     setProducts((prevState) => {
+//       if (prevState?.pageIndex > allUnverifiedProducts?.length - 1) {
+//         return {
+//           ...prevState,
+//           allProducts: allUnverifiedProducts,
+//           paginatedProducts: paginationArr(allUnverifiedProducts, 20),
+//           pageIndex: allUnverifiedProducts?.length - 1,
+//           allProductsImmutable: allUnverifiedProducts,
+//         };
+//       }
+//       return {
+//         ...prevState,
+//         allProducts: allUnverifiedProducts,
+//         paginatedProducts: paginationArr(allUnverifiedProducts, 20),
+//         allProductsImmutable: allUnverifiedProducts,
+//       };
+//     });
+//   }
+
+//   if (activeTab === "Approved Products") {
+//     setProducts((prevState) => {
+//       if (prevState?.pageIndex > approvedProducts?.length - 1) {
+//         return {
+//           ...prevState,
+//           allProducts: approvedProducts,
+//           paginatedProducts: paginationArr(approvedProducts, 20),
+//           pageIndex: approvedProducts?.length - 1,
+//           allProductsImmutable: approvedProducts,
+//         };
+//       }
+//       return {
+//         ...prevState,
+//         allProducts: approvedProducts,
+//         paginatedProducts: paginationArr(approvedProducts, 20),
+//         allProductsImmutable: approvedProducts,
+//       };
+//     });
+//   }
+
+//   setInventoryData((prevState) => {
+//     let currentState = prevState.map((item) => {
+//       if (item.title === "Pending Products") {
+//         return { ...item, value: allUnverifiedProducts?.length };
+//       }
+
+//       if (item.title === "Approved Products") {
+//         return { ...item, value: approvedProducts?.length };
+//       }
+
+//       return item;
+//     });
+
+//     return currentState;
+//   });
+
+//   setAllInventory(
+//     allUnverifiedProducts?.length + approvedProducts?.length
+//   );
+
+//   setStatus({ isError: false, isLoading: false });
+// } catch (error) {
+//   setStatus({ isLoading: false, isError: true });
+//   toast.error("Something went wrong ...");
+// }
