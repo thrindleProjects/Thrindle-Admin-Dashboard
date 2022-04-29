@@ -49,7 +49,13 @@ const SellerTable = (props) => {
                 </td>
 
                 <td>
-                  <p className="product text-left text-sm text-white-text font-Regular">
+                  <p
+                    className={`product text-left text-sm ${
+                      item.status === "verified"
+                        ? "text-secondary-success"
+                        : "text-secondary-error"
+                    } font-Regular`}
+                  >
                     {item.status === "verified" ? "Verified" : "Unverified"}
                   </p>
                 </td>

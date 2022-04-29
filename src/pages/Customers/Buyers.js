@@ -4,19 +4,19 @@ import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 // orderFilter import from data
 import { buyersHeader } from "../../data/data";
-import BuyersFilterTab from "../../components/Common/GeneralFilterTab/BuyersFilterTab";
+import BuyersFilterTab from "../../components/Common/GeneralFilterTab/BuyersFilterTab.jsx";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import BuyersTable from "../../components/Common/GenralTable/BuyersTable";
 import axiosInstance from "../../utils/axiosInstance";
 import NewLoader from "../../components/newLoader/newLoader";
 
-const Customers = () => {
+const Buyers = () => {
   const [customers, setCustomers] = useState({
     allCustomers: [],
     allCustomersImmutable: [],
     paginatedCustomers: [],
     pageIndex: 0,
-    code: [],
+    codes: [],
     currentCode: "",
   });
   const [status, setStatus] = useState({ isLoading: true, isError: false });
@@ -36,7 +36,7 @@ const Customers = () => {
         ...oldCustomers,
         paginatedCustomers: [],
         allCustomers: [],
-        code: [],
+        codes: [],
       };
     });
     try {
@@ -45,7 +45,7 @@ const Customers = () => {
       } = await axiosInstance.get(`users/admin/buyers`);
 
       let paginatedCustomers = paginationArr(allCustomers.reverse(), 20);
-      let code = Array.from(
+      let codes = Array.from(
         new Set(
           allCustomers?.map((item) => {
             let refCode =
@@ -61,7 +61,7 @@ const Customers = () => {
           ...oldCustomers,
           paginatedCustomers,
           allCustomers,
-          code,
+          codes,
           allCustomersImmutable: allCustomers,
         };
       });
@@ -110,7 +110,7 @@ const Customers = () => {
         <ScreenHeader title="Buyers" value={customers.allCustomers.length} />
         <BuyersFilterTab
           filter={filterValue}
-          filterData={customers?.code}
+          filterData={customers?.codes}
           customers={customers}
           setCustomers={setCustomers}
           changeFilter={(val) => setFilterValue(val)}
@@ -143,6 +143,6 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Buyers;
 
 const FirstSection = styled.div``;

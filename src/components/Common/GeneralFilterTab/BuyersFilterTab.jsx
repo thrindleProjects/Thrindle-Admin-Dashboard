@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FaSearch, FaAngleDown } from "react-icons/fa";
-import { HiDownload } from "react-icons/hi";
+// import { HiDownload } from "react-icons/hi";
 import paginationArr from "../../../utils/pagination";
-// import getMarketName from "../../../utils/getMarketName";
 
 const BuyersFilterTab = ({ filterData, customers, setCustomers }) => {
   const filterRef = useRef(null);
@@ -30,7 +29,11 @@ const BuyersFilterTab = ({ filterData, customers, setCustomers }) => {
       });
     } else {
       currentCustomers = currentCustomers.filter((item) => {
-        return item.name?.toLowerCase()?.includes(nameFilter.toLowerCase());
+        return (
+          item.name?.toLowerCase()?.includes(nameFilter.toLowerCase()) ||
+          item.email?.toLowerCase().includes(nameFilter.toLowerCase()) ||
+          item.phone?.includes(nameFilter)
+        );
       });
       setCustomers((prevState) => {
         return {
@@ -58,14 +61,14 @@ const BuyersFilterTab = ({ filterData, customers, setCustomers }) => {
       currentCustomers = customers.allCustomersImmutable;
     } else {
       currentCustomers = customers.allCustomersImmutable.filter((item) => {
-        if (customers.code === "No Code") {
+        if (customers.currentCode === "No Code") {
           return !item.referralCode;
         }
-        return item.referralCode?.trim()?.toUpperCase() === customers.code;
+        return (
+          item.referralCode?.trim()?.toUpperCase() === customers.currentCode
+        );
       });
     }
-    console.log(currentCustomers);
-    console.log(value);
     if (value.length === 0) {
       return setCustomers((oldCustomers) => {
         return {
@@ -77,7 +80,11 @@ const BuyersFilterTab = ({ filterData, customers, setCustomers }) => {
     } else {
       // Filter customers based on input value
       const newCustomers = currentCustomers?.filter((item) => {
-        return item.name?.toLowerCase()?.includes(nameFilter.toLowerCase());
+        return (
+          item.name?.toLowerCase()?.includes(value.toLowerCase()) ||
+          item.email?.toLowerCase().includes(value.toLowerCase()) ||
+          item.phone?.includes(value)
+        );
       });
       // if no items match input value set necessary values to empty state
       if (newCustomers?.length === 0) {
@@ -101,15 +108,39 @@ const BuyersFilterTab = ({ filterData, customers, setCustomers }) => {
 
   // reset all customers
   const getAllBuyers = () => {
-    setCustomers((prevState) => {
-      return {
-        ...prevState,
-        allCustomers: customers.allCustomersImmutable,
-        paginatedCustomers: paginationArr(customers.allCustomersImmutable, 20),
-        currentCode: "All",
-        pageIndex: 0,
-      };
-    });
+    if (nameFilter === "") {
+      return setCustomers((prevState) => {
+        return {
+          ...prevState,
+          allCustomers: prevState.allCustomersImmutable,
+          paginatedCustomers: paginationArr(
+            prevState.allCustomersImmutable,
+            20
+          ),
+          currentCode: "All",
+          pageIndex: 0,
+        };
+      });
+    } else {
+      setCustomers((prevState) => {
+        let currentCustomers = prevState.allCustomersImmutable.filter(
+          (item) => {
+            return (
+              item.name?.toLowerCase()?.includes(nameFilter.toLowerCase()) ||
+              item.email?.toLowerCase().includes(nameFilter.toLowerCase()) ||
+              item.phone?.includes(nameFilter)
+            );
+          }
+        );
+        return {
+          ...prevState,
+          allCustomers: currentCustomers,
+          paginatedCustomers: paginationArr(currentCustomers, 20),
+          currentCode: "All",
+          pageIndex: 0,
+        };
+      });
+    }
   };
 
   useEffect(() => {
@@ -186,10 +217,10 @@ const BuyersFilterTab = ({ filterData, customers, setCustomers }) => {
       </div>
 
       {/* EXPORT */}
-      <div className="export-cont rounded-md flex flex-row ">
+      {/* <div className="export-cont rounded-md flex flex-row ">
         <HiDownload className="text-primary-main text-lg mr-2" />
         <p className="text-primary-main font-Regular text-sm mr-2">Export</p>
-      </div>
+      </div> */}
     </MainCont>
   );
 };
