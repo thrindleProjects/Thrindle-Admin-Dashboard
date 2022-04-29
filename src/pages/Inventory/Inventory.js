@@ -163,42 +163,60 @@ const Inventory = (props) => {
             // mutating all state at once
             if (activeTab === "Pending Products") {
               setProducts((prevState) => {
-                if (prevState?.pageIndex > unverifiedProductsArr?.length - 1) {
+                if (
+                  prevState?.pageIndex >
+                  unverifiedProductsArr.reverse()?.length - 1
+                ) {
                   return {
                     ...prevState,
-                    allProducts: unverifiedProductsArr,
-                    paginatedProducts: paginationArr(unverifiedProductsArr, 20),
-                    pageIndex: unverifiedProductsArr?.length - 1,
-                    allProductsImmutable: unverifiedProductsArr,
+                    allProducts: unverifiedProductsArr.reverse(),
+                    paginatedProducts: paginationArr(
+                      unverifiedProductsArr.reverse(),
+                      20
+                    ),
+                    pageIndex: unverifiedProductsArr.reverse()?.length - 1,
+                    allProductsImmutable: unverifiedProductsArr.reverse(),
                   };
                 }
 
                 return {
                   ...prevState,
-                  allProducts: unverifiedProductsArr,
-                  paginatedProducts: paginationArr(unverifiedProductsArr, 20),
-                  allProductsImmutable: unverifiedProductsArr,
+                  allProducts: unverifiedProductsArr.reverse(),
+                  paginatedProducts: paginationArr(
+                    unverifiedProductsArr.reverse(),
+                    20
+                  ),
+                  allProductsImmutable: unverifiedProductsArr.reverse(),
                 };
               });
             }
 
             if (activeTab === "Approved Products") {
               setProducts((prevState) => {
-                if (prevState?.pageIndex > approvedProductsArr?.length - 1) {
+                if (
+                  prevState?.pageIndex >
+                  approvedProductsArr.reverse()?.length - 1
+                ) {
                   return {
                     ...prevState,
-                    allProducts: approvedProductsArr,
-                    paginatedProducts: paginationArr(approvedProductsArr, 20),
-                    pageIndex: approvedProductsArr?.length - 1,
-                    allProductsImmutable: approvedProductsArr,
+                    allProducts: approvedProductsArr.reverse(),
+                    paginatedProducts: paginationArr(
+                      approvedProductsArr.reverse(),
+                      20
+                    ),
+                    pageIndex: approvedProductsArr.reverse()?.length - 1,
+                    allProductsImmutable: approvedProductsArr.reverse(),
                   };
                 }
 
                 return {
                   ...prevState,
-                  allProducts: approvedProductsArr,
-                  paginatedProducts: paginationArr(approvedProductsArr, 20),
-                  allProductsImmutable: approvedProductsArr,
+                  allProducts: approvedProductsArr.reverse(),
+                  paginatedProducts: paginationArr(
+                    approvedProductsArr.reverse(),
+                    20
+                  ),
+                  allProductsImmutable: approvedProductsArr.reverse(),
                 };
               });
             }
