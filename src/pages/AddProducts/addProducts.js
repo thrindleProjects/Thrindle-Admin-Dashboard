@@ -108,6 +108,7 @@ const AddProducts = () => {
 
       setOtherValues({ ...otherValues, values2 });
       let x = { ...values, values2 };
+      console.log(x);
       submitForm(x);
     },
   });
@@ -151,7 +152,7 @@ const AddProducts = () => {
         `products/admin/addproduct/${storeID}`,
         formData
       );
-
+      console.log(`products/admin/addproduct/${storeID}`);
       if (data) {
         toast.success("Product was successfully added");
         setTimeout(() => {
@@ -326,6 +327,7 @@ const AddProducts = () => {
   const getStoreId = useCallback((storeValue) => {
     const storesData = JSON.parse(localStorage.getItem("storesPerMarket"));
     const findStore = storesData.find((item) => item.store_name === storeValue);
+    console.log(findStore);
     setStoreID(findStore?.store_id);
   }, []);
 

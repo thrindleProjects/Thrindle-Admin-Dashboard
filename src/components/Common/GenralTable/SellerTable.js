@@ -2,20 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import formatDate from "../../../utils/formatDate";
 
-const CustomerTable = (props) => {
-
+const SellerTable = (props) => {
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
       <table className="w-full min-w-min max-w-full">
         <thead>
-          <tr className="main-table-header rounded-md grid gap-3 grid-cols-8 px-6">
+          <tr className="main-table-header rounded-md grid gap-3 grid-cols-7 px-6">
             {props.tableHeaderData?.map((item, index) => (
               <th
                 key={index}
                 className={`${
-                  ["Email", "Customer Name"].includes(item.title)
-                    ? "col-span-2"
-                    : ""
+                  ["Seller's Name"].includes(item.title) ? "col-span-2" : ""
                 }`}
               >
                 <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
@@ -32,7 +29,7 @@ const CustomerTable = (props) => {
             return (
               <tr
                 key={item._id}
-                className="w-full grid grid-flow-row grid-cols-8 gap-3 px-6 py-3 "
+                className="w-full grid grid-flow-row grid-cols-7 gap-3 px-6 py-3 "
               >
                 <td>
                   <p className="capitalize status text-left text-sm text-white-text font-Regular">
@@ -51,14 +48,20 @@ const CustomerTable = (props) => {
                   </p>
                 </td>
 
-                <td className="col-span-2">
-                  <p className="product text-left text-sm text-white-text font-Regular">
-                    {item.email ? item.email : "N/A"}
+                <td>
+                  <p
+                    className={`product text-left text-sm ${
+                      item.status === "verified"
+                        ? "text-secondary-success"
+                        : "text-secondary-error"
+                    } font-Regular`}
+                  >
+                    {item.status === "verified" ? "Verified" : "Unverified"}
                   </p>
                 </td>
                 <td>
                   <p className="product text-left text-sm text-white-text font-Regular">
-                    {item.referralCode || "N/A"}
+                    {item.store_id || "N/A"}
                   </p>
                 </td>
                 <td>
@@ -75,7 +78,7 @@ const CustomerTable = (props) => {
   );
 };
 
-export default CustomerTable;
+export default SellerTable;
 
 const MainTable = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);

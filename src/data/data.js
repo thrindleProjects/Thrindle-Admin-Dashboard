@@ -565,26 +565,24 @@ export const shipmentTableHeader = [
   },
 ];
 
-export const customerHeader = [
-  {
-    title: "Index",
-  },
-  {
-    title: "Customer Name",
-  },
-  {
-    title: "Phone No",
-  },
-  {
-    title: "Email",
-  },
-  {
-    title: "Referral Code",
-  },
-  {
-    title: "Joined",
-  },
+export const buyersHeader = [
+  { title: "Index" },
+  { title: "Buyer's Name" },
+  { title: "Phone No" },
+  { title: "Email" },
+  { title: "Referral Code" },
+  { title: "Joined" },
 ];
+
+export const sellersHeader = [
+  { title: "Index" },
+  { title: "Seller's Name" },
+  { title: "Phone No" },
+  { title: "Verified" },
+  { title: "Store ID" },
+  { title: "Joined" },
+];
+
 export const storeHeader = [
   {
     title: "Index",
