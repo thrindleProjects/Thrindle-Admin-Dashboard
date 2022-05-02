@@ -3,22 +3,25 @@ import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 // orderFilter,
-import { customerHeader } from "../../data/data";
-// import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
+import { sellersHeader } from "../../data/data";
+import SellersFilterTab from "../../components/Common/GeneralFilterTab/SellersFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
-import CustomerTable from "../../components/Common/GenralTable/CustomerTable";
+import SellersTable from "../../components/Common/GenralTable/SellerTable";
 import axios from "axios";
 import NewLoader from "../../components/newLoader/newLoader";
+import getMarketName from "../../utils/getMarketName";
 
 const Customers = () => {
   const [customers, setCustomers] = useState({
     allCustomers: [],
     paginatedCustomers: [],
+    allCustomersImmutable: [],
     pageIndex: 0,
+    markets: [],
+    currentMarket: "",
   });
   const [status, setStatus] = useState({ isLoading: true, isError: false });
-  // const [filterValue, setFilterValue] = useState("");
-
+  const [filterValue, setFilterValue] = useState("");
   const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
 
   // Break Customers Array into smaller arrays for pagination
@@ -31,7 +34,12 @@ const Customers = () => {
   const handleGetCustomers = useCallback(async () => {
     setStatus({ isLoading: true, isError: false });
     setCustomers((oldCustomers) => {
-      return { ...oldCustomers, paginatedCustomers: [], allCustomers: [] };
+      return {
+        ...oldCustomers,
+        paginatedCustomers: [],
+        allCustomers: [],
+        markets: [],
+      };
     });
     try {
       let {
@@ -41,8 +49,24 @@ const Customers = () => {
       if (statusCode > 399)
         return setStatus({ isError: true, isLoading: false });
       let paginatedCustomers = paginationArr(allCustomers.reverse(), 20);
+      let markets = Array.from(
+        new Set(
+          allCustomers?.map((item) => {
+            if (item.status?.toLowerCase() === "unverified")
+              return "Unverified Sellers";
+            if (!item.store_id) return "No Store";
+            return getMarketName(item.store_id);
+          })
+        )
+      );
       setCustomers((oldCustomers) => {
-        return { ...oldCustomers, paginatedCustomers, allCustomers };
+        return {
+          ...oldCustomers,
+          paginatedCustomers,
+          allCustomers,
+          allCustomersImmutable: allCustomers,
+          markets,
+        };
       });
       return setStatus({ isError: false, isLoading: false });
     } catch (error) {
@@ -87,11 +111,13 @@ const Customers = () => {
     <MainContainer>
       <FirstSection className="w-full">
         <ScreenHeader title="Sellers" value={customers.allCustomers.length} />
-        {/* <GeneralFilterTab
+        <SellersFilterTab
           filter={filterValue}
-          filterData={orderFilter}
+          filterData={customers?.markets}
+          customers={customers}
+          setCustomers={setCustomers}
           changeFilter={(val) => setFilterValue(val)}
-        /> */}
+        />
         <GeneralPagination
           showButtons={false}
           pag
@@ -104,8 +130,8 @@ const Customers = () => {
         {!status.isError &&
           !status.isLoading &&
           customers.allCustomers.length > 0 && (
-            <CustomerTable
-              tableHeaderData={customerHeader}
+            <SellersTable
+              tableHeaderData={sellersHeader}
               tableData={customers.paginatedCustomers[customers.pageIndex]}
               showCheck
               pageIndex={customers.pageIndex}

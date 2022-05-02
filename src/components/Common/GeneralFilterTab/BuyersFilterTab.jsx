@@ -1,45 +1,46 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FaSearch, FaAngleDown } from "react-icons/fa";
-import { HiDownload } from "react-icons/hi";
+// import { HiDownload } from "react-icons/hi";
 import paginationArr from "../../../utils/pagination";
-import getMarketName from "../../../utils/getMarketName";
 
-const StoresFilterTab = ({ filterData, stores, setStores }) => {
+const BuyersFilterTab = ({ filterData, customers, setCustomers }) => {
   const filterRef = useRef(null);
   const [show, setShow] = useState(false);
   const [nameFilter, setNameFilter] = useState("");
 
-  const filterByMarket = (category) => {
-    let currentStores = stores.allStoresImmutable.filter(
-      (item) => getMarketName(item?.owner_id?.store_id) === category
-    );
+  const filterByCode = (code) => {
+    let currentCustomers = customers.allCustomersImmutable.filter((item) => {
+      if (code === "No Code") {
+        return !item.referralCode;
+      }
+      return item.referralCode?.trim()?.toUpperCase() === code;
+    });
 
     if (nameFilter === "") {
-      setStores((prevState) => {
+      setCustomers((prevState) => {
         return {
           ...prevState,
-          allStores: currentStores,
-          paginatedStores: paginationArr(currentStores, 20),
-          currentMarket: category,
+          allCustomers: currentCustomers,
+          paginatedCustomers: paginationArr(currentCustomers, 20),
+          currentCode: code,
           pageIndex: 0,
         };
       });
     } else {
-      currentStores = currentStores.filter((item) => {
+      currentCustomers = currentCustomers.filter((item) => {
         return (
-          item.store_name.toLowerCase().includes(nameFilter.toLowerCase()) ||
-          item.owner_id.store_id
-            .toLowerCase()
-            .includes(nameFilter.toLowerCase())
+          item.name?.toLowerCase()?.includes(nameFilter.toLowerCase()) ||
+          item.email?.toLowerCase().includes(nameFilter.toLowerCase()) ||
+          item.phone?.includes(nameFilter)
         );
       });
-      setStores((prevState) => {
+      setCustomers((prevState) => {
         return {
           ...prevState,
-          allStores: currentStores,
-          paginatedStores: paginationArr(currentStores, 20),
-          currentMarket: category,
+          allCustomers: currentCustomers,
+          paginatedCustomers: paginationArr(currentCustomers, 20),
+          currentCode: code,
           pageIndex: 0,
         };
       });
@@ -55,79 +56,87 @@ const StoresFilterTab = ({ filterData, stores, setStores }) => {
 
     // if input value is less than zero or for some reason is undefined
     // set table data based on the active filter value e.g
-    let currentStores;
-    if (["", "All"].includes(stores.currentMarket)) {
-      currentStores = stores.allStoresImmutable;
+    let currentCustomers;
+    if (["", "All"].includes(customers.currentCode)) {
+      currentCustomers = customers.allCustomersImmutable;
     } else {
-      currentStores = stores.allStoresImmutable.filter(
-        (item) =>
-          getMarketName(item?.owner_id?.store_id) === stores.currentMarket
-      );
+      currentCustomers = customers.allCustomersImmutable.filter((item) => {
+        if (customers.currentCode === "No Code") {
+          return !item.referralCode;
+        }
+        return (
+          item.referralCode?.trim()?.toUpperCase() === customers.currentCode
+        );
+      });
     }
-
     if (value.length === 0) {
-      setStores((oldStores) => {
+      return setCustomers((oldCustomers) => {
         return {
-          ...oldStores,
-          allStores: currentStores,
-          paginatedStores: paginationArr(currentStores, 20),
+          ...oldCustomers,
+          allCustomers: currentCustomers,
+          paginatedCustomers: paginationArr(currentCustomers, 20),
         };
       });
     } else {
-      // Filter stores based on input value
-      const newStores = currentStores.filter((item) => {
+      // Filter customers based on input value
+      const newCustomers = currentCustomers?.filter((item) => {
         return (
-          item.store_name.toLowerCase().includes(value.toLowerCase()) ||
-          item.owner_id.store_id.toLowerCase().includes(value.toLowerCase())
+          item.name?.toLowerCase()?.includes(value.toLowerCase()) ||
+          item.email?.toLowerCase().includes(value.toLowerCase()) ||
+          item.phone?.includes(value)
         );
       });
       // if no items match input value set necessary values to empty state
-      if (newStores.length === 0) {
-        return setStores((oldStores) => {
+      if (newCustomers?.length === 0) {
+        return setCustomers((oldCustomers) => {
           return {
-            ...oldStores,
-            allStores: newStores,
-            paginatedStores: newStores,
+            ...oldCustomers,
+            allCustomers: newCustomers,
+            paginatedCustomers: newCustomers,
           };
         });
       }
-      return setStores((oldStores) => {
+      return setCustomers((oldCustomers) => {
         return {
-          ...oldStores,
-          allStores: newStores,
-          paginatedStores: paginationArr(newStores, 20),
+          ...oldCustomers,
+          allCustomers: newCustomers,
+          paginatedCustomers: paginationArr(newCustomers, 20),
         };
       });
     }
   };
 
-  // reset all stores
-  const getAllStores = () => {
+  // reset all customers
+  const getAllBuyers = () => {
     if (nameFilter === "") {
-      setStores((prevState) => {
+      return setCustomers((prevState) => {
         return {
           ...prevState,
-          allStores: prevState.allStoresImmutable,
-          paginatedStores: paginationArr(prevState.allStoresImmutable, 20),
-          currentMarket: "All",
+          allCustomers: prevState.allCustomersImmutable,
+          paginatedCustomers: paginationArr(
+            prevState.allCustomersImmutable,
+            20
+          ),
+          currentCode: "All",
           pageIndex: 0,
         };
       });
     } else {
-      setStores((prevState) => {
-        let currentStores = prevState.allStoresImmutable.filter((item) => {
-          return (
-            item.store_name.toLowerCase().includes(nameFilter.toLowerCase()) ||
-            item.owner_id.store_id
-              .toLowerCase()
-              .includes(nameFilter.toLowerCase())
-          );
-        });
+      setCustomers((prevState) => {
+        let currentCustomers = prevState.allCustomersImmutable.filter(
+          (item) => {
+            return (
+              item.name?.toLowerCase()?.includes(nameFilter.toLowerCase()) ||
+              item.email?.toLowerCase().includes(nameFilter.toLowerCase()) ||
+              item.phone?.includes(nameFilter)
+            );
+          }
+        );
         return {
           ...prevState,
-          allStores: currentStores,
-          paginatedStores: paginationArr(currentStores, 20),
-          currentMarket: "All",
+          allCustomers: currentCustomers,
+          paginatedCustomers: paginationArr(currentCustomers, 20),
+          currentCode: "All",
           pageIndex: 0,
         };
       });
@@ -168,9 +177,9 @@ const StoresFilterTab = ({ filterData, stores, setStores }) => {
         className="filter-cont flex flex-row md:mx-3 lg:mx-5 rounded-md relative bg-primary-dark cursor-pointer lg:mb-0 mb-8"
         onClick={() => setShow(!show)}
       >
-        {stores?.currentMarket !== "" ? (
+        {customers?.currentCode !== "" ? (
           <p className="text-white-main mr-2 text-sm">
-            {stores?.currentMarket}
+            {customers?.currentCode}
           </p>
         ) : (
           <>
@@ -190,7 +199,7 @@ const StoresFilterTab = ({ filterData, stores, setStores }) => {
           >
             <p
               className="filter-text text-xs font-Regular text-white-main text-left p-3 rounded-md hover:bg-primary-main hover:cursor-pointer"
-              onClick={getAllStores}
+              onClick={getAllBuyers}
             >
               All
             </p>
@@ -198,7 +207,7 @@ const StoresFilterTab = ({ filterData, stores, setStores }) => {
               <p
                 key={index}
                 className="filter-text text-xs font-Regular text-white-main text-left p-3 rounded-md hover:bg-primary-main hover:cursor-pointer"
-                onClick={() => filterByMarket(item)}
+                onClick={() => filterByCode(item)}
               >
                 {item}
               </p>
@@ -208,15 +217,15 @@ const StoresFilterTab = ({ filterData, stores, setStores }) => {
       </div>
 
       {/* EXPORT */}
-      <div className="export-cont rounded-md flex flex-row ">
+      {/* <div className="export-cont rounded-md flex flex-row ">
         <HiDownload className="text-primary-main text-lg mr-2" />
         <p className="text-primary-main font-Regular text-sm mr-2">Export</p>
-      </div>
+      </div> */}
     </MainCont>
   );
 };
 
-export default StoresFilterTab;
+export default BuyersFilterTab;
 
 const MainCont = styled.div`
   align-items: center;

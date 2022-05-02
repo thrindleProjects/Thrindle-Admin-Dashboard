@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
       (originalConfig.url !== "/forgot-password" && err.response)
     ) {
       // Access Token was expired
-      if (err.response.status === 401 && !originalConfig._retry) {
+      if (err?.response?.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
         store.dispatch({ type: constants.ADMIN_LOGOUT });
         // toast.error("Session terminated, Please login.");
