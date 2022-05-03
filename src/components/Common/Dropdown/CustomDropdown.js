@@ -105,7 +105,7 @@ function CustomDropdown({
     },
     [getMarketID, searchStoreValue, allStores.ekoMarketStores]
   );
-  
+
   const getComputerVillageLoadOptions = useCallback(
     async (market) => {
       let stores;
@@ -149,6 +149,8 @@ function CustomDropdown({
   const handleChange = (value) => {
     setStoreValue(value.value);
   };
+
+  
 
   return (
     <Fieldset>
