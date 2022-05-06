@@ -5,13 +5,11 @@ import { NewMainTable } from "../../../styles/globalStyles";
 import formatDate from "../../../utils/formatDate";
 
 const StoreTable = (props) => {
-
   return (
     <NewMainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
       <table className="w-full">
         <thead className="main-table-header rounded-md">
-          <tr className="grid grid-cols-6">
-        
+          <tr className="grid grid-cols-7">
             {props.tableHeaderData?.map((item, index) => (
               <th
                 key={index}
@@ -24,7 +22,7 @@ const StoreTable = (props) => {
         </thead>
         <tbody className="main-table-body">
           {props.tableData?.map((item, index) => (
-            <tr key={index} className="w-full grid grid-cols-6 cursor-pointer">
+            <tr key={index} className="w-full grid grid-cols-7 cursor-pointer">
               <td>
                 <Link to={`store-details/${item.owner_id.store_id}`}>
                   <p className="status text-center text-sm text-white-text font-Regular capitalize">
@@ -62,6 +60,13 @@ const StoreTable = (props) => {
                 </Link>
               </td>
 
+              <td>
+                <Link to={`store-details/${item.owner_id.store_id}`}>
+                  <p className="product text-center text-sm text-white-text font-Regular">
+                    {formatDate(item?.owner_id?.createdAt)}
+                  </p>
+                </Link>
+              </td>
               <td>
                 <Link to={`store-details/${item.owner_id.store_id}`}>
                   <p className="product text-center text-sm text-white-text font-Regular">
