@@ -8,7 +8,7 @@ const BuyersTable = (props) => {
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
       <table className="w-full min-w-min max-w-full">
         <thead>
-          <tr className="main-table-header rounded-md grid gap-3 grid-cols-8 px-6">
+          <tr className="main-table-header rounded-md grid gap-3 grid-cols-9 px-6">
             {props.tableHeaderData?.map((item, index) => (
               <th
                 key={index}
@@ -32,7 +32,7 @@ const BuyersTable = (props) => {
             return (
               <tr
                 key={item._id}
-                className="w-full grid grid-flow-row grid-cols-8 gap-3 px-6 py-3 "
+                className="w-full grid grid-flow-row grid-cols-9 gap-3 px-6 py-3 "
               >
                 <td>
                   <p className="capitalize status text-left text-sm text-white-text font-Regular">
@@ -59,6 +59,11 @@ const BuyersTable = (props) => {
                 <td>
                   <p className="product text-left text-sm text-white-text font-Regular">
                     {item.referralCode || "N/A"}
+                  </p>
+                </td>
+                <td>
+                  <p className="product text-left text-sm text-white-text font-Regular">
+                    {formatDate(item.createdAt)}
                   </p>
                 </td>
                 <td>
