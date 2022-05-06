@@ -572,6 +572,7 @@ export const buyersHeader = [
   { title: "Email" },
   { title: "Referral Code" },
   { title: "Joined" },
+  { title: "Last Update" },
 ];
 
 export const sellersHeader = [
@@ -581,6 +582,7 @@ export const sellersHeader = [
   { title: "Verified" },
   { title: "Store ID" },
   { title: "Joined" },
+  { title: "Last Update" },
 ];
 
 export const storeHeader = [
@@ -599,6 +601,7 @@ export const storeHeader = [
   {
     title: "Joined",
   },
+  { title: "Last Update" },
   {
     title: "Action",
   },
