@@ -5,6 +5,7 @@ import axiosInstance from "../../utils/axiosInstance";
 
 const VerifySellerModal = ({ handleModal, modalData, handleGetCustomers }) => {
   const [updated, setUpdated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const modalRef = useRef();
 
   const triggerTableUpdate = useCallback(() => {
@@ -33,9 +34,11 @@ const VerifySellerModal = ({ handleModal, modalData, handleGetCustomers }) => {
   }, [handleModal, modalData, updated, triggerTableUpdate]);
 
   const handleVerify = async (id) => {
+    setIsLoading(true);
     try {
       await axiosInstance.put(`/users/admin/sellers/verify/${id}`);
       setUpdated(true);
+      setIsLoading(false);
       triggerTableUpdate();
     } catch (error) {
       if (error.message) {
@@ -67,12 +70,18 @@ const VerifySellerModal = ({ handleModal, modalData, handleGetCustomers }) => {
           >
             Cancel
           </button>
-          <button
-            className="py-1 px-4 rounded-md bg-primary-main text-white-main"
-            onClick={() => handleVerify(modalData._id)}
-          >
-            Verify
-          </button>
+          {isLoading ? (
+            <div className="animate-bounce py-1 px-4 rounded-md bg-primary-main text-white-main">
+              Loading...
+            </div>
+          ) : (
+            <button
+              className="py-1 px-4 rounded-md bg-primary-main text-white-main"
+              onClick={() => handleVerify(modalData._id)}
+            >
+              Verify
+            </button>
+          )}
         </div>
       </ModalContainer>
     </ModalWrapper>
