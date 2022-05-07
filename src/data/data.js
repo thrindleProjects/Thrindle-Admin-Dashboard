@@ -583,6 +583,7 @@ export const sellersHeader = [
   { title: "Store ID" },
   { title: "Joined" },
   { title: "Last Update" },
+  { title: "Action" },
 ];
 
 export const storeHeader = [

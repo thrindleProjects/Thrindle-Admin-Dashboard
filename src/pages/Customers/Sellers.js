@@ -135,6 +135,7 @@ const Customers = () => {
               tableData={customers.paginatedCustomers[customers.pageIndex]}
               showCheck
               pageIndex={customers.pageIndex}
+              handleGetCustomers={handleGetCustomers}
             />
           )}
         {!status.isError && status.isLoading && (
