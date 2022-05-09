@@ -491,6 +491,36 @@ export const orderTableHeader = [
   {
     title: "Upload Date",
   },
+  {
+    title: "Action",
+  },
+];
+
+export const orderTableHeaderNoAction = [
+  {
+    title: "Index",
+  },
+  {
+    title: "Status",
+  },
+  {
+    title: "Order No",
+  },
+  {
+    title: "Product Name",
+  },
+  {
+    title: "Price",
+  },
+  {
+    title: "Quantity",
+  },
+  {
+    title: "Market",
+  },
+  {
+    title: "Upload Date",
+  },
 ];
 
 export const dashbordHeader = [
