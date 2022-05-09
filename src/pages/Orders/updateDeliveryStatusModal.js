@@ -78,6 +78,7 @@ function UpdateDeliveryStatusModal({
       }
     } finally {
       setUpdating(false);
+      setOpenModal(false);
     }
   };
 
