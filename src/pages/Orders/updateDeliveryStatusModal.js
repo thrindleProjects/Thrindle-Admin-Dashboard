@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { CircularProgress, Modal } from "../../styles/globalStyles";
-// import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
-import { numberFormat } from "../../utils/formatPrice";
 
 const ModalContainer = styled.div`
   background: white;
@@ -32,43 +30,43 @@ const ModalContainer = styled.div`
   }
 `;
 
-const ProductView = styled.div`
-  .product-image {
-    width: 70px;
-    height: 70px;
-    border-radius: 10px;
-  }
-`;
-
 const Text = styled.p`
   opacity: ${(props) => (props.none ? 0 : 1)};
 `;
 
-function DeleteProductModal({
-  setOpenDeleteModal,
+const Button = styled.button`
+  background-color: ${(props) =>
+    props.modalType === "Complete" ? "#009E52" : "#F5000F"};
+`;
+
+function UpdateDeliveryStatusModal({
+  modalType,
+  setOpenModal,
   activeID,
-  activeDeleteProduct,
-  getAllProducts,
-  openDeleteModal,
+  openModal,
+  getOrders,
 }) {
-  const [deleting, setDeleting] = useState(false);
-  // const history = useHistory();
+  const [updating, setUpdating] = useState(false);
 
   const handleCloseModal = () => {
+    setOpenModal(false);
     document.documentElement.style.overflow = "scroll";
-    setOpenDeleteModal(false);
   };
 
-  const deleteProduct = async (id) => {
-    setDeleting(true);
+  const updateStatus = async (id, modalType) => {
+    setUpdating(true);
     try {
-      let res = await axiosInstance.delete(`/products/deleteproduct/${id}`);
+      let res = await axiosInstance.put(`/orders/admin/updateorder/${id}`, {
+        delivery_status: modalType === "Complete" ? "completed" : "cancelled",
+        status: modalType === "Complete" ? "completed" : "cancelled",
+      });
+
       if (res.status === 200) {
-        setDeleting(false);
-        toast.success("Product was successfully deleted");
-        getAllProducts();
+        setUpdating(false);
+        toast.success("Updated Successfully");
+        getOrders();
+        setOpenModal(false);
         document.documentElement.style.overflow = "scroll";
-        setOpenDeleteModal(false);
       }
     } catch (error) {
       if (error.response) {
@@ -79,25 +77,26 @@ function DeleteProductModal({
         throw new Error(error);
       }
     } finally {
-      setDeleting(false);
-      // document.documentElement.style.overflow = "revert";
+      setUpdating(false);
     }
   };
 
   useEffect(() => {
     let mounted = true;
     if (mounted) {
-      if (openDeleteModal) {
+      if (openModal) {
         document.documentElement.style.overflow = "hidden";
+        console.log("reveal");
       } else {
         document.documentElement.style.overflow = "revert";
+        console.log("hide");
       }
     }
 
     return () => {
       mounted = false;
     };
-  }, [openDeleteModal]);
+  }, [openModal]);
 
   return (
     <>
@@ -120,52 +119,45 @@ function DeleteProductModal({
           </svg>
         </div>
 
-        <h1 className="text-primary-dark font-Bold text-lg">Delete Product</h1>
+        <h1 className="text-primary-dark font-Bold text-lg">
+          Update Delivery Status
+        </h1>
         <p className="text-white-text text-sm my-2">
-          Are you sure you want to delete this product? You will permanently
-          lose this data.
+          Are you sure you want to update the delivery status?
         </p>
-        <ProductView className="w-full my-3 flex flex-row">
-          <div className="product-image">
-            <img
-              src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${activeDeleteProduct?.images[0]}`}
-              className="w-full h-full rounded-xl"
-              alt="Product"
-              loading="eager"
-            />
-          </div>
-          <div className="ml-3">
-            <p className="text-sm text-white-text">
-              {activeDeleteProduct?.name}
-            </p>
-            <p> N{numberFormat(activeDeleteProduct?.price)}</p>
-          </div>
-        </ProductView>
 
         <div className="mt-6">
           <button
-            className="border border-secondary-yellow text-secondary-yellow py-2 px-6 rounded-md cursor-pointer"
+            className="border border-primary-grey6 text-primary-grey6 py-2 px-6 rounded-md cursor-pointer"
             onClick={handleCloseModal}
           >
             Close
           </button>
-          <button
+          <Button
             className="border border-transparent ml-6 bg-secondary-error text-white-main py-2 px-6 rounded-md cursor-pointer"
-            onClick={() => deleteProduct(activeID)}
+            onClick={() => updateStatus(activeID, modalType)}
+            modalType={modalType}
           >
-            {deleting ? (
+            {updating ? (
               <div>
                 <CircularProgress />
-                <Text none>Delet Permanently</Text>
+                <Text none>
+                  {" "}
+                  {modalType === "Complete" && "Complete Order"}
+                  {modalType === "Cancel" && "Cancel Order"}
+                </Text>
               </div>
             ) : (
-              <Text>Delete Permanently</Text>
+              <Text>
+                {modalType === "Complete" && "Complete Order"}
+                {modalType === "Cancel" && "Cancel Order"}
+              </Text>
             )}
-          </button>
+          </Button>
         </div>
       </ModalContainer>
     </>
   );
 }
 
-export default DeleteProductModal;
+export default UpdateDeliveryStatusModal;

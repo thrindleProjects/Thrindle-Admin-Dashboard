@@ -10,6 +10,8 @@ module.exports = {
           dark: "#16588F",
           dark2: "#155489",
           light2: "#035efc",
+          borderColor: "#CED0DA",
+          grey6: "#787C90",
         },
         secondary: {
           error: "#F5000F",

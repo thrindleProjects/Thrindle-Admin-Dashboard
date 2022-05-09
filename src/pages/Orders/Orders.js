@@ -4,7 +4,11 @@ import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 import GeneralHeaderTab from "../../components/Common/GeneralHeaderTab/GeneralHeaderTab";
 // orderFilter;
-import { orderData, orderTableHeader } from "../../data/data";
+import {
+  orderData,
+  orderTableHeader,
+  orderTableHeaderNoAction,
+} from "../../data/data";
 // import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import OrderTable from "../../components/Common/GenralTable/OrderTable";
@@ -12,6 +16,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import axios from "axios";
 import { toast } from "react-toastify";
 import NewLoader from "../../components/newLoader/newLoader";
+import UpdateDeliveryStatusModal from "./updateDeliveryStatusModal";
 
 const Orders = (props) => {
   const [orders, setOrders] = useState({
@@ -22,7 +27,10 @@ const Orders = (props) => {
   });
 
   const [activeTab, setActiveTab] = useState("Pending Orders");
-  // const [filterValue, setFilterValue] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [modalType, setModalType] = useState(null);
+  const [activeID, setActiveID] = useState(null);
+
   const [status, setStatus] = useState({
     isLoading: true,
     isError: false,
@@ -172,13 +180,12 @@ const Orders = (props) => {
           changeFilter={(val) => setFilterValue(val)}
         /> */}
         <GeneralPagination
-          cancelText="Cancel Order"
-          deleteText="delete Order"
           pag
           handlePagination={handlePagination}
           pageNumber={orders.pageIndex}
           itemsNumber={orders.paginatedOrders}
           totalNumber={orders.allOrders.length}
+          showButtons={false}
         />
         {status.isError && (
           <div className="text-secondary-error flex justify-center items-center py-16 w-full font-bold text-2xl uppercase">
@@ -200,12 +207,27 @@ const Orders = (props) => {
           orders.allOrders?.length > 0 && (
             <OrderTable
               showCheck
-              tableHeaderData={orderTableHeader}
+              tableHeaderData={
+                activeTab === "Pending Orders"
+                  ? orderTableHeader
+                  : orderTableHeaderNoAction
+              }
               tableData={orders.paginatedOrders[orders.pageIndex]}
               activeTab={activeTab}
               pageIndex={orders.pageIndex}
+              setOpenModal={setOpenModal}
+              setModalType={setModalType}
+              setActiveID={setActiveID}
             />
           )}
+        {openModal && (
+          <UpdateDeliveryStatusModal
+            modalType={modalType}
+            setOpenModal={setOpenModal}
+            activeID={activeID}
+            getOrders={getOrders}
+          />
+        )}
       </FirstSection>
     </MainContainer>
   );
