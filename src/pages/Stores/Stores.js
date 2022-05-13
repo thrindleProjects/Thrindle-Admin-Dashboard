@@ -26,8 +26,6 @@ const Stores = () => {
     currentMarket: "",
   });
 
-  console.log(stores.pageIndex);
-
   const [storeHeaderData, setStoreHeaderData] = useState(storeData);
   const [loadingStores, setLoadingStores] = useState(false);
 
@@ -60,7 +58,7 @@ const Stores = () => {
     }
   };
 
- 
+  // Sort stores alphabetically
   const objSort = (a, b) => {
     let x = a.store_name.toLowerCase();
     let y = b.store_name.toLowerCase();
@@ -73,7 +71,6 @@ const Stores = () => {
     return 0;
   };
 
-
   useEffect(() => {
     let mounted = true;
     if (mounted) {
@@ -83,8 +80,7 @@ const Stores = () => {
           let {
             data: { data },
           } = await axiosInstance.get(`stores/allstores`);
-
-          let allStores = data.reverse();
+          let allStores = data.sort(objSort);
           setStores((oldState) => {
             return {
               ...oldState,
@@ -98,7 +94,6 @@ const Stores = () => {
                   })
                 )
               ),
-              pageIndex: oldState.pageIndex,
             };
           });
           setStoreHeaderData((prevState) => {
@@ -177,3 +172,4 @@ const Stores = () => {
 export default Stores;
 
 const FirstSection = styled.div``;
+

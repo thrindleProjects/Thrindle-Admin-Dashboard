@@ -4,7 +4,7 @@ import { FaSearch, FaAngleDown } from "react-icons/fa";
 import { HiDownload } from "react-icons/hi";
 import paginationArr from "../../../utils/pagination";
 import getMarketName from "../../../utils/getMarketName";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 const StoresFilterTab = ({ filterData, stores, setStores, allStores }) => {
   const filterRef = useRef(null);
@@ -27,12 +27,12 @@ const StoresFilterTab = ({ filterData, stores, setStores, allStores }) => {
     { ...address },
   ];
 
-  const csvReport = {
+  const storesReport = {
     fileName: "Report.csv",
     data: storesData,
   };
 
-  // console.log(csvReport);
+  // console.log(storesReport);
 
   const filterByMarket = (category) => {
     let currentStores = stores.allStoresImmutable.filter(
@@ -232,7 +232,7 @@ const StoresFilterTab = ({ filterData, stores, setStores, allStores }) => {
       </div>
 
       {/* EXPORT */}
-      <CSVLink {...csvReport}>
+      <CSVLink {...storesReport}>
         <div className="export-cont rounded-md flex flex-row ">
           <HiDownload className="text-primary-main text-lg mr-2" />
           <p className="text-primary-main font-Regular text-sm mr-2">Export</p>
