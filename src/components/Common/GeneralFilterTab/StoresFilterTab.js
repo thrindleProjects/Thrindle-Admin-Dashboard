@@ -4,11 +4,35 @@ import { FaSearch, FaAngleDown } from "react-icons/fa";
 import { HiDownload } from "react-icons/hi";
 import paginationArr from "../../../utils/pagination";
 import getMarketName from "../../../utils/getMarketName";
+import { CSVLink, CSVDownload } from "react-csv";
 
-const StoresFilterTab = ({ filterData, stores, setStores }) => {
+const StoresFilterTab = ({ filterData, stores, setStores, allStores }) => {
   const filterRef = useRef(null);
   const [show, setShow] = useState(false);
   const [nameFilter, setNameFilter] = useState("");
+
+  const storeName = allStores.map((item) => item.store_name);
+  const address = allStores.map((item) => item.store_address);
+  const email = allStores.map((item) => item.owner_id.email);
+  const phone = allStores.map((item) => item.owner_id.phone);
+  const id = allStores.map((item) => item.owner_id.store_id);
+  const merchantName = allStores.map((item) => item.owner_id.name);
+
+  const dataToBeExported = [
+    { ...id },
+    { ...email },
+    { ...phone },
+    { ...storeName },
+    { ...merchantName },
+    { ...address },
+  ];
+
+  const csvReport = {
+    fileName: "Report.csv",
+    data: dataToBeExported,
+  };
+
+  // console.log(csvReport);
 
   const filterByMarket = (category) => {
     let currentStores = stores.allStoresImmutable.filter(
@@ -208,10 +232,12 @@ const StoresFilterTab = ({ filterData, stores, setStores }) => {
       </div>
 
       {/* EXPORT */}
-      <div className="export-cont rounded-md flex flex-row ">
-        <HiDownload className="text-primary-main text-lg mr-2" />
-        <p className="text-primary-main font-Regular text-sm mr-2">Export</p>
-      </div>
+      <CSVLink {...csvReport}>
+        <div className="export-cont rounded-md flex flex-row ">
+          <HiDownload className="text-primary-main text-lg mr-2" />
+          <p className="text-primary-main font-Regular text-sm mr-2">Export</p>
+        </div>
+      </CSVLink>
     </MainCont>
   );
 };

@@ -60,18 +60,19 @@ const Stores = () => {
     }
   };
 
-  // Sort stores alphabetically
-  // const objSort = (a, b) => {
-  //   let x = a.store_name.toLowerCase();
-  //   let y = b.store_name.toLowerCase();
-  //   if (x < y) {
-  //     return -1;
-  //   }
-  //   if (x > y) {
-  //     return 1;
-  //   }
-  //   return 0;
-  // };
+ 
+  const objSort = (a, b) => {
+    let x = a.store_name.toLowerCase();
+    let y = b.store_name.toLowerCase();
+    if (x < y) {
+      return -1;
+    }
+    if (x > y) {
+      return 1;
+    }
+    return 0;
+  };
+
 
   useEffect(() => {
     let mounted = true;
@@ -145,6 +146,7 @@ const Stores = () => {
           stores={stores}
           setStores={setStores}
           changeFilter={(val) => setFilterValue(val)}
+          allStores={stores.allStores}
         />
         <GeneralPagination
           showButtons={false}
