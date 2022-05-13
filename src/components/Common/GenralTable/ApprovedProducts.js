@@ -13,7 +13,6 @@ function ApprovedProducts({
   setModal,
   status,
 }) {
-  console.log(tableData);
   const handleModal = (action, id) => {
     return setModal(action, id);
   };
