@@ -18,7 +18,7 @@ const StoresFilterTab = ({ filterData, stores, setStores, allStores }) => {
   const id = allStores.map((item) => item.owner_id.store_id);
   const merchantName = allStores.map((item) => item.owner_id.name);
 
-  const dataToBeExported = [
+  const storesData = [
     { ...id },
     { ...email },
     { ...phone },
@@ -29,7 +29,7 @@ const StoresFilterTab = ({ filterData, stores, setStores, allStores }) => {
 
   const csvReport = {
     fileName: "Report.csv",
-    data: dataToBeExported,
+    data: storesData,
   };
 
   // console.log(csvReport);
