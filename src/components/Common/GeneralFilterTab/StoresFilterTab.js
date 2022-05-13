@@ -4,7 +4,7 @@ import { FaSearch, FaAngleDown } from "react-icons/fa";
 import { HiDownload } from "react-icons/hi";
 import paginationArr from "../../../utils/pagination";
 import getMarketName from "../../../utils/getMarketName";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 const StoresFilterTab = ({ filterData, stores, setStores, allStores }) => {
   const filterRef = useRef(null);
