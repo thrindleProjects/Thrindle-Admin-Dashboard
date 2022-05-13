@@ -70,7 +70,7 @@ const Stores = () => {
     }
     return 0;
   };
-  
+
   useEffect(() => {
     let mounted = true;
     if (mounted) {
@@ -141,6 +141,7 @@ const Stores = () => {
           stores={stores}
           setStores={setStores}
           changeFilter={(val) => setFilterValue(val)}
+          allStores={stores.allStores}
         />
         <GeneralPagination
           showButtons={false}

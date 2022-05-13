@@ -21,7 +21,7 @@ const StoreTable = (props) => {
           </tr>
         </thead>
         <tbody className="main-table-body">
-          {props.tableData?.map((item, index) => (
+          {props?.tableData?.map((item, index) => (
             <tr key={index} className="w-full grid grid-cols-7 cursor-pointer">
               <td>
                 <Link to={`store-details/${item.owner_id.store_id}`}>
