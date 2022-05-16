@@ -108,7 +108,7 @@ const AddProducts = () => {
 
       setOtherValues({ ...otherValues, values2 });
       let x = { ...values, values2 };
-      console.log(x);
+
       submitForm(x);
     },
   });
@@ -327,7 +327,6 @@ const AddProducts = () => {
   const getStoreId = useCallback((storeValue) => {
     const storesData = JSON.parse(localStorage.getItem("storesPerMarket"));
     const findStore = storesData.find((item) => item.store_name === storeValue);
-    console.log(findStore);
     setStoreID(findStore?.store_id);
   }, []);
 
