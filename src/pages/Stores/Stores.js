@@ -68,7 +68,7 @@ const Stores = () => {
   };
 
   const filterOnLoad = useCallback(() => {
-    if (stores.allStoresImmutable.length > 0) {
+    if (stores.allStoresImmutable.length > 0 && totalStores > 0) {
       let allStoresImmutable = stores.allStoresImmutable;
       let allStores = stores.allStoresImmutable;
       let paginatedStores = [];
@@ -99,9 +99,9 @@ const Stores = () => {
         });
       }
       paginatedStores = paginationArr(allStores, 20);
-      console.log(pageIndex);
-      if (pageIndex > paginatedStores.length - 1) {
-        pageIndex = paginatedStores.length - 1;
+
+      if (paginatedStores.length === 1) {
+        pageIndex = 0;
       }
 
       let storeData = {
@@ -127,6 +127,7 @@ const Stores = () => {
     stores.pageIndex,
     stores.currentMarket,
     stores.allStoresImmutable,
+    totalStores,
   ]);
 
   const fetchStores = useCallback(async () => {
