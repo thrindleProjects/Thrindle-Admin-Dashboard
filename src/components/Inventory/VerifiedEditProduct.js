@@ -93,6 +93,7 @@ const VerifiedEditModal = (props) => {
     if (storeId.trim().startsWith("CV")) return "Computer Village";
     if (storeId.trim().startsWith("BM")) return "Eko Market";
     if (storeId.trim().startsWith("EM")) return "Eko Market";
+    if (storeId.startsWith("TM")) return "Thrindle Mall";
     return "Other Market";
   };
 

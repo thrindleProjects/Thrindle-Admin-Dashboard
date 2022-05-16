@@ -6,7 +6,7 @@ import formatDate from "../../../utils/formatDate";
 
 const SellerTable = (props) => {
   const [modal, setModal] = useState({ isActive: false, modalData: {} });
-  console.log(props.tableData);
+
   const handleModal = (action, payload) => {
     switch (action) {
       case "SHOW_MODAL":
