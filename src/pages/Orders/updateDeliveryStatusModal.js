@@ -87,10 +87,8 @@ function UpdateDeliveryStatusModal({
     if (mounted) {
       if (openModal) {
         document.documentElement.style.overflow = "hidden";
-        console.log("reveal");
       } else {
         document.documentElement.style.overflow = "revert";
-        console.log("hide");
       }
     }
 
