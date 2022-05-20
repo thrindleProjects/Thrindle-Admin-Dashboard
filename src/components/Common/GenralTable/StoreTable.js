@@ -47,13 +47,13 @@ const StoreTable = (props) => {
               <td>
                 <Link to={`store-details/${item.owner_id.store_id}`}>
                   <p className="product text-center text-sm text-white-text font-Regular">
-                    {item?.owner_id?.store_id.startsWith("EM") && (
+                    {item?.owner_id?.store_id?.startsWith("EM") && (
                       <span>Eko Market</span>
                     )}
-                    {item?.owner_id?.store_id.startsWith("BM") && (
+                    {item?.owner_id?.store_id?.startsWith("BM") && (
                       <span>Eko Market</span>
                     )}
-                    {item?.owner_id?.store_id.startsWith("CV") && (
+                    {item?.owner_id?.store_id?.startsWith("CV") && (
                       <span>Computer Village</span>
                     )}
                   </p>

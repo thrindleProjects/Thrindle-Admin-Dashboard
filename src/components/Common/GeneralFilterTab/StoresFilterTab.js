@@ -11,12 +11,12 @@ const StoresFilterTab = ({ filterData, stores, setStores, allStores }) => {
   const [show, setShow] = useState(false);
   const [nameFilter, setNameFilter] = useState("");
 
-  const storeName = allStores.map((item) => item.store_name);
-  const address = allStores.map((item) => item.store_address);
-  const email = allStores.map((item) => item.owner_id.email);
-  const phone = allStores.map((item) => item.owner_id.phone);
-  const id = allStores.map((item) => item.owner_id.store_id);
-  const merchantName = allStores.map((item) => item.owner_id.name);
+  const storeName = allStores.map((item) => item?.store_name);
+  const address = allStores.map((item) => item?.store_address);
+  const email = allStores.map((item) => item.owner_id?.email);
+  const phone = allStores.map((item) => item.owner_id?.phone);
+  const id = allStores.map((item) => item.owner_id?.store_id);
+  const merchantName = allStores.map((item) => item.owner_id?.name);
 
   const storesData = [
     { ...id },
@@ -101,8 +101,8 @@ const StoresFilterTab = ({ filterData, stores, setStores, allStores }) => {
       // Filter stores based on input value
       const newStores = currentStores.filter((item) => {
         return (
-          item.store_name.toLowerCase().includes(value.toLowerCase()) ||
-          item.owner_id.store_id.toLowerCase().includes(value.toLowerCase())
+          item?.store_name.toLowerCase().includes(value.toLowerCase()) ||
+          item.owner_id?.store_id.toLowerCase().includes(value.toLowerCase())
         );
       });
       // if no items match input value set necessary values to empty state
