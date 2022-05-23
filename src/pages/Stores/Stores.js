@@ -92,7 +92,7 @@ const Stores = () => {
             item.store_name
               .toLowerCase()
               .includes(stores.nameFilter.toLowerCase()) ||
-            item.owner_id.store_id
+            item?.owner_id?.store_id
               .toLowerCase()
               .includes(stores.nameFilter.toLowerCase())
           );
