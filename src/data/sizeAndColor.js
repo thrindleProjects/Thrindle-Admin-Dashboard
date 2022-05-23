@@ -5,7 +5,7 @@ export const productSizes = [
   { title: "Extra Large", id: "4" },
   { title: "Extra Extra Large", id: "5" },
   { title: "Extra Extra Extra Large", id: "6" },
-  { title: "Extra Extra Extra Extra Large", id: "7" },
+  { title: "Extra Extra Extra Extra Large", id: "7" }
 ];
 
 export const productSizes2 = [
