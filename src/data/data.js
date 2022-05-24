@@ -559,6 +559,8 @@ export const approvedProductHeader = [
 
   "Price",
 
+  "Weight",
+
   "Store",
 
   "Market",
@@ -643,6 +645,7 @@ export const inventTableHeader = [
   { title: "Product Title" },
   { title: "Category" },
   { title: "Price" },
+  { title: "Weight" },
   { title: "Market" },
   { title: "Store" },
   { title: "Upload Date" },

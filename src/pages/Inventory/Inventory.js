@@ -278,6 +278,7 @@ const Inventory = (props) => {
             ...new Set(
               products.allProductsImmutable?.map((item) => item.category.name)
             ),
+            "No Weight",
           ],
         };
       });
