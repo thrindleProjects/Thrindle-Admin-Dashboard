@@ -22,9 +22,12 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
   // };
 
   const filterByCategory = (category) => {
-    let currentProducts = products.allProductsImmutable.filter(
-      (item) => item?.category?.name === category
-    );
+    let currentProducts = products.allProductsImmutable.filter((item) => {
+      if (category === "No Weight") {
+        return !item.weight;
+      }
+      return item?.category?.name === category;
+    });
 
     if (nameFilter === "") {
       setProducts((prevState) => {
@@ -65,9 +68,12 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
     if (["", "All"].includes(products.currentCategory)) {
       currentProducts = products.allProductsImmutable;
     } else {
-      currentProducts = products.allProductsImmutable.filter(
-        (item) => item?.category?.name === products.currentCategory
-      );
+      currentProducts = products.allProductsImmutable.filter((item) => {
+        if (products.currentCategory === "No Weight") {
+          return !item.weight;
+        }
+        return item?.category?.name === products.currentCategory;
+      });
     }
 
     if (value.length === 0) {

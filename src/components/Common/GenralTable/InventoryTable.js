@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { MdEdit } from "react-icons/md";
-import { AiFillCloseCircle } from "react-icons/ai";
+// import { MdEdit } from "react-icons/md";
+// import { AiFillCloseCircle } from "react-icons/ai";
 
 const InventoryTable = (props) => {
   const handleModal = (action, id) => {
@@ -30,7 +30,7 @@ const InventoryTable = (props) => {
           {!props.status.isError && !props.status.isLoading && props.tableData && (
             <>
               <thead>
-                <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-12 auto-cols-min gap-3 px-6">
+                <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-13 auto-cols-min gap-3 px-6">
                   {props.tableHeaderData?.map((item, index) => (
                     <th
                       key={index}
@@ -59,7 +59,7 @@ const InventoryTable = (props) => {
                   return (
                     <tr
                       key={item._id}
-                      className="w-full grid grid-flow-row grid-cols-12 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
+                      className="w-full grid grid-flow-row grid-cols-13 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
                     >
                       {props.showCheck && (
                         <td
@@ -96,6 +96,13 @@ const InventoryTable = (props) => {
                       </td>
                       <td
                         onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
+                      >
+                        <p className="text-sm font-normal font-Regular text-left text-white-text">
+                          {item.weight ? item.weight : "N/A"}
+                        </p>
+                      </td>
+                      <td
+                        onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
                         className="col-span-2"
                       >
                         <p className="text-sm font-normal font-Regular text-left text-white-text">
@@ -117,23 +124,23 @@ const InventoryTable = (props) => {
                         </p>
                       </td>
                       <td className="col-span-2">
-                        <p className="text-small font-normal font-Regular text-left text-white-text flex flex-row gap-8">
+                        <p className="text-small font-normal font-Regular text-left text-white-text flex flex-row gap-3">
                           <button
                             onClick={() =>
                               handleModal("SHOW_EDIT_MODAL", item._id)
                             }
-                            className="cursor-pointer flex flex-row gap-2 items-center"
+                            className="cursor-pointer flex flex-row gap-1 items-center text-primary-dark"
                           >
-                            <MdEdit className="text-2xl text-primary-dark" />{" "}
+                            {/* <MdEdit className="text-2xl text-primary-dark" />{" "} */}
                             Edit
                           </button>
                           <button
-                            className="cursor-pointer flex flex-row gap-2 items-center"
+                            className="cursor-pointer flex flex-row gap-2 items-center text-secondary-error"
                             onClick={() =>
                               props.displayDeleteModal(item._id, item)
                             }
                           >
-                            <AiFillCloseCircle className="text-2xl text-secondary-error" />{" "}
+                            {/* <AiFillCloseCircle className="text-2xl text-secondary-error" />{" "} */}
                             Delete
                           </button>
                         </p>
@@ -154,6 +161,10 @@ export default InventoryTable;
 
 const MainTable = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
+
+  .grid-cols-13 {
+    grid-template-columns: repeat(13, minmax(0, 1fr));
+  }
 
   .main-table-header {
     width: 100%;

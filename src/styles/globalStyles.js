@@ -12,7 +12,9 @@ export const ThrindleNotification = styled.div`
 
 export const NewMainTable = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
-
+  .grid-cols-13 {
+    grid-template-columns: repeat(13, minmax(0, 1fr));
+  }
   .main-table-header {
     width: 100%;
     height: 50px;
