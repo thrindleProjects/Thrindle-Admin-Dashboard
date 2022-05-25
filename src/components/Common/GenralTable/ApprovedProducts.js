@@ -109,7 +109,7 @@ function ApprovedProducts({
                       <p className="text-small font-normal font-Regular text-left text-white-text flex flex-row gap-3">
                         <button
                           onClick={() =>
-                            handleModal("SHOW_EDIT_MODAL", item._id)
+                            handleModal("SHOW_VERIFIED_EDIT_MODAL", item._id)
                           }
                           className="cursor-pointer flex flex-row gap-1 items-center text-primary-dark"
                         >
