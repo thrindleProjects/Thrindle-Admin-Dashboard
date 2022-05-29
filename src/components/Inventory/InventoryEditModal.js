@@ -8,15 +8,28 @@ import {
   productSizes2,
 } from "../../data/sizeAndColor";
 import { toast } from "react-toastify";
-import CustomInventoryDropdown from "./CustomInventoryDropdown";
-import CustomColorDropdown from "./CustomColorInventoryDropdown";
-import SelectedColors from "./SelectedColors";
-import SelectedSizes from "./SelectedSizes";
 import NewLoader from "../newLoader/newLoader";
+import ModalInfo from "./ModalInfo";
+import {
+  getMarketName,
+  getMarketID,
+  getSubCategories,
+  getWeightClass,
+  getUploadDate,
+  getCategoryId,
+  getSubCategoryId,
+} from "./utils";
 
 const InventoryEditModal = (props) => {
   const modalRef = useRef(null);
   const [modalData, setModalData] = useState([]);
+  const [imagesHandler, setImagesHandler] = useState({
+    activeImage: { type: "", src: "" },
+    oldImagesImmutable: [],
+    oldImages: [],
+    newImages: [],
+  });
+
   const [formData, setFormData] = useState({
     description: "",
     category: { _id: "", name: "" },
@@ -24,7 +37,6 @@ const InventoryEditModal = (props) => {
     weight: "0",
     name: "",
     details: { size: [], color: [] },
-    activeImage: "",
     no_in_stock: 0,
     price: 0,
     itemStatus: false,
@@ -37,7 +49,6 @@ const InventoryEditModal = (props) => {
     size: [],
     color: [],
   });
-
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
@@ -89,37 +100,6 @@ const InventoryEditModal = (props) => {
     handleSetModal("CLOSE_ALL_MODALS");
   };
 
-  const getMarketName = (storeId) => {
-    if (storeId.trim().startsWith("CV")) return "Computer Village";
-    if (storeId.trim().startsWith("BM")) return "Eko Market";
-    if (storeId.trim().startsWith("EM")) return "Eko Market";
-    if (storeId.startsWith("TM")) return "Thrindle Mall";
-    return "Other Market";
-  };
-
-  const getMarketID = (marketValue) => {
-    if (marketValue !== "") {
-      let marketData = JSON.parse(localStorage.getItem("marketData"));
-      let findMarket = marketData.find((item) => item.name === marketValue);
-      return findMarket.id;
-    }
-    return false;
-  };
-
-  const getSubCategories = useCallback((categoryValue) => {
-    let marketData = JSON.parse(localStorage.getItem("marketCategories"));
-    let findMarket = marketData.find((item) => item.name === categoryValue);
-    let subcategory = findMarket.subcategories;
-    return subcategory;
-  }, []);
-
-  const getWeightClass = (categoryValue) => {
-    let marketData = JSON.parse(localStorage.getItem("marketCategories"));
-    let findMarket = marketData.find((item) => item.name === categoryValue);
-    let weightList = findMarket.weight.map((item) => item.name); // maps real-time weight class
-    return weightList; // renders real-time weight class
-  };
-
   const getMarketCategories = useCallback(async (marketValue) => {
     const marketID = await getMarketID(marketValue);
     try {
@@ -149,11 +129,16 @@ const InventoryEditModal = (props) => {
   const getSingleProduct = useCallback(
     async (id) => {
       // document.documentElement.style.overflow = "hidden";
-
       try {
+        let fetchUrl;
+        if (showModal.verified) {
+          fetchUrl = `${url}/products/product/${id}`;
+        } else {
+          fetchUrl = `${url}/products/unverifiedproduct/${id}`;
+        }
         const {
           data: { data },
-        } = await axios.get(`${url}/products/unverifiedproduct/${id}`);
+        } = await axios.get(fetchUrl);
         let {
           description,
           name,
@@ -172,14 +157,19 @@ const InventoryEditModal = (props) => {
         let size, color;
         size = details && details?.size ? details.size : [];
         color = details && details?.color ? details.color : [];
-
+        let oldImages = images.map((image) => {
+          return {
+            type: "oldImage",
+            src: `https://thrindleservices.herokuapp.com/api/thrindle/images/${image}`,
+          };
+        });
+        let oldImagesImmutable = [...oldImages];
         setFormData({
           description,
           name,
           category,
           subcategory,
           weight,
-          activeImage: `https://api.thrindle.com/api/thrindle/images/${images[0]}`,
           details: {
             size,
             color,
@@ -188,6 +178,16 @@ const InventoryEditModal = (props) => {
           itemStatus,
           price,
         });
+        setImagesHandler((old) => ({
+          ...old,
+          activeImage: {
+            type: "oldImage",
+            src: `https://thrindleservices.herokuapp.com/api/thrindle/images/${images[0]}`,
+          },
+          oldImagesImmutable,
+          oldImages,
+          newImages: [],
+        }));
         setModalData(data);
         setCategoryHandler((old) => {
           return { ...old, marketName };
@@ -201,29 +201,8 @@ const InventoryEditModal = (props) => {
         throw new Error(error);
       }
     },
-    [getMarketCategories]
+    [getMarketCategories, showModal.verified]
   );
-
-  const getUploadDate = (updatedAt) => {
-    const date = new Date(updatedAt);
-    let newDay = date.getDate();
-    let newMonth = date.getMonth() + 1;
-    let newYear = date.getFullYear();
-    return `${newDay}/${newMonth}/${newYear}`;
-  };
-
-  const getCategoryId = (category) => {
-    let marketData = JSON.parse(localStorage.getItem("marketCategories"));
-    let findMarket = marketData.find((item) => item.name === category);
-    return findMarket._id;
-  };
-
-  const getSubCategoryId = (subCategoryValue) => {
-    let findMarket = categoryHandler.subcategory.find(
-      (item) => item.name === subCategoryValue
-    );
-    return findMarket._id;
-  };
 
   const handleFormChange = (e) => {
     let name = e.target.name;
@@ -287,7 +266,7 @@ const InventoryEditModal = (props) => {
     }
 
     if (name === "subcategory") {
-      let _id = getSubCategoryId(value);
+      let _id = getSubCategoryId(value, categoryHandler);
       return setFormData({
         ...formData,
         subcategory: { name: value, _id },
@@ -317,10 +296,208 @@ const InventoryEditModal = (props) => {
     });
   };
 
-  const handleImageChange = (e, url) => {
+  const handleImageChange = (e, src, type) => {
     e.preventDefault();
-    setFormData((old) => {
-      return { ...old, activeImage: url };
+    setImagesHandler((old) => ({
+      ...old,
+      activeImage: {
+        type,
+        src,
+      },
+    }));
+  };
+
+  const handleImageDelete = (e, url, type) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (type === "oldImage") {
+      let oldImages = imagesHandler.oldImages.filter(
+        (image) => image.src !== url
+      );
+      if (!oldImages.length && !imagesHandler.newImages?.length) {
+        return setImagesHandler((old) => ({
+          ...old,
+          activeImage: { type: "", src: "" },
+          oldImages,
+        }));
+      }
+      if (!oldImages.length && !!imagesHandler.newImages.length) {
+        return setImagesHandler((old) => ({
+          ...old,
+          activeImage: {
+            type: "newImage",
+            src: imagesHandler.newImages[0].src,
+          },
+          oldImages: [],
+        }));
+      }
+      if (imagesHandler.activeImage.src === url) {
+        return setImagesHandler((old) => ({
+          ...old,
+          activeImage: {
+            type: "oldImage",
+            src: oldImages[0].src,
+          },
+          oldImages,
+        }));
+      }
+      return setImagesHandler((old) => ({ ...old, oldImages }));
+    }
+    if (type === "newImage") {
+      let newImages = imagesHandler.newImages.filter(
+        (image) => image.name !== url.name
+      );
+
+      if (!newImages.length && !imagesHandler.oldImages.length) {
+        return setImagesHandler((old) => ({
+          ...old,
+          activeImage: { type: "", src: "" },
+          newImages: [],
+        }));
+      }
+
+      if (!newImages.length && !!imagesHandler.oldImages.length) {
+        return setImagesHandler((old) => ({
+          ...old,
+          activeImage: {
+            type: "oldImage",
+            src: imagesHandler.oldImages[0].src,
+          },
+          newImages,
+        }));
+      }
+
+      if (url.name === imagesHandler.activeImage.src?.name) {
+        return setImagesHandler((old) => ({
+          ...old,
+          activeImage: { type: "newImage", src: newImages[0].src },
+          newImages,
+        }));
+      }
+      return setImagesHandler((old) => ({ ...old, newImages }));
+    }
+  };
+
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+    if (result.source.droppableId === "extra_images") {
+      if (result.destination.droppableId !== "extra_images") return;
+      let images = imagesHandler.oldImages;
+      // Swap two items in images array;
+      [images[result.source.index], images[result.destination.index]] = [
+        images[result.destination.index],
+        images[result.source.index],
+      ];
+      return setImagesHandler({ ...imagesHandler, oldImages: images });
+    }
+
+    if (result.source.droppableId === "new_extra_images") {
+      if (result.destination.droppableId !== "new_extra_images") return;
+      let images = imagesHandler.newImages;
+      // Swap two items in images array;
+      [images[result.source.index], images[result.destination.index]] = [
+        images[result.destination.index],
+        images[result.source.index],
+      ];
+      return setImagesHandler({ ...imagesHandler, newImages: images });
+    }
+  };
+
+  const handleImageUpdate = async (e) => {
+    e.preventDefault();
+    if (imagesHandler.oldImages.length + imagesHandler.newImages.length < 1) {
+      toast.error("Please add at least one image");
+      return;
+    }
+    try {
+      // If new Images are to be uploaded and old images are present
+      if (
+        !!imagesHandler.newImages.length &&
+        !!imagesHandler.oldImages.length
+      ) {
+        let oldImages, images;
+        if (!!imagesHandler.oldImages.length) {
+          oldImages = imagesHandler.oldImages.map((image) =>
+            image.src.replace(
+              "https://thrindleservices.herokuapp.com/api/thrindle/images/",
+              ""
+            )
+          );
+        } else {
+          oldImages = [];
+        }
+        images = imagesHandler.newImages.map((image) => image.src);
+        let formData = new FormData();
+
+        images.forEach((image) => formData.append("images", image));
+        formData.append("oldImages", oldImages);
+        let {
+          data: { data },
+        } = await axiosInstance.patch(
+          `/products/addnewimage/${props.modalId}`,
+          formData
+        );
+        let updatedImages = data.images.map((item) => ({
+          src: `https://thrindleservices.herokuapp.com/api/thrindle/images/${item}`,
+          type: "oldImage",
+        }));
+        toast.success("Images updated successfully");
+        return setImagesHandler({
+          ...imagesHandler,
+          oldImagesImmutable: updatedImages,
+          oldImages: updatedImages,
+          newImages: [],
+          activeImage: { type: "oldImage", src: updatedImages[0].src },
+        });
+      }
+      // If old Images are to be updated and no new images are present
+      if (!!imagesHandler.oldImages.length && !imagesHandler.newImages.length) {
+        let images = imagesHandler.oldImages.map((image) =>
+          image.src.replace(
+            "https://thrindleservices.herokuapp.com/api/thrindle/images/",
+            ""
+          )
+        );
+        let {
+          data: { data },
+        } = await axiosInstance.patch(
+          `/products/updateimages/${props.modalId}`,
+          { images }
+        );
+        let updatedImages = data.images.map((item) => ({
+          src: `https://thrindleservices.herokuapp.com/api/thrindle/images/${item}`,
+          type: "oldImage",
+        }));
+        toast.success("Images updated successfully");
+        return setImagesHandler({
+          ...imagesHandler,
+          oldImagesImmutable: updatedImages,
+          oldImages: updatedImages,
+          newImages: [],
+          activeImage: { type: "oldImage", src: updatedImages[0].src },
+        });
+      }
+    } catch (err) {
+      if (err.message) {
+        toast.error(err.message);
+      } else {
+        toast.error("Something went wrong");
+      }
+      throw new Error(err);
+    }
+  };
+
+  const handleRestoreImages = (e) => {
+    e.preventDefault();
+    setImagesHandler({
+      ...imagesHandler,
+      oldImagesImmutable: imagesHandler.oldImagesImmutable,
+      oldImages: imagesHandler.oldImagesImmutable,
+      activeImage: {
+        type: "oldImage",
+        src: imagesHandler.oldImagesImmutable[0].src,
+      },
+      newImages: [],
     });
   };
 
@@ -372,7 +549,7 @@ const InventoryEditModal = (props) => {
       return { ...old, subcategory, weight, size, color };
     });
     return;
-  }, [formData.category.name, getSubCategories]);
+  }, [formData.category.name]);
 
   useEffect(() => {
     let mounted = true;
@@ -394,300 +571,33 @@ const InventoryEditModal = (props) => {
     <ModalWrapper className="fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center">
       <ModalContainer
         ref={modalRef}
-        className="rounded-md py-12 px-8 overflow-y-auto"
+        className="rounded-md py-12 px-8 overflow-y-auto overflow-x-hidden"
       >
         {modalData.length > 0 ? (
           modalData.map((item, index) => {
             const uploadDate = getUploadDate(item.updatedAt);
             return (
-              <React.Fragment key={index}>
-                <div className="flex justify-end mb-6 cursor-pointer">
-                  <svg
-                    className="relative w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    onClick={handleFormCancel}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </div>
-                <form
-                  key={item._id}
-                  className="items-center flex flex-col gap-8"
-                >
-                  <div className="flex flex-col gap-4">
-                    <div className="h-52 w-max mx-auto overflow-hidden shadow-md rounded-md">
-                      <img
-                        className="object-contain h-full"
-                        src={formData.activeImage}
-                        alt="Pending Item"
-                      />
-                    </div>
-                    {item.images.length > 1 && (
-                      <div className="flex flex-row gap-2">
-                        {item.images.map((item, index) => {
-                          return (
-                            <button
-                              key={index}
-                              className="w-1/6 rounded-md overflow-hidden shadow-md"
-                              onClick={(e) =>
-                                handleImageChange(
-                                  e,
-                                  `https://api.thrindle.com/api/thrindle/images/${item}`
-                                )
-                              }
-                            >
-                              <img
-                                src={`https://api.thrindle.com/api/thrindle/images/${item}`}
-                                alt="Pending Item"
-                              />
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                  <div className="w-full flex flex-col gap-2">
-                    <p className="text-white-text flex flex-col">
-                      <label htmlFor="category">Category: </label>
-                      <select
-                        className="font-medium text-primary-dark"
-                        name="category"
-                        id="category"
-                        value={formData.category.name}
-                        onChange={handleFormChange}
-                        required
-                      >
-                        {categoryHandler?.category?.length > 0 ? (
-                          <>
-                            {categoryHandler?.category?.map(({ _id, name }) => {
-                              return (
-                                <option key={_id} name={name} value={name}>
-                                  {name}
-                                </option>
-                              );
-                            })}
-                          </>
-                        ) : (
-                          <option
-                            name={formData?.category?.name}
-                            value={formData?.category?.name}
-                          >
-                            {formData?.category?.name}
-                          </option>
-                        )}
-                      </select>
-                    </p>
-                    <p className="text-white-text flex flex-col">
-                      <label htmlFor="subcategory">Sub Categories:</label>
-                      <select
-                        name="subcategory"
-                        id="subcategory"
-                        value={formData?.subcategory?.name}
-                        onChange={handleFormChange}
-                        required
-                      >
-                        {categoryHandler?.subcategory?.length > 0 ? (
-                          <>
-                            {categoryHandler?.subcategory?.map(
-                              ({ _id, name }) => {
-                                return (
-                                  <option key={_id} name={name} value={name}>
-                                    {name}
-                                  </option>
-                                );
-                              }
-                            )}
-                          </>
-                        ) : (
-                          <option
-                            name={formData?.subcategory?.name}
-                            value={formData?.subcategory?.name}
-                          >
-                            {formData?.subcategory?.name}
-                          </option>
-                        )}
-                      </select>
-                    </p>
-                    <p className="text-white-text flex flex-col">
-                      <label htmlFor="weight">Weight:</label>
-                      <select
-                        name="weight"
-                        id="weight"
-                        value={formData.weight}
-                        onChange={handleFormChange}
-                        required
-                      >
-                        {categoryHandler?.weight?.length > 0 ? (
-                          categoryHandler.weight.map((item, index) => {
-                            return (
-                              <option key={index} name="weight" value={item}>
-                                {item}
-                              </option>
-                            );
-                          })
-                        ) : (
-                          <option name="weight" value={formData.weight}>
-                            {formData.weight}
-                          </option>
-                        )}
-                      </select>
-                    </p>
-                    <p className="text-white-text flex flex-col">
-                      <label htmlFor="name">Product Title:</label>
-                      <input
-                        className="font-medium text-primary-dark"
-                        type="text"
-                        id="name"
-                        name={"name"}
-                        value={formData.name}
-                        required
-                        onChange={handleFormChange}
-                      />
-                    </p>
-                    <p className="text-white-text flex flex-col">
-                      <label htmlFor="description">Description:</label>
-                      <textarea
-                        className="font-medium text-primary-dark h-max"
-                        type="text"
-                        id="description"
-                        name={"description"}
-                        value={formData.description}
-                        required
-                        rows={3}
-                        onChange={handleFormChange}
-                      />
-                    </p>
-                    <div className="text-white-text flex flex-col">
-                      Size:
-                      <span className="font-medium text-primary-dark custom-input">
-                        {formData?.details?.size?.length > 0 ? (
-                          <SelectedSizes
-                            sizes={formData.details.size}
-                            removeSize={handleRemoveSize}
-                          />
-                        ) : (
-                          "No Value Chosen Yet"
-                        )}
-                      </span>
-                      <CustomInventoryDropdown
-                        fieldset={"Choose Sizes"}
-                        list1={categoryHandler.size[0]}
-                        list2={categoryHandler.size[1]}
-                        emptyState1="e.g Small"
-                        emptyState2={"e.g 30"}
-                        onChange={handleFormChange}
-                        inputValue={formData.details.size}
-                      />
-                    </div>
-                    <div className="text-white-text flex flex-col">
-                      Color:
-                      <span className="font-medium text-primary-dark custom-input">
-                        {formData?.details?.color?.length > 0 ? (
-                          <SelectedColors
-                            colors={formData.details.color}
-                            removeColor={handleRemoveColor}
-                          />
-                        ) : (
-                          "No Value Chosen Yet"
-                        )}
-                      </span>
-                      <CustomColorDropdown
-                        fieldset={"Choose Colors"}
-                        list={categoryHandler.color}
-                        emptyState={"Select Color"}
-                        onChange={handleFormChange}
-                        inputValue={formData.details.color}
-                      />
-                    </div>
-                    <p className="text-white-text flex flex-col">
-                      <label htmlFor="price">Price: </label>
-                      <input
-                        type="number"
-                        min={0}
-                        name="price"
-                        id="price"
-                        value={formData.price}
-                        onChange={handleFormChange}
-                        required
-                        className="font-medium text-primary-dark"
-                      />
-                    </p>
-                    <p className="text-white-text">
-                      Original Price:
-                      <span className={`capitalize font-medium`}>
-                        {modalData[0]?.original_price}
-                      </span>
-                    </p>
-                    <p className="text-white-text flex flex-col">
-                      <label htmlFor="no_in_stock">Stock: </label>
-                      <input
-                        type="number"
-                        min={0}
-                        name="no_in_stock"
-                        id="no_in_stock"
-                        value={formData.no_in_stock}
-                        onChange={handleFormChange}
-                        required
-                        className="font-medium text-primary-dark"
-                      />
-                    </p>
-                    <p className="text-white-text">
-                      Upload Date:{" "}
-                      <span className="font-medium text-primary-dark">
-                        {uploadDate}
-                      </span>
-                    </p>
-                    <p className="text-white-text">
-                      Product Type:{" "}
-                      <span className="font-medium text-primary-dark flex flex-row gap-2 items-center">
-                        <input
-                          type="checkbox"
-                          name="itemStatus"
-                          id="itemStatus"
-                          checked={formData.itemStatus}
-                          onChange={handleFormChange}
-                        />
-                        {formData.itemStatus ? "New" : "Used"}
-                      </span>
-                    </p>
-                    <p className="text-white-text">
-                      Status:{" "}
-                      <span
-                        className={`capitalize font-medium ${
-                          item.verified
-                            ? "text-secondary-success"
-                            : "text-secondary-yellow"
-                        }`}
-                      >
-                        {item.verified ? "Approved" : "Pending"}
-                      </span>
-                    </p>
-                  </div>
-                  <div className="w-full flex flex-row gap-4 justify-end">
-                    <ModalButton
-                      className="border border-primary-dark bg-primary-dark text-white-main cursor-pointer"
-                      type="submit"
-                      onClick={handleFormSubmit}
-                    >
-                      Update
-                    </ModalButton>
-                    <ModalButton
-                      className="border text-white-main bg-secondary-success cursor-pointer"
-                      onClick={(e) => handleVerifyProduct(e, item._id)}
-                    >
-                      Approve
-                    </ModalButton>
-                  </div>
-                </form>
-              </React.Fragment>
+              <ModalInfo
+                key={index}
+                uploadDate={uploadDate}
+                handleFormCancel={handleFormCancel}
+                item={item}
+                formData={formData}
+                handleFormChange={handleFormChange}
+                categoryHandler={categoryHandler}
+                handleImageChange={handleImageChange}
+                handleRemoveSize={handleRemoveSize}
+                handleRemoveColor={handleRemoveColor}
+                modalData={modalData}
+                handleVerifyProduct={handleVerifyProduct}
+                handleFormSubmit={handleFormSubmit}
+                handleOnDragEnd={handleOnDragEnd}
+                handleImageDelete={handleImageDelete}
+                imagesHandler={imagesHandler}
+                setImagesHandler={setImagesHandler}
+                handleRestoreImages={handleRestoreImages}
+                handleImageUpdate={handleImageUpdate}
+              />
             );
           })
         ) : (
@@ -725,11 +635,4 @@ const ModalContainer = styled.div`
     padding: 0.5rem 1rem;
     border: 1px solid #16588f;
   }
-`;
-
-const ModalButton = styled.button`
-  padding: 0.5rem 1.75rem;
-  border-radius: 0.375rem;
-  font-weight: 600;
-  cursor: pointer;
 `;

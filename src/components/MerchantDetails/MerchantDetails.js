@@ -154,8 +154,6 @@ function MerchantDetails() {
           </div>
         )}
       </div>
-
-    
     </div>
   );
 }
