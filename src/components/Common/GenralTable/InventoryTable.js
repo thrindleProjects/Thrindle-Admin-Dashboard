@@ -3,7 +3,7 @@ import styled from "styled-components";
 // import { AiFillCloseCircle } from "react-icons/ai";
 
 const InventoryTable = (props) => {
-  const handleModal = (action, id) => {
+  const handleModal = (action, id, verified) => {
     return props.setModal(action, id);
   };
 
@@ -127,7 +127,11 @@ const InventoryTable = (props) => {
                         <p className="text-small font-normal font-Regular text-left text-white-text flex flex-row gap-3">
                           <button
                             onClick={() =>
-                              handleModal("SHOW_EDIT_MODAL", item._id)
+                              handleModal(
+                                "SHOW_EDIT_MODAL",
+                                item._id,
+                                item.verified
+                              )
                             }
                             className="cursor-pointer flex flex-row gap-1 items-center text-primary-dark"
                           >

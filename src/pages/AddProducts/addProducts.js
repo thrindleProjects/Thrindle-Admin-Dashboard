@@ -152,7 +152,7 @@ const AddProducts = () => {
         `products/admin/addproduct/${storeID}`,
         formData
       );
-      console.log(`products/admin/addproduct/${storeID}`);
+      // console.log(`products/admin/addproduct/${storeID}`);
       if (data) {
         toast.success("Product was successfully added");
         setTimeout(() => {
