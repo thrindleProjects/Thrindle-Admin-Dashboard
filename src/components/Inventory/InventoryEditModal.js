@@ -52,13 +52,13 @@ const InventoryEditModal = (props) => {
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
-  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+  const url = "https://api.thrindle.com/api/thrindle/sellers";
   const { handleSetModal, getAllProducts, showModal } = props;
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let url =
-      "https://thrindleservices.herokuapp.com/api/thrindle/products/admin/updateproduct";
+      "https://api.thrindle.com/api/thrindle/products/admin/updateproduct";
     let formInfo = {
       name: formData.name,
       category: formData.category._id,
@@ -160,7 +160,7 @@ const InventoryEditModal = (props) => {
         let oldImages = images.map((image) => {
           return {
             type: "oldImage",
-            src: `https://thrindleservices.herokuapp.com/api/thrindle/images/${image}`,
+            src: `https://api.thrindle.com/api/thrindle/images/${image}`,
           };
         });
         let oldImagesImmutable = [...oldImages];
@@ -182,7 +182,7 @@ const InventoryEditModal = (props) => {
           ...old,
           activeImage: {
             type: "oldImage",
-            src: `https://thrindleservices.herokuapp.com/api/thrindle/images/${images[0]}`,
+            src: `https://api.thrindle.com/api/thrindle/images/${images[0]}`,
           },
           oldImagesImmutable,
           oldImages,
@@ -405,12 +405,14 @@ const InventoryEditModal = (props) => {
 
   const handleImageUpdate = async (e) => {
     e.preventDefault();
+
+    // If no images selected
     if (imagesHandler.oldImages.length + imagesHandler.newImages.length < 1) {
       toast.error("Please add at least one image");
       return;
     }
     try {
-      // If new Images are to be uploaded and old images are present
+      // If new Images are to be uploaded and old images are present - adding new images to products and deletting or re-ordering old images
       if (
         !!imagesHandler.newImages.length &&
         !!imagesHandler.oldImages.length
@@ -419,7 +421,7 @@ const InventoryEditModal = (props) => {
         if (!!imagesHandler.oldImages.length) {
           oldImages = imagesHandler.oldImages.map((image) =>
             image.src.replace(
-              "https://thrindleservices.herokuapp.com/api/thrindle/images/",
+              "https://api.thrindle.com/api/thrindle/images/",
               ""
             )
           );
@@ -438,7 +440,7 @@ const InventoryEditModal = (props) => {
           formData
         );
         let updatedImages = data.images.map((item) => ({
-          src: `https://thrindleservices.herokuapp.com/api/thrindle/images/${item}`,
+          src: `https://api.thrindle.com/api/thrindle/images/${item}`,
           type: "oldImage",
         }));
         toast.success("Images updated successfully");
@@ -450,13 +452,10 @@ const InventoryEditModal = (props) => {
           activeImage: { type: "oldImage", src: updatedImages[0].src },
         });
       }
-      // If old Images are to be updated and no new images are present
+      // If old Images are to be updated and no new images are present - deleteing or re-arranging order of current images
       if (!!imagesHandler.oldImages.length && !imagesHandler.newImages.length) {
         let images = imagesHandler.oldImages.map((image) =>
-          image.src.replace(
-            "https://thrindleservices.herokuapp.com/api/thrindle/images/",
-            ""
-          )
+          image.src.replace("https://api.thrindle.com/api/thrindle/images/", "")
         );
         let {
           data: { data },
@@ -465,7 +464,7 @@ const InventoryEditModal = (props) => {
           { images }
         );
         let updatedImages = data.images.map((item) => ({
-          src: `https://thrindleservices.herokuapp.com/api/thrindle/images/${item}`,
+          src: `https://api.thrindle.com/api/thrindle/images/${item}`,
           type: "oldImage",
         }));
         toast.success("Images updated successfully");
@@ -477,6 +476,34 @@ const InventoryEditModal = (props) => {
           activeImage: { type: "oldImage", src: updatedImages[0].src },
         });
       }
+
+      // If new Images are to be uploaded and no old images are present - deleting
+      if (!!imagesHandler.newImages.length && !imagesHandler.oldImages.length) {
+        let images = imagesHandler.newImages.map((image) => image.src);
+        let formData = new FormData();
+        images.forEach((image) => formData.append("images", image));
+        formData.append("oldImages", []);
+        let {
+          data: { data },
+        } = await axiosInstance.put(
+          `/products//updateimages/${props.modalId}`,
+          formData
+        );
+        let updatedImages = data.images.map((item) => ({
+          src: `https://api.thrindle.com/api/thrindle/images/${item}`,
+          type: "oldImage",
+        }));
+        toast.success("Images updated successfully");
+        return setImagesHandler({
+          ...imagesHandler,
+          oldImagesImmutable: updatedImages,
+          oldImages: updatedImages,
+          newImages: [],
+          activeImage: { type: "oldImage", src: updatedImages[0].src },
+        });
+        // console.log("HERE");
+      }
+      return toast.warning("No changes made");
     } catch (err) {
       if (err.message) {
         toast.error(err.message);
