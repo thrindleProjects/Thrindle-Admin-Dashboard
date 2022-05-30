@@ -55,7 +55,7 @@ const MerchantProductsTable = ({
             <td>
               <img
                 src={
-                  "https://thrindleservices.herokuapp.com/api/thrindle/images/" +
+                  "https://api.thrindle.com/api/thrindle/images/" +
                   product?.images[0]
                 }
                 className="w-12 h-12 mx-auto rounded-sm"

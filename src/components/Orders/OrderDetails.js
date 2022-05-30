@@ -38,7 +38,7 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
       <Header title={"Order"} />
       <div className="flex items-center justify-center h-40 mt-4">
         <img
-          src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${tableData?.images[0]}`}
+          src={`https://api.thrindle.com/api/thrindle/images/${tableData?.images[0]}`}
           alt="Product"
           className="h-full shadow rounded-md"
         />

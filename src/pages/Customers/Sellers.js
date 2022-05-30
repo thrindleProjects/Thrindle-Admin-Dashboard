@@ -22,7 +22,7 @@ const Customers = () => {
   });
   const [status, setStatus] = useState({ isLoading: true, isError: false });
   const [filterValue, setFilterValue] = useState("");
-  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+  const url = "https://api.thrindle.com/api/thrindle/sellers";
 
   // Break Customers Array into smaller arrays for pagination
   const paginationArr = (arr, size) =>

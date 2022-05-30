@@ -63,7 +63,7 @@ function MerchantDetails() {
               ) : (
                 <img
                   src={
-                    "https://thrindleservices.herokuapp.com/api/thrindle/images/" +
+                    "https://api.thrindle.com/api/thrindle/images/" +
                     profileData?.owner_id?.photo
                   }
                   alt="merchant-avatar"

@@ -48,7 +48,7 @@ const Inventory = (props) => {
   const [allInventory, setAllInventory] = useState(0);
   const [status, setStatus] = useState({ isLoading: true, isError: false });
 
-  // const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+  // const url = "https://api.thrindle.com/api/thrindle/sellers";
 
   const qty = props.location.search
     ? props.location.search.split("=")[1]
