@@ -29,7 +29,7 @@ const DashboardTable = (props) => {
               <td>
                 <img
                   src={
-                    "https://thrindleservices.herokuapp.com/api/thrindle/images/" +
+                    "https://api.thrindle.com/api/thrindle/images/" +
                     item?.images[0]
                   }
                   className="w-12 h-12 mx-auto rounded-sm"
