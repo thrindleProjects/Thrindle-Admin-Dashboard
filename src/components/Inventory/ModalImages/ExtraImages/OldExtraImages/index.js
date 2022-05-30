@@ -39,7 +39,7 @@ const OldExtraImages = ({
                     //   index === 0
                     // )}
                     className="h-full rounded-md shadow-md flex-shrink-0 relative"
-                    onClick={(e) => handleImageChange(e, image.src, image.type)}
+                    onClick={(e) => handleImageChange(e, image)}
                   >
                     <div
                       className="bg-primary-main rounded-full cursor-pointer absolute top-0 right-0 w-max"
@@ -66,7 +66,7 @@ const OldExtraImages = ({
               <li
                 className="h-full relative flex-shrink-0"
                 key={index}
-                onClick={(e) => handleImageChange(e, image.src, image.type)}
+                onClick={(e) => handleImageChange(e, image)}
               >
                 <img
                   className="object-contain h-full rounded-md flex-shrink-0"

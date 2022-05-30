@@ -28,6 +28,7 @@ const InventoryEditModal = (props) => {
     oldImagesImmutable: [],
     oldImages: [],
     newImages: [],
+    newImagesImmutable: [],
   });
 
   const [formData, setFormData] = useState({
@@ -49,6 +50,8 @@ const InventoryEditModal = (props) => {
     size: [],
     color: [],
   });
+
+  const [cropModal, setCropModal] = useState({ isActive: false, image: {} });
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
@@ -187,6 +190,7 @@ const InventoryEditModal = (props) => {
           oldImagesImmutable,
           oldImages,
           newImages: [],
+          newImagesImmutable: [],
         }));
         setModalData(data);
         setCategoryHandler((old) => {
@@ -296,14 +300,11 @@ const InventoryEditModal = (props) => {
     });
   };
 
-  const handleImageChange = (e, src, type) => {
+  const handleImageChange = (e, image) => {
     e.preventDefault();
     setImagesHandler((old) => ({
       ...old,
-      activeImage: {
-        type,
-        src,
-      },
+      activeImage: { ...image },
     }));
   };
 
@@ -344,15 +345,15 @@ const InventoryEditModal = (props) => {
       return setImagesHandler((old) => ({ ...old, oldImages }));
     }
     if (type === "newImage") {
-      let newImages = imagesHandler.newImages.filter(
-        (image) => image.name !== url.name
-      );
-
+      let newImages = imagesHandler.newImages.filter((image) => {
+        return image.name !== url.name;
+      });
       if (!newImages.length && !imagesHandler.oldImages.length) {
         return setImagesHandler((old) => ({
           ...old,
           activeImage: { type: "", src: "" },
           newImages: [],
+          newImagesImmutable: [],
         }));
       }
 
@@ -364,6 +365,7 @@ const InventoryEditModal = (props) => {
             src: imagesHandler.oldImages[0].src,
           },
           newImages,
+          newImagesImmutable: newImages,
         }));
       }
 
@@ -372,9 +374,14 @@ const InventoryEditModal = (props) => {
           ...old,
           activeImage: { type: "newImage", src: newImages[0].src },
           newImages,
+          newImagesImmutable: newImages,
         }));
       }
-      return setImagesHandler((old) => ({ ...old, newImages }));
+      return setImagesHandler((old) => ({
+        ...old,
+        newImages,
+        newImagesImmutable: newImages,
+      }));
     }
   };
 
@@ -399,7 +406,11 @@ const InventoryEditModal = (props) => {
         images[result.destination.index],
         images[result.source.index],
       ];
-      return setImagesHandler({ ...imagesHandler, newImages: images });
+      return setImagesHandler({
+        ...imagesHandler,
+        newImages: images,
+        newImagesImmutable: images,
+      });
     }
   };
 
@@ -449,6 +460,7 @@ const InventoryEditModal = (props) => {
           oldImagesImmutable: updatedImages,
           oldImages: updatedImages,
           newImages: [],
+          newImagesImmutable: [],
           activeImage: { type: "oldImage", src: updatedImages[0].src },
         });
       }
@@ -473,6 +485,7 @@ const InventoryEditModal = (props) => {
           oldImagesImmutable: updatedImages,
           oldImages: updatedImages,
           newImages: [],
+          newImagesImmutable: [],
           activeImage: { type: "oldImage", src: updatedImages[0].src },
         });
       }
@@ -499,9 +512,9 @@ const InventoryEditModal = (props) => {
           oldImagesImmutable: updatedImages,
           oldImages: updatedImages,
           newImages: [],
+          newImagesImmutable: [],
           activeImage: { type: "oldImage", src: updatedImages[0].src },
         });
-        // console.log("HERE");
       }
       return toast.warning("No changes made");
     } catch (err) {
@@ -520,12 +533,54 @@ const InventoryEditModal = (props) => {
       ...imagesHandler,
       oldImagesImmutable: imagesHandler.oldImagesImmutable,
       oldImages: imagesHandler.oldImagesImmutable,
-      activeImage: {
-        type: "oldImage",
-        src: imagesHandler.oldImagesImmutable[0].src,
-      },
+      activeImage: { ...imagesHandler.oldImagesImmutable[0] },
       newImages: [],
     });
+  };
+
+  const handleCropImageModalVisiblity = (action) => {
+    switch (action) {
+      case "SHOW_CROP_IMAGE_MODAL":
+        setCropModal((old) => ({ ...old, isActive: true }));
+        // setModalId(modalId);
+        break;
+      case "CLOSE_CROP_IMAGE_MODAL":
+        setCropModal((old) => ({ ...old, isActive: false }));
+        break;
+      default:
+        console.log("Invalid action");
+        break;
+    }
+  };
+
+  const handleSetCropImage = async (image) => {
+    const config = { responseType: "blob" };
+
+    let something = await axios.get(image, config);
+    let fileName = image.split("/").pop();
+    let res = new File([something.data], `${fileName}`, {
+      type: "image/jpeg",
+    });
+    let croppedImage = {
+      type: "newImage",
+      src: res,
+      name: fileName,
+      original: imagesHandler.activeImage.original
+        ? imagesHandler.activeImage.original
+        : imagesHandler.activeImage.src,
+    };
+    let newImages = [...imagesHandler.newImages];
+    // Find index of active image in newImages array
+    let index = newImages.findIndex(
+      (item) => item.src === imagesHandler.activeImage.src
+    );
+    [newImages[index]] = [croppedImage];
+    setImagesHandler((old) => ({
+      ...old,
+      newImages,
+      activeImage: croppedImage,
+    }));
+    toast.success("Image cropped successfully");
   };
 
   useEffect(() => {
@@ -624,6 +679,9 @@ const InventoryEditModal = (props) => {
                 setImagesHandler={setImagesHandler}
                 handleRestoreImages={handleRestoreImages}
                 handleImageUpdate={handleImageUpdate}
+                cropModal={cropModal}
+                handleCropImageModalVisiblity={handleCropImageModalVisiblity}
+                handleSetCropImage={handleSetCropImage}
               />
             );
           })

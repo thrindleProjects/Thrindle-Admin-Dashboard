@@ -1,6 +1,10 @@
-import { IoCloseCircleOutline } from "react-icons/io5";
+import { IoCloseCircleOutline, IoCropSharp } from "react-icons/io5";
 
-const NewBigImage = ({ activeImage, handleImageDelete }) => {
+const NewBigImage = ({
+  activeImage,
+  handleImageDelete,
+  handleCropImageModalVisiblity,
+}) => {
   return (
     <div className="h-full relative flex-shrink-0">
       <img
@@ -17,6 +21,13 @@ const NewBigImage = ({ activeImage, handleImageDelete }) => {
         }}
       >
         <IoCloseCircleOutline className="text-white-main" />
+      </div>
+
+      <div
+        className="bg-primary-main rounded-full cursor-pointer absolute top-0 left-0 w-max text-xl transform -translate-x-1/2 -translate-y-1/2 p-1"
+        onClick={(e) => handleCropImageModalVisiblity("SHOW_CROP_IMAGE_MODAL")}
+      >
+        <IoCropSharp className="text-white-main" />
       </div>
     </div>
   );

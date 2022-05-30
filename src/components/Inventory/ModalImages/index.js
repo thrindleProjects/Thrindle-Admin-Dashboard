@@ -4,7 +4,6 @@ import ExtraImages from "./ExtraImages";
 import UpdateImages from "./UpdateImages";
 
 const ModalImages = ({
-  item,
   handleImageChange,
   handleOnDragEnd,
   handleImageDelete,
@@ -12,6 +11,7 @@ const ModalImages = ({
   setImagesHandler,
   handleRestoreImages,
   handleImageUpdate,
+  handleCropImageModalVisiblity,
 }) => {
   const getListStyle = (isDraggingOver, itemsLength) => ({
     overflowX: "auto",
@@ -71,10 +71,15 @@ const ModalImages = ({
         ...imagesHandler,
         activeImage: { type: "newImage", src: newImages[0].src },
         newImages,
+        newImagesImmutable: newImages,
       });
     }
 
-    setImagesHandler({ ...imagesHandler, newImages });
+    setImagesHandler({
+      ...imagesHandler,
+      newImages,
+      newImagesImmutable: newImages,
+    });
   };
 
   return (
@@ -85,6 +90,7 @@ const ModalImages = ({
         handleImageUpload={handleImageUpload}
         imagesHandler={imagesHandler}
         setImagesHandler={setImagesHandler}
+        handleCropImageModalVisiblity={handleCropImageModalVisiblity}
       />
       {/* Displays extra images if totalimages (backendimages and uploaded images) is greater than 1 */}
       {imagesHandler?.oldImages?.length + imagesHandler?.newImages?.length >
