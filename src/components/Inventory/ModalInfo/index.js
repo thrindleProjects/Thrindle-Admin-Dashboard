@@ -35,6 +35,7 @@ const ModalInfo = ({
   cropModal,
   handleCropImageModalVisiblity,
   handleSetCropImage,
+  handleResetCrop,
 }) => {
   return (
     <>
@@ -46,6 +47,10 @@ const ModalInfo = ({
           handleCropImageModalVisiblity={handleCropImageModalVisiblity}
           activeImage={imagesHandler.activeImage}
           handleSetCropImage={handleSetCropImage}
+          cropInit={imagesHandler.activeImage?.original?.crop}
+          aspectInit={imagesHandler.activeImage?.original?.aspect}
+          zoomInit={imagesHandler.activeImage?.original?.zoom}
+          handleResetCrop={handleResetCrop}
         />
       )}
       <form key={item._id} className="items-center flex flex-col gap-8">

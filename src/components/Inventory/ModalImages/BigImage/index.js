@@ -20,6 +20,7 @@ const BigImage = ({
               <OldBigImage
                 activeImage={imagesHandler.activeImage}
                 handleImageDelete={handleImageDelete}
+                handleCropImageModalVisiblity={handleCropImageModalVisiblity}
               />
             )}
             {imagesHandler.activeImage.type === "newImage" && (
@@ -48,7 +49,6 @@ const BigImage = ({
           <>
             <NewBigImage
               activeImage={imagesHandler.activeImage}
-              setImagesHandler={setImagesHandler}
               handleImageDelete={handleImageDelete}
               handleCropImageModalVisiblity={handleCropImageModalVisiblity}
             />

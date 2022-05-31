@@ -22,7 +22,6 @@ const NewBigImage = ({
       >
         <IoCloseCircleOutline className="text-white-main" />
       </div>
-
       <div
         className="bg-primary-main rounded-full cursor-pointer absolute top-0 left-0 w-max text-xl transform -translate-x-1/2 -translate-y-1/2 p-1"
         onClick={(e) => handleCropImageModalVisiblity("SHOW_CROP_IMAGE_MODAL")}

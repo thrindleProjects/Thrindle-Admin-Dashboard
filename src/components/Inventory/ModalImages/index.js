@@ -71,14 +71,12 @@ const ModalImages = ({
         ...imagesHandler,
         activeImage: { type: "newImage", src: newImages[0].src },
         newImages,
-        newImagesImmutable: newImages,
       });
     }
 
     setImagesHandler({
       ...imagesHandler,
       newImages,
-      newImagesImmutable: newImages,
     });
   };
 
