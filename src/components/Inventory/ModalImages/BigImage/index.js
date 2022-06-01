@@ -7,6 +7,7 @@ const BigImage = ({
   handleImageUpload,
   imagesHandler,
   setImagesHandler,
+  handleCropImageModalVisiblity,
 }) => {
   return (
     <div className="h-52 w-max max-w-full mx-auto shadow-lgrounded-md">
@@ -19,12 +20,14 @@ const BigImage = ({
               <OldBigImage
                 activeImage={imagesHandler.activeImage}
                 handleImageDelete={handleImageDelete}
+                handleCropImageModalVisiblity={handleCropImageModalVisiblity}
               />
             )}
             {imagesHandler.activeImage.type === "newImage" && (
               <NewBigImage
                 activeImage={imagesHandler.activeImage}
                 handleImageDelete={handleImageDelete}
+                handleCropImageModalVisiblity={handleCropImageModalVisiblity}
               />
             )}
             {/* Show this component if only one image from the backend is present */}
@@ -46,8 +49,8 @@ const BigImage = ({
           <>
             <NewBigImage
               activeImage={imagesHandler.activeImage}
-              setImagesHandler={setImagesHandler}
               handleImageDelete={handleImageDelete}
+              handleCropImageModalVisiblity={handleCropImageModalVisiblity}
             />
             {/* Show this component if only one image is to be uploaded */}
             {/* Allows for further addition of images */}

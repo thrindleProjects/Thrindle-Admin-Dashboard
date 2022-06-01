@@ -72,8 +72,8 @@ const OrderTable = (props) => {
             return (
               <tr
                 key={index}
-                className={`min-w-full w-max lg:w-full flex shrink-0 lg:grid lg:grid-flow-row grid-cols-11 gap-3 auto-cols-min px-6 py-3 cursor-pointer ${
-                  props.activeTab === `Pending Orders` && `grid-cols-13`
+                className={`min-w-full w-max lg:w-full flex shrink-0 lg:grid lg:grid-flow-row lg:grid-cols-11 gap-3 auto-cols-min px-6 py-3 cursor-pointer ${
+                  props.activeTab === `Pending Orders` && `lg:grid-cols-13`
                 }`}
               >
                 <td>{serialNumber}</td>

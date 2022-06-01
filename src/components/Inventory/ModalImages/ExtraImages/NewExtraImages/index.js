@@ -34,7 +34,7 @@ const NewExtraImages = ({
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     className="h-full rounded-md shadow-md flex-shrink-0 relative"
-                    onClick={(e) => handleImageChange(e, image.src, image.type)}
+                    onClick={(e) => handleImageChange(e, image)}
                   >
                     <div
                       className="bg-primary-main rounded-full cursor-pointer absolute top-0 right-0 w-max"

@@ -11,6 +11,7 @@ import SubcategorySelect from "../SubcategorySelect/index.js";
 import Timestamps from "../TimeStamps/index.js";
 import WeightSelect from "../WeightSelect/index.js";
 import ModalButtons from "../ModalButtons";
+import CropImageModal from "../CropImageModal/index.js";
 
 const ModalInfo = ({
   handleFormCancel,
@@ -31,12 +32,27 @@ const ModalInfo = ({
   setImagesHandler,
   handleRestoreImages,
   handleImageUpdate,
+  cropModal,
+  handleCropImageModalVisiblity,
+  handleSetCropImage,
+  handleResetCrop,
 }) => {
   return (
     <>
       <div className="flex justify-end mb-6 cursor-pointer">
         <CloseModalButton handleFormCancel={handleFormCancel} />
       </div>
+      {cropModal.isActive && (
+        <CropImageModal
+          handleCropImageModalVisiblity={handleCropImageModalVisiblity}
+          activeImage={imagesHandler.activeImage}
+          handleSetCropImage={handleSetCropImage}
+          cropInit={imagesHandler.activeImage?.original?.crop}
+          aspectInit={imagesHandler.activeImage?.original?.aspect}
+          zoomInit={imagesHandler.activeImage?.original?.zoom}
+          handleResetCrop={handleResetCrop}
+        />
+      )}
       <form key={item._id} className="items-center flex flex-col gap-8">
         <ModalImages
           imagesHandler={imagesHandler}
@@ -46,6 +62,7 @@ const ModalInfo = ({
           handleImageDelete={handleImageDelete}
           handleRestoreImages={handleRestoreImages}
           handleImageUpdate={handleImageUpdate}
+          handleCropImageModalVisiblity={handleCropImageModalVisiblity}
         />
         <div className="w-full flex flex-col gap-2">
           <CategoriesSelect

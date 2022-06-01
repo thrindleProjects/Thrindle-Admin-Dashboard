@@ -49,12 +49,15 @@ const InventoryEditModal = (props) => {
     size: [],
     color: [],
   });
+
+  const [cropModal, setCropModal] = useState({ isActive: false, image: {} });
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
   const url = "https://api.thrindle.com/api/thrindle/sellers";
   const { handleSetModal, getAllProducts, showModal } = props;
 
+  // Handle Submit Form Body
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let url =
@@ -90,6 +93,7 @@ const InventoryEditModal = (props) => {
     }
   };
 
+  // Close Modal
   const handleFormCancel = (e) => {
     e.preventDefault();
     // document.documentElement.style.overflow = "revert";
@@ -100,6 +104,7 @@ const InventoryEditModal = (props) => {
     handleSetModal("CLOSE_ALL_MODALS");
   };
 
+  // Get Market Categories based on Market Name
   const getMarketCategories = useCallback(async (marketValue) => {
     const marketID = await getMarketID(marketValue);
     try {
@@ -120,12 +125,14 @@ const InventoryEditModal = (props) => {
     }
   }, []);
 
+  // Close Modal and Update Inventory Table
   const triggerTableUpdate = useCallback(() => {
     // document.documentElement.style.overflow = "revert";
     getAllProducts();
     handleSetModal("CLOSE_ALL_MODALS");
   }, [getAllProducts, handleSetModal]);
 
+  // Get Product Information
   const getSingleProduct = useCallback(
     async (id) => {
       // document.documentElement.style.overflow = "hidden";
@@ -204,6 +211,7 @@ const InventoryEditModal = (props) => {
     [getMarketCategories, showModal.verified]
   );
 
+  // Handle Input change on form body
   const handleFormChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -280,6 +288,7 @@ const InventoryEditModal = (props) => {
     return setFormData({ ...formData, [name]: value });
   };
 
+  // Remove size from size array
   const handleRemoveSize = (item) => {
     let newSizes = formData.details.size.filter((size) => size !== item);
     return setFormData({
@@ -288,6 +297,7 @@ const InventoryEditModal = (props) => {
     });
   };
 
+  // Remove color from color array
   const handleRemoveColor = (item) => {
     let newColors = formData.details.color.filter((color) => item !== color);
     return setFormData({
@@ -296,17 +306,16 @@ const InventoryEditModal = (props) => {
     });
   };
 
-  const handleImageChange = (e, src, type) => {
+  // Handle Image Change
+  const handleImageChange = (e, image) => {
     e.preventDefault();
     setImagesHandler((old) => ({
       ...old,
-      activeImage: {
-        type,
-        src,
-      },
+      activeImage: { ...image },
     }));
   };
 
+  // Handle Image Delete
   const handleImageDelete = (e, url, type) => {
     e.preventDefault();
     e.stopPropagation();
@@ -344,10 +353,9 @@ const InventoryEditModal = (props) => {
       return setImagesHandler((old) => ({ ...old, oldImages }));
     }
     if (type === "newImage") {
-      let newImages = imagesHandler.newImages.filter(
-        (image) => image.name !== url.name
-      );
-
+      let newImages = imagesHandler.newImages.filter((image) => {
+        return image.name !== url.name;
+      });
       if (!newImages.length && !imagesHandler.oldImages.length) {
         return setImagesHandler((old) => ({
           ...old,
@@ -374,10 +382,14 @@ const InventoryEditModal = (props) => {
           newImages,
         }));
       }
-      return setImagesHandler((old) => ({ ...old, newImages }));
+      return setImagesHandler((old) => ({
+        ...old,
+        newImages,
+      }));
     }
   };
 
+  // Handle rearranging images
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
     if (result.source.droppableId === "extra_images") {
@@ -399,10 +411,14 @@ const InventoryEditModal = (props) => {
         images[result.destination.index],
         images[result.source.index],
       ];
-      return setImagesHandler({ ...imagesHandler, newImages: images });
+      return setImagesHandler({
+        ...imagesHandler,
+        newImages: images,
+      });
     }
   };
 
+  // Handle Image Upload
   const handleImageUpdate = async (e) => {
     e.preventDefault();
 
@@ -501,7 +517,6 @@ const InventoryEditModal = (props) => {
           newImages: [],
           activeImage: { type: "oldImage", src: updatedImages[0].src },
         });
-        // console.log("HERE");
       }
       return toast.warning("No changes made");
     } catch (err) {
@@ -514,18 +529,139 @@ const InventoryEditModal = (props) => {
     }
   };
 
+  // Restore images to default images
   const handleRestoreImages = (e) => {
     e.preventDefault();
     setImagesHandler({
       ...imagesHandler,
       oldImagesImmutable: imagesHandler.oldImagesImmutable,
       oldImages: imagesHandler.oldImagesImmutable,
-      activeImage: {
-        type: "oldImage",
-        src: imagesHandler.oldImagesImmutable[0].src,
-      },
+      activeImage: { ...imagesHandler.oldImagesImmutable[0] },
       newImages: [],
     });
+  };
+
+  // open and close crop modal
+  const handleCropImageModalVisiblity = (action) => {
+    switch (action) {
+      case "SHOW_CROP_IMAGE_MODAL":
+        setCropModal((old) => ({ ...old, isActive: true }));
+        // setModalId(modalId);
+        break;
+      case "CLOSE_CROP_IMAGE_MODAL":
+        setCropModal((old) => ({ ...old, isActive: false }));
+        break;
+      default:
+        console.log("Invalid action");
+        break;
+    }
+  };
+
+  // reset crop on single image
+  const handleResetCrop = (image) => {
+    if (image.original.type === "newImage") {
+      let newImages = [...imagesHandler.newImages];
+      let index = newImages.findIndex(
+        (item) => item.src === imagesHandler.activeImage.src
+      );
+      newImages[index] = image.original;
+      setImagesHandler((old) => ({
+        ...old,
+        newImages,
+        activeImage: image.original,
+      }));
+      return toast.success("Image reset successfully");
+    }
+    if (image.original.type === "oldImage") {
+      let oldImages, newImages;
+      if (!imagesHandler.oldImages.length) {
+        oldImages = [image.original];
+      } else {
+        oldImages = imagesHandler.oldImages.map((item) => {
+          if (item.src === image.original.src) {
+            return image.original;
+          }
+          return item;
+        });
+      }
+      newImages = imagesHandler.newImages.filter(
+        (item) => item.original?.src !== image.original.src
+      );
+
+      setImagesHandler((old) => ({
+        ...old,
+        oldImages,
+        newImages,
+        activeImage: image.original,
+      }));
+      return toast.success("Image reset successfully");
+    }
+    toast.error("Something went wrong");
+  };
+
+  // crop image
+  const handleSetCropImage = async (
+    image,
+    zoom = 1,
+    crop = { x: 0, y: 0 },
+    aspect = 1
+  ) => {
+    const config = { responseType: "blob" };
+    let something = await axios.get(image, config);
+    let fileName = image.split("/").pop();
+    let res = new File([something.data], `${fileName}`, {
+      type: "image/jpeg",
+    });
+    let croppedImage = {
+      type: "newImage",
+      src: res,
+      name: fileName,
+      original: imagesHandler.activeImage.original
+        ? { ...imagesHandler.activeImage.original, zoom, crop, aspect }
+        : { ...imagesHandler.activeImage, zoom, crop, aspect },
+    };
+    if (croppedImage.original.type === "oldImage") {
+      let oldImages = imagesHandler.oldImages.filter(
+        (item) => item.src !== croppedImage.original.src
+      );
+      let newImagesIndex = imagesHandler.newImages.find((item) => {
+        return item.original?.src === croppedImage.original.src;
+      });
+
+      let newImages;
+
+      if (newImagesIndex === undefined) {
+        newImages = [...imagesHandler.newImages, croppedImage];
+      } else {
+        newImages = imagesHandler.newImages.map((image) => {
+          if (image.original?.src === croppedImage.original.src) {
+            return croppedImage;
+          } else {
+            return image;
+          }
+        });
+      }
+      setImagesHandler((old) => ({
+        ...old,
+        oldImages,
+        newImages,
+        activeImage: croppedImage,
+      }));
+    }
+    if (croppedImage.original.type === "newImage") {
+      let newImages = [...imagesHandler.newImages];
+      // Find index of active image in newImages array
+      let index = newImages.findIndex(
+        (item) => item.src === imagesHandler.activeImage.src
+      );
+      [newImages[index]] = [croppedImage];
+      setImagesHandler((old) => ({
+        ...old,
+        newImages,
+        activeImage: croppedImage,
+      }));
+    }
+    toast.success("Image cropped successfully");
   };
 
   useEffect(() => {
@@ -624,6 +760,10 @@ const InventoryEditModal = (props) => {
                 setImagesHandler={setImagesHandler}
                 handleRestoreImages={handleRestoreImages}
                 handleImageUpdate={handleImageUpdate}
+                cropModal={cropModal}
+                handleCropImageModalVisiblity={handleCropImageModalVisiblity}
+                handleSetCropImage={handleSetCropImage}
+                handleResetCrop={handleResetCrop}
               />
             );
           })
