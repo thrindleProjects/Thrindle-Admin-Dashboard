@@ -15,6 +15,7 @@ const AddImageContainer = ({ onChange, id, name, required }) => {
       <Input
         type="file"
         className="cursor-pointer"
+        multiple
         id={id}
         name={name}
         onChange={onChange}

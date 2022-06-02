@@ -52,7 +52,21 @@ const AddProducts = () => {
 
   // functions for image upload & delete
   const chooseImage = (event) => {
-    const imageList = event.target.files[0];
+    const imageList = Array.from(event.target.files);
+
+    let totalImages = images.lenght + imageList.length;
+    
+     let isImage = imageList.every((item) => item.type.includes("image"));
+     if (!isImage) {
+       toast.error("Only image files are allowed");
+       return;
+     }
+
+    if (totalImages > 6) {
+      toast.error("You can only upload 6 images");
+      return;
+    }
+
     if (imageList && imageList.type.startsWith("image")) {
       let updatedList = [...images, imageList];
       setImages(updatedList);
