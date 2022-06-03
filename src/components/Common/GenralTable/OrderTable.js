@@ -1,4 +1,4 @@
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { numberFormat } from "../../../utils/formatPrice";
 // import GeneralCheckBox from "../GeneralCheck/GeneralCheckBox";
@@ -6,7 +6,7 @@ import { numberFormat } from "../../../utils/formatPrice";
 // import { setSingleOrder } from "../../../redux/actions/orderActions/actions";
 
 const OrderTable = (props) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const getMarketName = (storeId) => {
     if (storeId.startsWith("CV")) return "Computer Village";
     if (storeId.startsWith("BM")) return "Eko Market";
@@ -24,7 +24,7 @@ const OrderTable = (props) => {
   };
 
   const handleSetSingleOrder = (item) => {
-    return history.push(`/orders/${item._id}`);
+    return navigate(`/orders/${item._id}`);
   };
 
   const openModal = (e, order_no) => {

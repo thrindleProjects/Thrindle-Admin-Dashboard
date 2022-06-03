@@ -35,7 +35,6 @@ const SingleDashboard = (props) => {
       {props.path && (
         <NavLink
           to={props.path}
-          exact
           className="flex flex-row align-middle justify-end w-full mt-1 view-cont"
         >
           <p className="text-xs view-btn font-Medium text-right text-white-text">

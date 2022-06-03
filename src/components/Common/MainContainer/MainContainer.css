@@ -2,11 +2,13 @@
   background: rgba(22, 88, 143, 0.3);
 }
 .side-nav {
-  background: rgba(0, 0, 0, 0.7);
+  /* background: rgba(0, 0, 0, 0.7); */
   transition: all 1s ease-in-out;
   transform: translateX(-110%);
 }
 .active {
   transform: translateX(0%);
-  background: rgba(0, 0, 0, 0.7);
+  background: #20639b;
+  color: #fff;
+  font-family: "Avenir-Heavy";
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import noNetworkImage from "../../assets/images/noNetwork.svg";
 
@@ -27,12 +27,12 @@ const Button = styled.button`
 `;
 
 function NoNetwork() {
-  let history = useHistory();
+  let navigate = useNavigate();
 
   return (
     <>
       <Image src={noNetworkImage} loading="eager" alt="no-network" />
-      <Button onClick={() => history.go(0)}>Refresh</Button>
+      <Button onClick={() => navigate(0, {replace: true})}>Refresh</Button>
     </>
   );
 }

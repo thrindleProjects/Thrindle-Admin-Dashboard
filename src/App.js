@@ -1,7 +1,7 @@
 import "aos/dist/aos.css";
 import React, { useEffect, useState } from "react";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Route, useLocation, Routes } from "react-router-dom";
 import Login from "./pages/Auth/Login/Login";
 import ForgetPassword from "./pages/Auth/ForgetPassword/ForgetPassword";
 import ResetPassword from "./pages/Auth/ForgetPassword/ResetPassword";
@@ -10,7 +10,6 @@ import { routes } from "./routes/index";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import AOS from "aos";
-import { useHistory } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
@@ -22,12 +21,7 @@ function App() {
     easing: "ease-in-out",
   });
 
-  const history = useHistory();
-
-  const {
-    location: { pathname: routeName },
-  } = history;
-
+  const { pathname: routeName } = location;
   useEffect(() => {
     if (
       routeName === "/login" ||
@@ -47,24 +41,18 @@ function App() {
       {show ? "" : <Navbar />}
 
       <AnimatePresence exitBeforeEnter>
-        <Switch location={location} key={location.key}>
-          <Route exact path="/login" component={Login} />
-          <Route
-            exact
-            path="/login/forget-password"
-            component={ForgetPassword}
-          />
-          <Route exact path="/login/reset-password" component={ResetPassword} />
-          {routes.map((item, index) => (
-            <ProtectedRoutes
+        <Routes location={location} key={location.key}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/login/forget-password" component={ForgetPassword} />
+          <Route path="/login/reset-password" component={ResetPassword} />
+          {routes.map(({ path, component }, index) => (
+            <Route
+              path={path}
               key={index}
-              title={item.title}
-              path={item.path}
-              exact
-              component={item.component}
+              element={<ProtectedRoutes component={component} />}
             />
           ))}
-        </Switch>
+        </Routes>
       </AnimatePresence>
     </>
   );
