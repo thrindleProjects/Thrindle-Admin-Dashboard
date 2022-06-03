@@ -6,10 +6,10 @@ import { merchantProductsTableHeader } from "../../data/data";
 import NewLoader from "../newLoader/newLoader";
 import MerchantHeader from "./MerchantHeader";
 import DeleteProductModal from "../DeleteProductModal/DeleteProductModal";
-import VerifiedEditModal from "../Inventory/VerifiedEditProduct";
 import MerchantProductsTable from "./MerchantProductsTable";
 import paginationArr from "../../utils/pagination";
 import GeneralFilterTab from "../Common/GeneralFilterTab/GeneralFilterTab";
+import InventoryEditModal from "../Inventory/InventoryEditModal";
 
 function MerchantProducts() {
   const [loadingProducts, setLoadingProducts] = useState(false);
@@ -26,35 +26,36 @@ function MerchantProducts() {
   const [showModal, setShowModal] = useState({
     verifiedEditModal: false,
     editModal: false,
+    verified: false,
   });
   const [activeProduct, setActiveProduct] = useState({});
   const [filterValue, setFilterValue] = useState("");
 
   let { store_id } = useParams();
 
-  const handleSetModal = useCallback((action, modalId) => {
+  const handleSetModal = useCallback((action, modalId, verified) => {
     switch (action) {
       case "SHOW_EDIT_MODAL":
-        document.documentElement.style.overflow = "hidden";
         setShowModal({
           editModal: true,
           verifiedEditModal: false,
+          verified,
         });
         setModalId(modalId);
         break;
       case "SHOW_VERIFIED_EDIT_MODAL":
-        document.documentElement.style.overflow = "hidden";
         setShowModal({
           editModal: false,
           verifiedEditModal: true,
+          verified,
         });
         setModalId(modalId);
         break;
       case "CLOSE_ALL_MODALS":
-        document.documentElement.style.overflow = "scroll";
         setShowModal({
           editModal: false,
           verifiedEditModal: false,
+          verified,
         });
         break;
       default:
@@ -63,7 +64,6 @@ function MerchantProducts() {
   }, []);
 
   const displayDeleteModal = (id, data) => {
-    document.documentElement.style.overflow = "hidden";
     setOpenDeleteModal(true);
     setActiveProduct(data);
   };
@@ -198,8 +198,8 @@ function MerchantProducts() {
           getAllProducts={fetchProducts}
         />
       )}
-      {showModal.verifiedEditModal && (
-        <VerifiedEditModal
+      {showModal.editModal && (
+        <InventoryEditModal
           handleSetModal={handleSetModal}
           modalId={modalId}
           getAllProducts={fetchProducts}
