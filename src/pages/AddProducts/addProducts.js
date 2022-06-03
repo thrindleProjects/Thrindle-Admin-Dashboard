@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useFormik } from "formik";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axiosInstance from "../../utils/axiosInstance";
 import {
@@ -48,7 +48,7 @@ const AddProducts = () => {
   });
   const productSizeArr = productSizes.map((item) => item.title);
   const productSizeArr2 = productSizes2.map((item) => item.title);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // functions for image upload & delete
   const chooseImage = (event) => {
@@ -157,7 +157,7 @@ const AddProducts = () => {
         toast.success("Product was successfully added");
         setTimeout(() => {
           setUploading(false);
-          history.go(0);
+          navigate(0);
         }, 1000);
       }
     } catch (error) {

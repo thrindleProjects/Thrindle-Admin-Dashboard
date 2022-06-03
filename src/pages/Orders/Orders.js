@@ -38,7 +38,7 @@ const Orders = (props) => {
   });
   const [orderTabData, setOrderTabData] = useState(orderData);
 
-  const qty = props.location.search
+  const qty = props?.location?.search
     ? props.location.search.split("=")[1]
     : "Pending Orders";
 

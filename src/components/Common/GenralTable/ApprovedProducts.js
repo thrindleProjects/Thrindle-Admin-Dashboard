@@ -2,6 +2,8 @@ import React from "react";
 import formatDate from "../../../utils/formatDate";
 import { numberFormat } from "../../../utils/formatPrice";
 import { NewMainTable } from "../../../styles/globalStyles";
+import ApprovedProductPagination from "../GeneralPagination/ApprovedProductPagination";
+import ApprovedFilter from "../GeneralFilterTab/ApprovedProductsFilter";
 // import { AiFillCloseCircle } from "react-icons/ai";
 // import { MdEdit } from "react-icons/md";
 
@@ -12,12 +14,22 @@ function ApprovedProducts({
   pageIndex,
   setModal,
   status,
+  pageInfo,
+  changePage,
+  setProducts,
 }) {
   const handleModal = (action, id, verified) => {
     return setModal(action, id, verified);
   };
+
   return (
     <>
+      <ApprovedFilter setProducts={setProducts} />
+      <ApprovedProductPagination
+        pageIndex={pageIndex}
+        pageInfo={pageInfo}
+        handlePagination={changePage}
+      />
       <NewMainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
         <table className="w-full">
           {!status.isError && !status.isLoading && tableData && (
@@ -52,7 +64,7 @@ function ApprovedProducts({
                   >
                     <td>
                       <p className="status text-left text-sm text-white-text font-Regular capitalize">
-                        {pageIndex * 20 + (index + 1)}
+                        {(pageIndex - 1) * 20 + (index + 1)}
                       </p>
                     </td>
 

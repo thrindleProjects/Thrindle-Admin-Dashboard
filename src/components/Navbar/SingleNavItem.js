@@ -1,23 +1,26 @@
 import React from "react";
 import styled from "styled-components";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "./SingleNavItem.css";
 
 const SingleNavItem = (props) => {
-  const history = useHistory();
+  const location = useLocation();
 
-  const {
-    location: { pathname: routeName },
-  } = history;
+  const { pathname: routeName } = location;
   // console.log(props);
   return (
     // <></>
 
     <MainNav
-      exact
       to={props?.path}
       className="w-full px-2 flex flex-row text-white-text  mb-1 pl-5 font-Medium"
-      activeClassName="active-nav"
+      style={({ isActive }) =>
+        isActive && {
+          background: "#20639b",
+          color: "#fff",
+          fontFamily: "Avenir-Heavy",
+        }
+      }
     >
       <img
         src={props.path === routeName ? props.icon2 : props.icon}

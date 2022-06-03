@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import GeneralFilterTab from "../GeneralFilterTab/GeneralFilterTab";
+import GeneralPagination from "../GeneralPagination/GeneralPagination";
 // import { MdEdit } from "react-icons/md";
 // import { AiFillCloseCircle } from "react-icons/ai";
 
@@ -24,140 +26,173 @@ const InventoryTable = (props) => {
   };
 
   return (
-    <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
-      <table className="w-full min-w-min max-w-full">
-        <>
-          {!props.status.isError && !props.status.isLoading && props.tableData && (
-            <>
-              <thead>
-                <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-13 auto-cols-min gap-3 px-6">
-                  {props.tableHeaderData?.map((item, index) => (
-                    <th
-                      key={index}
-                      className={`text-left ${
-                        [
-                          "Action",
-                          "Category",
-                          "Product Title",
-                          "Market",
-                        ].includes(item.title) && "col-span-2 text-center"
-                      }`}
-                    >
-                      <p className="text-sm font-normal font-Regular text-white-text w-full">
-                        {item.title}
-                      </p>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-
-              <tbody className="main-table-body">
-                {props.tableData?.map((item, index) => {
-                  let marketName = getMarketName(item.store_id);
-                  let uploadDate = getUploadDate(item.createdAt);
-                  let serialNumber = props.pageIndex * 20 + (index + 1);
-                  return (
-                    <tr
-                      key={item._id}
-                      className="w-full grid grid-flow-row grid-cols-13 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
-                    >
-                      {props.showCheck && (
-                        <td
-                          onClick={() =>
-                            handleModal("SHOW_EDIT_MODAL", item._id)
-                          }
+    <>
+      <GeneralFilterTab
+        filter={props.filterValue}
+        filterData={props.products?.categories}
+        products={props.products}
+        setProducts={props.setProducts}
+        changeFilter={(val) => props.setFilterValue(val)}
+      />
+      <GeneralPagination
+        showButtons={false}
+        pag
+        handlePagination={props.handlePagination}
+        pageNumber={props.pageIndex}
+        itemsNumber={props.itemsNumber}
+        totalNumber={props.totalNumber}
+      />
+      <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
+        <table className="w-full min-w-min max-w-full">
+          <>
+            {!props.status.isError &&
+              !props.status.isLoading &&
+              props.tableData && (
+                <>
+                  <thead>
+                    <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-13 auto-cols-min gap-3 px-6">
+                      {props.tableHeaderData?.map((item, index) => (
+                        <th
+                          key={index}
+                          className={`text-left ${
+                            [
+                              "Action",
+                              "Category",
+                              "Product Title",
+                              "Market",
+                            ].includes(item.title) && "col-span-2 text-center"
+                          }`}
                         >
-                          {serialNumber}
-                        </td>
-                      )}
-
-                      <td
-                        onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
-                        className="col-span-2"
-                      >
-                        <p className="text-sm font-normal font-Regular text-left text-white-text">
-                          {item.name}
-                        </p>
-                      </td>
-                      <td
-                        onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
-                        className="col-span-2"
-                      >
-                        <p className="text-sm font-normal font-Regular text-left text-white-text">
-                          {item.category?.name}
-                        </p>
-                      </td>
-                      <td
-                        onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
-                      >
-                        <p className="text-sm font-normal font-Regular text-left text-white-text">
-                          N{item.price.toLocaleString()}
-                        </p>
-                      </td>
-                      <td
-                        onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
-                      >
-                        <p className="text-sm font-normal font-Regular text-left text-white-text">
-                          {item.weight ? item.weight : "N/A"}
-                        </p>
-                      </td>
-                      <td
-                        onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
-                        className="col-span-2"
-                      >
-                        <p className="text-sm font-normal font-Regular text-left text-white-text">
-                          {marketName}
-                        </p>
-                      </td>
-                      <td
-                        onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
-                      >
-                        <p className="text-sm font-normal font-Regular text-left text-white-text capitalize">
-                          {item.store_id}
-                        </p>
-                      </td>
-                      <td
-                        onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}
-                      >
-                        <p className="text-sm font-normal font-Regular text-left text-white-text capitalize">
-                          {uploadDate}
-                        </p>
-                      </td>
-                      <td className="col-span-2">
-                        <p className="text-small font-normal font-Regular text-left text-white-text flex flex-row gap-3">
-                          <button
-                            onClick={() =>
-                              handleModal(
-                                "SHOW_EDIT_MODAL",
-                                item._id,
-                                item.verified
-                              )
-                            }
-                            className="cursor-pointer flex flex-row gap-1 items-center text-primary-dark"
-                          >
-                            {/* <MdEdit className="text-2xl text-primary-dark" />{" "} */}
-                            Edit
-                          </button>
-                          <button
-                            className="cursor-pointer flex flex-row gap-2 items-center text-secondary-error"
-                            onClick={() =>
-                              props.displayDeleteModal(item._id, item)
-                            }
-                          >
-                            {/* <AiFillCloseCircle className="text-2xl text-secondary-error" />{" "} */}
-                            Delete
-                          </button>
-                        </p>
-                      </td>
+                          <p className="text-sm font-normal font-Regular text-white-text w-full">
+                            {item.title}
+                          </p>
+                        </th>
+                      ))}
                     </tr>
-                  );
-                })}
-              </tbody>
-            </>
-          )}
-        </>
-      </table>
-    </MainTable>
+                  </thead>
+
+                  <tbody className="main-table-body">
+                    {props.tableData?.map((item, index) => {
+                      let marketName = getMarketName(item.store_id);
+                      let uploadDate = getUploadDate(item.createdAt);
+                      let serialNumber = props.pageIndex * 20 + (index + 1);
+                      return (
+                        <tr
+                          key={item._id}
+                          className="w-full grid grid-flow-row grid-cols-13 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
+                        >
+                          {props.showCheck && (
+                            <td
+                              onClick={() =>
+                                handleModal("SHOW_EDIT_MODAL", item._id)
+                              }
+                            >
+                              {serialNumber}
+                            </td>
+                          )}
+
+                          <td
+                            onClick={() =>
+                              handleModal("SHOW_EDIT_MODAL", item._id)
+                            }
+                            className="col-span-2"
+                          >
+                            <p className="text-sm font-normal font-Regular text-left text-white-text">
+                              {item.name}
+                            </p>
+                          </td>
+                          <td
+                            onClick={() =>
+                              handleModal("SHOW_EDIT_MODAL", item._id)
+                            }
+                            className="col-span-2"
+                          >
+                            <p className="text-sm font-normal font-Regular text-left text-white-text">
+                              {item.category?.name}
+                            </p>
+                          </td>
+                          <td
+                            onClick={() =>
+                              handleModal("SHOW_EDIT_MODAL", item._id)
+                            }
+                          >
+                            <p className="text-sm font-normal font-Regular text-left text-white-text">
+                              N{item.price.toLocaleString()}
+                            </p>
+                          </td>
+                          <td
+                            onClick={() =>
+                              handleModal("SHOW_EDIT_MODAL", item._id)
+                            }
+                          >
+                            <p className="text-sm font-normal font-Regular text-left text-white-text">
+                              {item.weight ? item.weight : "N/A"}
+                            </p>
+                          </td>
+                          <td
+                            onClick={() =>
+                              handleModal("SHOW_EDIT_MODAL", item._id)
+                            }
+                            className="col-span-2"
+                          >
+                            <p className="text-sm font-normal font-Regular text-left text-white-text">
+                              {marketName}
+                            </p>
+                          </td>
+                          <td
+                            onClick={() =>
+                              handleModal("SHOW_EDIT_MODAL", item._id)
+                            }
+                          >
+                            <p className="text-sm font-normal font-Regular text-left text-white-text capitalize">
+                              {item.store_id}
+                            </p>
+                          </td>
+                          <td
+                            onClick={() =>
+                              handleModal("SHOW_EDIT_MODAL", item._id)
+                            }
+                          >
+                            <p className="text-sm font-normal font-Regular text-left text-white-text capitalize">
+                              {uploadDate}
+                            </p>
+                          </td>
+                          <td className="col-span-2">
+                            <p className="text-small font-normal font-Regular text-left text-white-text flex flex-row gap-3">
+                              <button
+                                onClick={() =>
+                                  handleModal(
+                                    "SHOW_EDIT_MODAL",
+                                    item._id,
+                                    item.verified
+                                  )
+                                }
+                                className="cursor-pointer flex flex-row gap-1 items-center text-primary-dark"
+                              >
+                                {/* <MdEdit className="text-2xl text-primary-dark" />{" "} */}
+                                Edit
+                              </button>
+                              <button
+                                className="cursor-pointer flex flex-row gap-2 items-center text-secondary-error"
+                                onClick={() =>
+                                  props.displayDeleteModal(item._id, item)
+                                }
+                              >
+                                {/* <AiFillCloseCircle className="text-2xl text-secondary-error" />{" "} */}
+                                Delete
+                              </button>
+                            </p>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </>
+              )}
+          </>
+        </table>
+      </MainTable>
+    </>
   );
 };
 

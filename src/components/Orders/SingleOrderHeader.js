@@ -1,29 +1,29 @@
-import styled from 'styled-components';
-import { HiDownload, HiOutlineArrowNarrowLeft } from 'react-icons/hi';
-import { useHistory } from 'react-router-dom';
+import styled from "styled-components";
+import { HiDownload, HiOutlineArrowNarrowLeft } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 
 const SingleOrderHeader = () => {
-  let history = useHistory();
+  let navigate = useNavigate();
 
   return (
     <div>
-      <MainHeader className='flex flex-row justify-between pt-5 pb-10'>
-        <h2 className='text-left header text-3xl font-ExtraBold mr-5'>
+      <MainHeader className="flex flex-row justify-between pt-5 pb-10">
+        <h2 className="text-left header text-3xl font-ExtraBold mr-5">
           Orders
         </h2>
-        <div className='export-cont rounded-md flex flex-row '>
-          <HiDownload className='text-primary-main text-lg mr-2' />
-          <p className='text-primary-main font-Regular text-base mr-2'>
+        <div className="export-cont rounded-md flex flex-row ">
+          <HiDownload className="text-primary-main text-lg mr-2" />
+          <p className="text-primary-main font-Regular text-base mr-2">
             Export
           </p>
         </div>
       </MainHeader>
-      <div className='flex items-center bg-secondary-header text-white-main p-4 rounded-md h-59.26'>
+      <div className="flex items-center bg-secondary-header text-white-main p-4 rounded-md h-59.26">
         <button
-          className='border border-white-main px-3 py-2 rounded-md cursor-pointer mr-4 flex items-center'
-          onClick={() => history.go(-1)}
+          className="border border-white-main px-3 py-2 rounded-md cursor-pointer mr-4 flex items-center"
+          onClick={() => navigate(-1)}
         >
-          <HiOutlineArrowNarrowLeft className='inline mr-1 align-middle' />
+          <HiOutlineArrowNarrowLeft className="inline mr-1 align-middle" />
           <span>Back</span>
         </button>
         <p>Order Details</p>

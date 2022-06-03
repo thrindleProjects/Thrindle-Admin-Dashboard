@@ -374,6 +374,7 @@ export const inventData = [
     icon: Image8,
     activeIcon: Image5,
     value: 0,
+    to: "",
   },
   {
     title: "Approved Products",
@@ -381,6 +382,7 @@ export const inventData = [
     icon: Image8,
     activeIcon: Image6,
     value: 0,
+    to: "approved-product",
   },
 ];
 
