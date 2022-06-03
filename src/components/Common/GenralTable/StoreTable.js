@@ -24,28 +24,28 @@ const StoreTable = (props) => {
           {props?.tableData?.map((item, index) => (
             <tr key={index} className="w-full grid grid-cols-7 cursor-pointer">
               <td>
-                <Link to={`store-details/${item.owner_id?.store_id}`}>
+                <Link to={`/store-details/${item.owner_id?.store_id}`}>
                   <p className="status text-center text-sm text-white-text font-Regular capitalize">
                     {props.pageIndex * 20 + (index + 1)}
                   </p>
                 </Link>
               </td>
               <td>
-                <Link to={`store-details/${item.owner_id?.store_id}`}>
+                <Link to={`/store-details/${item.owner_id?.store_id}`}>
                   <p className="status text-center text-sm text-white-text font-Regular capitalize">
                     {item.store_name}
                   </p>
                 </Link>
               </td>
               <td>
-                <Link to={`store-details/${item.owner_id?.store_id}`}>
+                <Link to={`/store-details/${item.owner_id?.store_id}`}>
                   <p className="status text-center text-sm text-white-text font-Regular capitalize">
                     {item?.owner_id?.store_id || "N/A"}
                   </p>
                 </Link>
               </td>
               <td>
-                <Link to={`store-details/${item.owner_id?.store_id}`}>
+                <Link to={`/store-details/${item.owner_id?.store_id}`}>
                   <p className="product text-center text-sm text-white-text font-Regular">
                     {item?.owner_id?.store_id?.startsWith("EM") && (
                       <span>Eko Market</span>
@@ -61,14 +61,14 @@ const StoreTable = (props) => {
               </td>
 
               <td>
-                <Link to={`store-details/${item.owner_id?.store_id}`}>
+                <Link to={`/store-details/${item.owner_id?.store_id}`}>
                   <p className="product text-center text-sm text-white-text font-Regular">
                     {formatDate(item?.owner_id?.createdAt)}
                   </p>
                 </Link>
               </td>
               <td>
-                <Link to={`store-details/${item.owner_id?.store_id}`}>
+                <Link to={`/store-details/${item.owner_id?.store_id}`}>
                   <p className="product text-center text-sm text-white-text font-Regular">
                     {formatDate(item?.owner_id?.updatedAt)}
                   </p>
