@@ -12,12 +12,11 @@ const SingleDetailCont = (props) => {
         <div className="flex flex-row icon-header">
           <img src={Image} alt="icon" className="block" />
           <p className="text-white-text font-Bold text-base ml-5">
-           {props.title}
+            {props.title}
           </p>
         </div>
         <NavLink
           to="#"
-          exact
           className="flex flex-row align-middle justify-end text-primary-light  view-cont"
         >
           <p className="text-xs view-btn font-Medium text-right text-priamry-main">

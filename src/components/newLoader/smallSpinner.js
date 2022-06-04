@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // const Container = styled.div`
 //   position: absolute;
@@ -49,7 +49,7 @@ const Spin = styled.div`
 
 const SmallSpinner = () => {
   const [networkFailure, setNetworkFailure] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timeoutID = setTimeout(() => {
@@ -70,7 +70,7 @@ const SmallSpinner = () => {
       ) : (
         <button
           className="cursor-pointer bg-primary-main text-white-main px-1 py-0.5 rounded-md text-sm"
-          onClick={() => history.go(0)}
+          onClick={() => navigate(0)}
         >
           Retry
         </button>

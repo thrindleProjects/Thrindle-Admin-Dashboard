@@ -100,7 +100,6 @@ const MainContainer = (props) => {
                 </div>
                 <NavLink
                   to="/notifications"
-                  exact
                   onClick={() => setNoti(false)}
                   className="absolute bottom-0 w-full h-10 rounded-md bg-secondary-yellow flex flex-row noti-bottom"
                 >
@@ -148,8 +147,12 @@ const MainContainer = (props) => {
                 <NavLink
                   to="/profile"
                   onClick={() => setDropdown(false)}
+                  style={({ isActive }) =>
+                    isActive
+                      ? { background: "rgba(22, 88, 143, 0.3)" }
+                      : undefined
+                  }
                   className="single-dropdown flex flex-row w-full px-3"
-                  activeClassName="nav-profile-dropdown"
                 >
                   <img
                     src={Image}
@@ -165,7 +168,11 @@ const MainContainer = (props) => {
                   to="/settings"
                   onClick={() => setDropdown(false)}
                   className="single-dropdown flex flex-row w-full px-3"
-                  activeClassName="nav-profile-dropdown"
+                  style={({ isActive }) =>
+                    isActive
+                      ? { background: "rgba(22, 88, 143, 0.3)" }
+                      : undefined
+                  }
                 >
                   <img
                     src={Image1}

@@ -9,18 +9,6 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
   const [show, setShow] = useState(false);
   const [nameFilter, setNameFilter] = useState("");
 
-  // Checks if the input value matches the item name using regex
-  // const checkName = (name, str) => {
-  //   let pattern = str
-  //     .split("")
-  //     .map((x) => {
-  //       return `(?=.*${x})`;
-  //     })
-  //     .join("");
-  //   let regex = new RegExp(`${pattern}`, "g");
-  //   return name.match(regex);
-  // };
-
   const filterByCategory = (category) => {
     let currentProducts = products.allProductsImmutable.filter((item) => {
       if (category === "No Weight") {

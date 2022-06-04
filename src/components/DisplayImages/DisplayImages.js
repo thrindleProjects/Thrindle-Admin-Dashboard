@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { CancelImage } from "../../assets/svg/cancelImage";
 import { PlusImage } from "../../assets/svg/plusImage";
 
-const Span = styled.span`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+const Span = styled.label`
+  /* position: absolute; */
+  /* top: 50%; */
+  /* left: 50%; */
+  /* transform: translate(-50%, -50%); */
 `;
 
 function DisplayImages({ imageList, onChange, deleteImage }) {
@@ -36,10 +36,16 @@ function DisplayImages({ imageList, onChange, deleteImage }) {
 
       {imageList.length < 6 ? (
         <div className="relative min-w-48 shadow-md rounded-2xl lg:min-w-0 lg:w-40 xl:w-52 xl:h-52">
-          <Span>{PlusImage}</Span>
+          <Span
+            className="w-full h-full flex items-center justify-center"
+            htmlFor="add-image"
+          >
+            {PlusImage}
+          </Span>
           <input
             type="file"
-            className="top-1/2 -translate-y-2/4 w-full z-10 opacity-0 h-full"
+            id="add-image"
+            className="hidden"
             onChange={onChange}
           />
         </div>

@@ -72,7 +72,11 @@ const MerchantProductsTable = ({
               <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text flex flex-row justify-center gap-2">
                 <button
                   onClick={() =>
-                    handleSetModal("SHOW_VERIFIED_EDIT_MODAL", product._id)
+                    handleSetModal(
+                      "SHOW_EDIT_MODAL",
+                      product._id,
+                      product.verified
+                    )
                   }
                   className="cursor-pointer flex flex-row items-center gap-px"
                 >

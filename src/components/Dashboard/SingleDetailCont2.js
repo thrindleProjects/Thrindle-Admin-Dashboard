@@ -16,7 +16,6 @@ const SingleDetailCont2 = (props) => {
         </div>
         <NavLink
           to="#"
-          exact
           className="flex flex-row align-middle justify-end text-primary-light  view-cont"
         >
           <p className="text-xs view-btn font-Medium text-right text-priamry-main">

@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { login_admin } from "../../../redux/actions/authActions/actions";
 import axiosInstance from "../../../utils/axiosInstance";
 import { errorHandler } from "../../../utils/axiosUtils";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -19,8 +19,7 @@ const Login = () => {
     password: "",
   });
 
-  
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { isLoading } = useSelector((state) => state.login);
@@ -39,7 +38,7 @@ const Login = () => {
         dispatch({
           type: constants.ADMIN_LOGIN_LOADING,
         });
-        
+
         const {
           data: {
             data: { user, access_token, refresh_token },
@@ -55,7 +54,7 @@ const Login = () => {
               refreshToken: refresh_token,
             },
           });
-          history.push("/");
+          navigate("/");
         }
       } catch (error) {
         errorHandler(error, dispatch);
