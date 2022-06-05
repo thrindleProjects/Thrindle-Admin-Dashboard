@@ -3,25 +3,13 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axiosInstance from "../../utils/axiosInstance";
-import {
-  productTypeArr,
-  unitsArr,
-  productSizes,
-  productSizes2,
-  mainColor,
-} from "../../data/sizeAndColor";
-import { Error } from "../../styles/globalStyles";
-import AddProductBtn from "../../components/Common/Button/AddProductBtn";
-import Dropdown from "../../components/Common/Dropdown/Dropdown";
-import InputWithFieldSet from "../../components/Common/Input/InputWithFieldSet";
-import TextArea from "../../components/Common/Input/TextArea";
-import DoubleDropdown from "../../components/Common/Input/DoubleDropdown";
-import SingleDropdown from "../../components/Common/Input/SingleDropdown";
-import DisplayImages from "../../components/DisplayImages/DisplayImages";
-import AddImageContainer from "../../components/AddImageContainer/AddImageContainer";
+import { productSizes, productSizes2 } from "../../data/sizeAndColor";
 import NavBar from "../../components/Common/NavBar/NavBar";
 import { toast } from "react-toastify";
-import CustomDropdown from "../../components/Common/Dropdown/CustomDropdown";
+import FormBody from "../../components/AddProducts/FormBody";
+import ImagesBody from "../../components/AddProducts/ImagesBody";
+import CropImageModal from "../../components/Inventory/CropImageModal";
+import axios from "axios";
 
 const AddProducts = () => {
   const [images, setImages] = useState([]);
@@ -46,6 +34,10 @@ const AddProducts = () => {
     size1: [],
     size2: [],
   });
+  const [cropModal, setCropModal] = useState({
+    activeImage: { src: "", type: "" },
+    isActive: false,
+  });
   const productSizeArr = productSizes.map((item) => item.title);
   const productSizeArr2 = productSizes2.map((item) => item.title);
   const navigate = useNavigate();
@@ -54,25 +46,42 @@ const AddProducts = () => {
   const chooseImage = (event) => {
     const imageList = Array.from(event.target.files);
 
-    let totalImages = images.lenght + imageList.length;
-    
-     let isImage = imageList.every((item) => item.type.includes("image"));
-     if (!isImage) {
-       toast.error("Only image files are allowed");
-       return;
-     }
+    let totalImages = images.length + imageList.length;
+
+    let isImage = imageList.every((item) => item.type.includes("image"));
+    if (!isImage) {
+      toast.error("Only image files are allowed");
+      return;
+    }
 
     if (totalImages > 6) {
       toast.error("You can only upload 6 images");
       return;
     }
 
-    if (imageList && imageList.type.startsWith("image")) {
-      let updatedList = [...images, imageList];
-      setImages(updatedList);
-    } else {
-      toast.warning("Please select a file of image type");
+    let isDuplicate = imageList.some((newImage) =>
+      images.some((item) => newImage.name === item.name)
+    );
+    if (isDuplicate) {
+      toast.error("Cannot have duplicate image");
+      return;
     }
+
+    let passed = imageList.every((item) => item.size < 1000000);
+    if (!passed) {
+      toast.error("Image size must be less than 1mb");
+      return;
+    }
+
+    setImages([
+      ...images,
+      ...imageList.map((item) => ({
+        type: "newImage",
+        name: item.name,
+        src: item,
+      })),
+    ]);
+    return;
   };
 
   const deleteImage = (val) => {
@@ -146,7 +155,7 @@ const AddProducts = () => {
     } = productData;
     let formData = new FormData();
 
-    images.forEach((item) => formData.append("images", item));
+    images.forEach((item) => formData.append("images", item.src));
     formData.append("name", title);
     formData.append("description", description);
     formData.append("category", category);
@@ -166,7 +175,6 @@ const AddProducts = () => {
         `products/admin/addproduct/${storeID}`,
         formData
       );
-      // console.log(`products/admin/addproduct/${storeID}`);
       if (data) {
         toast.success("Product was successfully added");
         setTimeout(() => {
@@ -176,10 +184,10 @@ const AddProducts = () => {
       }
     } catch (error) {
       if (error.response) {
-        console.log(error.response);
+        console.error(error.response);
         toast.warning(`${error.response.data.message}`);
       } else {
-        console.log(error);
+        console.error(error);
         toast.error(`${error}`);
       }
     } finally {
@@ -198,9 +206,9 @@ const AddProducts = () => {
       setCategories(category);
     } catch (error) {
       if (error.response) {
-        console.log(error.response);
+        console.error(error.response);
       } else {
-        console.log(error);
+        console.error(error);
       }
     }
   };
@@ -358,6 +366,93 @@ const AddProducts = () => {
     return value;
   };
 
+  const handleOnDragEnd = (result) => {
+    console.log(result);
+    if (!result.destination) return;
+    let imageList = images;
+    [imageList[result.source.index], imageList[result.destination.index]] = [
+      imageList[result.destination.index],
+      imageList[result.source.index],
+    ];
+    return setImages(imageList);
+  };
+
+  // open and close crop modal
+  const handleCropImageModalVisiblity = (action, payload) => {
+    switch (action) {
+      case "SHOW_CROP_IMAGE_MODAL":
+        setCropModal((old) => ({
+          ...old,
+          isActive: true,
+          activeImage: payload,
+        }));
+        // setModalId(modalId);
+        break;
+      case "CLOSE_CROP_IMAGE_MODAL":
+        setCropModal((old) => ({ ...old, isActive: false, activeImage: null }));
+        break;
+      default:
+        console.log("Invalid action");
+        break;
+    }
+  };
+
+  const handleSetCropImage = async (
+    image,
+    zoom = 1,
+    crop = { x: 0, y: 0 },
+    aspect = 1
+  ) => {
+    const config = { responseType: "blob" };
+    let something = await axios.get(image, config);
+    let fileName = image.split("/").pop();
+    let res = new File([something.data], `${fileName}`, {
+      type: "image/jpeg",
+    });
+    let croppedImage = {
+      type: "newImage",
+      src: res,
+      name: fileName,
+      original: cropModal.activeImage?.original
+        ? { ...cropModal.activeImage?.original, zoom, crop, aspect }
+        : { ...cropModal.activeImage, zoom, crop, aspect },
+    };
+
+    if (croppedImage.original.type === "newImage") {
+      let newImages = [...images];
+      // Find index of active image in newImages array
+      let index = newImages.findIndex(
+        (item) => item.src === cropModal.activeImage.src
+      );
+      [newImages[index]] = [croppedImage];
+      setImages(newImages);
+      setCropModal((old) => ({ ...old, activeImage: croppedImage }));
+    }
+    toast.success("Image cropped successfully");
+  };
+
+  // reset crop on single image
+  const handleResetCrop = (image) => {
+    let newImages = [...images];
+    let index = newImages.findIndex(
+      (item) => item.src === cropModal.activeImage.src
+    );
+    [newImages[index]] = [
+      { ...image.original, zoom: null, crop: null, aspect: null },
+    ];
+    setImages(newImages);
+    setCropModal((old) => ({
+      ...old,
+      activeImage: {
+        ...image.original,
+        zoom: null,
+        crop: null,
+        aspect: null,
+      },
+    }));
+    return toast.success("Image reset successfully");
+  };
+
   useEffect(() => {
     let mounted = true;
 
@@ -406,233 +501,64 @@ const AddProducts = () => {
     <>
       <NavBar />
       <div className="w-11/12 pt-10 mx-auto font-Regular">
+        {cropModal.isActive && (
+          <CropImageModal
+            handleCropImageModalVisiblity={handleCropImageModalVisiblity}
+            activeImage={cropModal.activeImage}
+            handleSetCropImage={handleSetCropImage}
+            cropInit={cropModal.activeImage?.original?.crop}
+            aspectInit={cropModal.activeImage?.original?.aspect}
+            zoomInit={cropModal.activeImage?.original?.zoom}
+            handleResetCrop={handleResetCrop}
+          />
+        )}
         <form
           onSubmit={formik.handleSubmit}
           className="w-full pb-20 lg:flex lg:justify-between lg:h-vh80"
         >
-          <div className="w-full lg:w-55">
-            <p className="text-white-text pb-4 font-Bold md:text-base text-sm">
-              Product Listing
-            </p>
-            {images.length !== 0 ? (
-              <DisplayImages
-                imageList={images}
-                deleteImage={(val) => deleteImage(val)}
-                onChange={chooseImage}
-              />
-            ) : (
-              <div className="border-0.98 border-dashed border-primary-main rounded-md flex flex-col items-center justify-center md:py-24 py-10 xl:px-10 md:px-10 px-5">
-                <AddImageContainer onChange={chooseImage} required={true} />
-
-                <p className="md:text-sm text-xs text-white-lightGray font-Bold pt-5">
-                  You can attach multiple images (1-6) 500px by 500px
-                </p>
-              </div>
-            )}
-          </div>
-
-          <div className="w-full lg:w-40 lg:overflow-y-scroll md:pr-4">
-            <div className="my-3">
-              <InputWithFieldSet
-                type="text"
-                id="title"
-                name="title"
-                fieldset="Product title"
-                placeholder="Enter product title"
-                value={formik.values.title}
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-              />
-              <Error>
-                {formik.errors.title && formik.touched.title ? (
-                  <>{formik.errors.title}</>
-                ) : null}
-              </Error>
-            </div>
-
-            <div className="my-3">
-              <TextArea
-                type="textarea"
-                fieldset="Description"
-                id="description"
-                name="description"
-                placeholder="Enter product description"
-                rows={3}
-                value={formik.values.description}
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-              />
-              <Error>
-                {formik.errors.description && formik.touched.description ? (
-                  <>{formik.errors.description}</>
-                ) : null}
-              </Error>
-            </div>
-
-            <div className="my-3">
-              <Dropdown
-                fieldset="Market"
-                list={markets}
-                id="market"
-                name="market"
-                emptyValue="Choose a Market"
-                value={marketValue}
-                onChange={(value) => selectMarket(value)}
-                required={true}
-              />
-            </div>
-
-            <div className="my-3 ">
-              <CustomDropdown
-                fieldset="Stores"
-                marketValue={marketValue}
-                getMarketID={getMarketID}
-                searchStoreValue={searchStoreValue}
-                setStoreValue={setStoreValue}
-                handleSearch={(value) => handleSearch(value)}
-              />
-            </div>
-
-            <div className="my-3">
-              <Dropdown
-                fieldset="Category"
-                list={categories}
-                id="category"
-                name="category"
-                emptyValue="Choose a Category"
-                value={categoryValue}
-                onChange={(value) => selectCategory(value)}
-                required={true}
-              />
-            </div>
-
-            <div className="my-3">
-              <Dropdown
-                fieldset="Sub Category"
-                list={subCategory}
-                id="subCategory"
-                name="subCategory"
-                emptyValue="Choose a Sub Category"
-                value={subCategoryValue}
-                onChange={(value) => selectSubCategory(value)}
-                required={true}
-              />
-            </div>
-
-            <div className="my-3">
-              <Dropdown
-                weightClass={true}
-                fieldset="Weight Class"
-                list={weightClass}
-                id="weightClass"
-                name="weightClass"
-                emptyValue="Choose a Weight Class"
-                value={weightClassValue}
-                onChange={(value) => selectWeightClass(value)}
-                required={true}
-              />
-            </div>
-
-            {storeID?.startsWith("CV") && (
-              <div className="my-3">
-                <Dropdown
-                  fieldset="Product type"
-                  list={productTypeArr}
-                  id="productType"
-                  name="productType"
-                  emptyValue="Select an option"
-                  value={productType}
-                  onChange={(value) => selectProductType(value)}
-                  required={true}
-                />
-              </div>
-            )}
-
-            <div className="my-3">
-              <InputWithFieldSet
-                type="number"
-                id="productStock"
-                name="productStock"
-                fieldset="Product Stock"
-                placeholder="Number of product in stock"
-                value={formik.values.productStock}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              <Error>
-                {formik.errors.productStock && formik.touched.productStock ? (
-                  <>{formik.errors.productStock}</>
-                ) : null}
-              </Error>
-            </div>
-
-            <div className="my-3">
-              <Dropdown
-                fieldset="Unit"
-                list={unitsArr}
-                id="unit"
-                name="unit"
-                emptyValue="Choose a unit"
-                value={unit}
-                onChange={(val) => selectUnit(val)}
-                required={true}
-              />
-            </div>
-
-            <div className="my-3">
-              <InputWithFieldSet
-                type="number"
-                id="price"
-                name="price"
-                fieldset="Price"
-                placeholder="Enter Product Price"
-                value={formik.values.price}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              <Error>
-                {formik.errors.price && formik.touched.price ? (
-                  <>{formik.errors.price}</>
-                ) : null}
-              </Error>
-            </div>
-
-            <div className="flex my-3">
-              <DoubleDropdown
-                fieldset="Sizes"
-                list1={productSizeArr}
-                list2={productSizeArr2}
-                emptyState1="e.g Small"
-                emptyState2="e.g 30"
-                onChange1={(value) => chooseSize1(value)}
-                onChange2={(value) => chooseSize2(value)}
-                currentSize={currentSize}
-                removeSize1={removeSize1}
-                removeSize2={removeSize2}
-              />
-            </div>
-
-            <div className="flex my-3">
-              <SingleDropdown
-                fieldset="Colors"
-                mainColors={mainColor}
-                colors={colors}
-                emptyState="Product Color"
-                onChange={(value) => chooseColor(value)}
-                removeColor={removeColor}
-              />
-            </div>
-
-            <div className="my-6">
-              <AddProductBtn
-                blueBg
-                longButton
-                text="Add product"
-                type="submit"
-                processing={uploading}
-              />
-            </div>
-          </div>
+          <ImagesBody
+            images={images}
+            deleteImage={deleteImage}
+            chooseImage={chooseImage}
+            handleOnDragEnd={handleOnDragEnd}
+            handleCropImageModalVisiblity={handleCropImageModalVisiblity}
+          />
+          <FormBody
+            formik={formik}
+            markets={markets}
+            marketValue={marketValue}
+            selectMarket={selectMarket}
+            getMarketID={getMarketID}
+            searchStoreValue={searchStoreValue}
+            setStoreValue={setStoreValue}
+            handleSearch={handleSearch}
+            categories={categories}
+            categoryValue={categoryValue}
+            selectCategory={selectCategory}
+            subCategory={subCategory}
+            subCategoryValue={subCategoryValue}
+            selectSubCategory={selectSubCategory}
+            weightClass={weightClass}
+            selectWeightClass={selectWeightClass}
+            weightClassValue={weightClassValue}
+            storeID={storeID}
+            productType={productType}
+            selectProductType={selectProductType}
+            productSizeArr={productSizeArr}
+            productSizeArr2={productSizeArr2}
+            unit={unit}
+            selectUnit={selectUnit}
+            chooseSize1={chooseSize1}
+            chooseSize2={chooseSize2}
+            currentSize={currentSize}
+            removeSize1={removeSize1}
+            removeSize2={removeSize2}
+            colors={colors}
+            chooseColor={chooseColor}
+            removeColor={removeColor}
+            uploading={uploading}
+            handleOnDragEnd={handleOnDragEnd}
+          />
         </form>
       </div>
     </>

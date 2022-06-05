@@ -9,6 +9,10 @@ const Fieldset = styled.fieldset`
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   padding: 0 5px 5px;
+  &:focus-within {
+    border: 1px solid #f39e28;
+    box-shadow: 3px 4px 10px rgba(237, 56, 51, 0.25);
+  }
 `;
 
 const Box = styled.div`

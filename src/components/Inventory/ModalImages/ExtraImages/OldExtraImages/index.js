@@ -33,11 +33,6 @@ const OldExtraImages = ({
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    // style={getListItemStyle(
-                    //   snapshot.isDragging,
-                    //   snapshot.draggingOver,
-                    //   index === 0
-                    // )}
                     className="h-full rounded-md shadow-md flex-shrink-0 relative"
                     onClick={(e) => handleImageChange(e, image)}
                   >
