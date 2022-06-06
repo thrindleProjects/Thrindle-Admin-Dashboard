@@ -29,6 +29,7 @@ function ApprovedProducts({
         pageIndex={pageIndex}
         pageInfo={pageInfo}
         handlePagination={changePage}
+        pageLength={tableData.length}
       />
       <NewMainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
         <table className="w-full">

@@ -79,7 +79,7 @@ const Inventory = (props) => {
   //   setProducts({ ...products, pageIndex: 0 });
   // };
 
-  // HandlePagination
+  // HandlePagination for frontend paginated table
   const handlePagination = (type) => {
     switch (type) {
       case "NEXT_PAGE":
@@ -107,20 +107,33 @@ const Inventory = (props) => {
     }
   };
 
-  // HandlePagination
-  const changePage = (type) => {
+  // HandlePagination for backend paginated table
+  const changePage = (type, payload = products.pageInfo?.currentPage) => {
+    let changeParams = {};
+    if (!!search) changeParams.search = search;
+
     switch (type) {
       case "NEXT_PAGE":
-        let changeNextParams = {};
-        if (!!search) changeNextParams.search = search;
-        changeNextParams.page = products.pageInfo?.next?.page;
-        setSearchParams(changeNextParams);
+        changeParams.page = products.pageInfo?.next?.page;
+        setSearchParams(changeParams);
         break;
       case "PREVIOUS_PAGE":
-        let changePrevParams = {};
-        if (!!search) changePrevParams.search = search;
-        changePrevParams.page = products.pageInfo?.previous?.page;
-        setSearchParams(changePrevParams);
+        changeParams.page = products.pageInfo?.previous?.page;
+        setSearchParams(changeParams);
+        break;
+      case "FIRST_PAGE":
+        if (payload === 1) return;
+        changeParams.page = 1;
+        setSearchParams(changeParams);
+        break;
+      case "LAST_PAGE":
+        if (payload === products.pageInfo?.total) return;
+        changeParams.page = products.pageInfo?.total;
+        setSearchParams(changeParams);
+        break;
+      case "GO_TO_PAGE":
+        changeParams.page = payload;
+        setSearchParams(changeParams);
         break;
       default:
         console.log("Argumenet NOT handled");
@@ -212,6 +225,35 @@ const Inventory = (props) => {
           }
 
           if (params["*"] === "approved-product") {
+            const numberOfPagesToBeDisplayed = 5;
+            let pageNumber = Number(page);
+            // Create array of all possible pages
+            let rightHandSide = Array.from(
+              { length: approvedPageInfo.total },
+              (_, index) => index + 1
+            );
+            let leftHandSide;
+            leftHandSide = rightHandSide.splice(0, pageNumber);
+
+            let maxLeft =
+              rightHandSide.length < 3
+                ? numberOfPagesToBeDisplayed - rightHandSide.length
+                : 3;
+            let maxRight =
+              leftHandSide.length < 3
+                ? numberOfPagesToBeDisplayed - leftHandSide.length
+                : 2;
+
+            //Get first three items from leftHandSide if its length
+            // is larger than 3
+            leftHandSide = leftHandSide.reverse().slice(0, maxLeft).reverse();
+            rightHandSide = rightHandSide.slice(0, maxRight);
+            let newPages = leftHandSide
+              .concat(rightHandSide)
+              .map((item) => ({ page: item, limit: 20 }));
+            approvedPageInfo.displayPages = newPages;
+            approvedPageInfo.currentPage = pageNumber;
+
             setProducts((prevState) => ({
               ...prevState,
               allProducts: approvedProductsArr,

@@ -21,6 +21,7 @@ import {
 } from "./utils";
 
 const InventoryEditModal = (props) => {
+  console.log(props.modalId);
   const modalRef = useRef(null);
   const [modalData, setModalData] = useState([]);
   const [imagesHandler, setImagesHandler] = useState({
@@ -713,7 +714,6 @@ const InventoryEditModal = (props) => {
     });
     return;
   }, [formData.category.name]);
-
 
   return (
     <ModalWrapper className="fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center">

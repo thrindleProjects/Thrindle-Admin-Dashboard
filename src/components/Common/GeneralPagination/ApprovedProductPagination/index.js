@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
+import { CgChevronDoubleRight, CgChevronDoubleLeft } from "react-icons/cg";
 
 const ApprovedProductPagination = ({
   pageInfo,
   pageIndex,
   handlePagination,
+  pageLength,
 }) => {
   const [pagData, setPageInfo] = useState({
     startNumber: 0,
     endNumber: 0,
     totalNumber: 0,
+    displayPages: [],
   });
 
   useEffect(() => {
     let startNumber = (pageIndex - 1) * 20 + 1;
-    let endNumber = startNumber + 19;
+    let endNumber = (pageIndex - 1) * 20 + pageLength;
     let totalNumber = pageInfo?.totalProducts;
     return setPageInfo({ startNumber, endNumber, totalNumber });
-  }, [pageIndex, pageInfo?.totalProducts]);
+  }, [pageIndex, pageInfo?.totalProducts, pageLength]);
 
   return (
     <MainPagination className={`w-full flex flex-row flex-wrap mt-14`}>
@@ -39,20 +41,32 @@ const ApprovedProductPagination = ({
         {/* CONTROLS */}
         <div className="controls flex flex-row gap-4">
           <button
-            onClick={() => handlePagination("PREVIOUS_PAGE")}
-            className={`single-controls flex flex-row w-12 h-12 p-3 rounded-md focus:outline-none outline-none ${
-              pageInfo?.previous ? "possible" : ""
-            }`}
+            onClick={() => handlePagination("FIRST_PAGE")}
+            className={`single-controls first-page flex flex-row w-8 h-8 p-2 rounded-full focus:outline-none outline-none`}
           >
-            <FaAngleLeft className="text-base single-control-icon text-center text-white-main" />
+            <CgChevronDoubleLeft className="text-base single-control-icon text-center text-white-main" />
           </button>
+          {pageInfo?.displayPages?.map((item) => (
+            <button
+              key={item.page}
+              className={`text-sm ${
+                pageInfo?.currentPage === item.page
+                  ? "text-primary-main font-black underline"
+                  : "text-gray-700"
+              }`}
+              onClick={(e) => {
+                if (pageInfo?.currentPage === item.page) return;
+                handlePagination("GO_TO_PAGE", item.page);
+              }}
+            >
+              {item.page}
+            </button>
+          ))}
           <button
-            onClick={() => handlePagination("NEXT_PAGE")}
-            className={`single-controls flex flex-row w-12 h-12 p-3 rounded-md focus:outline-none outline-none ${
-              pageInfo?.next ? "possible" : ""
-            }`}
+            onClick={() => handlePagination("LAST_PAGE")}
+            className={`single-controls last-page flex flex-row w-8 h-8 p-2 rounded-full focus:outline-none outline-none`}
           >
-            <FaAngleRight className="text-base single-control-icon text-center text-white-main" />
+            <CgChevronDoubleRight className="text-base single-control-icon text-center text-white-main" />
           </button>
         </div>
       </div>
@@ -86,6 +100,13 @@ const MainPagination = styled.div`
     align-items: center;
     justify-content: center;
     background: #fafafa;
+    border: 1px solid #20639b;
+    &:hover {
+      background: #20639b;
+      .single-control-icon {
+        color: #fff;
+      }
+    }
   }
   .single-controls.possible {
     background: #20639b;
@@ -94,6 +115,6 @@ const MainPagination = styled.div`
     }
   }
   .single-control-icon {
-    color: #2f3133;
+    color: #20639b;
   }
 `;
