@@ -6,7 +6,6 @@ const BigImage = ({
   handleImageDelete,
   handleImageUpload,
   imagesHandler,
-  setImagesHandler,
   handleCropImageModalVisiblity,
 }) => {
   return (

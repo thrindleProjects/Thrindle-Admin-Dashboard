@@ -3,7 +3,7 @@ import CloseModalButton from "../../CloseModalButton";
 
 const CloseCropImageModalButton = ({ handleCropImageModalVisiblity }) => {
   return (
-    <div className="w-max h-max ml-auto">
+    <div className="w-max h-max ml-auto cursor-pointer">
       <CloseModalButton
         handleFormCancel={() =>
           handleCropImageModalVisiblity("CLOSE_CROP_IMAGE_MODAL")
