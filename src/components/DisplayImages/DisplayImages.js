@@ -76,13 +76,14 @@ function DisplayImages({
                 <Label
                   className="w-full h-full flex items-center justify-center"
                   htmlFor="add-image"
+                  onDrop={onChange}
                 >
                   {PlusImage}
                 </Label>
                 <input
                   type="file"
                   id="add-image"
-                  className="hidden"
+                  className="opacity-0 absolute top-0 right-0 h-full w-full"
                   onChange={onChange}
                   multiple
                 />

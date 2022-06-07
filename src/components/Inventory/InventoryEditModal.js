@@ -21,7 +21,6 @@ import {
 } from "./utils";
 
 const InventoryEditModal = (props) => {
-  console.log(props.modalId);
   const modalRef = useRef(null);
   const [modalData, setModalData] = useState([]);
   const [imagesHandler, setImagesHandler] = useState({

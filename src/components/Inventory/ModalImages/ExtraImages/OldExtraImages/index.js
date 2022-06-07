@@ -80,14 +80,14 @@ const OldExtraImages = ({
           {/* Upload new image if total images < 6 */}
           {imagesHandler.oldImages.length + imagesHandler.newImages.length <
             6 && (
-            <li className="h-full w-12 text-white-main text-3xl bg-primary-main rounded-md flex-shrink-0">
+            <li className="h-full w-12 text-white-main text-3xl bg-primary-main rounded-md flex-shrink-0 relative">
               <input
                 type="file"
                 name="image"
                 id="image"
                 multiple
                 onChange={handleImageUpload}
-                className="hidden"
+                className="opacity-0 absolute top-0 left-0 w-full h-full"
               />
               <label
                 htmlFor="image"
