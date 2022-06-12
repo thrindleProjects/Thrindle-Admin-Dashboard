@@ -43,7 +43,7 @@ const InventoryTable = (props) => {
         totalNumber={props.totalNumber}
       />
       <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
-        <table className="w-full min-w-min max-w-full">
+        <table className="w-max min-w-min max-w-5xl">
           <>
             {!props.status.isError &&
               !props.status.isLoading &&
@@ -224,7 +224,8 @@ const MainTable = styled.div`
   }
 
   tr {
-    height: 80px;
+    min-height: 80px;
+    height: fit-content;
     align-items: center;
     justify-content: space-between;
   }

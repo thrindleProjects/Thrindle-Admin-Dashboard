@@ -1,8 +1,8 @@
 const getMarketName = (storeId) => {
-  if (storeId?.startsWith("CV")) return "Computer Village";
-  if (storeId?.startsWith("BM")) return "Eko Market";
-  if (storeId?.startsWith("EM")) return "Eko Market";
-  if (storeId?.startsWith("TM")) return "Thrindle Mall";
+  if (storeId?.startsWith("CV")) return "CV";
+  if (storeId?.startsWith("BM")) return "EM";
+  if (storeId?.startsWith("EM")) return "EM";
+  if (storeId?.startsWith("TM")) return "TM";
   return "Other Market";
 };
 

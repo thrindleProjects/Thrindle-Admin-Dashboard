@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FaSearch, FaAngleDown } from "react-icons/fa";
-import { HiDownload } from "react-icons/hi";
+// import { HiDownload } from "react-icons/hi";
 import paginationArr from "../../../utils/pagination";
 import getMarketName from "../../../utils/getMarketName";
-import { CSVLink } from "react-csv";
+// import { CSVLink } from "react-csv";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setFilterNameValue,
@@ -16,26 +16,26 @@ const StoresFilterTab = ({ filterData, stores, allStores }) => {
   const dispatch = useDispatch();
   const { nameFilter } = useSelector((state) => state.stores);
 
-  const storeName = allStores.map((item) => item?.store_name);
-  const address = allStores.map((item) => item?.store_address);
-  const email = allStores.map((item) => item?.owner_id?.email);
-  const phone = allStores.map((item) => item?.owner_id?.phone);
-  const id = allStores.map((item) => item?.owner_id?.store_id);
-  const merchantName = allStores.map((item) => item?.owner_id?.name);
+  // const storeName = allStores.map((item) => item?.store_name);
+  // const address = allStores.map((item) => item?.store_address);
+  // const email = allStores.map((item) => item?.owner_id?.email);
+  // const phone = allStores.map((item) => item?.owner_id?.phone);
+  // const id = allStores.map((item) => item?.owner_id?.store_id);
+  // const merchantName = allStores.map((item) => item?.owner_id?.name);
 
-  const storesData = [
-    { ...id },
-    { ...email },
-    { ...phone },
-    { ...storeName },
-    { ...merchantName },
-    { ...address },
-  ];
+  // const storesData = [
+  //   { ...id },
+  //   { ...email },
+  //   { ...phone },
+  //   { ...storeName },
+  //   { ...merchantName },
+  //   { ...address },
+  // ];
 
-  const storesReport = {
-    filename: "Report.csv",
-    data: storesData,
-  };
+  // const storesReport = {
+  //   filename: "Report.csv",
+  //   data: storesData,
+  // };
 
   // console.log(storesReport);
 
@@ -186,7 +186,7 @@ const StoresFilterTab = ({ filterData, stores, allStores }) => {
   }, []);
 
   return (
-    <MainCont className="w-full flex flex-row mt-5 flex-wrap">
+    <MainCont className="w-full flex flex-row mt-5 flex-nowrap gap-2">
       {/* Search  */}
       <div className="order-search-cont flex flex-row px-2 rounded-md  lg:mb-0 mb-8">
         <FaSearch className="text-sm mr-2 text-white-text" />
@@ -245,12 +245,12 @@ const StoresFilterTab = ({ filterData, stores, allStores }) => {
       </div>
 
       {/* EXPORT */}
-      <CSVLink {...storesReport}>
+      {/* <CSVLink {...storesReport}>
         <div className="export-cont rounded-md flex flex-row ">
           <HiDownload className="text-primary-main text-lg mr-2" />
           <p className="text-primary-main font-Regular text-sm mr-2">Export</p>
         </div>
-      </CSVLink>
+      </CSVLink> */}
     </MainCont>
   );
 };
@@ -261,7 +261,7 @@ const MainCont = styled.div`
   align-items: center;
   justify-content: flex-end;
   .order-search-cont {
-    width: 250px;
+    width: 60%;
     border: 1px solid #464f54;
     align-items: center;
     height: 45px;
@@ -276,7 +276,7 @@ const MainCont = styled.div`
     }
   }
   .filter-cont {
-    width: 150px;
+    width: 40%;
     border: 1px solid #16588f;
     height: 45px;
     align-items: center;
@@ -302,6 +302,21 @@ const MainCont = styled.div`
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease-in-out;
+  }
+
+  @media (min-width: 768px) {
+    .order-search-cont {
+    }
+  }
+  @media (min-width: 1024px) {
+    .order-search-cont {
+      width: 250px;
+      height: 45px;
+    }
+    .filter-cont {
+      width: 150px;
+      height: 45px;
+    }
   }
   @media (max-width: 1000px) {
     justify-content: space-between;

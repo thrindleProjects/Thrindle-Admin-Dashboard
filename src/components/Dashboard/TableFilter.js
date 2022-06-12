@@ -28,29 +28,6 @@ const TableFilter = (props) => {
           </div>
         )}
       </div>
-      {/* <div className="filter-tab-cont rounded-md flex flex-row px-1 ">
-        {props.data.map((item, index) => (
-          <div
-            key={index}
-            className={
-              item.title === props.value
-                ? "single-tab rounded-md flex flex-row cursor-pointer  activeTab"
-                : "single-tab rounded-md flex flex-row cursor-pointer "
-            }
-            onClick={() => props.changeTab(item.title)}
-          >
-            <p
-              className={
-                item.title === props.value
-                  ? "text-white-text tex-sm tab-text activeColor"
-                  : "text-white-text tex-sm tab-text "
-              }
-            >
-              {item.title}
-            </p>
-          </div>
-        ))}
-      </div> */}
     </MainCont>
   );
 };
@@ -69,7 +46,6 @@ const MainCont = styled.div`
     background: #fafafa;
   }
   .single-tab {
-    /* width: ${({ length }) => (length ? `${100 / length}%` : "50%")}; */
     align-items: center;
     justify-content: center;
     height: 80%;
@@ -110,7 +86,6 @@ const MainCont = styled.div`
       margin-top: 20px;
     }
     .single-tab {
-      /* width: ${({ length }) => (length ? `${100 / length}%` : "50%")}; */
       align-items: center;
       justify-content: center;
       height: 90%;

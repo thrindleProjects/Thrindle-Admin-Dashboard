@@ -4,21 +4,26 @@ import formatDate from "../../../utils/formatDate";
 // import BuyersFilterTab from "../GeneralFilterTab/BuyersFilterTab";
 
 const BuyersTable = (props) => {
+  const hiddenMobile = ["Joined", "Last Update"];
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
-      <table className="w-full min-w-min max-w-full">
+      <table className="w-max min-w-full md:max-w-6xl max-w-2xl">
         <thead>
-          <tr className="main-table-header rounded-md grid gap-3 grid-cols-9 px-6">
+          <tr className="main-table-header rounded-md grid gap-3 grid-cols-7 md:grid-cols-9 px-6">
             {props.tableHeaderData?.map((item, index) => (
               <th
                 key={index}
                 className={`${
-                  ["Email", "Buyer's Name"].includes(item.title)
+                  ["Email", "Buyer's Name", "Phone No"].includes(item.title)
                     ? "col-span-2"
                     : ""
-                }`}
+                } ${
+                  hiddenMobile.includes(item.title)
+                    ? "hidden md:flex items-center"
+                    : "flex items-center"
+                } `}
               >
-                <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text">
+                <p className="table-head-text text-xs md:text-sm font-normal font-Regular text-left text-white-text">
                   {item.title}
                 </p>
               </th>
@@ -32,42 +37,42 @@ const BuyersTable = (props) => {
             return (
               <tr
                 key={item._id}
-                className="w-full grid grid-flow-row grid-cols-9 gap-3 px-6 py-3 "
+                className="text-xs md:text-sm w-full grid grid-flow-row grid-cols-7 md:grid-cols-9 gap-3 px-6 py-3"
               >
-                <td>
-                  <p className="capitalize status text-left text-sm text-white-text font-Regular">
+                <td className="flex items-center">
+                  <p className="capitalize status text-left text-white-text font-Regular">
                     {serialNumber}
                   </p>
                 </td>
 
-                <td className="col-span-2">
-                  <p className="capitalize status text-left text-sm text-white-text font-Regular">
+                <td className="col-span-2 break-all flex items-center">
+                  <p className="capitalize status text-left text-white-text font-Regular">
                     {item.name}
                   </p>
                 </td>
-                <td>
-                  <p className="orderId text-left text-sm text-white-text font-Regular">
+                <td className="col-span-2 break-all flex items-center">
+                  <p className="orderId text-left text-white-text font-Regular">
                     {item.phone}
                   </p>
                 </td>
 
-                <td className="col-span-2">
-                  <p className="product text-left text-sm text-white-text font-Regular">
+                <td className="col-span-2 break-all flex items-center">
+                  <p className="product text-left text-white-text font-Regular">
                     {item.email ? item.email : "N/A"}
                   </p>
                 </td>
-                <td>
-                  <p className="product text-left text-sm text-white-text font-Regular">
+                {/* <td>
+                  <p className="product text-left text-white-text font-Regular">
                     {item.referralCode || "N/A"}
                   </p>
-                </td>
-                <td>
-                  <p className="product text-left text-sm text-white-text font-Regular">
+                </td> */}
+                <td className="hidden md:flex items-center">
+                  <p className="product text-left text-white-text font-Regular">
                     {formatDate(item.createdAt)}
                   </p>
                 </td>
-                <td>
-                  <p className="product text-left text-sm text-white-text font-Regular">
+                <td className="hidden md:flex items-center">
+                  <p className="product text-left text-white-text font-Regular">
                     {formatDate(item.updatedAt)}
                   </p>
                 </td>
@@ -100,10 +105,10 @@ const MainTable = styled.div`
     height: 50px;
   }
 
-  td,
+  /* td,
   th {
     display: flex;
     align-items: center;
-    justify-content: center;
-  }
+    justify-content: flex-start;
+  } */
 `;

@@ -465,7 +465,7 @@ export const inventFilter = [
   { title: "Price" },
   { title: "Market" },
   { title: "Store" },
-  { title: "Upload date" },
+  { title: "Uploaded" },
 ];
 
 export const orderTableHeader = [
@@ -491,7 +491,7 @@ export const orderTableHeader = [
     title: "Market",
   },
   {
-    title: "Upload Date",
+    title: "Ordered",
   },
   {
     title: "Action",
@@ -521,7 +521,7 @@ export const orderTableHeaderNoAction = [
     title: "Market",
   },
   {
-    title: "Upload Date",
+    title: "Ordered",
   },
 ];
 
@@ -548,7 +548,7 @@ export const dashbordHeader = [
     title: "Sub Category",
   },
   {
-    title: "Upload Date",
+    title: "Uploaded",
   },
 ];
 
@@ -567,7 +567,7 @@ export const approvedProductHeader = [
 
   "Market",
 
-  "Upload Date",
+  "Uploaded",
 
   "Action",
 ];
@@ -604,7 +604,7 @@ export const buyersHeader = [
   { title: "Buyer's Name" },
   { title: "Phone No" },
   { title: "Email" },
-  { title: "Referral Code" },
+  // { title: "Referral Code" },
   { title: "Joined" },
   { title: "Last Update" },
 ];
@@ -637,9 +637,9 @@ export const storeHeader = [
     title: "Joined",
   },
   { title: "Last Update" },
-  {
-    title: "Action",
-  },
+  // {
+  //   title: "Action",
+  // },
 ];
 
 export const inventTableHeader = [
@@ -650,7 +650,7 @@ export const inventTableHeader = [
   { title: "Weight" },
   { title: "Market" },
   { title: "Store" },
-  { title: "Upload Date" },
+  { title: "Uploaded" },
   { title: "Action" },
 ];
 
@@ -704,7 +704,7 @@ export const merchantProductsTableHeader = [
   { title: "Stock" },
   { title: "Category" },
   { title: "Price" },
-  { title: "Upload Date" },
+  { title: "Uploaded" },
   { title: "Action" },
 ];
 

@@ -97,9 +97,17 @@ const ModalWrapper = styled.div`
 const ModalContainer = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
   background-color: #ffffff;
-  width: 30%;
+  width: 80%;
   min-height: 10rem;
   max-height: 85vh;
+
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+
+  @media (min-width: 1024px) {
+    width: 30%;
+  }
   p {
     display: flex;
     gap: 0.75rem;

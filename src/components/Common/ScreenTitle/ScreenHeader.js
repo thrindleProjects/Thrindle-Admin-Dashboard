@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const ScreenHeader = (props) => {
   return (
-    <MainHeader className="flex flex-row pt-5 pb-10">
-      <h2 className="text-left header text-3xl font-ExtraBold mr-5">
+    <MainHeader className="flex flex-row pt-5 pb-5 lg:pb-10">
+      <h2 className="text-left header text-lg md:text-2xl lg:text-3xl font-ExtraBold mr-5">
         {props.title}
       </h2>
       {props.noVal ? (
@@ -26,12 +26,25 @@ const MainHeader = styled.div`
     color: #2f3133;
   }
   .box {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    aspect-ratio: 1;
     border-radius: 50px;
     align-items: center;
     justify-content: center;
   }
+
+  @media (min-width: 768px) {
+    .box {
+      width: 40px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .box {
+      width: 50px;
+    }
+  }
+
   @media (min-width: 2000px) {
     .header {
       font-size: 36px;
