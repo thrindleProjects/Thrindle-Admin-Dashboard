@@ -27,6 +27,7 @@ function MerchantDetails() {
             `/sellers/stores/admin/getStoreDetails/${store_id}`
           );
           setProfileData(res.data.data);
+        
           setLoadingProfile(false);
         } catch (error) {
           if (error.response) {
@@ -47,6 +48,8 @@ function MerchantDetails() {
       mounted = false;
     };
   }, [store_id]);
+
+  console.log(profileData)
   return (
     <div className="mb-12">
       <div className="rounded-md shadow-md">
@@ -146,6 +149,20 @@ function MerchantDetails() {
                       {profileData?.owner_id?.store_id.startsWith("CV") && (
                         <span>Computer Village</span>
                       )}
+                    </p>
+                    </div>
+                       <div className="flex justify-between items-center p-4">
+                    <div>
+                      {" "}
+                      <GoLocation className="inline mr-1 text-primary-dark2" />
+                      <span className="text-white-lightGrey3 font-Bold  ml-1">
+                        Store Description
+                      </span>
+                    </div>
+                    <p className="w-1/2">
+                      {profileData?.description === "undefined"
+                        ? "N/A"
+                        : profileData.description}
                     </p>
                   </div>
                 </div>
