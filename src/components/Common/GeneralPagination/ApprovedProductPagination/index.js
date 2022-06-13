@@ -26,30 +26,34 @@ const ApprovedProductPagination = ({
     <MainPagination className={`w-full flex flex-row flex-wrap mt-14`}>
       <div className="ml-auto pagination flex flex-row ">
         <div className="num-cont flex flex-row mr-10">
-          <span className="text-white-text font-Bold text-sm">
+          <span className="text-white-text font-Bold text-xs md:text-sm">
             {pagData?.startNumber}
           </span>
-          <span className="text-white-text font-Bold text-sm mb-1">-</span>
-          <span className="text-white-text font-Bold text-sm">
+          <span className="text-white-text font-Bold text-xs md:text-sm mb-1">
+            -
+          </span>
+          <span className="text-white-text font-Bold text-xs md:text-sm">
             {pagData?.endNumber}
           </span>
-          <span className="text-white-text font-Bold text-sm">&nbsp;of</span>
-          <span className="text-white-text font-Bold text-sm">
+          <span className="text-white-text font-Bold text-xs md:text-sm">
+            &nbsp;of
+          </span>
+          <span className="text-white-text font-Bold text-xs md:text-sm">
             &nbsp;{pagData?.totalNumber}
           </span>
         </div>
         {/* CONTROLS */}
-        <div className="controls flex flex-row gap-4">
+        <div className="controls flex flex-row gap-2 md:gap-4">
           <button
             onClick={() => handlePagination("FIRST_PAGE")}
-            className={`single-controls first-page flex flex-row w-8 h-8 p-2 rounded-full focus:outline-none outline-none`}
+            className={`single-controls first-page flex flex-row w-5 h-5 md:w-8 md:h-8 md:p-2 rounded-full focus:outline-none outline-none`}
           >
             <CgChevronDoubleLeft className="text-base single-control-icon text-center text-white-main" />
           </button>
           {pageInfo?.displayPages?.map((item) => (
             <button
               key={item.page}
-              className={`text-sm ${
+              className={`text-xs md:text-sm ${
                 pageInfo?.currentPage === item.page
                   ? "text-primary-main font-black underline"
                   : "text-gray-700"
@@ -64,7 +68,7 @@ const ApprovedProductPagination = ({
           ))}
           <button
             onClick={() => handlePagination("LAST_PAGE")}
-            className={`single-controls last-page flex flex-row w-8 h-8 p-2 rounded-full focus:outline-none outline-none`}
+            className={`single-controls last-page flex flex-row w-5 h-5 md:w-8 md:h-8 md:p-2 rounded-full focus:outline-none outline-none`}
           >
             <CgChevronDoubleRight className="text-base single-control-icon text-center text-white-main" />
           </button>

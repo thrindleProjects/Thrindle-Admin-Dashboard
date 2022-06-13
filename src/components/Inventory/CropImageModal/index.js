@@ -140,7 +140,7 @@ const CropImageModal = ({
   }, [activeImage, onFileChange]);
 
   return (
-    <ModalWrapper className="fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center">
+    <ModalWrapper className="fixed inset-x-0 inset-y-0 bg-black bg-opacity-25 w-full h-full z-50 flex items-center justify-center text-xs md:text-sm">
       <ModalContainer
         ref={modalRef}
         className="relative rounded-md py-4 px-2 overflow-y-auto overflow-x-hidden flex flex-col gap-4 items-center justify-center"
@@ -183,9 +183,9 @@ const ModalWrapper = styled.div`
 const ModalContainer = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
   background-color: #ffffff;
-  width: 50%;
-  min-height: 35rem;
-  height: 70vh;
+  width: 95%;
+  height: 35rem;
+  max-height: 85vh;
   p {
     display: flex;
     gap: 0.75rem;
@@ -198,5 +198,11 @@ const ModalContainer = styled.div`
   .custom-input {
     padding: 0.5rem 1rem;
     border: 1px solid #16588f;
+  }
+  @media (min-width: 768px) {
+    width: 80%;
+  }
+  @media (min-width: 1024px) {
+    width: 50%;
   }
 `;

@@ -198,10 +198,11 @@ const InventoryEditModal = (props) => {
         setModalData(data);
         setCategoryHandler((old) => {
           return { ...old, marketName };
-        });
+        });;
       } catch (error) {
         if (error.message) {
           toast.error(error.message);
+
           throw new Error(error.message);
         }
         toast.error("Something went wrong");
@@ -770,7 +771,7 @@ const ModalWrapper = styled.div`
 const ModalContainer = styled.div`
   box-shadow: 0px 50px 18px 1px rgba(0, 0, 0, 0.08);
   background-color: #ffffff;
-  width: 30%;
+  width: 95%;
   min-height: 20rem;
   max-height: 85vh;
   p {
@@ -785,5 +786,12 @@ const ModalContainer = styled.div`
   .custom-input {
     padding: 0.5rem 1rem;
     border: 1px solid #16588f;
+  }
+
+  @media (min-width: 768px) {
+    width: 80%;
+  }
+  @media (min-width: 1024px) {
+    width: 50%;
   }
 `;

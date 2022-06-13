@@ -1,4 +1,4 @@
-const formatDate = (date) => {
+const   formatDate = (date) => {
   const months = [
     "Jan",
     "Feb",

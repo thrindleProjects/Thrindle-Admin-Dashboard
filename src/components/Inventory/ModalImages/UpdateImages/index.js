@@ -13,7 +13,7 @@ const UpdateImages = ({ handleRestoreImages, handleImageUpdate }) => {
         className="border border-primary-dark bg-primary-dark text-white-main cursor-pointer"
         onClick={handleImageUpdate}
       >
-        Update Images
+        Update
       </ModalButton>
     </div>
   );
@@ -25,5 +25,11 @@ const ModalButton = styled.button`
   padding: 0.5rem 1.75rem;
   border-radius: 0.375rem;
   font-weight: 600;
+  font-size: 0.75rem /* 12px */;
+  line-height: 1rem /* 16px */;
   cursor: pointer;
+  @media (min-width: 768px) {
+    font-size: 0.875rem /* 14px */;
+    line-height: 1.25rem /* 20px */;
+  }
 `;
