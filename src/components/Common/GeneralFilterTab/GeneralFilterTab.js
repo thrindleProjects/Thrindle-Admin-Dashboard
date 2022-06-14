@@ -125,7 +125,7 @@ const GeneralFilterTab = ({ filterData, products, setProducts }) => {
   }, []);
 
   return (
-    <MainCont className="w-full flex flex-row mt-5 flex-wrap">
+    <MainCont className="w-full flex flex-row mt-5 flex-nowrap gap-2">
       {/* Search  */}
       <div className="order-search-cont flex flex-row px-2 rounded-md  lg:mb-0 mb-8">
         <FaSearch className="text-sm mr-2 text-white-text" />
@@ -199,7 +199,7 @@ const MainCont = styled.div`
   align-items: center;
   justify-content: flex-end;
   .order-search-cont {
-    width: 250px;
+    width: 60%;
     border: 1px solid #464f54;
     align-items: center;
     height: 45px;
@@ -214,7 +214,7 @@ const MainCont = styled.div`
     }
   }
   .filter-cont {
-    width: 150px;
+    width: 40%;
     border: 1px solid #16588f;
     height: 45px;
     align-items: center;
@@ -240,6 +240,21 @@ const MainCont = styled.div`
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease-in-out;
+  }
+
+  @media (min-width: 768px) {
+    .order-search-cont {
+    }
+  }
+  @media (min-width: 1024px) {
+    .order-search-cont {
+      width: 250px;
+      height: 45px;
+    }
+    .filter-cont {
+      width: 150px;
+      height: 45px;
+    }
   }
   @media (max-width: 1000px) {
     justify-content: space-between;

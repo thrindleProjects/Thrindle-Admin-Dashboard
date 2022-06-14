@@ -8,11 +8,11 @@ import { numberFormat } from "../../../utils/formatPrice";
 const OrderTable = (props) => {
   const navigate = useNavigate();
   const getMarketName = (storeId) => {
-    if (storeId.startsWith("CV")) return "Computer Village";
-    if (storeId.startsWith("BM")) return "Eko Market";
-    if (storeId.startsWith("EM")) return "Eko Market";
-    if (storeId.startsWith("TM")) return "Thrindle Mall";
-    return "Other Market";
+    if (storeId.startsWith("CV")) return "CV";
+    if (storeId.startsWith("BM")) return "EM";
+    if (storeId.startsWith("EM")) return "EM";
+    if (storeId.startsWith("TM")) return "TM";
+    return "N/A";
   };
 
   const getUploadDate = (updatedAt) => {
@@ -35,29 +35,27 @@ const OrderTable = (props) => {
 
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
-      <table className="w-max lg:w-full min-w-min lg:max-w-full overflow-y-auto">
-        <thead>
-          <tr
-            className={`main-table-header rounded-md lg:grid lg:grid-flow-row lg:grid-cols-11 auto-cols-min gap-3 px-6 ${
-              props.activeTab === `Pending Orders` && `lg:grid-cols-13`
-            }`}
-          >
-            {props.tableHeaderData?.map((item, index) => (
-              <th
-                key={index}
-                className={`text-sm font-normal font-Regular text-center text-white-text  ${
-                  ["Action", "Order No", "Product Name", "Market"].includes(
-                    item.title
-                  ) && "col-span-2"
-                } 
+      <table className="w-max max-w-7xl lg:w-full min-w-min lg:max-w-full overflow-y-auto">
+        <thead
+          className={`main-table-header rounded-md grid grid-flow-row auto-cols-min gap-3 px-6 py-2 ${
+            props.activeTab === `Pending Orders`
+              ? `grid-cols-12`
+              : "grid-cols-10"
+          }`}
+        >
+          {props.tableHeaderData?.map((item, index) => (
+            <tr
+              key={index}
+              className={`text-xs md:text-sm font-normal font-Regular text-center text-white-text  ${
+                ["Action", "Product Name", "Order No"].includes(item.title) && "col-span-2"
+              } 
               `}
-              >
-                {item.title}
-              </th>
-            ))}
-          </tr>
+            >
+              <th>{item.title}</th>
+            </tr>
+          ))}
         </thead>
-        <tbody className="main-table-body">
+        <tbody className="main-table-body text-xs md:text-sm">
           {props.tableData?.map((item, index) => {
             let storeId =
               item.product && item.product.store_id
@@ -72,14 +70,16 @@ const OrderTable = (props) => {
             return (
               <tr
                 key={index}
-                className={`min-w-full w-max lg:w-full flex shrink-0 lg:grid lg:grid-flow-row lg:grid-cols-11 gap-3 auto-cols-min px-6 py-3 cursor-pointer ${
-                  props.activeTab === `Pending Orders` && `lg:grid-cols-13`
+                className={`text-xs md:text-xs w-full grid grid-flow-row gap-3 auto-cols-min px-6 py-3 cursor-pointer ${
+                  props.activeTab === `Pending Orders`
+                    ? `grid-cols-12`
+                    : "grid-cols-10"
                 }`}
               >
                 <td>{serialNumber}</td>
                 <td>
                   <p
-                    className={`status text-sm font-Regular capitalize ${
+                    className={`status font-Regular capitalize ${
                       props.activeTab === "Pending Orders" &&
                       "text-secondary-yellow"
                     } ${
@@ -93,11 +93,8 @@ const OrderTable = (props) => {
                     {item?.status}
                   </p>
                 </td>
-                <td
-                  className="col-span-2"
-                  onClick={() => handleSetSingleOrder(item)}
-                >
-                  <p className="text-sm font-normal font-Regular text-white-text ">
+                <td onClick={() => handleSetSingleOrder(item)} className="col-span-2">
+                  <p className="font-normal font-Regular text-white-text ">
                     {item?.order_no}
                   </p>
                 </td>
@@ -105,38 +102,35 @@ const OrderTable = (props) => {
                   className="col-span-2"
                   onClick={() => handleSetSingleOrder(item)}
                 >
-                  <p className="text-sm font-normal font-Regular text-white-text">
+                  <p className="font-normal font-Regular text-white-text truncate ...">
                     {productName}
                   </p>
                 </td>
 
                 <td onClick={() => handleSetSingleOrder(item)}>
-                  <p className="text-sm font-normal font-Regular text-white-text">
+                  <p className="font-normal font-Regular text-white-text">
                     N{numberFormat(item?.total_price)}
                   </p>
                 </td>
                 <td>
-                  <p className="text-sm font-normal font-Regular text-white-text">
+                  <p className="font-normal font-Regular text-white-text">
                     {item?.quantity}
                   </p>
                 </td>
 
-                <td
-                  className="col-span-2"
-                  onClick={() => handleSetSingleOrder(item)}
-                >
-                  <p className="text-sm font-normal font-Regular text-white-text">
+                <td onClick={() => handleSetSingleOrder(item)}>
+                  <p className="font-normal font-Regular text-white-text">
                     {marketName}
                   </p>
                 </td>
                 <td onClick={() => handleSetSingleOrder(item)}>
-                  <p className="text-sm font-normal font-Regular text-left text-white-text">
+                  <p className="font-normal font-Regular text-left text-white-text">
                     {updatedAt}
                   </p>
                 </td>
                 {props.activeTab === "Pending Orders" && (
                   <td className="col-span-2">
-                    <div className="flex justify-center">
+                    <div className="flex flex-start">
                       <p
                         className="product text-xs actionText text-secondary-success font-Regular cursor-pointer"
                         onClick={(e) => openModal(e, item?.order_no)}
@@ -168,7 +162,7 @@ const MainTable = styled.div`
 
   .main-table-header {
     width: 100%;
-    height: 65px;
+    /* height: 65px; */
     align-items: center;
     border-bottom: 1.5px solid #f4f4f4;
     border-top: 1.5px solid #f4f4f4;
@@ -181,11 +175,11 @@ const MainTable = styled.div`
   td,
   th {
     padding: 0px !important;
-    text-align: center;
+    /* text-align: center; */
   }
 
   tr {
-    height: 80px;
+    /* height: 80px; */
     align-items: center;
   }
 `;

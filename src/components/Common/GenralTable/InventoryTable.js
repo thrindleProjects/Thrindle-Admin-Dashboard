@@ -1,20 +1,16 @@
 import styled from "styled-components";
+import getMarketName from "../../../utils/getMarketName";
 import GeneralFilterTab from "../GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../GeneralPagination/GeneralPagination";
 // import { MdEdit } from "react-icons/md";
 // import { AiFillCloseCircle } from "react-icons/ai";
 
 const InventoryTable = (props) => {
+  const hiddenMobile = ["Uploaded"];
+  const doubleColumn = [ "Category", "Product Title"];
+
   const handleModal = (action, id, verified) => {
     return props.setModal(action, id);
-  };
-
-  const getMarketName = (storeId) => {
-    if (storeId.startsWith("CV")) return "Computer Village";
-    if (storeId.startsWith("BM")) return "Eko Market";
-    if (storeId.startsWith("EM")) return "Eko Market";
-    if (storeId.startsWith("TM")) return "Thrindle Mall";
-    return "Other Market";
   };
 
   const getUploadDate = (updatedAt) => {
@@ -42,28 +38,24 @@ const InventoryTable = (props) => {
         itemsNumber={props.itemsNumber}
         totalNumber={props.totalNumber}
       />
-      <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
-        <table className="w-full min-w-min max-w-full">
+      <MainTable className="w-full rounded-md pt-10 mt-5 overflow-auto">
+        <table className="w-max min-w-full max-w-2xl md:max-w-3xl lg:max-w-4xl">
           <>
             {!props.status.isError &&
               !props.status.isLoading &&
               props.tableData && (
                 <>
                   <thead>
-                    <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-13 auto-cols-min gap-3 px-6">
+                    <tr className="main-table-header rounded-md grid grid-flow-row grid-cols-9 md:grid-cols-10 auto-cols-min gap-3 px-6">
                       {props.tableHeaderData?.map((item, index) => (
                         <th
                           key={index}
-                          className={`text-left ${
-                            [
-                              "Action",
-                              "Category",
-                              "Product Title",
-                              "Market",
-                            ].includes(item.title) && "col-span-2 text-center"
+                          className={`text-left  ${hiddenMobile.includes(item.title) ? "hidden md:block" : "block"} ${
+                            doubleColumn.includes(item.title) &&
+                            "col-span-2 text-left"
                           }`}
                         >
-                          <p className="text-sm font-normal font-Regular text-white-text w-full">
+                          <p className="text-xs md:text-sm font-normal font-Regular text-white-text w-full">
                             {item.title}
                           </p>
                         </th>
@@ -79,17 +71,16 @@ const InventoryTable = (props) => {
                       return (
                         <tr
                           key={item._id}
-                          className="w-full grid grid-flow-row grid-cols-13 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
+                          className="w-full grid grid-flow-row grid-cols-9 md:grid-cols-10 gap-3 auto-cols-min px-6 py-3 cursor-pointer"
                         >
-                          {props.showCheck && (
-                            <td
-                              onClick={() =>
-                                handleModal("SHOW_EDIT_MODAL", item._id)
-                              }
-                            >
-                              {serialNumber}
-                            </td>
-                          )}
+                          <td
+                            onClick={() =>
+                              handleModal("SHOW_EDIT_MODAL", item._id)
+                            }
+                            className="text-left text-xs md:text-sm"
+                          >
+                            {serialNumber}
+                          </td>
 
                           <td
                             onClick={() =>
@@ -97,7 +88,7 @@ const InventoryTable = (props) => {
                             }
                             className="col-span-2"
                           >
-                            <p className="text-sm font-normal font-Regular text-left text-white-text">
+                            <p className="text-xs md:text-sm font-normal font-Regular text-left text-white-text break-all">
                               {item.name}
                             </p>
                           </td>
@@ -107,7 +98,7 @@ const InventoryTable = (props) => {
                             }
                             className="col-span-2"
                           >
-                            <p className="text-sm font-normal font-Regular text-left text-white-text">
+                            <p className="text-xs md:text-sm font-normal font-Regular text-left text-white-text">
                               {item.category?.name}
                             </p>
                           </td>
@@ -116,7 +107,7 @@ const InventoryTable = (props) => {
                               handleModal("SHOW_EDIT_MODAL", item._id)
                             }
                           >
-                            <p className="text-sm font-normal font-Regular text-left text-white-text">
+                            <p className="text-xs md:text-sm font-normal font-Regular text-left text-white-text">
                               N{item.price.toLocaleString()}
                             </p>
                           </td>
@@ -124,18 +115,9 @@ const InventoryTable = (props) => {
                             onClick={() =>
                               handleModal("SHOW_EDIT_MODAL", item._id)
                             }
+                            className=""
                           >
-                            <p className="text-sm font-normal font-Regular text-left text-white-text">
-                              {item.weight ? item.weight : "N/A"}
-                            </p>
-                          </td>
-                          <td
-                            onClick={() =>
-                              handleModal("SHOW_EDIT_MODAL", item._id)
-                            }
-                            className="col-span-2"
-                          >
-                            <p className="text-sm font-normal font-Regular text-left text-white-text">
+                            <p className="text-xs md:text-sm font-normal font-Regular text-left text-white-text">
                               {marketName}
                             </p>
                           </td>
@@ -144,7 +126,7 @@ const InventoryTable = (props) => {
                               handleModal("SHOW_EDIT_MODAL", item._id)
                             }
                           >
-                            <p className="text-sm font-normal font-Regular text-left text-white-text capitalize">
+                            <p className="text-xs md:text-sm font-normal font-Regular text-left text-white-text capitalize">
                               {item.store_id}
                             </p>
                           </td>
@@ -152,13 +134,14 @@ const InventoryTable = (props) => {
                             onClick={() =>
                               handleModal("SHOW_EDIT_MODAL", item._id)
                             }
+                            className="hidden md:block"
                           >
-                            <p className="text-sm font-normal font-Regular text-left text-white-text capitalize">
+                            <p className="text-xs md:text-sm font-normal font-Regular text-left text-white-text capitalize">
                               {uploadDate}
                             </p>
                           </td>
-                          <td className="col-span-2">
-                            <p className="text-small font-normal font-Regular text-left text-white-text flex flex-row gap-3">
+                          <td className="">
+                            <p className="text-xs md:text-sm font-normal font-Regular text-left text-white-text flex flex-row gap-3">
                               <button
                                 onClick={() =>
                                   handleModal(
@@ -218,32 +201,10 @@ const MainTable = styled.div`
     background-color: #fafafa;
   }
 
-  tr td {
-    padding: 0px !important;
-    text-align: center;
-  }
-
   tr {
-    height: 80px;
+    min-height: 80px;
+    height: fit-content;
     align-items: center;
     justify-content: space-between;
   }
-
-  p,
-  td {
-    display: flex;
-    justify-content: center;
-  }
 `;
-
-/* <td onClick={() => handleModal("SHOW_EDIT_MODAL", item._id)}>
-                  <p
-                    className={`status text-left text-sm font-Regular capitalize ${
-                      item.verified
-                        ? "text-primary-dark"
-                        : "text-secondary-yellow"
-                    }`}
-                  >
-                    {item.verified ? "Approved" : "Pending"}
-                  </p>
-                </td> */

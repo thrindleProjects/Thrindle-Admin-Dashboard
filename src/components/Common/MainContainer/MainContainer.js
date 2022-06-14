@@ -237,12 +237,12 @@ const MainContainer = (props) => {
       </SideNav>
       <MainContent className="w-full ">
         {/* MOBILE SEARCH */}
-        <SearchCont2 className="inputCont2 bg-white-main mb-10 mt-5 rounded-xl lg:hidden">
+        {/* <SearchCont2 className="inputCont2 bg-white-main mb-10 mt-5 rounded-xl lg:hidden">
           <div className="icon-cont2 ">
             <FaSearch className="text-white-text text-base" />
           </div>
           <input placeholder="Search" className="search-input2 ml-2" />
-        </SearchCont2>
+        </SearchCont2> */}
         {props.children}
       </MainContent>
     </MainCont>
@@ -431,39 +431,39 @@ const MainContent = styled.div`
     padding: 80px 15px;
   }
 `;
-const SearchCont2 = styled.div`
-  display: none;
-  height: 48px;
-  align-items: center;
-  flex-direction: row;
-  padding-left: 20px;
-  padding-right: 20px;
-  box-shadow: 0px 30px 40px rgba(0, 0, 0, 0.04);
-  .icon-cont2 {
-    width: 5%;
-  }
-  .search-input2 {
-    background: transparent;
-    border: 0px;
-    width: 85%;
-    color: #211c33;
+// const SearchCont2 = styled.div`
+//   display: none;
+//   height: 48px;
+//   align-items: center;
+//   flex-direction: row;
+//   padding-left: 20px;
+//   padding-right: 20px;
+//   box-shadow: 0px 30px 40px rgba(0, 0, 0, 0.04);
+//   .icon-cont2 {
+//     width: 5%;
+//   }
+//   .search-input2 {
+//     background: transparent;
+//     border: 0px;
+//     width: 85%;
+//     color: #211c33;
 
-    &::placeholder {
-      color: #bbb7ca;
-      font-size: 14px;
-    }
-    &:focus {
-      outline: none !important;
-      border: 0px !important;
-    }
-  }
-  @media (max-width: 1000px) {
-    // margin: 15px;
-    display: flex;
-    align-items: center;
-    height: 40px;
-  }
-`;
+//     &::placeholder {
+//       color: #bbb7ca;
+//       font-size: 14px;
+//     }
+//     &:focus {
+//       outline: none !important;
+//       border: 0px !important;
+//     }
+//   }
+//   @media (max-width: 1000px) {
+//     // margin: 15px;
+//     display: flex;
+//     align-items: center;
+//     height: 40px;
+//   }
+// `;
 
 const SideNav = styled.div`
   z-index: 900;

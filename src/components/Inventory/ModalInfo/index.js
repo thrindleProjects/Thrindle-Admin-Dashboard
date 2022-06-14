@@ -53,7 +53,7 @@ const ModalInfo = ({
           handleResetCrop={handleResetCrop}
         />
       )}
-      <form key={item._id} className="items-center flex flex-col gap-8">
+      <form key={item._id} className="items-center flex flex-col gap-8 text-xs md:text-sm">
         <ModalImages
           imagesHandler={imagesHandler}
           setImagesHandler={setImagesHandler}

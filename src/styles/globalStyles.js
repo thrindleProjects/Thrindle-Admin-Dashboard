@@ -19,7 +19,7 @@ export const NewMainTable = styled.div`
     width: 100%;
     height: 50px;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     border-bottom: 1.5px solid #f4f4f4;
     border-top: 1.5px solid #f4f4f4;
   }
@@ -28,23 +28,23 @@ export const NewMainTable = styled.div`
     background-color: #fafafa;
   }
 
-  tr,
+  /* tr,
   td,
   th {
     justify-content: center;
     align-items: center;
-  }
+  } */
 
-  tr,
+  /* tr,
   th {
     height: 80px;
     align-items: center;
-  }
+  } */
 
-  th,
+  /* th,
   td {
     display: flex;
-  }
+  } */
 `;
 
 export const Modal = styled.div`
