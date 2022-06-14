@@ -43,8 +43,8 @@ function App() {
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.key}>
           <Route path="/login" element={<Login />} />
-          <Route path="/login/forget-password" component={ForgetPassword} />
-          <Route path="/login/reset-password" component={ResetPassword} />
+          <Route path="/login/forget-password" element={<ForgetPassword/>} />
+          <Route path="/login/reset-password" element={<ResetPassword/>} />
           {routes.map(({ path, component }, index) => (
             <Route
               path={path}

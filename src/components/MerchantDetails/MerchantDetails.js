@@ -59,7 +59,7 @@ function MerchantDetails() {
             <NewLoader />
           </div>
         ) : (
-          <div className="bg-white-main flex justify-between items-center w-85 mx-auto py-8 ">
+          <div className="bg-white-main flex flex-wrap justify-between items-center w-85 mx-auto py-8 ">
             <div>
               {profileData?.owner_id?.photo === null ? (
                 <NoImage store_name={profileData?.store_name} />
@@ -86,7 +86,7 @@ function MerchantDetails() {
               </p>
             </div>
 
-            <div className="w-65">
+            <div className="w-full md:w-65">
               <div className="bg-white-lightGrey2 p-4 font-Bold capitalize">
                 {profileData?.owner_id?.name}
               </div>

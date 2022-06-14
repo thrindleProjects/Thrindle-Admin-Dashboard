@@ -7,14 +7,14 @@ import getMarketName from "../../../utils/getMarketName";
 
 const StoreTable = (props) => {
   return (
-    <NewMainTable className="w-full rounded-md py-10 mt-5 overflow-auto">
+    <NewMainTable className="w-full rounded-md pt-10 mt-5 overflow-auto">
       <table className="w-max min-w-full md:max-w-6xl max-w-2xl">
         <thead className="main-table-header rounded-md flex w-full">
-          <tr className="w-full grid grid-cols-7">
+          <tr className="w-full grid grid-cols-7 px-6">
             {props.tableHeaderData?.map((item, index) => (
               <th
                 key={index}
-                className={`table-head-text text-sm font-normal font-Regular text-left text-white-text px-2 ${
+                className={`table-head-text text-xs md:text-sm font-normal font-Regular text-left text-white-text px-2 ${
                   ["Store Name"].includes(item.title) ? "col-span-2" : ""
                 }`}
               >
@@ -25,7 +25,7 @@ const StoreTable = (props) => {
         </thead>
         <tbody className="main-table-body text-xs md:text-sm">
           {props?.tableData?.map((item, index) => (
-            <tr key={index} className="w-full grid grid-cols-7 cursor-pointer py-2">
+            <tr key={index} className="w-full grid grid-cols-7 cursor-pointer py-3 px-6">
               <td className="flex items-center px-2">
                 <Link to={`/store-details/${item.owner_id?.store_id}`}>
                   <p className="status text-left text-xs md:text-sm text-white-text font-Regular capitalize">
@@ -69,17 +69,6 @@ const StoreTable = (props) => {
                   </p>
                 </Link>
               </td>
-              {/* 
-              <td>
-                <div className="w-full flex justify-center">
-                  <p className="product text-xs actionText text-secondary-success font-Regular cursor-pointer">
-                    Approve
-                  </p>
-                  <p className="product text-xs actionText text-secondary-error font-Regular cursor-pointer pl-2">
-                    Decline
-                  </p>
-                </div>
-              </td> */}
             </tr>
           ))}
         </tbody>
