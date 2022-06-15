@@ -27,7 +27,7 @@ function MerchantDetails() {
             `/sellers/stores/admin/getStoreDetails/${store_id}`
           );
           setProfileData(res.data.data);
-        
+
           setLoadingProfile(false);
         } catch (error) {
           if (error.response) {
@@ -49,9 +49,8 @@ function MerchantDetails() {
     };
   }, [store_id]);
 
-  console.log(profileData)
   return (
-    <div className="mb-12">
+    <div className="mb-12 text-xs md:text-sm">
       <div className="rounded-md shadow-md">
         <MerchantHeader text="Merchant's Details" backBtn={true} />
         {loadingProfile ? (
@@ -59,8 +58,8 @@ function MerchantDetails() {
             <NewLoader />
           </div>
         ) : (
-          <div className="bg-white-main flex flex-wrap justify-between items-center w-85 mx-auto py-8 ">
-            <div>
+          <div className="bg-white-main flex flex-wrap  justify-center md:justify-between items-center w-85 mx-auto py-8 ">
+            <div className="flex flex-col justify-center">
               {profileData?.owner_id?.photo === null ? (
                 <NoImage store_name={profileData?.store_name} />
               ) : (
@@ -78,7 +77,7 @@ function MerchantDetails() {
                 {" "}
                 {profileData?.store_name}
               </p>
-              <p className="w-max my-1 mx-auto text-sm text-white-lightGrey">
+              <p className="w-max my-1 mx-auto text-white-lightGrey">
                 {profileData?.owner_id?.name}
               </p>
               <p className="w-max my-2 mx-auto">
@@ -92,7 +91,7 @@ function MerchantDetails() {
               </div>
               <div className="bg-white-light">
                 <div>
-                  <div className="flex justify-between items-center p-4">
+                  <div className="flex gap-2 items-start p-4">
                     <div>
                       {" "}
                       <BiMessageDetail className="inline mr-1 text-primary-dark2" />
@@ -100,12 +99,12 @@ function MerchantDetails() {
                         Email
                       </span>
                     </div>
-                    <p className="capitalize">
+                    <p>
                       {profileData?.owner_id?.email || "N/A"}
                     </p>
                   </div>
 
-                  <div className="flex justify-between items-center p-4">
+                  <div className="flex gap-2 items-start p-4">
                     <div>
                       {" "}
                       <BsTelephoneFill className="inline mr-1 text-primary-dark2" />
@@ -116,12 +115,12 @@ function MerchantDetails() {
                     <p>{profileData?.owner_id?.phone}</p>
                   </div>
 
-                  <div className="flex justify-between items-center p-4">
+                  <div className="flex gap-2 items-start p-4">
                     <div>
                       {" "}
                       <GoLocation className="inline mr-1 text-primary-dark2" />
                       <span className="text-white-lightGrey3 font-Bold  ml-1">
-                        Store Location
+                        Location
                       </span>
                     </div>
                     <p>
@@ -131,7 +130,7 @@ function MerchantDetails() {
                     </p>
                   </div>
 
-                  <div className="flex justify-between items-center p-4">
+                  <div className="flex gap-2 items-start p-4">
                     <div>
                       {" "}
                       <FaAddressCard className="inline mr-1 text-primary-dark2" />
@@ -150,13 +149,13 @@ function MerchantDetails() {
                         <span>Computer Village</span>
                       )}
                     </p>
-                    </div>
-                       <div className="flex justify-between items-center p-4">
+                  </div>
+                  <div className="flex gap-2 items-start p-4">
                     <div>
                       {" "}
                       <GoLocation className="inline mr-1 text-primary-dark2" />
                       <span className="text-white-lightGrey3 font-Bold  ml-1">
-                        Store Description
+                        Description
                       </span>
                     </div>
                     <p className="w-1/2">
