@@ -12,167 +12,188 @@ import formatDate from "../../utils/formatDate";
 import NoImage from "../NoImage/NoImage";
 
 function MerchantDetails() {
-  const [loadingProfile, setLoadingProfile] = useState(true);
-  const [profileData, setProfileData] = useState(null);
+	const [loadingProfile, setLoadingProfile] = useState(true);
+	const [profileData, setProfileData] = useState(null);
 
-  let { store_id } = useParams();
+	console.log(profileData);
 
-  useEffect(() => {
-    let mounted = true;
+	let { store_id } = useParams();
 
-    if (mounted) {
-      const fetchProducts = async () => {
-        try {
-          let res = await axiosInstance.get(
-            `/sellers/stores/admin/getStoreDetails/${store_id}`
-          );
-          setProfileData(res.data.data);
-        
-          setLoadingProfile(false);
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response);
-            toast.warning(`${error.response.data.message}`);
-          } else {
-            toast.error(`${error}`);
-          }
-        } finally {
-          setLoadingProfile(false);
-        }
-      };
+	useEffect(() => {
+		let mounted = true;
 
-      fetchProducts();
-    }
+		if (mounted) {
+			const fetchProducts = async () => {
+				try {
+					let res = await axiosInstance.get(
+						`/sellers/stores/admin/getStoreDetails/${store_id}`
+					);
+					setProfileData(res.data.data);
 
-    return () => {
-      mounted = false;
-    };
-  }, [store_id]);
+					setLoadingProfile(false);
+				} catch (error) {
+					if (error.response) {
+						console.log(error.response);
+						toast.warning(`${error.response.data.message}`);
+					} else {
+						toast.error(`${error}`);
+					}
+				} finally {
+					setLoadingProfile(false);
+				}
+			};
 
-  console.log(profileData)
-  return (
-    <div className="mb-12">
-      <div className="rounded-md shadow-md">
-        <MerchantHeader text="Merchant's Details" backBtn={true} />
-        {loadingProfile ? (
-          <div className="h-vh40">
-            <NewLoader />
-          </div>
-        ) : (
-          <div className="bg-white-main flex justify-between items-center w-85 mx-auto py-8 ">
-            <div>
-              {profileData?.owner_id?.photo === null ? (
-                <NoImage store_name={profileData?.store_name} />
-              ) : (
-                <img
-                  src={
-                    "https://api.thrindle.com/api/thrindle/images/" +
-                    profileData?.owner_id?.photo
-                  }
-                  alt="merchant-avatar"
-                  className="w-36 h-36"
-                />
-              )}
+			fetchProducts();
+		}
 
-              <p className="w-max my-2 mx-auto capitalize">
-                {" "}
-                {profileData?.store_name}
-              </p>
-              <p className="w-max my-1 mx-auto text-sm text-white-lightGrey">
-                {profileData?.owner_id?.name}
-              </p>
-              <p className="w-max my-2 mx-auto">
-                {formatDate(profileData?.createdAt)}
-              </p>
-            </div>
+		return () => {
+			mounted = false;
+		};
+	}, [store_id]);
 
-            <div className="w-65">
-              <div className="bg-white-lightGrey2 p-4 font-Bold capitalize">
-                {profileData?.owner_id?.name}
-              </div>
-              <div className="bg-white-light">
-                <div>
-                  <div className="flex justify-between items-center p-4">
-                    <div>
-                      {" "}
-                      <BiMessageDetail className="inline mr-1 text-primary-dark2" />
-                      <span className="text-white-lightGrey3 font-Bold ml-1">
-                        Email
-                      </span>
+	console.log(profileData);
+	return (
+		<div className="mb-12">
+			<div className="rounded-md shadow-md">
+				<MerchantHeader text="Merchant's Details" backBtn={true} />
+				{loadingProfile ? (
+					<div className="h-vh40">
+						<NewLoader />
+					</div>
+				) : (
+					<div className="bg-white-main flex justify-between items-center w-85 mx-auto py-8 ">
+						<div>
+							{profileData?.owner_id?.photo === null ? (
+								<NoImage store_name={profileData?.store_name} />
+							) : (
+								<img
+									src={
+										"https://api.thrindle.com/api/thrindle/images/" +
+										profileData?.owner_id?.photo
+									}
+									alt="merchant-avatar"
+									className="w-36 h-36"
+								/>
+							)}
+
+							<p className="w-max my-2 mx-auto capitalize">
+								{" "}
+								{profileData?.store_name}
+							</p>
+							<p className="w-max my-1 mx-auto text-sm text-white-lightGrey">
+								{profileData?.owner_id?.name}
+							</p>
+							<p className="w-max my-2 mx-auto">
+								{formatDate(profileData?.createdAt)}
+							</p>
+						</div>
+
+						<div className="w-65">
+							<div className="bg-white-lightGrey2 p-4 font-Bold capitalize">
+								{profileData?.owner_id?.name}
+							</div>
+							<div className="bg-white-light">
+								<div>
+									<div className="flex justify-between items-center p-4">
+										<div>
+											{" "}
+											<BiMessageDetail className="inline mr-1 text-primary-dark2" />
+											<span className="text-white-lightGrey3 font-Bold ml-1">
+												Email
+											</span>
+										</div>
+										<p className="capitalize">
+											{profileData?.owner_id?.email ||
+												"N/A"}
+										</p>
+									</div>
+
+									<div className="flex justify-between items-center p-4">
+										<div>
+											{" "}
+											<BsTelephoneFill className="inline mr-1 text-primary-dark2" />
+											<span className="text-white-lightGrey3 font-Bold  ml-1">
+												Phone
+											</span>
+										</div>
+										<p>{profileData?.owner_id?.phone}</p>
+									</div>
+
+									<div className="flex justify-between items-center p-4">
+										<div>
+											{" "}
+											<GoLocation className="inline mr-1 text-primary-dark2" />
+											<span className="text-white-lightGrey3 font-Bold  ml-1">
+												Store Location
+											</span>
+										</div>
+										<p>
+											{profileData?.store_address ===
+											"undefined"
+												? "N/A"
+												: profileData.store_address}
+										</p>
+									</div>
+
+									<div className="flex justify-between items-center p-4">
+										<div>
+											{" "}
+											<FaAddressCard className="inline mr-1 text-primary-dark2" />
+											<span className="text-white-lightGrey3 font-Bold ml-1">
+												Market
+											</span>
+										</div>
+										<p>
+											{profileData?.owner_id?.store_id.startsWith(
+												"EM"
+											) && <span>Eko Market</span>}
+											{profileData?.owner_id?.store_id.startsWith(
+												"BM"
+											) && <span>Balogun Market</span>}
+											{profileData?.owner_id?.store_id.startsWith(
+												"CV"
+											) && <span>Computer Village</span>}
+										</p>
+									</div>
+									<div className="flex justify-between items-center p-4">
+										<div>
+											{" "}
+											<GoLocation className="inline mr-1 text-primary-dark2" />
+											<span className="text-white-lightGrey3 font-Bold  ml-1">
+												Store Description
+											</span>
+										</div>
+										<p className="w-1/2">
+											{profileData?.description ===
+											"undefined"
+												? "N/A"
+												: profileData.description}
+										</p>
                     </div>
-                    <p className="capitalize">
-                      {profileData?.owner_id?.email || "N/A"}
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between items-center p-4">
-                    <div>
-                      {" "}
-                      <BsTelephoneFill className="inline mr-1 text-primary-dark2" />
-                      <span className="text-white-lightGrey3 font-Bold  ml-1">
-                        Phone
-                      </span>
-                    </div>
-                    <p>{profileData?.owner_id?.phone}</p>
-                  </div>
-
-                  <div className="flex justify-between items-center p-4">
-                    <div>
-                      {" "}
-                      <GoLocation className="inline mr-1 text-primary-dark2" />
-                      <span className="text-white-lightGrey3 font-Bold  ml-1">
-                        Store Location
-                      </span>
-                    </div>
-                    <p>
-                      {profileData?.store_address === "undefined"
-                        ? "N/A"
-                        : profileData.store_address}
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between items-center p-4">
-                    <div>
-                      {" "}
-                      <FaAddressCard className="inline mr-1 text-primary-dark2" />
-                      <span className="text-white-lightGrey3 font-Bold ml-1">
-                        Market
-                      </span>
-                    </div>
-                    <p>
-                      {profileData?.owner_id?.store_id.startsWith("EM") && (
-                        <span>Eko Market</span>
-                      )}
-                      {profileData?.owner_id?.store_id.startsWith("BM") && (
-                        <span>Balogun Market</span>
-                      )}
-                      {profileData?.owner_id?.store_id.startsWith("CV") && (
-                        <span>Computer Village</span>
-                      )}
-                    </p>
-                    </div>
-                       <div className="flex justify-between items-center p-4">
-                    <div>
-                      {" "}
-                      <GoLocation className="inline mr-1 text-primary-dark2" />
-                      <span className="text-white-lightGrey3 font-Bold  ml-1">
-                        Store Description
-                      </span>
-                    </div>
-                    <p className="w-1/2">
-                      {profileData?.description === "undefined"
-                        ? "N/A"
-                        : profileData.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+                    
+                    <div className="flex justify-between items-center p-4">
+										<div>
+											{" "}
+											<GoLocation className="inline mr-1 text-primary-dark2" />
+											<span className="text-white-lightGrey3 font-Bold  ml-1">
+												Store Link
+											</span>
+										</div>
+										<p className="w-1/2">
+											{profileData?.description ===
+											"undefined"
+												? "N/A"
+												:`https://www.${ profileData.store_link}.thrindle.shop`}
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+			</div>
+		</div>
+	);
 }
 
 export default MerchantDetails;
