@@ -15,6 +15,8 @@ function MerchantDetails() {
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [profileData, setProfileData] = useState(null);
 
+  console.log(profileData);
+
   let { store_id } = useParams();
 
   useEffect(() => {
@@ -49,6 +51,7 @@ function MerchantDetails() {
     };
   }, [store_id]);
 
+  console.log(profileData);
   return (
     <div className="mb-12 text-xs md:text-sm">
       <div className="rounded-md shadow-md">
@@ -99,9 +102,7 @@ function MerchantDetails() {
                         Email
                       </span>
                     </div>
-                    <p>
-                      {profileData?.owner_id?.email || "N/A"}
-                    </p>
+                    <p>{profileData?.owner_id?.email || "N/A"}</p>
                   </div>
 
                   <div className="flex gap-2 items-start p-4">
@@ -120,7 +121,7 @@ function MerchantDetails() {
                       {" "}
                       <GoLocation className="inline mr-1 text-primary-dark2" />
                       <span className="text-white-lightGrey3 font-Bold  ml-1">
-                        Location
+                        Store Location
                       </span>
                     </div>
                     <p>
@@ -140,13 +141,13 @@ function MerchantDetails() {
                     </div>
                     <p>
                       {profileData?.owner_id?.store_id.startsWith("EM") && (
-                        <span>Eko Market</span>
+                        <span>EM</span>
                       )}
                       {profileData?.owner_id?.store_id.startsWith("BM") && (
-                        <span>Balogun Market</span>
+                        <span>EM</span>
                       )}
                       {profileData?.owner_id?.store_id.startsWith("CV") && (
-                        <span>Computer Village</span>
+                        <span>CV</span>
                       )}
                     </p>
                   </div>
@@ -162,6 +163,21 @@ function MerchantDetails() {
                       {profileData?.description === "undefined"
                         ? "N/A"
                         : profileData.description}
+                    </p>
+                  </div>
+
+                  <div className="flex gap-2 items-start p-4">
+                    <div>
+                      {" "}
+                      <GoLocation className="inline mr-1 text-primary-dark2" />
+                      <span className="text-white-lightGrey3 font-Bold  ml-1">
+                        Store Link
+                      </span>
+                    </div>
+                    <p className="w-1/2">
+                      {profileData?.description === "undefined"
+                        ? "N/A"
+                        : `https://www.${profileData.store_link}.thrindle.shop`}
                     </p>
                   </div>
                 </div>

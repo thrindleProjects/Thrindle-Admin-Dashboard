@@ -76,7 +76,7 @@ const MerchantProductsTable = ({
                 <td>N{numberFormat(product?.price)}</td>
                 <td className="hidden md:blocl">{formatDate(product?.createdAt)}</td>
                 <td className="">
-                  <p className="table-head-text text-sm font-normal font-Regular text-left text-white-text flex flex-row justify-start gap-2">
+                  <p className="table-head-text font-normal font-Regular text-left text-white-text flex flex-row justify-start gap-2">
                     <button
                       onClick={() =>
                         handleSetModal(
