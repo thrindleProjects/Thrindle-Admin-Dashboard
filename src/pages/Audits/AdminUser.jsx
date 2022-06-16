@@ -11,32 +11,33 @@ const AdminUser = () => {
 
 	const location = useLocation();
 	console.log(user);
+	const id =location?.state?.id
 
 	const getUserDetails = useCallback(async () => {
 		try {
 			const response = await axiosInstance.get(
-				`/audits/${location?.state?.id}?service_updated=product`
+				`/audits/${id}?service_updated=product`
 			);
 			setUser((old) => response.data.data);
 		} catch (error) {
 			console.log(error);
 			setError(true)
 		}
-	}, []);
+	}, [id]);
 
 	useEffect(() => {
 		getUserDetails();
 	}, [getUserDetails]);
 
-	const heading = [
-		"S/N",
-		"Image",
-		"Name",
-		"Price",
-		"Market",
-		"Category",
-		"Action",
-	];
+	// const heading = [
+	// 	"S/N",
+	// 	"Image",
+	// 	"Name",
+	// 	"Price",
+	// 	"Market",
+	// 	"Category",
+	// 	"Action",
+	// ];
 	const [pageNumber, setPageNumber] = useState(0);
 
 	const usersPerPage = 10;
