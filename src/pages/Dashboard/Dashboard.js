@@ -16,6 +16,8 @@ import Image5 from "../../assets/images/dash-pending-order.svg";
 import Image6 from "../../assets/images/dash-delievered-order.svg";
 import Image7 from "../../assets/images/dash-cancelled-order.svg";
 import NewLoader from "../../components/newLoader/newLoader";
+import { useDispatch } from "react-redux";
+import { withdrawData } from "../../redux/actions/withdraw/WithdrawAction";
 
 const filterData1 = [
   {
@@ -33,6 +35,12 @@ const filterData1 = [
 ];
 
 const Dashboard = () => {
+
+const dispatch = useDispatch();
+useEffect(() => {
+		dispatch(withdrawData());
+	}, [dispatch]);
+
   const [filter, setFilter] = useState("Pending");
   const [activeColor, setActiveColor] = useState("#F69F13");
   const [currentData, setCurrentData] = useState({

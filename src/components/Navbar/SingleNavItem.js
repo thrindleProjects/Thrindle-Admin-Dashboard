@@ -25,7 +25,7 @@ const SingleNavItem = (props) => {
       <img
         src={props.path === routeName ? props.icon2 : props.icon}
         alt="nav-icons"
-        className="block mr-3 "
+        className="block mr-3 h-5 w-5 "
       />
       <p className="text-base font-Heavy ">{props.title}</p>
     </MainNav>
