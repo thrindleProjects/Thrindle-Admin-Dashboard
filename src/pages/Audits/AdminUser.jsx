@@ -19,6 +19,7 @@ const AdminUser = () => {
 				`/audits/${id}?service_updated=product`
 			);
 			setUser((old) => response.data.data);
+			console.log(response)
 		} catch (error) {
 			console.log(error);
 			setError(true)

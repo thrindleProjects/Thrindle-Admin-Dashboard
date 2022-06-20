@@ -56,13 +56,13 @@ const Stores = () => {
 
   // Sort stores alphabetically
   const objSort = (a, b) => {
-    let x = a.store_name.toLowerCase();
-    let y = b.store_name.toLowerCase();
+    let x = new Date(a.owner_id?.createdAt);
+    let y = new Date(b.owner_id?.createdAt);
     if (x < y) {
-      return -1;
+      return 1;
     }
     if (x > y) {
-      return 1;
+      return -1;
     }
     return 0;
   };

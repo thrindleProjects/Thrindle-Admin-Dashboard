@@ -169,9 +169,9 @@ function MerchantDetails() {
 												? "N/A"
 												: profileData.description}
 										</p>
-                    </div>
-                    
-                    <div className="flex justify-between items-center p-4">
+									</div>
+
+									<div className="flex justify-between items-center p-4">
 										<div>
 											{" "}
 											<GoLocation className="inline mr-1 text-primary-dark2" />
@@ -181,9 +181,13 @@ function MerchantDetails() {
 										</div>
 										<p className="w-1/2">
 											{profileData?.description ===
-											"undefined"
-												? "N/A"
-												:`https://www.${ profileData.store_link}.thrindle.shop`}
+											"undefined" ? (
+												"N/A"
+											) : (
+												<a
+													href={`https://${profileData.store_link}.thrindle.shop`}
+												>{`https://${profileData.store_link}.thrindle.shop`}</a>
+											)}
 										</p>
 									</div>
 								</div>
