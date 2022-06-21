@@ -16,6 +16,8 @@ import StoreDetails from "../pages/StoreDetails/StoreDetails";
 import Audit from "../pages/Audits/Audit";
 import AdminUser from "../pages/Audits/AdminUser";
 import Withdraw from "../pages/withdraw/Withdraw";
+import Coupon from "../pages/coupons/CreatedCoupon";
+import SeeAll from "../pages/coupons/SeeAll";
 
 export const routes = [
   {
@@ -98,5 +100,15 @@ export const routes = [
     title: "Withdraw",
     path: "/withdraw",
     component: Withdraw,
+  },
+  {
+    title: "Coupon",
+    path: "/coupons",
+    component: Coupon,
+  },
+  {
+    title: "Coupon",
+    path: "/see-all-coupons",
+    component: SeeAll,
   },
 ];
