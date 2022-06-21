@@ -88,6 +88,12 @@ export const navData = [
         icon: "https://toppng.com/uploads/preview/banner-freeuse-geldtasche-icon-free-and-money-icon-115534432646uveksxxli.png",
         icon2: "https://toppng.com/uploads/preview/banner-freeuse-geldtasche-icon-free-and-money-icon-115534432646uveksxxli.png",
       },
+      {
+        title: "Coupons",
+        path: "/coupons",
+       icon: Image7,
+        icon2: Active6,
+      },
     ],
   },
 
