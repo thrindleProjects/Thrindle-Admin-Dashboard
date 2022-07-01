@@ -94,6 +94,12 @@ export const navData = [
        icon: Image7,
         icon2: Active6,
       },
+       {
+        title: "Mope",
+        path: "/mope",
+       icon: Image7,
+        icon2: Active6,
+      },
     ],
   },
 
