@@ -18,6 +18,7 @@ import AdminUser from "../pages/Audits/AdminUser";
 import Withdraw from "../pages/withdraw/Withdraw";
 import Coupon from "../pages/coupons/CreatedCoupon";
 import SeeAll from "../pages/coupons/SeeAll";
+import Mope from "../pages/mope/Mope";
 
 export const routes = [
   {
@@ -111,4 +112,9 @@ export const routes = [
     path: "/see-all-coupons",
     component: SeeAll,
   },
+  {
+    title: "Mope",
+    path: "/mope",
+    component:Mope
+  }
 ];

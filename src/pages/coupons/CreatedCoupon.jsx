@@ -63,7 +63,7 @@ const CreateCoupon = () => {
 									) => {
 										console.log(values);
 										const body = {
-											name:name,
+											name:values.name,
 											code: values.code,
 											value: values.value,
 											valid: true,

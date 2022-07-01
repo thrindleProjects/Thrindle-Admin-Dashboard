@@ -149,7 +149,7 @@ const SeeAll = () => {
 										{formateDate(item?.createdAt)}
 									</th>
 									<th className="p-6  font-normal text-sm">
-										{item?.usage} times
+										{item?.usage } 
 									</th>
 
                                     <th className="p-6  font-normal text-sm">
