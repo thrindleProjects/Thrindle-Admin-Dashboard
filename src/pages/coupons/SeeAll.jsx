@@ -19,8 +19,9 @@ const SeeAll = () => {
 		"Value",
 		"Times Used",
 		"Created At",
-		"Usage",
+		"should be used",
 		"Expires in",
+		"Valid"
 	];
 	const getAllCoupons = useCallback(async () => {
 		try {
@@ -141,18 +142,23 @@ const SeeAll = () => {
 										{item?.value}
 									</th>
 									<th className="p-6  font-normal text-sm">
-										{item?.timesUsed}
+										{item?.timesUsed} times
 									</th>
 
 									<th className="p-6  font-normal text-sm">
 										{formateDate(item?.createdAt)}
 									</th>
 									<th className="p-6  font-normal text-sm">
-										{item?.usage}
+										{item?.usage} times
 									</th>
 
-									<th className="p-6  font-normal text-sm">
+                                    <th className="p-6  font-normal text-sm">
+                                        
 										{item?.expiresIn}
+									</th>
+									<th className="p-6  font-normal text-sm">
+                                        
+										{item?.valid? "Yes" :"Expired"}
 									</th>
 									<th
 										className="p-6  font-normal text-sm text-red-600 cursor-pointer"
