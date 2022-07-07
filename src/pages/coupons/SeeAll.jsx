@@ -4,14 +4,20 @@ import axiosInstance from "../../utils/axiosInstance";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 import NewLoader from "../../components/newLoader/newLoader";
+import SecondaryInput from "../../components/input/SecondaryInput";
+
 
 const SeeAll = () => {
 	const [data, setData] = useState([]);
 	const [modal, setModal] = useState(false);
+	const [updateModal, setUpdateModal] = useState(false);
 	const [code, setCode] = useState();
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
-	console.log(data);
+	const [singleCouponData, setSingleCouponData] = useState({});
+	const [codeName, setCodeName] = useState('')
+	const [name, setName] = useState(singleCouponData?.data?.name)
+
 
 	const heading = [
 		"Name",
@@ -70,6 +76,58 @@ const SeeAll = () => {
 		}
 	};
 
+
+	// update Modal
+	const UpdateModal = () => {
+		const getSingleCoupon = useCallback(async() => {
+			try {
+			const response = 	await axiosInstance.get(`coupons/coupon/${codeName}`)
+				setSingleCouponData(old =>response.data)
+				
+				
+			} catch (error) {
+				console.log(error)
+				
+			}
+		}, [])
+
+		useEffect(() => {
+			getSingleCoupon()
+			
+		}, [getSingleCoupon])
+		return (
+			<div
+				className="fixed top-0 left-0 right-0 bottom-0 flex  justify-center items-center"
+				style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+			>
+				<div className="bg-white-main  p-10 shadow-lg rounded-xl w-96">
+					<p className="text-right cursor-pointer" onClick={() => setUpdateModal(false)}>Close</p>
+
+					<SecondaryInput value={name } label="Name" onChange={(e) =>setName(e.target.value)} />
+					<SecondaryInput />
+					<SecondaryInput />
+					<SecondaryInput />
+				</div>
+			</div>
+	 )
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	const DeleteModal = () => {
 		return (
 			<div
@@ -119,6 +177,7 @@ const SeeAll = () => {
 			{data.length > 0 && !error && (
 				<div>
 					{modal && <DeleteModal />}
+					{updateModal &&<UpdateModal />}
 					<Table class="table-fixed w-full">
 						<thead>
 							<tr>
@@ -170,12 +229,16 @@ const SeeAll = () => {
 										Delete
 									</th>
 
-									<th className="p-6  font-normal text-sm">
+									<th onClick={() => {
+										setUpdateModal(true)
+										setCodeName(item?.code)
+									}} className="p-6  font-normal text-sm cursor-pointer">
 										Update
 									</th>
 								</tr>
 							))}
 						</tbody>
+						<p>{ singleCouponData.name}</p>{}
 					</Table>
 				</div>
 			)}

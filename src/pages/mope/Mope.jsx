@@ -41,7 +41,7 @@ const Mope = () => {
 		"Quantity",
 		"Market",
 		"Date Of request",
-		"",
+		"status",
 	];
 
 	useEffect(() => {
@@ -126,6 +126,9 @@ const Mope = () => {
 
 									<th className="p-6  font-normal text-sm">
 										{formateDate(item?.createdAt)}
+									</th>
+									<th className="p-6  font-normal text-sm">
+										{item.status === "pending" ? "Pending" : "completed"}
 									</th>
 								</tr>
 							))}
