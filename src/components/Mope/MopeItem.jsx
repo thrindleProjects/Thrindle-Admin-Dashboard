@@ -60,6 +60,33 @@ const MopeItem = ({ id, setDetailsModal }) => {
 			});
 		}
 		};
+
+	const completeMope = async(id) => {
+					try {
+			await axiosInstance.put(`/mope/${id}`);
+			setDetailsModal(false)
+			toast.success(`🦄 ${data?.name} completed Successfully}`, {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error(`🦄An error occurred, try again later}`, {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		}
+		}
 	
 
 
@@ -158,7 +185,7 @@ const MopeItem = ({ id, setDetailsModal }) => {
 									>
 										Delete
 									</th>
-								<p className="text-green-400">Complete</p>
+								<p className="text-green-400" onClick={() =>completeMope(data?._id)}>Complete</p>
 							</div>
 						</div>
 					</div>

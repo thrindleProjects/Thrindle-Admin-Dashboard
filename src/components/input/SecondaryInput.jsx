@@ -25,7 +25,6 @@ const SecondaryInput = ({
                     placeholder={placeholder}
                     value={value}
                 />
-               
             </div>
            
         </div>
