@@ -9,7 +9,6 @@ export const withdrawData = () => async (dispatch) => {
   try {
     const res = await axiosInstance.get('withdrawal/admin');
     const resData = res.data.data;
-    console.log(res)
 
     
 

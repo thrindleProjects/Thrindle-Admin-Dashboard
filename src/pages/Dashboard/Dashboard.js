@@ -35,11 +35,10 @@ const filterData1 = [
 ];
 
 const Dashboard = () => {
-
-const dispatch = useDispatch();
-useEffect(() => {
-		dispatch(withdrawData());
-	}, [dispatch]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(withdrawData());
+  }, [dispatch]);
 
   const [filter, setFilter] = useState("Pending");
   const [activeColor, setActiveColor] = useState("#F69F13");
@@ -74,6 +73,10 @@ useEffect(() => {
     },
     recentProducts: {
       data: [],
+      loading: true,
+    },
+    balances: {
+      data: { totalEarningsOnThrindle: "", totalUnwithdrawnBalance: "" },
       loading: true,
     },
   });
@@ -143,6 +146,20 @@ useEffect(() => {
       value: currentData.newCustomers.total,
       loading: currentData.newCustomers.loading,
     },
+    {
+      title: "Unwithdrawn Balance",
+      img: Image,
+      color: "#16588F",
+      value: currentData.balances.data.totalUnwithdrawnBalance,
+      loading: currentData.balances.loading,
+    },
+    {
+      title: "Earnings on Thrindle",
+      img: Image,
+      color: "#16588F",
+      value: currentData.balances.data.totalEarningsOnThrindle,
+      loading: currentData.balances.loading,
+    },
   ];
 
   const changeColor = (val) => {
@@ -171,13 +188,22 @@ useEffect(() => {
       "users/admin/buyers",
       "stores/allstores",
       "/products/search",
+      "wallets/balances",
     ];
 
     axios
       .all(allUrl.map((endpoint) => axiosInstance.get(endpoint)))
       .then(
         axios.spread(
-          (pending, completed, cancelled, newUsers, allStores, allProducts) => {
+          (
+            pending,
+            completed,
+            cancelled,
+            newUsers,
+            allStores,
+            allProducts,
+            balances
+          ) => {
             // destructing responses from axios.all
             let {
               data: { data: pendingArr },
@@ -202,6 +228,10 @@ useEffect(() => {
             let {
               data: { data: allProductsArr },
             } = allProducts;
+
+            let {
+              data: { data: balancesArr },
+            } = balances;
 
             // filters customers by today's date
             let newCustomers = newUsersArr.filter(
@@ -260,6 +290,11 @@ useEffect(() => {
                   data: newlyApproved,
                   loading: false,
                 },
+
+                balances: {
+                  data: balancesArr,
+                  loading: false,
+                },
               };
             });
           }
@@ -291,6 +326,7 @@ useEffect(() => {
               ...prevData.recentProducts,
               loading: false,
             },
+            balances: { ...prevData.balances, loading: false },
           };
         });
       });
