@@ -16,6 +16,8 @@ import Image5 from "../../assets/images/dash-pending-order.svg";
 import Image6 from "../../assets/images/dash-delievered-order.svg";
 import Image7 from "../../assets/images/dash-cancelled-order.svg";
 import NewLoader from "../../components/newLoader/newLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { withdrawData } from "../../redux/actions/withdraw/WithdrawAction";
 
 const filterData1 = [
   {
@@ -33,6 +35,13 @@ const filterData1 = [
 ];
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const { name } = useSelector((state) => state.login.user);
+
+  useEffect(() => {
+    dispatch(withdrawData());
+  }, [dispatch]);
+
   const [filter, setFilter] = useState("Pending");
   const [activeColor, setActiveColor] = useState("#F69F13");
   const [currentData, setCurrentData] = useState({
@@ -66,6 +75,10 @@ const Dashboard = () => {
     },
     recentProducts: {
       data: [],
+      loading: true,
+    },
+    balances: {
+      data: { totalEarningsOnThrindle: "", totalUnwithdrawnBalance: "" },
       loading: true,
     },
   });
@@ -135,6 +148,22 @@ const Dashboard = () => {
       value: currentData.newCustomers.total,
       loading: currentData.newCustomers.loading,
     },
+    {
+      title: "Unwithdrawn Balance",
+      img: Image,
+      color: "#16588F",
+      value: currentData.balances.data.totalUnwithdrawnBalance,
+      loading: currentData.balances.loading,
+      hidden: true,
+    },
+    {
+      title: "Earnings on Thrindle",
+      img: Image,
+      color: "#16588F",
+      value: currentData.balances.data.totalEarningsOnThrindle,
+      loading: currentData.balances.loading,
+      hidden: true,
+    },
   ];
 
   const changeColor = (val) => {
@@ -163,13 +192,22 @@ const Dashboard = () => {
       "users/admin/buyers",
       "stores/allstores",
       "/products/search",
+      "wallets/balances",
     ];
 
     axios
       .all(allUrl.map((endpoint) => axiosInstance.get(endpoint)))
       .then(
         axios.spread(
-          (pending, completed, cancelled, newUsers, allStores, allProducts) => {
+          (
+            pending,
+            completed,
+            cancelled,
+            newUsers,
+            allStores,
+            allProducts,
+            balances
+          ) => {
             // destructing responses from axios.all
             let {
               data: { data: pendingArr },
@@ -194,6 +232,10 @@ const Dashboard = () => {
             let {
               data: { data: allProductsArr },
             } = allProducts;
+
+            let {
+              data: { data: balancesArr },
+            } = balances;
 
             // filters customers by today's date
             let newCustomers = newUsersArr.filter(
@@ -252,6 +294,11 @@ const Dashboard = () => {
                   data: newlyApproved,
                   loading: false,
                 },
+
+                balances: {
+                  data: balancesArr,
+                  loading: false,
+                },
               };
             });
           }
@@ -283,6 +330,7 @@ const Dashboard = () => {
               ...prevData.recentProducts,
               loading: false,
             },
+            balances: { ...prevData.balances, loading: false },
           };
         });
       });
@@ -295,9 +343,12 @@ const Dashboard = () => {
   return (
     <MainContainer>
       <FirstSection className="w-full md:grid md:grid-cols-3 xl:grid-cols-4 gap-5 mb-10">
-        {dashData.map((item, index) => (
-          <SingleDashboard {...item} key={index} index={index} />
-        ))}
+        {dashData.map((item, index) => {
+          if (!item.hidden)
+            return <SingleDashboard {...item} key={index} index={index} />;
+          if (!["Administrator"].includes(name)) return null;
+          return <SingleDashboard {...item} key={index} index={index} />;
+        })}
       </FirstSection>
       <SecondSection
         data-aos="fade-up"

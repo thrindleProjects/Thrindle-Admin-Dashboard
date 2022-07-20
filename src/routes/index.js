@@ -13,6 +13,13 @@ import Shipment from "../pages/Shipment/Shipment";
 import UnP from "../pages/UnP/UnP";
 import AddProducts from "../pages/AddProducts/addProducts";
 import StoreDetails from "../pages/StoreDetails/StoreDetails";
+import Audit from "../pages/Audits/Audit";
+import AdminUser from "../pages/Audits/AdminUser";
+import Withdraw from "../pages/withdraw/Withdraw";
+import Coupon from "../pages/coupons/CreatedCoupon";
+import SeeAll from "../pages/coupons/SeeAll";
+import Mope from "../pages/mope/Mope";
+import Balances from "../pages/Balances/Balances";
 
 export const routes = [
   {
@@ -80,5 +87,40 @@ export const routes = [
     title: "Store Details",
     path: "/store-details/:store_id",
     component: StoreDetails,
+  },
+  {
+    title: "Audits",
+    path: "/audit",
+    component: Audit,
+  },
+  {
+    title: "Admin Users",
+    path: "/audit/:admin_user_id",
+    component: AdminUser,
+  },
+  {
+    title: "Withdraw",
+    path: "/withdraw",
+    component: Withdraw,
+  },
+  {
+    title: "Coupon",
+    path: "/coupons",
+    component: Coupon,
+  },
+  {
+    title: "Coupon",
+    path: "/see-all-coupons",
+    component: SeeAll,
+  },
+  {
+    title: "Mope",
+    path: "/mope",
+    component: Mope,
+  },
+  {
+    title: "Balances",
+    path: "/balances",
+    component: Balances,
   },
 ];

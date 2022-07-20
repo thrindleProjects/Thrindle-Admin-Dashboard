@@ -175,9 +175,13 @@ function MerchantDetails() {
                       </span>
                     </div>
                     <p className="w-1/2">
-                      {profileData?.description === "undefined"
-                        ? "N/A"
-                        : `https://www.${profileData.store_link}.thrindle.shop`}
+                      {profileData?.description === "undefined" ? (
+                        "N/A"
+                      ) : (
+                        <a
+                          href={`https://${profileData.store_link}.thrindle.shop`}
+                        >{`https://${profileData.store_link}.thrindle.shop`}</a>
+                      )}
                     </p>
                   </div>
                 </div>

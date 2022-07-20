@@ -3,7 +3,7 @@ import Image1 from "../../assets/images/main-order.svg";
 import Image3 from "../../assets/images/customers.svg";
 import Image4 from "../../assets/images/stores.svg";
 // import Image5 from "../../assets/images/shipment.svg";
-// import Image6 from "../../assets/images/audits.svg";
+import Image6 from "../../assets/images/audits.svg";
 import Image7 from "../../assets/images/inventory.svg";
 // import Image8 from "../../assets/images/users.svg";
 // import Image9 from "../../assets/images/settings.svg";
@@ -12,7 +12,7 @@ import Active1 from "../../assets/images/order-active.svg";
 import Active2 from "../../assets/images/customer-active.svg";
 import Active3 from "../../assets/images/store-active.svg";
 // import Active4 from "../../assets/images/delivery-active.svg";
-// import Active5 from "../../assets/images/audit-active.svg";
+import Active5 from "../../assets/images/audit-active.svg";
 import Active6 from "../../assets/images/inventory-active.svg";
 // import Active7 from "../../assets/images/user-active.svg";
 // import Active8 from "../../assets/images/setting-active.svg";
@@ -57,6 +57,12 @@ export const navData = [
         icon: Image4,
         icon2: Active3,
       },
+      {
+        title: "Balances",
+        path: "/balances",
+        icon: Image6,
+        icon2: Active5,
+      },
     ],
   },
 
@@ -69,15 +75,34 @@ export const navData = [
       //   icon: Image5,
       //   icon2: Active4,
       // },
-      // {
-      //   title: "Audit",
-      //   path: "/audit",
-      //   icon: Image6,
-      //   icon2: Active5,
-      // },
+      {
+        title: "Audit",
+        path: "/audit",
+        icon: Image6,
+        icon2: Active5,
+      },
       {
         title: "Inventory",
         path: "/inventory",
+        icon: Image7,
+        icon2: Active6,
+      },
+      {
+        title: "Withdraw",
+        path: "/withdraw",
+        icon: "https://toppng.com/uploads/preview/banner-freeuse-geldtasche-icon-free-and-money-icon-115534432646uveksxxli.png",
+        icon2:
+          "https://toppng.com/uploads/preview/banner-freeuse-geldtasche-icon-free-and-money-icon-115534432646uveksxxli.png",
+      },
+      {
+        title: "Coupons",
+        path: "/coupons",
+        icon: Image7,
+        icon2: Active6,
+      },
+      {
+        title: "Mope",
+        path: "/mope",
         icon: Image7,
         icon2: Active6,
       },
@@ -150,12 +175,12 @@ export const data2 = [
   //   icon2: Active4,
   // },
 
-  // {
-  //   title: "Audit",
-  //   path: "/audit",
-  //   icon: Image6,
-  //   icon2: Active5,
-  // },
+  {
+    title: "Audit",
+    path: "/audit",
+    icon: Image6,
+    icon2: Active5,
+  },
 
   {
     title: "Inventory",
