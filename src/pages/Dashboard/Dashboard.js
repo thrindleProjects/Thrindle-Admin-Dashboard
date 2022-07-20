@@ -250,7 +250,7 @@ const Dashboard = () => {
             // mutating all state at once
             setCurrentData((prevData) => {
               return {
-                ...prevData,
+                ...prevData, 
 
                 allOrders: {
                   total:

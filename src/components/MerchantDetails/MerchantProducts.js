@@ -187,7 +187,7 @@ function MerchantProducts() {
   }, [products.allProductsImmutable]);
 
   return (
-    <div className="rounded-md shadow-md">
+    <div className="rounded-md shadow-md w-full">
       <MerchantHeader text="Merchant's Products" />
       {openDeleteModal && (
         <DeleteProductModal

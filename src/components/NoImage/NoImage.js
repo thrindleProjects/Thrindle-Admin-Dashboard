@@ -7,7 +7,7 @@ const StoreCardContainer = styled.div`
   min-width: 10em !important;
   min-height: 10em !important;
   border-radius: 50% !important;
-  margin-right: 15px;
+  /* margin-right: 15px; */
   transition: all 0.3s ease-in-out;
   cursor: pointer;
 
@@ -26,22 +26,33 @@ const StoreCardContainer = styled.div`
 
 const StoreCardImage = styled.div`
   position: relative;
-  min-width: 10em !important;
-  min-height: 10em !important;
+  width: 5rem;
+  aspect-ratio: 1;
   border-radius: 50% !important;
   background: #16588f;
   color: white;
+
+  @media (min-width: 768px) {
+    width: 8rem;
+  }
+  @media (min-width: 1024px) {
+    width: 10rem;
+  }
 `;
 
 const NoImage = ({ store_name }) => {
   const placeHolder = store_name.trim().toUpperCase().split(" ");
 
   return (
-    <StoreCardContainer>
+    <StoreCardContainer className="flex justify-center items-center">
       <StoreCardImage className="flex flex-col items-center justify-center">
-        <img src={StoreIcon} alt="Store" className="block w-12 mx-auto h-12" />
+        <img
+          src={StoreIcon}
+          alt="Store"
+          className="block w-6 h-6 md:w-9 md:h-9 lg:w-12 mx-auto lg:h-12"
+        />
         {/* <Placeholdername name={store_name} /> */}
-        <div className="text-4xl  text-white font-bold">
+        <div className="text-white font-bold">
           {placeHolder.length > 1
             ? `${placeHolder[0][0]}${
                 placeHolder[1][0] ? placeHolder[1][0] : ""
