@@ -16,7 +16,7 @@ import Image5 from "../../assets/images/dash-pending-order.svg";
 import Image6 from "../../assets/images/dash-delievered-order.svg";
 import Image7 from "../../assets/images/dash-cancelled-order.svg";
 import NewLoader from "../../components/newLoader/newLoader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { withdrawData } from "../../redux/actions/withdraw/WithdrawAction";
 
 const filterData1 = [
@@ -36,6 +36,8 @@ const filterData1 = [
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const { name } = useSelector((state) => state.login.user);
+
   useEffect(() => {
     dispatch(withdrawData());
   }, [dispatch]);
@@ -152,6 +154,7 @@ const Dashboard = () => {
       color: "#16588F",
       value: currentData.balances.data.totalUnwithdrawnBalance,
       loading: currentData.balances.loading,
+      hidden: true,
     },
     {
       title: "Earnings on Thrindle",
@@ -159,6 +162,7 @@ const Dashboard = () => {
       color: "#16588F",
       value: currentData.balances.data.totalEarningsOnThrindle,
       loading: currentData.balances.loading,
+      hidden: true,
     },
   ];
 
@@ -339,9 +343,12 @@ const Dashboard = () => {
   return (
     <MainContainer>
       <FirstSection className="w-full md:grid md:grid-cols-3 xl:grid-cols-4 gap-5 mb-10">
-        {dashData.map((item, index) => (
-          <SingleDashboard {...item} key={index} index={index} />
-        ))}
+        {dashData.map((item, index) => {
+          if (!item.hidden)
+            return <SingleDashboard {...item} key={index} index={index} />;
+          if (!["Administrator"].includes(name)) return null;
+          return <SingleDashboard {...item} key={index} index={index} />;
+        })}
       </FirstSection>
       <SecondSection
         data-aos="fade-up"
