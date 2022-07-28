@@ -3,7 +3,6 @@ import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import axiosInstance from "../../utils/axiosInstance";
 import { useLocation } from "react-router-dom";
 // import AdminUserTable from "../../components/AdminUser/AdminUserTable";
-import ReactPaginate from "react-paginate";
 
 const AdminUser = () => {
 	const [user, setUser] = useState([]);
