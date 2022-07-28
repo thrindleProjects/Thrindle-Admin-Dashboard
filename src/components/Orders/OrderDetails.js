@@ -15,6 +15,8 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
     return `${newDay}/${newMonth}/${newYear}`;
   };
 
+  console.log({ orderInfo, tableData });
+
   useEffect(() => {
     if (orderInfo && orderInfo?.payment && orderInfo?.payment?.priceDetails) {
       let newDetails = orderInfo.payment.priceDetails.find(
@@ -69,7 +71,32 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
             <td>{tableData?.description ? tableData?.description : "N/A"}</td>
           </tr>
           <tr>
-            <td>{tableData?.price ? tableData?.price : "N/A"}</td>
+            <td>
+              {tableData?.price
+                ? `N${tableData?.price?.toLocaleString()}`
+                : "N/A"}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {tableData?.price
+                ? `N${orderInfo?.product?.original_price?.toLocaleString()}`
+                : "N/A"}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {tableData?.price
+                ? `N${orderInfo?.product?.charge?.toLocaleString()}`
+                : "N/A"}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {tableData?.price
+                ? `N${orderInfo?.payment?.shippingFee?.toLocaleString()}`
+                : "N/A"}
+            </td>
           </tr>
           <tr>
             <td>{orderInfo?.quantity ? orderInfo?.quantity : "N/A"}</td>
