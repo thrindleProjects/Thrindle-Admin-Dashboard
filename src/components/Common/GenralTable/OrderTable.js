@@ -7,11 +7,12 @@ import { numberFormat } from "../../../utils/formatPrice";
 
 const OrderTable = (props) => {
   const navigate = useNavigate();
-  const getMarketName = (storeId) => {
-    if (storeId.startsWith("CV")) return "CV";
-    if (storeId.startsWith("BM")) return "EM";
-    if (storeId.startsWith("EM")) return "EM";
-    if (storeId.startsWith("TM")) return "TM";
+  const getMarketName = (text) => {
+    if (text.startsWith("CV") | (text === "Computer Village")) return "CV";
+    if (text.startsWith("BM") | (text === "Balogun Market")) return "EM";
+    if (text.startsWith("EM") | (text === "Eko Market")) return "EM";
+    if (text.startsWith("TM") | (text === "Thrindle Mall")) return "TM";
+
     return "N/A";
   };
 
@@ -58,11 +59,7 @@ const OrderTable = (props) => {
         </thead>
         <tbody className="main-table-body text-xs md:text-sm">
           {props.tableData?.map((item, index) => {
-            let storeId =
-              item.product && item.product.store_id
-                ? item.product.store_id
-                : "N/A";
-            let marketName = getMarketName(storeId);
+            let marketName = getMarketName(item?.product?.market?.name);
             let updatedAt = getUploadDate(item.updatedAt);
             let productName =
               item.product && item.product.name ? item.product.name : "N/A";

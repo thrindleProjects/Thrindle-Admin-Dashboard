@@ -11,7 +11,7 @@ const GeneralHeaderTab = (props) => {
           title={item.title}
           color={item.color}
           onClick={() => props.changeTab(item.title)}
-          className="single-tab flex flex-row h-full pb-2 md:pb-5 lg:mr-10 cursor-pointer lg:mb-0"
+          className={`single-tab flex flex-row h-full pb-2 md:pb-5 lg:mr-10 cursor-pointer lg:mb-0`}
         >
           <img
             src={item.title === props.activeTab ? item.activeIcon : item.icon}
@@ -26,11 +26,13 @@ const GeneralHeaderTab = (props) => {
           >
             {item.title}
           </TabTitle>
-          <div className="box flex flex-row ">
-            <p className="text-white-main text-xs lg:text-sm font-Bold">
-              {item.value}
-            </p>
-          </div>
+          {!props.noCounter && (
+            <div className="box flex flex-row ">
+              <p className="text-white-main text-xs lg:text-sm font-Bold">
+                {item.value}
+              </p>
+            </div>
+          )}
         </SingleTab>
       ))}
     </MainTab>
