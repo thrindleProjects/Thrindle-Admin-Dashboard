@@ -8,6 +8,7 @@ import {
   orderData,
   orderTableHeader,
   orderTableHeaderNoAction,
+  orderMarkets,
 } from "../../data/data";
 // import GeneralFilterTab from "../../components/Common/GeneralFilterTab/GeneralFilterTab";
 import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
@@ -17,6 +18,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import NewLoader from "../../components/newLoader/newLoader";
 import UpdateDeliveryStatusModal from "./updateDeliveryStatusModal";
+import { useSearchParams } from "react-router-dom";
 
 const Orders = (props) => {
   const [orders, setOrders] = useState({
@@ -38,12 +40,27 @@ const Orders = (props) => {
   });
   const [orderTabData, setOrderTabData] = useState(orderData);
 
+  // handel location of the page
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const marketType = searchParams.get("q");
+
   const qty = props?.location?.search
     ? props.location.search.split("=")[1]
     : "Pending Orders";
 
   const changeTab = (val) => {
     setActiveTab(val);
+    setOrders({ ...orders, pageIndex: 0 });
+  };
+
+  const changeMarket = (val) => {
+    if (val === "Thrindle Market") {
+      setSearchParams({ q: "market" });
+    }
+    if (val === "Thrindle Mall") {
+      setSearchParams({ q: "mall" });
+    }
     setOrders({ ...orders, pageIndex: 0 });
   };
 
@@ -78,15 +95,19 @@ const Orders = (props) => {
   };
 
   const getOrders = useCallback(async () => {
-    setStatus({ isLoading: true, isError: false, isEmpty: false });
+    if (!marketType | (marketType === "mall") | (marketType === "market")) {
+      setStatus({ isLoading: true, isError: false, isEmpty: false });
 
-    setOrders((oldOrders) => {
-      return {
-        ...oldOrders,
-        paginatedOrders: [],
-        allOrders: [],
-      };
-    });
+      setOrders((oldOrders) => {
+        return {
+          ...oldOrders,
+          paginatedOrders: [],
+          allOrders: [],
+        };
+      });
+    } else {
+      return setStatus({ isLoading: false, isError: false, isEmpty: true });
+    }
 
     let url = "orders/admin/getOrders?type=";
     let allUrl = [`${url}pending`, `${url}completed`, `${url}cancelled`];
@@ -98,6 +119,24 @@ const Orders = (props) => {
             let {
               data: { data },
             } = await axiosInstance.get(endpoint);
+            if ((marketType === "market") | !marketType) {
+              data = data.filter(
+                ({
+                  product: {
+                    market: { name },
+                  },
+                }) => name !== "Thrindle Mall"
+              );
+            }
+            if (marketType === "mall") {
+              data = data.filter(
+                ({
+                  product: {
+                    market: { name },
+                  },
+                }) => name === "Thrindle Mall"
+              );
+            }
             return data.reverse();
           } catch (error) {
             if (error.message) {
@@ -108,6 +147,7 @@ const Orders = (props) => {
         })
       );
       let paginatedOrders, allOrders;
+
       if (activeTab === "Pending Orders") {
         paginatedOrders = paginationArr(pending, 20);
         allOrders = pending;
@@ -120,6 +160,7 @@ const Orders = (props) => {
         paginatedOrders = paginationArr(cancelled, 20);
         allOrders = cancelled;
       }
+      console.log(allOrders);
       setOrderTabData((oldState) => {
         let newState = oldState.map((item) => {
           if (item.title === "Pending Orders")
@@ -137,11 +178,11 @@ const Orders = (props) => {
         return {
           ...oldState,
           paginatedOrders,
-          generalOrders: pending.concat(completed, cancelled),
+          generalOrders: pending?.concat(completed, cancelled),
           allOrders,
         };
       });
-      if (allOrders.length === 0) {
+      if (allOrders?.length === 0) {
         return setStatus({ isEmpty: true, isError: false, isLoading: false });
       }
       return setStatus({ isEmpty: false, isError: false, isLoading: false });
@@ -154,7 +195,7 @@ const Orders = (props) => {
       toast.error("Something went wrong");
       throw new Error(error);
     }
-  }, [activeTab]);
+  }, [activeTab, marketType]);
 
   useEffect(() => {
     getOrders();
@@ -169,6 +210,20 @@ const Orders = (props) => {
     <MainContainer className="relative">
       <FirstSection className="w-full">
         <ScreenHeader title="Orders" value={orders.generalOrders?.length} />
+        <div className="mb-8">
+          <GeneralHeaderTab
+            data={orderMarkets}
+            noCounter={true}
+            activeTab={
+              !marketType | (marketType === "market")
+                ? "Thrindle Market"
+                : marketType === "mall"
+                ? "Thrindle Mall"
+                : ""
+            }
+            changeTab={changeMarket}
+          />
+        </div>
         <GeneralHeaderTab
           data={orderTabData}
           activeTab={activeTab}
@@ -184,7 +239,7 @@ const Orders = (props) => {
           handlePagination={handlePagination}
           pageNumber={orders.pageIndex}
           itemsNumber={orders.paginatedOrders}
-          totalNumber={orders.allOrders.length}
+          totalNumber={orders.allOrders?.length}
           showButtons={false}
         />
         {status.isError && (

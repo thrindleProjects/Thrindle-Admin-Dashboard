@@ -367,6 +367,23 @@ export const orderData = [
   },
 ];
 
+export const orderMarkets = [
+  {
+    title: "Thrindle Market",
+    color: "#009E52",
+    icon: Image8,
+    activeIcon: Image6,
+    to: "market",
+  },
+  {
+    title: "Thrindle Mall",
+    color: "#f69f13",
+    icon: Image8,
+    activeIcon: Image5,
+    to: "mall",
+  },
+];
+
 export const inventData = [
   {
     title: "Pending Products",
