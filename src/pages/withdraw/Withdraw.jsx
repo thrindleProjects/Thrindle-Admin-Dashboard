@@ -16,6 +16,8 @@ const Withdraw = () => {
 	const { data, loading, error } = useSelector((state) => state?.withdraw);
 
 	const [pageNumber, setPageNumber] = useState(0);
+	console.log(data.reverse())
+
 
 	const usersPerPage = 10;
 

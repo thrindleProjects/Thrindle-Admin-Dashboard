@@ -32,7 +32,7 @@ const MainContainer = (props) => {
 	const { data } = useSelector((state) => state?.withdraw);
 	const dispatch = useDispatch();
 
-	const pending = data.filter((item) => item.status === "pending");
+	const pending = data?.filter((item) => item.status === "pending");
 
 	const [noti, setNoti] = useState(false);
 	document.title = props.title || "Thrindle Dashboard";
@@ -104,10 +104,10 @@ const MainContainer = (props) => {
 										/>
 									</div>
 									{name === "Administrator" &&
-										pending.length > 0 && (
+										pending?.length > 0 && (
 											<div>
 												<p className="text-white-text text-sm font-Bold text-center mt-10">
-													You have {pending.length}{" "}
+													You have {pending?.length}{" "}
 													pending withdrawals that
 													needs approval
 												</p>
@@ -120,7 +120,7 @@ const MainContainer = (props) => {
 											</div>
 										)}
 
-									{pending.length === 0 && (
+									{pending?.length === 0 && (
 										<div>
 											<div className="w-full pt-10 flex flex-col align-middle justify-center ">
 												<img

@@ -8,7 +8,7 @@ export const withdrawData = () => async (dispatch) => {
   dispatch({ type: WITHDRAW_LOADING });
   try {
     const res = await axiosInstance.get('withdrawal/admin');
-    const resData = res.data.data;
+    const resData = res.data.data.reverse();
 
     
 
