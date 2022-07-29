@@ -404,59 +404,27 @@ export const storeData = [
 ];
 
 export const orderFilter = [
-  {
-    title: "Customer Name",
-  },
-  {
-    title: "Phone No",
-  },
-  {
-    title: "Username",
-  },
-  {
-    title: "Age",
-  },
-  {
-    title: "Gender",
-  },
-  {
-    title: "Location",
-  },
+  { title: "Customer Name" },
+  { title: "Phone No" },
+  { title: "Username" },
+  { title: "Age" },
+  { title: "Gender" },
+  { title: "Location" },
 ];
 export const shipmentFilter = [
-  {
-    title: "Today",
-  },
-  {
-    title: "Last 3 days",
-  },
-  {
-    title: "Delivered",
-  },
-  {
-    title: "In progress",
-  },
+  { title: "Today" },
+  { title: "Last 3 days" },
+  { title: "Delivered" },
+  { title: "In progress" },
 ];
 
 export const storeFilter = [
-  {
-    title: "Seller Name",
-  },
-  {
-    title: "Phone No",
-  },
-  {
-    title: "Email",
-  },
-  {
-    title: "Store Name",
-  },
-  {
-    title: "Category",
-  },
-  {
-    title: "Choosen Market",
-  },
+  { title: "Seller Name" },
+  { title: "Phone No" },
+  { title: "Email" },
+  { title: "Store Name" },
+  { title: "Category" },
+  { title: "Choosen Market" },
 ];
 
 export const inventFilter = [
@@ -469,132 +437,65 @@ export const inventFilter = [
 ];
 
 export const orderTableHeader = [
-  {
-    title: "Index",
-  },
-  {
-    title: "Status",
-  },
-  {
-    title: "Order No",
-  },
-  {
-    title: "Product Name",
-  },
-  {
-    title: "Price",
-  },
-  {
-    title: "Quantity",
-  },
-  {
-    title: "Market",
-  },
-  {
-    title: "Ordered",
-  },
-  {
-    title: "Action",
-  },
+  { title: "Index" },
+  { title: "Status" },
+  { title: "Order No" },
+  { title: "Product Name" },
+  { title: "Price" },
+  { title: "Original Price" },
+  { title: "Charge" },
+  { title: "Shipping Fee" },
+  { title: "Quantity" },
+  { title: "Market" },
+  { title: "Ordered" },
+  { title: "Action" },
 ];
 
 export const orderTableHeaderNoAction = [
-  {
-    title: "Index",
-  },
-  {
-    title: "Status",
-  },
-  {
-    title: "Order No",
-  },
-  {
-    title: "Product Name",
-  },
-  {
-    title: "Price",
-  },
-  {
-    title: "Quantity",
-  },
-  {
-    title: "Market",
-  },
-  {
-    title: "Ordered",
-  },
+  { title: "Index" },
+  { title: "Status" },
+  { title: "Order No" },
+  { title: "Product Name" },
+  { title: "Price" },
+  { title: "Original Price" },
+  { title: "Charge" },
+  { title: "Shipping Fee" },
+  { title: "Quantity" },
+  { title: "Market" },
+  { title: "Ordered" },
 ];
 
 export const dashbordHeader = [
-  {
-    title: "Image",
-  },
-  {
-    title: "Product Title",
-  },
-  {
-    title: "Price",
-  },
-  {
-    title: "Stock",
-  },
-  {
-    title: "Market",
-  },
-  {
-    title: "Category",
-  },
-  {
-    title: "Sub Category",
-  },
-  {
-    title: "Uploaded",
-  },
+  { title: "Image" },
+  { title: "Product Title" },
+  { title: "Price" },
+  { title: "Stock" },
+  { title: "Market" },
+  { title: "Category" },
+  { title: "Sub Category" },
+  { title: "Uploaded" },
 ];
 
 export const approvedProductHeader = [
   "Index",
-
   "Product Name",
-
   "Category",
-
   "Price",
-
   "Store",
-
   "Market",
-
   "Uploaded",
-
   "Action",
 ];
 
 export const shipmentTableHeader = [
-  {
-    title: "Customer Name",
-  },
-  {
-    title: "Order ID",
-  },
-  {
-    title: "Carrier",
-  },
-  {
-    title: "Order Date",
-  },
-  {
-    title: "Shipping Date",
-  },
-  {
-    title: "Exp. Delivery Date",
-  },
-  {
-    title: "Carrier Status",
-  },
-  {
-    title: "Payment Status",
-  },
+  { title: "Customer Name" },
+  { title: "Order ID" },
+  { title: "Carrier" },
+  { title: "Order Date" },
+  { title: "Shipping Date" },
+  { title: "Exp. Delivery Date" },
+  { title: "Carrier Status" },
+  { title: "Payment Status" },
 ];
 
 export const buyersHeader = [
@@ -619,21 +520,11 @@ export const sellersHeader = [
 ];
 
 export const storeHeader = [
-  {
-    title: "Index",
-  },
-  {
-    title: "Store Name",
-  },
-  {
-    title: "Store ID",
-  },
-  {
-    title: "Market",
-  },
-  {
-    title: "Joined",
-  },
+  { title: "Index" },
+  { title: "Store Name" },
+  { title: "Store ID" },
+  { title: "Market" },
+  { title: "Joined" },
   { title: "Last Update" },
   // {
   //   title: "Action",
@@ -666,6 +557,9 @@ export const orderDetailsTableHeader = [
   { title: "Product Title" },
   { title: "Description" },
   { title: "Price" },
+  { title: "Original Price" },
+  { title: "Charge" },
+  { title: "Shipping Fee" },
   { title: "Quantity" },
   { title: "Size" },
   { title: "Color" },

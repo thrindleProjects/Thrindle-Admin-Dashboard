@@ -19,6 +19,7 @@ import Withdraw from "../pages/withdraw/Withdraw";
 import Coupon from "../pages/coupons/CreatedCoupon";
 import SeeAll from "../pages/coupons/SeeAll";
 import Mope from "../pages/mope/Mope";
+import Balances from "../pages/Balances/Balances";
 
 export const routes = [
   {
@@ -92,12 +93,12 @@ export const routes = [
     path: "/audit",
     component: Audit,
   },
-   {
+  {
     title: "Admin Users",
     path: "/audit/:admin_user_id",
     component: AdminUser,
   },
-   {
+  {
     title: "Withdraw",
     path: "/withdraw",
     component: Withdraw,
@@ -115,6 +116,11 @@ export const routes = [
   {
     title: "Mope",
     path: "/mope",
-    component:Mope
-  }
+    component: Mope,
+  },
+  {
+    title: "Balances",
+    path: "/balances",
+    component: Balances,
+  },
 ];

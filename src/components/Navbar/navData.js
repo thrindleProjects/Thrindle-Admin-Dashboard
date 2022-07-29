@@ -57,7 +57,12 @@ export const navData = [
         icon: Image4,
         icon2: Active3,
       },
-      
+      {
+        title: "Balances",
+        path: "/balances",
+        icon: Image6,
+        icon2: Active5,
+      },
     ],
   },
 
@@ -86,18 +91,19 @@ export const navData = [
         title: "Withdraw",
         path: "/withdraw",
         icon: "https://toppng.com/uploads/preview/banner-freeuse-geldtasche-icon-free-and-money-icon-115534432646uveksxxli.png",
-        icon2: "https://toppng.com/uploads/preview/banner-freeuse-geldtasche-icon-free-and-money-icon-115534432646uveksxxli.png",
+        icon2:
+          "https://toppng.com/uploads/preview/banner-freeuse-geldtasche-icon-free-and-money-icon-115534432646uveksxxli.png",
       },
       {
         title: "Coupons",
         path: "/coupons",
-       icon: Image7,
+        icon: Image7,
         icon2: Active6,
       },
-       {
+      {
         title: "Mope",
         path: "/mope",
-       icon: Image7,
+        icon: Image7,
         icon2: Active6,
       },
     ],

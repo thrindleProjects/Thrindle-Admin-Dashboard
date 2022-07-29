@@ -35,23 +35,24 @@ const OrderTable = (props) => {
 
   return (
     <MainTable className="w-full rounded-md py-10 mt-5 overflow-auto ">
-      <table className="w-max max-w-7xl lg:w-full min-w-min lg:max-w-full overflow-y-auto">
+      <table className="w-max max-w-7xl min-w-min lg:max-w-5xl overflow-y-auto">
         <thead
           className={`main-table-header rounded-md grid grid-flow-row auto-cols-min gap-3 px-6 py-2 ${
             props.activeTab === `Pending Orders`
-              ? `grid-cols-12`
-              : "grid-cols-10"
+              ? `grid-cols-15`
+              : "grid-cols-13"
           }`}
         >
           {props.tableHeaderData?.map((item, index) => (
             <tr
               key={index}
               className={`text-xs md:text-sm font-normal font-Regular text-center text-white-text  ${
-                ["Action", "Product Name", "Order No"].includes(item.title) && "col-span-2"
+                ["Action", "Product Name", "Order No"].includes(item.title) &&
+                "col-span-2"
               } 
               `}
             >
-              <th>{item.title}</th>
+              <th className="text-left">{item.title}</th>
             </tr>
           ))}
         </thead>
@@ -66,14 +67,13 @@ const OrderTable = (props) => {
             let productName =
               item.product && item.product.name ? item.product.name : "N/A";
             let serialNumber = props.pageIndex * 20 + (index + 1);
-
             return (
               <tr
                 key={index}
                 className={`text-xs md:text-xs w-full grid grid-flow-row gap-3 auto-cols-min px-6 py-3 cursor-pointer ${
                   props.activeTab === `Pending Orders`
-                    ? `grid-cols-12`
-                    : "grid-cols-10"
+                    ? `grid-cols-15`
+                    : "grid-cols-13"
                 }`}
               >
                 <td>{serialNumber}</td>
@@ -93,7 +93,10 @@ const OrderTable = (props) => {
                     {item?.status}
                   </p>
                 </td>
-                <td onClick={() => handleSetSingleOrder(item)} className="col-span-2">
+                <td
+                  onClick={() => handleSetSingleOrder(item)}
+                  className="col-span-2"
+                >
                   <p className="font-normal font-Regular text-white-text ">
                     {item?.order_no}
                   </p>
@@ -106,10 +109,24 @@ const OrderTable = (props) => {
                     {productName}
                   </p>
                 </td>
-
                 <td onClick={() => handleSetSingleOrder(item)}>
                   <p className="font-normal font-Regular text-white-text">
                     N{numberFormat(item?.total_price)}
+                  </p>
+                </td>
+                <td onClick={() => handleSetSingleOrder(item)}>
+                  <p className="font-normal font-Regular text-white-text">
+                    N{numberFormat(item?.product?.original_price)}
+                  </p>
+                </td>
+                <td onClick={() => handleSetSingleOrder(item)}>
+                  <p className="font-normal font-Regular text-white-text">
+                    N{numberFormat(item?.product?.charge)}
+                  </p>
+                </td>
+                <td onClick={() => handleSetSingleOrder(item)}>
+                  <p className="font-normal font-Regular text-white-text">
+                    N{numberFormat(item?.payment?.shippingFee)}
                   </p>
                 </td>
                 <td>
