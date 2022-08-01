@@ -16,13 +16,26 @@ const Withdraw = () => {
 	const { data, loading, error } = useSelector((state) => state?.withdraw);
 
 	const [pageNumber, setPageNumber] = useState(0);
-	console.log(data.reverse())
+	
+
+
+	const  sortedData = data.sort((a, b) => {
+        const dateA = a.createdAt;
+        const dateB = b.createdAt;
+        if (dateA > dateB) {
+          return -1;
+        }
+        if (dateA < dateB) {
+          return 1;
+        }
+        return 0;
+      });
 
 
 	const usersPerPage = 10;
 
 	const pagesVisited = pageNumber * usersPerPage;
-	const displayProducts = data
+	const displayProducts = sortedData
 		.slice(pagesVisited, pagesVisited + usersPerPage)
 		.map((user, index) => {
 			return (
