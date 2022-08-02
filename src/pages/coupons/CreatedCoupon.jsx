@@ -61,7 +61,6 @@ const CreateCoupon = () => {
 										values,
 										{ resetForm, setSubmitting }
 									) => {
-										console.log(values);
 										const body = {
 											name:values.name,
 											code: values.code,
@@ -78,7 +77,6 @@ const CreateCoupon = () => {
 													"/coupons",
 													body
 												);
-											console.log(response);
 											if (response) {
 												toast.success(
 													`🦄 Coupon created Successfully}`,

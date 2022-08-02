@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
   const [orderDetails, setOrderDetails] = useState({ size: "", color: "" });
+  const [activeImage, setActiveImage] = useState("");
 
   const getUploadDate = (updatedAt) => {
     if (!updatedAt) return "N/A";
@@ -14,8 +15,6 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
     let newYear = date.getFullYear();
     return `${newDay}/${newMonth}/${newYear}`;
   };
-
-  console.log({ orderInfo, tableData });
 
   useEffect(() => {
     if (orderInfo && orderInfo?.payment && orderInfo?.payment?.priceDetails) {
@@ -30,6 +29,9 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
         newDetails?.color && newDetails.color.length > 0
           ? newDetails.color
           : "N/A";
+      // set active image as the first item in the array of tableData?.images
+      console.log(tableData.images);
+      setActiveImage(tableData?.images[0]);
       return setOrderDetails({ size, color });
     }
     return setOrderDetails({ size: "N/A", color: "N/A" });
@@ -38,13 +40,34 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
   return (
     <Wrapper>
       <Header title={"Order"} />
+
       <div className="flex items-center justify-center h-40 mt-4">
         <img
-          src={`https://api.thrindle.com/api/thrindle/images/${tableData?.images[0]}`}
+          src={`https://api.thrindle.com/api/thrindle/images/${activeImage}`}
           alt="Product"
-          className="h-full shadow rounded-md"
+          className="big-img h-full shadow rounded-md"
         />
       </div>
+      {tableData?.images?.length > 1 && (
+        <div className="w-full px-2 mt-2 flex flex-row justify-center">
+          <div className="w-full px-4 flex gap-2 pb-4 overflow-x-auto">
+            {tableData.images.map((image, index) => (
+              <div
+                key={index}
+                className="h-20 flex-shrink-0 overflow-hidden rounded-md shadow-md cursor-pointer"
+                onClick={() => setActiveImage(image)}
+              >
+                <img
+                  src={`https://api.thrindle.com/api/thrindle/images/${image}`}
+                  alt="Product"
+                  className="h-full"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <SingleOrderTable className="table-wrapper">
         <thead className="body-wrapper">
           {tableHeader.map((item, index) => {

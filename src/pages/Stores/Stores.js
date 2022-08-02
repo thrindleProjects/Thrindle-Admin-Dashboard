@@ -25,7 +25,6 @@ const Stores = () => {
   const [totalStores, setTotalStores] = useState(0);
   const [storeHeaderData, setStoreHeaderData] = useState(storeData);
   const [loadingStores, setLoadingStores] = useState(false);
-  // console.log();
 
   // Redux stuff
   const dispatch = useDispatch();
@@ -117,7 +116,6 @@ const Stores = () => {
         ),
         pageIndex,
       };
-      // console.log(storeData);
       dispatch(setStoresData(storeData));
       setLoadingStores(false);
     }

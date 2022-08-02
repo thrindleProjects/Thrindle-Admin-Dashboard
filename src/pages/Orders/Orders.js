@@ -160,7 +160,6 @@ const Orders = (props) => {
         paginatedOrders = paginationArr(cancelled, 20);
         allOrders = cancelled;
       }
-      console.log(allOrders);
       setOrderTabData((oldState) => {
         let newState = oldState.map((item) => {
           if (item.title === "Pending Orders")
