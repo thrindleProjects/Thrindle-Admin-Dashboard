@@ -13,7 +13,6 @@ const initialState = {
 export const storesReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case constants.SET_STORES_DATA:
-      // console.log(payload);
       return { ...state, ...payload };
     case constants.INCREASE_PAGE_INDEX:
       return { ...state, pageIndex: payload };

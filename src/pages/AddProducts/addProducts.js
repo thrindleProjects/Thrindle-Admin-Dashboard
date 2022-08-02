@@ -366,7 +366,6 @@ const AddProducts = () => {
   };
 
   const handleOnDragEnd = (result) => {
-    console.log(result);
     if (!result.destination) return;
     let imageList = images;
     [imageList[result.source.index], imageList[result.destination.index]] = [

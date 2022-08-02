@@ -11,7 +11,6 @@ const AdminUser = () => {
 	const [error, setError] = useState(false);
 
 	const location = useLocation();
-	console.log(pageInfo);
 	const id = location?.state?.id;
 
 	const getUserDetails = useCallback(async () => {

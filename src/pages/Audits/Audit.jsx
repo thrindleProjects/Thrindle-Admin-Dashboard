@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const Audit = () => {
 	const [adminUSers, setAdminUsers] = useState([]);
 	const navigate = useNavigate();
-	console.log(adminUSers);
 
 	const getAllAdminUSers = useCallback(async () => {
 		try {

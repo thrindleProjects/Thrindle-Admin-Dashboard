@@ -15,8 +15,6 @@ function MerchantDetails() {
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [profileData, setProfileData] = useState(null);
 
-  console.log(profileData);
-
   let { store_id } = useParams();
 
   useEffect(() => {
@@ -51,7 +49,6 @@ function MerchantDetails() {
     };
   }, [store_id]);
 
-  console.log(profileData);
   return (
     <div className="mb-12 text-xs md:text-sm">
       <div className="rounded-md shadow-md">
