@@ -57,9 +57,9 @@ const Balances = () => {
               <tr key={index} className="grid grid-cols-5 py-2 gap-2 cursor-default">
                 <td>{index + 1}</td>
                 <td>{wallet?.seller?.name}</td>
-                <td>{wallet.store.store_name}</td>
-                <td>{wallet.store.store_id}</td>
-                <td>₦{wallet.balance.toLocaleString()}</td>
+                <td>{wallet.store?.store_name}</td>
+                <td>{wallet.store?.store_id}</td>
+                <td>₦{wallet.balance?.toLocaleString()}</td>
               </tr>
             );
           })}
