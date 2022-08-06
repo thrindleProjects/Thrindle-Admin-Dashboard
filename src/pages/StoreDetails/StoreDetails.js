@@ -4,6 +4,7 @@ import React from "react";
 // import { useParams } from "react-router-dom";
 // import { toast } from "react-toastify";
 import MainContainer from "../../components/Common/MainContainer/MainContainer";
+import MerchantData from "../../components/MerchantDetails/MerchantData";
 // import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 import MerchantDetails from "../../components/MerchantDetails/MerchantDetails";
 import MerchantProducts from "../../components/MerchantDetails/MerchantProducts";
@@ -54,6 +55,8 @@ function StoreDetails() {
       </div>
 
       <MerchantDetails />
+      <MerchantData />
+
       <MerchantProducts />
     </MainContainer>
   );
