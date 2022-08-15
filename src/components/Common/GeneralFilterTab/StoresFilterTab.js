@@ -127,7 +127,7 @@ const StoresFilterTab = ({ filterData, stores, allStores }) => {
       const newStores = currentStores.filter((item) => {
         return (
           item.store_name.toLowerCase().includes(value.toLowerCase()) ||
-          item.owner_id.store_id.toLowerCase().includes(value.toLowerCase())
+          item.owner_id?.store_id.toLowerCase().includes(value.toLowerCase())
         );
       });
       filteredData = {
