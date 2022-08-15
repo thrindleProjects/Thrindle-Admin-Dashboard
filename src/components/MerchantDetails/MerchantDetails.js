@@ -174,7 +174,7 @@ function MerchantDetails() {
                         Store Link
                       </span>
                     </div>
-                    <p className="w-1/2">
+                    {store_id.startsWith("TM") && <p className="w-1/2">
                       {profileData?.description === "undefined" ? (
                         "N/A"
                       ) : (
@@ -182,7 +182,7 @@ function MerchantDetails() {
                           href={`https://${profileData.store_link}.thrindle.shop`}
                         >{`https://${profileData.store_link}.thrindle.shop`}</a>
                       )}
-                    </p>
+                    </p>}
                   </div>
                 </div>
               </div>
@@ -195,3 +195,8 @@ function MerchantDetails() {
 }
 
 export default MerchantDetails;
+
+
+
+
+
