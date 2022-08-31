@@ -29,7 +29,7 @@ const StoreTable = (props) => {
           </tr>
         </thead>
         <tbody className="main-table-body text-xs md:text-sm">
-          {props?.tableData?.map((item, index) => (
+          {props?.tableData?.reverse().map((item, index) => (
             <tr
               key={index}
               className="w-full grid grid-cols-5 md:grid-cols-7 cursor-pointer py-3 px-6"
