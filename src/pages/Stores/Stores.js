@@ -54,18 +54,31 @@ const Stores = () => {
     }
   };
 
-  // Sort stores alphabetically
+
+  // Sort stores by date
   const objSort = (a, b) => {
-    let x = new Date(a.owner_id?.createdAt);
-    let y = new Date(b.owner_id?.createdAt);
+    let x = a.owner_id?.createdAt
+    let y = b.owner_id?.createdAt
     if (x < y) {
-      return 1;
+      return -1;
     }
     if (x > y) {
-      return -1;
+      return 1;
     }
     return 0;
   };
+
+  // const  sortedData = data.sort((a, b) => {
+  //       const dateA = a.createdAt;
+  //       const dateB = b.createdAt;
+  //       if (dateA > dateB) {
+  //         return -1;
+  //       }
+  //       if (dateA < dateB) {
+  //         return 1;
+  //       }
+  //       return 0;
+  //     });
 
   const filterOnLoad = useCallback(() => {
     if (stores.allStoresImmutable.length > 0 && totalStores > 0) {
@@ -136,7 +149,8 @@ const Stores = () => {
       let {
         data: { data },
       } = await axiosInstance.get(`stores/allstores`);
-      let allStores = data.sort(objSort);
+      let allStores = data.sort(objSort).reverse();
+      console.log(data)
       // Redux logic here
       dispatch(setStoresData({ allStoresImmutable: allStores }));
       setStoreHeaderData((prevState) => {
