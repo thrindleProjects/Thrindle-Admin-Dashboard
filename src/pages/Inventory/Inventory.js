@@ -127,8 +127,8 @@ const Inventory = (props) => {
         setSearchParams(changeParams);
         break;
       case "LAST_PAGE":
-        if (payload === products.pageInfo?.total) return;
-        changeParams.page = products.pageInfo?.total;
+        if (payload === products.pageInfo?.totalPages) return;
+        changeParams.page = products.pageInfo?.totalPages;
         setSearchParams(changeParams);
         break;
       case "GO_TO_PAGE":
@@ -229,7 +229,7 @@ const Inventory = (props) => {
             let pageNumber = Number(page);
             // Create array of all possible pages
             let rightHandSide = Array.from(
-              { length: approvedPageInfo.total },
+              { length: approvedPageInfo.totalPages },
               (_, index) => index + 1
             );
             let leftHandSide;
@@ -251,6 +251,7 @@ const Inventory = (props) => {
             let newPages = leftHandSide
               .concat(rightHandSide)
               .map((item) => ({ page: item, limit: 20 }));
+
             approvedPageInfo.displayPages = newPages;
             approvedPageInfo.currentPage = pageNumber;
 
