@@ -66,32 +66,32 @@ const Inventory = (props) => {
   };
 
   // HandlePagination for frontend paginated table
-  const handlePagination = (type) => {
-    switch (type) {
-      case "NEXT_PAGE":
-        setProducts((oldProducts) => {
-          if (
-            oldProducts.paginatedProducts.length - 1 ===
-            oldProducts.pageIndex
-          ) {
-            return oldProducts;
-          }
-          return { ...oldProducts, pageIndex: oldProducts.pageIndex + 1 };
-        });
-        break;
-      case "PREVIOUS_PAGE":
-        setProducts((oldProducts) => {
-          if (oldProducts.pageIndex === 0) {
-            return oldProducts;
-          }
-          return { ...oldProducts, pageIndex: oldProducts.pageIndex - 1 };
-        });
-        break;
-      default:
-        console.log("Argumenet NOT handled");
-        break;
-    }
-  };
+  // const handlePagination = (type) => {
+  //   switch (type) {
+  //     case "NEXT_PAGE":
+  //       setProducts((oldProducts) => {
+  //         if (
+  //           oldProducts.paginatedProducts.length - 1 ===
+  //           oldProducts.pageIndex
+  //         ) {
+  //           return oldProducts;
+  //         }
+  //         return { ...oldProducts, pageIndex: oldProducts.pageIndex + 1 };
+  //       });
+  //       break;
+  //     case "PREVIOUS_PAGE":
+  //       setProducts((oldProducts) => {
+  //         if (oldProducts.pageIndex === 0) {
+  //           return oldProducts;
+  //         }
+  //         return { ...oldProducts, pageIndex: oldProducts.pageIndex - 1 };
+  //       });
+  //       break;
+  //     default:
+  //       console.log("Argumenet NOT handled");
+  //       break;
+  //   }
+  // };
 
   // HandlePagination for backend paginated table
   const changePage = (type, payload = products.pageInfo?.currentPage) => {
@@ -158,11 +158,15 @@ const Inventory = (props) => {
 
     setStatus({ isError: false, isLoading: true });
 
-    let verifiedEndPoint = search
+    const verifiedEndPoint = search
       ? `/products/search/${search}?page=${page ? page : 1}`
       : `/products/search?page=${page ? page : 1}`;
 
-    let endpoints = ["/products/unverifiedproducts", verifiedEndPoint];
+    const unverifiedEndPoint = search
+      ? `/products/unverifiedproducts?page=${page ? page : 1}&search=${search}`
+      : `/products/unverifiedproducts?page=${page ? page : 1}`;
+
+    let endpoints = [unverifiedEndPoint, verifiedEndPoint];
 
     axios
       .all(endpoints.map((endpoint) => axiosInstance.get(endpoint)))
@@ -172,6 +176,8 @@ const Inventory = (props) => {
           let {
             data: { data: unverifiedProductsArr, pageInfo: unverifiedPageInfo },
           } = unverifiedProducts;
+
+          console.log({ unverifiedPageInfo });
 
           let {
             data: { data: approvedProductsArr, pageInfo: approvedPageInfo },
@@ -238,7 +244,7 @@ const Inventory = (props) => {
               : {
                   ...prevState,
                   allProducts: unverifiedProductsArr,
-                  pageInfo: approvedPageInfo,
+                  pageInfo: unverifiedPageInfo,
                 };
           });
 
@@ -359,12 +365,11 @@ const Inventory = (props) => {
                   showCheck
                   tableHeaderData={inventTableHeader}
                   tableData={products.allProducts}
-                  pageIndex={products.pageIndex}
+                  pageIndex={page ? page : 1}
                   setModal={handleSetModal}
                   displayDeleteModal={(id, activeData) =>
                     displayDeleteModal(id, activeData)
                   }
-                  handlePagination={handlePagination}
                   itemsNumber={products?.paginatedProducts}
                   status={status}
                   totalNumber={products?.allProducts?.length}
@@ -372,6 +377,8 @@ const Inventory = (props) => {
                   products={products}
                   setProducts={setProducts}
                   setFilterValue={setFilterValue}
+                  pageInfo={products.pageInfo}
+                  changePage={changePage}
                 />
               }
             />
