@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import getMarketName from "../../../utils/getMarketName";
 import GeneralFilterTab from "../GeneralFilterTab/GeneralFilterTab";
-import GeneralPagination from "../GeneralPagination/GeneralPagination";
 // import { MdEdit } from "react-icons/md";
 // import { AiFillCloseCircle } from "react-icons/ai";
 
@@ -30,14 +29,14 @@ const InventoryTable = (props) => {
         setProducts={props.setProducts}
         changeFilter={(val) => props.setFilterValue(val)}
       />
-      <GeneralPagination
+      {/* <GeneralPagination
         showButtons={false}
         pag
         handlePagination={props.handlePagination}
         pageNumber={props.pageIndex}
         itemsNumber={props.itemsNumber}
         totalNumber={props.totalNumber}
-      />
+      /> */}
       <MainTable className="w-full rounded-md pt-10 mt-5 overflow-auto">
         <table className="w-max min-w-full max-w-2xl md:max-w-3xl lg:max-w-4xl">
           <>

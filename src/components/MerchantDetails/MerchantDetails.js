@@ -65,7 +65,7 @@ function MerchantDetails() {
               ) : (
                 <img
                   src={
-                    "https://api.thrindle.com/api/thrindle/images/" +
+                    "https://thrindleservices.herokuapp.com/api/thrindle/images/" +
                     profileData?.owner_id?.photo
                   }
                   alt="merchant-avatar"
@@ -171,15 +171,17 @@ function MerchantDetails() {
                         Store Link
                       </span>
                     </div>
-                    {store_id.startsWith("TM") && <p className="w-1/2">
-                      {profileData?.description === "undefined" ? (
-                        "N/A"
-                      ) : (
-                        <a
-                          href={`https://${profileData.store_link}.thrindle.shop`}
-                        >{`https://${profileData.store_link}.thrindle.shop`}</a>
-                      )}
-                    </p>}
+                    {store_id.startsWith("TM") && (
+                      <p className="w-1/2">
+                        {profileData?.description === "undefined" ? (
+                          "N/A"
+                        ) : (
+                          <a
+                            href={`https://${profileData.store_link}.thrindle.shop`}
+                          >{`https://${profileData.store_link}.thrindle.shop`}</a>
+                        )}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -192,8 +194,3 @@ function MerchantDetails() {
 }
 
 export default MerchantDetails;
-
-
-
-
-

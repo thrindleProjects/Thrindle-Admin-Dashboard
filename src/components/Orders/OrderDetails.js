@@ -43,7 +43,7 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
 
       <div className="flex items-center justify-center h-40 mt-4">
         <img
-          src={`https://api.thrindle.com/api/thrindle/images/${activeImage}`}
+          src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${activeImage}`}
           alt="Product"
           className="big-img h-full shadow rounded-md"
         />
@@ -58,7 +58,7 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
                 onClick={() => setActiveImage(image)}
               >
                 <img
-                  src={`https://api.thrindle.com/api/thrindle/images/${image}`}
+                  src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${image}`}
                   alt="Product"
                   className="h-full"
                 />

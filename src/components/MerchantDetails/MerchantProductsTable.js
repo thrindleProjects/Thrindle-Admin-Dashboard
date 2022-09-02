@@ -43,7 +43,9 @@ const MerchantProductsTable = ({
                     key={index}
                     className={`${
                       ["Name"].includes(title) ? "col-span-2" : ""
-                    } ${hiddenMobile.includes(title) ? "hidden md:block" : "block"}`}
+                    } ${
+                      hiddenMobile.includes(title) ? "hidden md:block" : "block"
+                    }`}
                   >
                     {title}
                   </th>
@@ -62,7 +64,7 @@ const MerchantProductsTable = ({
                 <td className="hidden md:block">
                   <img
                     src={
-                      "https://api.thrindle.com/api/thrindle/images/" +
+                      "https://thrindleservices.herokuapp.com/api/thrindle/images/" +
                       product?.images[0]
                     }
                     className="w-12 h-12 mr-auto rounded-sm"
@@ -74,7 +76,9 @@ const MerchantProductsTable = ({
                 <td>{product?.no_in_stock}</td>
                 <td>{product?.category?.name}</td>
                 <td>N{numberFormat(product?.price)}</td>
-                <td className="hidden md:blocl">{formatDate(product?.createdAt)}</td>
+                <td className="hidden md:blocl">
+                  {formatDate(product?.createdAt)}
+                </td>
                 <td className="">
                   <p className="table-head-text font-normal font-Regular text-left text-white-text flex flex-row justify-start gap-2">
                     <button

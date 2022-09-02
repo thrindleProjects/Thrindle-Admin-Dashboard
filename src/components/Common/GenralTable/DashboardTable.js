@@ -39,7 +39,7 @@ const DashboardTable = (props) => {
               <td>
                 <img
                   src={
-                    "https://api.thrindle.com/api/thrindle/images/" +
+                    "https://thrindleservices.herokuapp.com/api/thrindle/images/" +
                     item?.images[0]
                   }
                   className="h-6 md:h-9 lg:h-12 mr-auto rounded-sm mx-auto"
@@ -57,7 +57,9 @@ const DashboardTable = (props) => {
                   N{numberFormat(item?.price)}
                 </p>
               </td>
-              <td className={`table-data-wrapper mobile-hidden ${tableDataExtraStyles}`}>
+              <td
+                className={`table-data-wrapper mobile-hidden ${tableDataExtraStyles}`}
+              >
                 <p className="table-data-container">{item?.no_in_stock}</p>
               </td>
               <td className={`table-data-wrapper ${tableDataExtraStyles}`}>
