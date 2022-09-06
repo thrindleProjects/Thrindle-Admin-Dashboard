@@ -33,8 +33,11 @@ const SingleOrder = () => {
         allUrl.map(async (endpoint) => {
           try {
             let {
-              data: { data },
+              data: {
+                data: {orders: data}
+              },
             } = await axiosInstance.get(endpoint);
+            console.log(data);
             return data.reverse();
           } catch (error) {
             if (error.message) {

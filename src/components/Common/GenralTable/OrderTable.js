@@ -8,16 +8,16 @@ import { numberFormat } from "../../../utils/formatPrice";
 const OrderTable = (props) => {
   const navigate = useNavigate();
   const getMarketName = (text) => {
-    if (text.startsWith("CV") | (text === "Computer Village")) return "CV";
-    if (text.startsWith("BM") | (text === "Balogun Market")) return "EM";
-    if (text.startsWith("EM") | (text === "Eko Market")) return "EM";
-    if (text.startsWith("TM") | (text === "Thrindle Mall")) return "TM";
+    if (text?.startsWith("CV") | (text === "Computer Village")) return "CV";
+    if (text?.startsWith("BM") | (text === "Balogun Market")) return "EM";
+    if (text?.startsWith("EM") | (text === "Eko Market")) return "EM";
+    if (text?.startsWith("TM") | (text === "Thrindle Mall")) return "TM";
 
     return "N/A";
   };
 
-  const getUploadDate = (updatedAt) => {
-    const date = new Date(updatedAt);
+  const getUploadDate = (createdAt) => {
+    const date = new Date(createdAt);
     let newDay = date.getDate();
     let newMonth = date.getMonth() + 1;
     let newYear = date.getFullYear();
@@ -59,8 +59,8 @@ const OrderTable = (props) => {
         </thead>
         <tbody className="main-table-body text-xs md:text-sm">
           {props.tableData?.map((item, index) => {
-            let marketName = getMarketName(item?.product?.market?.name);
-            let updatedAt = getUploadDate(item.updatedAt);
+            let marketName = getMarketName(item?.seller?.store_id);
+            let createdAt = getUploadDate(item.createdAt);
             let productName =
               item.product && item.product.name ? item.product.name : "N/A";
             let serialNumber = props.pageIndex * 20 + (index + 1);
@@ -139,7 +139,7 @@ const OrderTable = (props) => {
                 </td>
                 <td onClick={() => handleSetSingleOrder(item)}>
                   <p className="font-normal font-Regular text-left text-white-text">
-                    {updatedAt}
+                    {createdAt}
                   </p>
                 </td>
                 {props.activeTab === "Pending Orders" && (
