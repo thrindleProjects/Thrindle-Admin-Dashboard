@@ -63,7 +63,8 @@ const OrderTable = (props) => {
             let createdAt = getUploadDate(item.createdAt);
             let productName =
               item.product && item.product.name ? item.product.name : "N/A";
-            let serialNumber = props.pageIndex * 20 + (index + 1);
+            let serialNumber = (props.pageIndex - 1) * 20 + (index + 1);
+
             return (
               <tr
                 key={index}

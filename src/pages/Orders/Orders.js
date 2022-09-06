@@ -63,8 +63,6 @@ const Orders = (props) => {
       changeParams.tab = activeTab;
     }
 
-    console.log({ changeParams });
-
     switch (type) {
       case "NEXT_PAGE":
         changeParams.page = orders.pageInfo?.next?.page;
@@ -135,11 +133,9 @@ const Orders = (props) => {
       url = `${url}&market=mall`;
     }
 
-    if (marketType === "market" | !marketType) {
+    if ((marketType === "market") | !marketType) {
       url = `${url}&market=market`;
     }
-
-    console.log({url});
 
     let allUrl = [
       `${url}&type=pending`,
@@ -353,7 +349,7 @@ const Orders = (props) => {
               }
               tableData={orders.allOrders}
               activeTab={activeTab}
-              pageIndex={orders.pageIndex}
+              pageIndex={page ? page : 1}
               setOpenModal={setOpenModal}
               setModalType={setModalType}
               setActiveID={setActiveID}
