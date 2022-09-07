@@ -25,7 +25,7 @@ const OrderTable = (props) => {
   };
 
   const handleSetSingleOrder = (item) => {
-    return navigate(`/orders/${item._id}`);
+    return navigate(`/orders/${item.order_no}`);
   };
 
   const openModal = (e, order_no) => {

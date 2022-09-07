@@ -10,9 +10,9 @@ import {
   orderCustomerDetailsTableHeader,
 } from "../../data/data";
 import axiosInstance from "../../utils/axiosInstance";
-import axios from "axios";
 import { toast } from "react-toastify";
 import NewLoader from "../../components/newLoader/newLoader";
+import axios from "axios";
 
 const SingleOrder = () => {
   const { orderId } = useParams();
@@ -24,36 +24,17 @@ const SingleOrder = () => {
   });
 
   const getSingleOrder = useCallback(async () => {
+    console.log({ orderId });
     setStatus({ isLoading: true, isEmpty: true, isError: false });
-    let url = "orders/admin/getOrders?type=";
-    let allUrl = [`${url}pending`, `${url}completed`, `${url}cancelled`];
+    let url = `orders/getOrder/${orderId}`;
 
     try {
-      let [pending, completed, cancelled] = await axios.all(
-        allUrl.map(async (endpoint) => {
-          try {
-            let {
-              data: {
-                data: {orders: data}
-              },
-            } = await axiosInstance.get(endpoint);
-            console.log(data);
-            return data.reverse();
-          } catch (error) {
-            if (error.message) {
-              toast.error(error.message);
-              throw new Error(error.message);
-            }
-            toast.error("Something went wrong");
-            throw new Error(error);
-          }
-        })
-      );
-      let allOrders = pending.concat(completed, cancelled);
-      let [currentOrder] = allOrders.filter((item) => item._id === orderId);
-      if (!currentOrder) {
-        return setStatus({ isEmpty: true, isError: false, isLoading: false });
-      }
+      const {
+        data: { data },
+      } = await axiosInstance.get(url);
+
+      const [currentOrder] = data;
+
       let nextUrls = [
         `delivery/admin/getDeliveries/${currentOrder?.delivery?._id}`,
         `stores/admin/getStoreDetails/${currentOrder?.seller?.store_id}`,
