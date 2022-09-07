@@ -8,7 +8,7 @@ const InventoryModal = (props) => {
   const modalRef = useRef(null);
   const [modalData, setModalData] = useState([]);
 
-  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+  const url = "https://thrindleservices.herokuapp.com/api/thrindle";
 
   const { handleSetModal, getAllUnverifiedProducts } = props;
 
