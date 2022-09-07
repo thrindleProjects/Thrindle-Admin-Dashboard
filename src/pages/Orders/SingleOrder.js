@@ -24,7 +24,6 @@ const SingleOrder = () => {
   });
 
   const getSingleOrder = useCallback(async () => {
-    console.log({ orderId });
     setStatus({ isLoading: true, isEmpty: true, isError: false });
     let url = `orders/getOrder/${orderId}`;
 

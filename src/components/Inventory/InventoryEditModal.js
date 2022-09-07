@@ -54,7 +54,7 @@ const InventoryEditModal = (props) => {
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
-  const url = "https://thrindleservices.herokuapp.com/api/thrindle/sellers";
+  const url = "https://thrindleservices.herokuapp.com/api/thrindle";
   const { handleSetModal, getAllProducts, showModal } = props;
 
   // Handle Submit Form Body

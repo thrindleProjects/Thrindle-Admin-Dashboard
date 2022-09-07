@@ -312,15 +312,10 @@ const Orders = (props) => {
           changeFilter={(val) => setFilterValue(val)}
         /> */}
         <ApprovedProductPagination
-          pag
           pageIndex={page ? page : 1}
           handlePagination={changePage}
           pageInfo={orders.pageInfo}
           pageLength={orders.allOrders?.length}
-          pageNumber={orders.pageIndex}
-          itemsNumber={orders.paginatedOrders}
-          totalNumber={orders.allOrders?.length}
-          showButtons={false}
         />
         {status.isError && (
           <div className="text-secondary-error flex justify-center items-center py-16 w-full font-bold text-2xl uppercase">

@@ -30,7 +30,6 @@ const OrderDetails = ({ tableHeader, tableData, orderInfo }) => {
           ? newDetails.color
           : "N/A";
       // set active image as the first item in the array of tableData?.images
-      console.log(tableData.images);
       setActiveImage(tableData?.images[0]);
       return setOrderDetails({ size, color });
     }
