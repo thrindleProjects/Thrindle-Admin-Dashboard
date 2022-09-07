@@ -177,8 +177,6 @@ const Inventory = (props) => {
             data: { data: unverifiedProductsArr, pageInfo: unverifiedPageInfo },
           } = unverifiedProducts;
 
-          console.log({ unverifiedPageInfo });
-
           let {
             data: { data: approvedProductsArr, pageInfo: approvedPageInfo },
           } = approvedProducts;

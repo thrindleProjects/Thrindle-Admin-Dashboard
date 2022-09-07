@@ -2,9 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import MainContainer from "../../components/Common/MainContainer/MainContainer";
 import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
-// orderFilter import from data
 import { buyersHeader } from "../../data/data";
-// import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
 import BuyersTable from "../../components/Common/GenralTable/BuyersTable";
 import axiosInstance from "../../utils/axiosInstance";
 import NewLoader from "../../components/newLoader/newLoader";
@@ -39,7 +37,7 @@ const Buyers = () => {
     try {
       let url = `users/admin/buyers?page=${page ? page : 1}`;
 
-      if (search) {
+      if (search && search.length) {
         url = `${url}&identifier=${search}`;
       }
 
@@ -134,13 +132,6 @@ const Buyers = () => {
           title="Buyers"
           value={customers.pageInfo?.totalHits || 0}
         />
-        {/* <BuyersFilterTab
-          filter={filterValue}
-          filterData={customers?.codes}
-          customers={customers}
-          setCustomers={setCustomers}
-          changeFilter={(val) => setFilterValue(val)}
-        /> */}
         <ApprovedFilter setProducts={handleGetCustomers} />
         <ApprovedProductPagination
           pageIndex={page || 1}
@@ -148,14 +139,6 @@ const Buyers = () => {
           pageInfo={customers.pageInfo}
           pageLength={customers.allCustomers.length}
         />
-        {/* <GeneralPagination
-          showButtons={false}
-          pag
-          handlePagination={handlePagination}
-          pageNumber={customers.pageIndex}
-          itemsNumber={customers.paginatedCustomers}
-          totalNumber={customers.allCustomers.length}
-        /> */}
         {status.isError && <div>Error! Please Reload the Page</div>}
         {!status.isError &&
           !status.isLoading &&
