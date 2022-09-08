@@ -37,7 +37,7 @@ const StoreTable = (props) => {
               <td className="flex items-center px-2">
                 <Link to={`/store-details/${item.owner_id?.store_id}`}>
                   <p className="status text-left text-xs md:text-sm text-white-text font-Regular capitalize">
-                    {props.pageIndex * 20 + (index + 1)}
+                    {(props.pageIndex - 1) * 20 + (index + 1)}
                   </p>
                 </Link>
               </td>

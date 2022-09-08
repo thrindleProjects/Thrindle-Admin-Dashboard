@@ -4,48 +4,71 @@ import styled from "styled-components";
 import ScreenHeader from "../../components/Common/ScreenTitle/ScreenHeader";
 import GeneralHeaderTab from "../../components/Common/GeneralHeaderTab/GeneralHeaderTab";
 import { storeHeader, storeData } from "../../data/data";
-import GeneralPagination from "../../components/Common/GeneralPagination/GeneralPagination";
-import StoresFilterTab from "../../components/Common/GeneralFilterTab/StoresFilterTab";
 import StoreTable from "../../components/Common/GenralTable/StoreTable";
 import axiosInstance from "../../utils/axiosInstance";
-import paginationArr from "../../utils/pagination";
-import {
-  setStoresData,
-  increasePageIndex,
-  decreasePageIndex,
-} from "../../redux/actions/storesActions/actions";
 import { toast } from "react-toastify";
 import NewLoader from "../../components/newLoader/newLoader";
-import getMarketName from "../../utils/getMarketName";
-import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import ApprovedProductPagination from "../../components/Common/GeneralPagination/ApprovedProductPagination";
+import ApprovedFilter from "../../components/Common/GeneralFilterTab/ApprovedProductsFilter";
 
 const Stores = () => {
-  const [activeTab, setActiveTab] = useState("Approved Stores");
-  const [filterValue, setFilterValue] = useState("");
   const [totalStores, setTotalStores] = useState(0);
   const [storeHeaderData, setStoreHeaderData] = useState(storeData);
   const [loadingStores, setLoadingStores] = useState(false);
+  const [stores, setStores] = useState({
+    allStores: [],
+    pageInfo: null,
+  });
 
-  // Redux stuff
-  const dispatch = useDispatch();
-  const stores = useSelector((state) => state.stores);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = searchParams.get("page");
+  const tab = searchParams.get("tab");
+  const search = searchParams.get("search");
 
   const changeTab = (val) => {
-    setActiveTab(val);
+    const changeParams = {
+      tab: val,
+      page: page || 1,
+    };
+
+    if (search) {
+      changeParams.search = search;
+    }
+
+    setSearchParams(changeParams);
   };
 
-  // HandlePagination
-  const handlePagination = (type) => {
+  const changePage = (type, payload = stores.pageInfo?.currentPage) => {
+    let changeParams = { tab: tab || "Approved Stores" };
+
+    if (search) {
+      changeParams.search = search;
+    }
+
     switch (type) {
       case "NEXT_PAGE":
-        if (stores.pageIndex < stores.paginatedStores.length - 1) {
-          dispatch(increasePageIndex(stores.pageIndex + 1));
-        }
+        changeParams.page = stores.pageInfo?.next?.page;
+        setSearchParams(changeParams);
         break;
       case "PREVIOUS_PAGE":
-        if (stores.pageIndex > 0) {
-          dispatch(decreasePageIndex(stores.pageIndex - 1));
-        }
+        changeParams.page = stores.pageInfo?.previous?.page;
+        setSearchParams(changeParams);
+        break;
+      case "FIRST_PAGE":
+        if (payload === 1) return;
+        changeParams.page = 1;
+        setSearchParams(changeParams);
+        break;
+      case "LAST_PAGE":
+        if (payload === stores.pageInfo?.totalPages) return;
+        changeParams.page = stores.pageInfo?.totalPages;
+        setSearchParams(changeParams);
+        break;
+      case "GO_TO_PAGE":
+        changeParams.page = payload;
+        setSearchParams(changeParams);
         break;
       default:
         console.log("Argumenet NOT handled");
@@ -53,114 +76,59 @@ const Stores = () => {
     }
   };
 
-
-  // Sort stores by date
-  const objSort = (a, b) => {
-    let x = a.owner_id?.createdAt
-    let y = b.owner_id?.createdAt
-    if (x < y) {
-      return -1;
-    }
-    if (x > y) {
-      return 1;
-    }
-    return 0;
-  };
-
-  // const  sortedData = data.sort((a, b) => {
-  //       const dateA = a.createdAt;
-  //       const dateB = b.createdAt;
-  //       if (dateA > dateB) {
-  //         return -1;
-  //       }
-  //       if (dateA < dateB) {
-  //         return 1;
-  //       }
-  //       return 0;
-  //     });
-
-  const filterOnLoad = useCallback(() => {
-    if (stores.allStoresImmutable.length > 0 && totalStores > 0) {
-      let allStoresImmutable = stores.allStoresImmutable;
-      let allStores = stores.allStoresImmutable;
-      let paginatedStores = [];
-      let pageIndex = stores.pageIndex;
-      let currentMarket = stores.currentMarket;
-
-      // Check If Page Index is higher than paginated stores length
-      // Check if input filter value is empty
-      // Check if search value is empty
-
-      // Filter By Active Market
-      if (!["", "All"].includes(stores.currentMarket)) {
-        allStores = allStores.filter(
-          (item) => getMarketName(item?.owner_id?.store_id) === currentMarket
-        );
-      }
-
-      if (stores.nameFilter.length > 0) {
-        allStores = allStores.filter((item) => {
-          return (
-            item.store_name
-              .toLowerCase()
-              .includes(stores.nameFilter.toLowerCase()) ||
-            item?.owner_id?.store_id
-              .toLowerCase()
-              .includes(stores.nameFilter.toLowerCase())
-          );
-        });
-      }
-      paginatedStores = paginationArr(allStores, 20);
-
-      if (paginatedStores.length === 1) {
-        pageIndex = 0;
-      }
-
-      let storeData = {
-        allStores,
-        allStoresImmutable,
-        paginatedStores,
-        markets: Array.from(
-          new Set(
-            allStoresImmutable?.map((item) =>
-              getMarketName(item?.owner_id?.store_id)
-            )
-          )
-        ),
-        pageIndex,
-      };
-      dispatch(setStoresData(storeData));
-      setLoadingStores(false);
-    }
-  }, [
-    dispatch,
-    stores.nameFilter,
-    stores.pageIndex,
-    stores.currentMarket,
-    stores.allStoresImmutable,
-    totalStores,
-  ]);
-
   const fetchStores = useCallback(async () => {
     setLoadingStores(true);
     try {
+      let url = `stores/allstores?sort=-createdAt&page=${page || 1}`;
+
+      if (search && search.length) {
+        url = `${url}&identifier=${search}`;
+      }
+
       let {
-        data: { data },
-      } = await axiosInstance.get(`stores/allstores`);
-      let allStores = data.sort(objSort).reverse();
-      console.log(data)
-      // Redux logic here
-      dispatch(setStoresData({ allStoresImmutable: allStores }));
+        data: {
+          data: { data: allStores, pageInfo },
+        },
+      } = await axiosInstance.get(url);
+
+      const numberOfPagesToBeDisplayed = 5;
+      const pageNumber = Number(page);
+      let rightHandSide = Array.from(
+        { length: pageInfo.totalPages },
+        (_, index) => index + 1
+      );
+      let leftHandSide = rightHandSide.splice(0, pageNumber);
+
+      let maxLeft =
+        rightHandSide.length < 3
+          ? numberOfPagesToBeDisplayed - rightHandSide.length
+          : 3;
+      let maxRight =
+        leftHandSide.length < 3
+          ? numberOfPagesToBeDisplayed - leftHandSide.length
+          : 2;
+
+      leftHandSide = leftHandSide.reverse().slice(0, maxLeft).reverse();
+      rightHandSide = rightHandSide.slice(0, maxRight);
+      let newPages = leftHandSide
+        .concat(rightHandSide)
+        .map((item) => ({ page: item, limit: 20 }));
+
+      pageInfo.displayPages = newPages;
+      pageInfo.currentPage = pageNumber;
+
+      setStores((old) => ({ ...old, allStores, pageInfo }));
       setStoreHeaderData((prevState) => {
         let currentState = prevState.map((item) => {
           if (item.title === "Approved Stores") {
-            return { ...item, value: allStores?.length };
+            return { ...item, value: pageInfo.totalHits };
           }
           return item;
         });
         return currentState;
       });
-      setTotalStores(allStores.length);
+      setTotalStores(pageInfo.totalHits);
+      setLoadingStores(false);
     } catch (error) {
       if (error.response) {
         toast.warning(`${error.response.data.message}`);
@@ -168,7 +136,7 @@ const Stores = () => {
         toast.error(`${error}`);
       }
     }
-  }, [dispatch]);
+  }, [page, search]);
 
   useEffect(() => {
     let mounted = true;
@@ -181,43 +149,29 @@ const Stores = () => {
     };
   }, [fetchStores]);
 
-  useEffect(() => {
-    let mounted = true;
-    if (mounted) {
-      filterOnLoad();
-    }
-
-    return () => {
-      mounted = false;
-    };
-  }, [filterOnLoad]);
-
   return (
     <MainContainer>
       <FirstSection className="w-full">
         <ScreenHeader title="Stores" value={totalStores} />
         <GeneralHeaderTab
           data={storeHeaderData}
-          activeTab={activeTab}
-          changeTab={(val) => changeTab(val)}
+          activeTab={tab || "Approved Stores"}
+          changeTab={changeTab}
         />
         {!loadingStores && (
           <>
-            <StoresFilterTab
-              filter={filterValue}
-              filterData={stores?.markets}
-              stores={stores}
-              // setStores={setStores}
-              changeFilter={(val) => setFilterValue(val)}
-              allStores={stores.allStores}
+            <ApprovedFilter setProduct={fetchStores} />
+            <ApprovedProductPagination
+              pageIndex={page || 1}
+              handlePagination={changePage}
+              pageInfo={stores.pageInfo}
+              pageLength={stores.allStores.length}
             />
-            <GeneralPagination
-              showButtons={false}
-              pag
-              handlePagination={handlePagination}
-              pageNumber={stores?.pageIndex}
-              itemsNumber={stores?.paginatedStores}
-              totalNumber={stores?.allStores?.length}
+            <StoreTable
+              tableHeaderData={storeHeader}
+              tableData={stores.allStores}
+              pageIndex={page || 1}
+              showCheck
             />
           </>
         )}
@@ -225,14 +179,6 @@ const Stores = () => {
           <div className="h-52 flex items-center justify-center">
             <NewLoader />
           </div>
-        )}
-        {!loadingStores && (
-          <StoreTable
-            tableHeaderData={storeHeader}
-            tableData={stores.paginatedStores[stores.pageIndex]}
-            pageIndex={stores.pageIndex}
-            showCheck
-          />
         )}
       </FirstSection>
     </MainContainer>
