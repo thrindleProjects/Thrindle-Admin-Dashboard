@@ -26,6 +26,8 @@ function MerchantDetails() {
           let res = await axiosInstance.get(
             `/sellers/stores/admin/getStoreDetails/${store_id}`
           );
+
+
           setProfileData(res.data.data);
 
           setLoadingProfile(false);

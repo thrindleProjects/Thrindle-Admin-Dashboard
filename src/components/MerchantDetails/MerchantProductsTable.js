@@ -2,7 +2,6 @@ import { numberFormat } from "../../utils/formatPrice";
 import formatDate from "../../utils/formatDate";
 // import { MdEdit } from "react-icons/md";
 // import { AiFillCloseCircle } from "react-icons/ai";
-import GeneralPagination from "../Common/GeneralPagination/GeneralPagination";
 import styled from "styled-components";
 
 const MerchantProductsTable = ({
@@ -11,25 +10,16 @@ const MerchantProductsTable = ({
   handleSetModal,
   displayDeleteModal,
   productsInfo,
-  handlePagination,
 }) => {
   const hiddenMobile = ["Uploaded", "Image"];
+
   return (
     <>
       <div className="px-4 text-xs md:text-sm">
-        <GeneralPagination
-          showButtons={false}
-          pag
-          handlePagination={handlePagination}
-          pageNumber={productsInfo.pageIndex}
-          itemsNumber={productsInfo.paginatedProducts}
-          totalNumber={productsInfo.allProducts?.length}
-          nomargin
-        />
         <span className="shrink-0 min-w-max text-left font-Bold flex flex-row items-center">
           {products.length > 1
-            ? `${productsInfo.allProducts.length} products found`
-            : `${productsInfo.allProducts.length} product found`}
+            ? `${productsInfo.pageInfo?.totalHits} products found`
+            : `${productsInfo.pageInfo?.totalHits} product found`}
         </span>
       </div>
 
@@ -55,56 +45,61 @@ const MerchantProductsTable = ({
           </thead>
 
           <tbody>
-            {products.map((product, index) => (
-              <tr
-                key={index}
-                className="grid grid-cols-7 md:grid-cols-9 gap-2 border-b border-white-borderGrey p-4 text-white-text text-left"
-              >
-                <td>{productsInfo?.pageIndex * 20 + (index + 1)}</td>
-                <td className="hidden md:block">
-                  <img
-                    src={
-                      "https://thrindleservices.herokuapp.com/api/thrindle/images/" +
-                      product?.images[0]
-                    }
-                    className="w-12 h-12 mr-auto rounded-sm"
-                    loading="eager"
-                    alt={`product${index + 1}`}
-                  />
-                </td>
-                <td className="col-span-2">{product?.name}</td>
-                <td>{product?.no_in_stock}</td>
-                <td>{product?.category?.name}</td>
-                <td>N{numberFormat(product?.price)}</td>
-                <td className="hidden md:blocl">
-                  {formatDate(product?.createdAt)}
-                </td>
-                <td className="">
-                  <p className="table-head-text font-normal font-Regular text-left text-white-text flex flex-row justify-start gap-2">
-                    <button
-                      onClick={() =>
-                        handleSetModal(
-                          "SHOW_EDIT_MODAL",
-                          product._id,
-                          product.verified
-                        )
+            {products.map((product, index) => {
+              console.log({ product: formatDate(product?.createdAt) });
+              return (
+                <tr
+                  key={index}
+                  className="grid grid-cols-7 md:grid-cols-9 gap-2 border-b border-white-borderGrey p-4 text-white-text text-left"
+                >
+                  <td>
+                    {(productsInfo.pageInfo?.page - 1) * 20 + (index + 1)}
+                  </td>
+                  <td className="hidden md:block">
+                    <img
+                      src={
+                        "https://thrindleservices.herokuapp.com/api/thrindle/images/" +
+                        product?.images[0]
                       }
-                      className="cursor-pointer flex flex-row items-center gap-px text-primary-dark"
-                    >
-                      {/* <MdEdit className="text-2xl text-primary-dark" /> */}
-                      Edit
-                    </button>
-                    <button
-                      className="cursor-pointer flex flex-row items-center gap-px text-secondary-error"
-                      onClick={() => displayDeleteModal(product._id, product)}
-                    >
-                      {/* <AiFillCloseCircle className="text-2xl text-secondary-error" />{" "} */}
-                      Delete
-                    </button>
-                  </p>
-                </td>
-              </tr>
-            ))}
+                      className="w-12 h-12 mr-auto rounded-sm"
+                      loading="eager"
+                      alt={`product${index + 1}`}
+                    />
+                  </td>
+                  <td className="col-span-2">{product?.name}</td>
+                  <td>{product?.no_in_stock}</td>
+                  <td>{product?.category?.name}</td>
+                  <td>N{numberFormat(product?.price)}</td>
+                  <td className="hidden md:block">
+                    {formatDate(product?.createdAt)}
+                  </td>
+                  <td className="">
+                    <p className="table-head-text font-normal font-Regular text-left text-white-text flex flex-row justify-start gap-2">
+                      <button
+                        onClick={() =>
+                          handleSetModal(
+                            "SHOW_EDIT_MODAL",
+                            product._id,
+                            product.verified
+                          )
+                        }
+                        className="cursor-pointer flex flex-row items-center gap-px text-primary-dark"
+                      >
+                        {/* <MdEdit className="text-2xl text-primary-dark" /> */}
+                        Edit
+                      </button>
+                      <button
+                        className="cursor-pointer flex flex-row items-center gap-px text-secondary-error"
+                        onClick={() => displayDeleteModal(product._id, product)}
+                      >
+                        {/* <AiFillCloseCircle className="text-2xl text-secondary-error" />{" "} */}
+                        Delete
+                      </button>
+                    </p>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </MainTable>

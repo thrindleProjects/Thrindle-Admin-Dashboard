@@ -65,34 +65,6 @@ const Inventory = (props) => {
     }
   };
 
-  // HandlePagination for frontend paginated table
-  // const handlePagination = (type) => {
-  //   switch (type) {
-  //     case "NEXT_PAGE":
-  //       setProducts((oldProducts) => {
-  //         if (
-  //           oldProducts.paginatedProducts.length - 1 ===
-  //           oldProducts.pageIndex
-  //         ) {
-  //           return oldProducts;
-  //         }
-  //         return { ...oldProducts, pageIndex: oldProducts.pageIndex + 1 };
-  //       });
-  //       break;
-  //     case "PREVIOUS_PAGE":
-  //       setProducts((oldProducts) => {
-  //         if (oldProducts.pageIndex === 0) {
-  //           return oldProducts;
-  //         }
-  //         return { ...oldProducts, pageIndex: oldProducts.pageIndex - 1 };
-  //       });
-  //       break;
-  //     default:
-  //       console.log("Argumenet NOT handled");
-  //       break;
-  //   }
-  // };
-
   // HandlePagination for backend paginated table
   const changePage = (type, payload = products.pageInfo?.currentPage) => {
     let changeParams = {};

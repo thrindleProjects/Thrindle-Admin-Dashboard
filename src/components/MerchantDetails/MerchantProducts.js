@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosInstance from "../../utils/axiosInstance";
 import { merchantProductsTableHeader } from "../../data/data";
@@ -7,20 +7,18 @@ import NewLoader from "../newLoader/newLoader";
 import MerchantHeader from "./MerchantHeader";
 import DeleteProductModal from "../DeleteProductModal/DeleteProductModal";
 import MerchantProductsTable from "./MerchantProductsTable";
-import paginationArr from "../../utils/pagination";
-import GeneralFilterTab from "../Common/GeneralFilterTab/GeneralFilterTab";
 import InventoryEditModal from "../Inventory/InventoryEditModal";
+import ApprovedProductPagination from "../Common/GeneralPagination/ApprovedProductPagination";
+import ApprovedFilter from "../Common/GeneralFilterTab/ApprovedProductsFilter";
 
 function MerchantProducts() {
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [products, setProducts] = useState({
     allProducts: [],
-    paginatedProducts: [],
-    pageIndex: 0,
-    categories: [],
-    currentCategory: "",
-    allProductsImmutable: [],
+    pageInfo: null,
   });
+
+  console.log({ products });
   const [modalId, setModalId] = useState("");
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [showModal, setShowModal] = useState({
@@ -29,7 +27,10 @@ function MerchantProducts() {
     verified: false,
   });
   const [activeProduct, setActiveProduct] = useState({});
-  const [filterValue, setFilterValue] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = searchParams.get("page") || 1;
+  const search = searchParams.get("search");
 
   let { store_id } = useParams();
 
@@ -68,27 +69,33 @@ function MerchantProducts() {
     setActiveProduct(data);
   };
 
-  // HandlePagination
-  const handlePagination = (type) => {
+  // HandlePagination for backend paginated table
+  const changePage = (type, payload = products.pageInfo?.currentPage) => {
+    let changeParams = {};
+    if (!!search) changeParams.search = search;
+
     switch (type) {
       case "NEXT_PAGE":
-        setProducts((oldProducts) => {
-          if (
-            oldProducts.paginatedProducts.length - 1 ===
-            oldProducts.pageIndex
-          ) {
-            return oldProducts;
-          }
-          return { ...oldProducts, pageIndex: oldProducts.pageIndex + 1 };
-        });
+        changeParams.page = products.pageInfo?.next?.page;
+        setSearchParams(changeParams);
         break;
       case "PREVIOUS_PAGE":
-        setProducts((oldProducts) => {
-          if (oldProducts.pageIndex === 0) {
-            return oldProducts;
-          }
-          return { ...oldProducts, pageIndex: oldProducts.pageIndex - 1 };
-        });
+        changeParams.page = products.pageInfo?.previous?.page;
+        setSearchParams(changeParams);
+        break;
+      case "FIRST_PAGE":
+        if (payload === 1) return;
+        changeParams.page = 1;
+        setSearchParams(changeParams);
+        break;
+      case "LAST_PAGE":
+        if (payload === products.pageInfo?.totalPages) return;
+        changeParams.page = products.pageInfo?.totalPages;
+        setSearchParams(changeParams);
+        break;
+      case "GO_TO_PAGE":
+        changeParams.page = payload;
+        setSearchParams(changeParams);
         break;
       default:
         console.log("Argumenet NOT handled");
@@ -106,36 +113,52 @@ function MerchantProducts() {
       };
     });
     try {
+      let url = `/products/store/${store_id}?sort=-createdAt&page=${page}`;
+
+      if (search) {
+        url += `&search=${search}`;
+      }
+
       let {
-        data: { data },
-      } = await axiosInstance.get(`/products/store/${store_id}`);
-      data = data.sort((a, b) => {
-        const dateA = a.createdAt;
-        const dateB = b.createdAt;
-        if (dateA > dateB) {
-          return -1;
-        }
-        if (dateA < dateB) {
-          return 1;
-        }
-        return 0;
-      });
+        data: { data, pageInfo },
+      } = await axiosInstance.get(url);
+
+      const numberOfPagesToBeDisplayed = 5;
+      let pageNumber = Number(page);
+
+      let rightHandSide = Array.from(
+        { length: pageInfo.totalPages },
+        (_, index) => index + 1
+      );
+
+      let leftHandSide;
+      leftHandSide = rightHandSide.splice(0, pageNumber);
+
+      let maxLeft =
+        rightHandSide.length < 3
+          ? numberOfPagesToBeDisplayed - rightHandSide.length
+          : 3;
+      let maxRight =
+        leftHandSide.length < 3
+          ? numberOfPagesToBeDisplayed - leftHandSide.length
+          : 2;
+
+      //Get first three items from leftHandSide if its length
+      // is larger than 3
+      leftHandSide = leftHandSide.reverse().slice(0, maxLeft).reverse();
+      rightHandSide = rightHandSide.slice(0, maxRight);
+      let newPages = leftHandSide
+        .concat(rightHandSide)
+        .map((item) => ({ page: item, limit: 20 }));
+
+      pageInfo.displayPages = newPages;
+      pageInfo.currentPage = pageNumber;
 
       setProducts((prevState) => {
-        if (prevState?.pageIndex > data?.length - 1) {
-          return {
-            ...prevState,
-            allProducts: data,
-            paginatedProducts: paginationArr(data, 20),
-            pageIndex: data?.length - 1,
-            allProductsImmutable: data,
-          };
-        }
         return {
           ...prevState,
           allProducts: data,
-          paginatedProducts: paginationArr(data, 20),
-          allProductsImmutable: data,
+          pageInfo,
         };
       });
 
@@ -150,7 +173,7 @@ function MerchantProducts() {
     } finally {
       setLoadingProducts(false);
     }
-  }, [store_id]);
+  }, [store_id, page, search]);
 
   useEffect(() => {
     let mounted = true;
@@ -168,23 +191,6 @@ function MerchantProducts() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  // get all categories
-  useEffect(() => {
-    const getCategories = () => {
-      setProducts((prevState) => {
-        return {
-          ...prevState,
-          categories: [
-            ...new Set(
-              products.allProductsImmutable?.map((item) => item.category.name)
-            ),
-          ],
-        };
-      });
-    };
-    getCategories();
-  }, [products.allProductsImmutable]);
 
   return (
     <div className="rounded-md shadow-md w-full">
@@ -206,34 +212,31 @@ function MerchantProducts() {
           showModal={showModal}
         />
       )}
-      <div className="w-full mb-4 px-4">
-        {products.allProductsImmutable.length > 0 && (
-          <GeneralFilterTab
-            filterValue={filterValue}
-            filterData={products.categories}
-            products={products}
-            setProducts={setProducts}
-            changeFilter={setFilterValue}
-          />
-        )}
-      </div>
       {loadingProducts ? (
         <div className="h-vh40">
           <NewLoader />
         </div>
       ) : (
         <>
-          {products.paginatedProducts.length === 0 ? (
+          {products.pageInfo?.totalHits === 0 ? (
             <p className="p-2">No Products</p>
           ) : (
-            <MerchantProductsTable
-              products={products.paginatedProducts[products.pageIndex]}
-              productsInfo={products}
-              merchantProductsTableHeader={merchantProductsTableHeader}
-              handleSetModal={handleSetModal}
-              displayDeleteModal={displayDeleteModal}
-              handlePagination={handlePagination}
-            />
+            <>
+              <ApprovedFilter setProducts={fetchProducts} />
+              <ApprovedProductPagination
+                pageIndex={page}
+                handlePagination={changePage}
+                pageInfo={products.pageInfo}
+                pageLength={products.allProducts.length}
+              />
+              <MerchantProductsTable
+                products={products.allProducts}
+                productsInfo={products}
+                merchantProductsTableHeader={merchantProductsTableHeader}
+                handleSetModal={handleSetModal}
+                displayDeleteModal={displayDeleteModal}
+              />
+            </>
           )}
         </>
       )}

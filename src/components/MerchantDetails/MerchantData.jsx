@@ -10,8 +10,6 @@ function MerchantData() {
 	const [loadingProfile, setLoadingProfile] = useState(true);
 	const [data, setData] = useState(null);
 
-	console.log(data);
-
 	let { store_id } = useParams();
 
 	useEffect(() => {
