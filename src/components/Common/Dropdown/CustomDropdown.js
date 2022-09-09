@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { Fieldset } from "../../../styles/globalStyles";
 import AsyncSelect from "react-select/async";
 import axiosInstance from "../../../utils/axiosInstance";
@@ -53,47 +53,31 @@ const customStyles = {
   },
 };
 
-function CustomDropdown({
-  fieldset,
-  setStoreValue,
-  marketValue,
-  getMarketID,
-  handleSearch,
-  searchStoreValue,
-}) {
-  const [allStores, setAllStores] = useState({
-    ekoMarketStores: [],
-    computerVillageStores: [],
-  });
-
+function CustomDropdown({ fieldset, setStoreValue, marketValue, getMarketID }) {
   const getEkoMarketLoadOptions = useCallback(
-    async (market) => {
+    async (market, arg) => {
       let stores;
-      if (allStores.ekoMarketStores.length > 0) {
-        stores = allStores.ekoMarketStores.filter((item) =>
-          item.value.includes(searchStoreValue)
-        );
-        return stores;
-      }
-      let marketID = getMarketID(market);
+      let marketID = await getMarketID(market);
       try {
-        let res = await axiosInstance.get(
-          `/stores/storespermarket/${marketID}`
+        let url = `/stores/storespermarket/${marketID}`;
+
+        if (arg.length) {
+          url += `?search=${arg}`;
+        }
+        let res = await axiosInstance.get(url);
+
+        localStorage.setItem(
+          "storesPerMarket",
+          JSON.stringify(res.data.data.data)
         );
-        localStorage.setItem("storesPerMarket", JSON.stringify(res.data.data));
-        stores = res.data.data
-          .map((item) => {
-            return {
-              value: item.store_name,
-              label: item.store_name,
-              isFixed: true,
-            };
-          })
-          .filter((item) => item.value.includes(searchStoreValue));
-        setAllStores((oldState) => ({
-          ...oldState,
-          ekoMarketStores: stores,
-        }));
+        stores = res.data.data.data.map((item) => {
+          return {
+            value: item.store_name,
+            label: item.store_name,
+            isFixed: true,
+          };
+        });
+
         return stores;
       } catch (error) {
         if (error.response) {
@@ -103,37 +87,33 @@ function CustomDropdown({
         }
       }
     },
-    [getMarketID, searchStoreValue, allStores.ekoMarketStores]
+    [getMarketID]
   );
 
   const getComputerVillageLoadOptions = useCallback(
-    async (market) => {
+    async (market, arg) => {
       let stores;
-      if (allStores.computerVillageStores.length > 0) {
-        stores = allStores.computerVillageStores.filter((item) =>
-          item.value.includes(searchStoreValue)
-        );
-        return stores;
-      }
-      let marketID = getMarketID(market);
+      let marketID = await getMarketID(market);
       try {
-        let res = await axiosInstance.get(
-          `/stores/storespermarket/${marketID}`
+        let url = `/stores/storespermarket/${marketID}`;
+
+        if (arg.length) {
+          url += `?search=${arg}`;
+        }
+
+        let res = await axiosInstance.get(url);
+        localStorage.setItem(
+          "storesPerMarket",
+          JSON.stringify(res.data.data.data)
         );
-        localStorage.setItem("storesPerMarket", JSON.stringify(res.data.data));
-        stores = res.data.data
-          .map((item) => {
-            return {
-              value: item.store_name,
-              label: item.store_name,
-              isFixed: true,
-            };
-          })
-          .filter((item) => item.value.includes(searchStoreValue));
-        setAllStores((oldState) => ({
-          ...oldState,
-          computerVillageStores: stores,
-        }));
+        stores = res.data.data.data.map((item) => {
+          return {
+            value: item.store_name,
+            label: item.store_name,
+            isFixed: true,
+          };
+        });
+
         return stores;
       } catch (error) {
         if (error.response) {
@@ -143,14 +123,12 @@ function CustomDropdown({
         }
       }
     },
-    [getMarketID, searchStoreValue, allStores.computerVillageStores]
+    [getMarketID]
   );
 
   const handleChange = (value) => {
     setStoreValue(value.value);
   };
-
-  
 
   return (
     <Fieldset>
@@ -159,8 +137,7 @@ function CustomDropdown({
       {marketValue === "Eko Market" && (
         <AsyncSelect
           cacheOptions
-          onInputChange={handleSearch}
-          loadOptions={() => getEkoMarketLoadOptions(marketValue)}
+          loadOptions={(arg) => getEkoMarketLoadOptions(marketValue, arg)}
           onChange={handleChange}
           placeholder={"Search For Store"}
           required
@@ -171,9 +148,8 @@ function CustomDropdown({
       {marketValue === "Computer Village" && (
         <AsyncSelect
           cacheOptions
-          onInputChange={handleSearch}
           onChange={handleChange}
-          loadOptions={() => getComputerVillageLoadOptions(marketValue)}
+          loadOptions={(arg) => getComputerVillageLoadOptions(marketValue, arg)}
           placeholder={"Search For Store"}
           required
           styles={customStyles}

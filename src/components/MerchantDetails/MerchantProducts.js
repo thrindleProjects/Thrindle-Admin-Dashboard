@@ -18,7 +18,6 @@ function MerchantProducts() {
     pageInfo: null,
   });
 
-  console.log({ products });
   const [modalId, setModalId] = useState("");
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [showModal, setShowModal] = useState({

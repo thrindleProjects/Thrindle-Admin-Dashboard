@@ -27,7 +27,6 @@ const AddProducts = () => {
   const [productType, setProductType] = useState("");
   const [otherValues, setOtherValues] = useState({});
   const [uploading, setUploading] = useState(false);
-  const [searchStoreValue, setSearchStoreValue] = useState("");
   const [storeID, setStoreID] = useState("");
   const [storeValue, setStoreValue] = useState("");
   const [currentSize, setCurrentSize] = useState({
@@ -359,12 +358,6 @@ const AddProducts = () => {
     }
   };
 
-  // handle store search
-  const handleSearch = (value) => {
-    setSearchStoreValue(value);
-    return value;
-  };
-
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
     let imageList = images;
@@ -527,9 +520,7 @@ const AddProducts = () => {
             marketValue={marketValue}
             selectMarket={selectMarket}
             getMarketID={getMarketID}
-            searchStoreValue={searchStoreValue}
             setStoreValue={setStoreValue}
-            handleSearch={handleSearch}
             categories={categories}
             categoryValue={categoryValue}
             selectCategory={selectCategory}

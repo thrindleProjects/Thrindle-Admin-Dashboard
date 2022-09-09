@@ -46,7 +46,6 @@ const MerchantProductsTable = ({
 
           <tbody>
             {products.map((product, index) => {
-              console.log({ product: formatDate(product?.createdAt) });
               return (
                 <tr
                   key={index}
