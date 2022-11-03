@@ -3,8 +3,6 @@ import Header from "./OrderDetailsGeneralHeader";
 import styled from "styled-components";
 
 const OrderCustomerDetails = ({ tableHeader, tableData, buyerData }) => {
-  console.log({ buyerData });
-
   return (
     <Wrapper>
       <Header title="Customer's Details" />
