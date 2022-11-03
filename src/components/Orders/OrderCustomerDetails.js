@@ -3,6 +3,8 @@ import Header from "./OrderDetailsGeneralHeader";
 import styled from "styled-components";
 
 const OrderCustomerDetails = ({ tableHeader, tableData, buyerData }) => {
+  console.log({ buyerData });
+
   return (
     <Wrapper>
       <Header title="Customer's Details" />
@@ -23,13 +25,13 @@ const OrderCustomerDetails = ({ tableHeader, tableData, buyerData }) => {
         </thead>
         <tbody className="body-wrapper">
           <tr>
-            <td>{tableData?.name}</td>
+            <td>{buyerData?.shipping?.name}</td>
           </tr>
           <tr>
             <td>{tableData?.email}</td>
           </tr>
           <tr>
-            <td>{tableData?.phone}</td>
+            <td>{buyerData?.shipping?.phone}</td>
           </tr>
           <tr>
             <td>{buyerData?.shipping?.city}</td>
