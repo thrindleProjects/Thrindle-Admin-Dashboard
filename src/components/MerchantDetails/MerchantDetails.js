@@ -27,7 +27,6 @@ function MerchantDetails() {
             `/sellers/stores/admin/getStoreDetails/${store_id}`
           );
 
-
           setProfileData(res.data.data);
 
           setLoadingProfile(false);
@@ -67,7 +66,7 @@ function MerchantDetails() {
               ) : (
                 <img
                   src={
-                    "https://thrindleservices.herokuapp.com/api/thrindle/images/" +
+                    "http://store-staging-api.thrindle.com/api/thrindle/images/" +
                     profileData?.owner_id?.photo
                   }
                   alt="merchant-avatar"

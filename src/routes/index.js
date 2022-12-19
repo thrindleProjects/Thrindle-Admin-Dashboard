@@ -20,6 +20,7 @@ import Coupon from "../pages/coupons/CreatedCoupon";
 import SeeAll from "../pages/coupons/SeeAll";
 import Mope from "../pages/mope/Mope";
 import Balances from "../pages/Balances/Balances";
+// import Templates from "../pages/templates";
 
 export const routes = [
   {

@@ -21,7 +21,7 @@ const Mope = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://thrindleservices.herokuapp.com/api/thrindle/mope",
+        "http://store-staging-api.thrindle.com/api/thrindle/mope",
         config
       );
       setData(response.data.data);

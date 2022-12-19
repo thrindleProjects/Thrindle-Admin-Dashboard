@@ -115,7 +115,7 @@ const AdminUser = () => {
               <img
                 alt=""
                 className="w-20 h-10 "
-                src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${user?.product?.images[0]}`}
+                src={`http://store-staging-api.thrindle.com/api/thrindle/images/${user?.product?.images[0]}`}
               />
               <p className="w-36">{user?.product?.name}</p>
               <p>

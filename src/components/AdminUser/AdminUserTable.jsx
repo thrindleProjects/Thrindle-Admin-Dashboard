@@ -1,16 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
 
 const AdminUserTable = ({ data, index }) => {
-  const [products, setProducts] = useState({
-    allProducts: [],
-    paginatedProducts: [],
-    pageIndex: 0,
-    categories: [],
-    currentCategory: "",
-    allProductsImmutable: [],
-    pageInfo: null,
-  });
-
   return (
     <div>
       <div className="flex justify-between text-right text-sm items-center">
@@ -18,7 +8,7 @@ const AdminUserTable = ({ data, index }) => {
         <img
           alt=""
           className="w-16 h-16"
-          src={`https://thrindleservices.herokuapp.com/api/thrindle/images/${data?.product?.images[0]}`}
+          src={`http://store-staging-api.thrindle.com/api/thrindle/images/${data?.product?.images[0]}`}
         />
         <p>{data?.product?.name}</p>
         <p>N {data?.product?.original_price.toLocaleString()}.00</p>

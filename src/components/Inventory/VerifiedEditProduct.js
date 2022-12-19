@@ -46,13 +46,13 @@ const VerifiedEditModal = (props) => {
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
-  const url = "https://thrindleservices.herokuapp.com/api/thrindle";
+  const url = "http://store-staging-api.thrindle.com/api/thrindle";
   const { handleSetModal, getAllProducts, showModal } = props;
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let url =
-      "https://thrindleservices.herokuapp.com/api/thrindle/products/admin/updateproduct";
+      "http://store-staging-api.thrindle.com/api/thrindle/products/admin/updateproduct";
     let formInfo = {
       name: formData.name,
       category: formData.category._id,
@@ -154,7 +154,7 @@ const VerifiedEditModal = (props) => {
           category,
           subcategory,
           weight,
-          activeImage: `https://thrindleservices.herokuapp.com/api/thrindle/images/${images[0]}`,
+          activeImage: `http://store-staging-api.thrindle.com/api/thrindle/images/${images[0]}`,
           details: {
             size,
             color,
@@ -281,14 +281,14 @@ const VerifiedEditModal = (props) => {
     e.preventDefault();
     e.stopPropagation();
     let activeImage = formData.activeImage.replace(
-      "https://thrindleservices.herokuapp.com/api/thrindle/images/",
+      "http://store-staging-api.thrindle.com/api/thrindle/images/",
       ""
     );
     let newImages = modalData[0].images.filter((image) => image !== url);
     if (activeImage === url) {
       setFormData((old) => ({
         ...old,
-        activeImage: `https://thrindleservices.herokuapp.com/api/thrindle/images/${newImages[0]}`,
+        activeImage: `http://store-staging-api.thrindle.com/api/thrindle/images/${newImages[0]}`,
       }));
     }
     setModalData((old) => [{ ...old, images: newImages }]);
