@@ -50,7 +50,9 @@ const FormBody = ({
   return (
     <div className="w-full lg:w-40 lg:overflow-y-scroll md:pr-4">
       <div className="flex items-center gap-3 my-3">
-        <label htmlFor="forSale">Is this a product for sale?</label>
+        <label htmlFor="forSale" className="font-semibold">
+          Is this a product for sale?
+        </label>
         <input
           type="checkbox"
           name="forSale"
