@@ -54,14 +54,14 @@ const InventoryEditModal = (props) => {
   // Keep track if form was updated
   const [updated, setUpdated] = useState(false);
 
-  const url = "http://store-staging-api.thrindle.com/api/thrindle";
+  const url = "https://store-staging-api.thrindle.com/api/thrindle";
   const { handleSetModal, getAllProducts, showModal } = props;
 
   // Handle Submit Form Body
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let url =
-      "http://store-staging-api.thrindle.com/api/thrindle/products/admin/updateproduct";
+      "https://store-staging-api.thrindle.com/api/thrindle/products/admin/updateproduct";
     let formInfo = {
       name: formData.name,
       category: formData.category._id,
@@ -167,7 +167,7 @@ const InventoryEditModal = (props) => {
         let oldImages = images.map((image) => {
           return {
             type: "oldImage",
-            src: `http://store-staging-api.thrindle.com/api/thrindle/images/${image}`,
+            src: `https://store-staging-api.thrindle.com/api/thrindle/images/${image}`,
           };
         });
         let oldImagesImmutable = [...oldImages];
@@ -189,7 +189,7 @@ const InventoryEditModal = (props) => {
           ...old,
           activeImage: {
             type: "oldImage",
-            src: `http://store-staging-api.thrindle.com/api/thrindle/images/${images[0]}`,
+            src: `https://store-staging-api.thrindle.com/api/thrindle/images/${images[0]}`,
           },
           oldImagesImmutable,
           oldImages,
@@ -438,7 +438,7 @@ const InventoryEditModal = (props) => {
         if (!!imagesHandler.oldImages.length) {
           oldImages = imagesHandler.oldImages.map((image) =>
             image.src.replace(
-              "http://store-staging-api.thrindle.com/api/thrindle/images/",
+              "https://store-staging-api.thrindle.com/api/thrindle/images/",
               ""
             )
           );
@@ -457,7 +457,7 @@ const InventoryEditModal = (props) => {
           formData
         );
         let updatedImages = data.images.map((item) => ({
-          src: `http://store-staging-api.thrindle.com/api/thrindle/images/${item}`,
+          src: `https://store-staging-api.thrindle.com/api/thrindle/images/${item}`,
           type: "oldImage",
         }));
         toast.success("Images updated successfully");
@@ -473,7 +473,7 @@ const InventoryEditModal = (props) => {
       if (!!imagesHandler.oldImages.length && !imagesHandler.newImages.length) {
         let images = imagesHandler.oldImages.map((image) =>
           image.src.replace(
-            "http://store-staging-api.thrindle.com/api/thrindle/images/",
+            "https://store-staging-api.thrindle.com/api/thrindle/images/",
             ""
           )
         );
@@ -484,7 +484,7 @@ const InventoryEditModal = (props) => {
           { images }
         );
         let updatedImages = data.images.map((item) => ({
-          src: `http://store-staging-api.thrindle.com/api/thrindle/images/${item}`,
+          src: `https://store-staging-api.thrindle.com/api/thrindle/images/${item}`,
           type: "oldImage",
         }));
         toast.success("Images updated successfully");
@@ -510,7 +510,7 @@ const InventoryEditModal = (props) => {
           formData
         );
         let updatedImages = data.images.map((item) => ({
-          src: `http://store-staging-api.thrindle.com/api/thrindle/images/${item}`,
+          src: `https://store-staging-api.thrindle.com/api/thrindle/images/${item}`,
           type: "oldImage",
         }));
         toast.success("Images updated successfully");

@@ -66,7 +66,7 @@ function MerchantDetails() {
               ) : (
                 <img
                   src={
-                    "http://store-staging-api.thrindle.com/api/thrindle/images/" +
+                    "https://store-staging-api.thrindle.com/api/thrindle/images/" +
                     profileData?.owner_id?.photo
                   }
                   alt="merchant-avatar"

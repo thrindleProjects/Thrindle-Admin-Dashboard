@@ -12,7 +12,7 @@ const MopeItem = ({ id, setDetailsModal }) => {
     try {
       setLoading(true);
       const response = await axiosInstance.get(
-        `http://store-staging-api.thrindle.com/api/thrindle/mope/${id}`
+        `https://store-staging-api.thrindle.com/api/thrindle/mope/${id}`
       );
       setData(response.data.data);
       setLoading(false);
@@ -116,7 +116,7 @@ const MopeItem = ({ id, setDetailsModal }) => {
                   <div key={index}>
                     <img
                       src={
-                        "http://store-staging-api.thrindle.com/api/thrindle/images/" +
+                        "https://store-staging-api.thrindle.com/api/thrindle/images/" +
                         item
                       }
                       className="w-[200px] rounded-lg h-[200px]"
