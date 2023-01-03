@@ -21,8 +21,6 @@ const InventoryTable = (props) => {
     return `${newDay}/${newMonth}/${newYear}`;
   };
 
-  console.log(props.pageInfo);
-
   return (
     <>
       {/* <GeneralFilterTab

@@ -235,8 +235,6 @@ const Dashboard = () => {
               data: { data: allProductsArr },
             } = allProducts;
 
-            console.log({ allProductsArr });
-
             let {
               data: { data: balancesArr },
             } = balances;

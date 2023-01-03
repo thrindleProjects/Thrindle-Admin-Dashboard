@@ -174,7 +174,7 @@ export const data2 = [
     icon: Image4,
     icon2: Active3,
   },
-  {
+  // {
   //   title: "Add Templates",
   //   path: "/templates",
   //   icon: Image4,
