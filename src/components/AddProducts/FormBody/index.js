@@ -49,6 +49,17 @@ const FormBody = ({
 }) => {
   return (
     <div className="w-full lg:w-40 lg:overflow-y-scroll md:pr-4">
+      <div className="flex items-center gap-3 my-3">
+        <label htmlFor="forSale">Is this a product for sale?</label>
+        <input
+          type="checkbox"
+          name="forSale"
+          id="forSale"
+          checked={formik.values.forSale}
+          onChange={formik.handleChange}
+        />
+        {formik.values.forSale ? "Yes" : "No"}
+      </div>
       <div className="my-3">
         <InputWithFieldSet
           type="text"

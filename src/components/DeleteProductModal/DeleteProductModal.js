@@ -128,7 +128,7 @@ function DeleteProductModal({
         <ProductView className="w-full my-3 flex flex-row">
           <div className="product-image">
             <img
-              src={`https://api.thrindle.com/api/thrindle/images/${activeDeleteProduct?.images[0]}`}
+              src={`http://store-staging-api.thrindle.com/api/thrindle/images/${activeDeleteProduct?.images[0]}`}
               className="w-full h-full rounded-xl"
               alt="Product"
               loading="eager"

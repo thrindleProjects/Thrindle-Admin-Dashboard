@@ -3,8 +3,8 @@ import axios from "axios";
 import store from "../redux/store/store";
 
 const axiosInstance = axios.create({
-  // baseURL: "https://thrindleservices.herokuapp.com/api/thrindle",
-  baseURL: "https://api.thrindle.com/api/thrindle",
+  baseURL: "http://store-staging-api.thrindle.com/api/thrindle",
+  // baseURL: "http://store-staging-api.thrindle.com/api/thrindle",
   headers: {},
 });
 

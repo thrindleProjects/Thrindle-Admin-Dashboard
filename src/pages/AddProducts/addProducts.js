@@ -27,7 +27,6 @@ const AddProducts = () => {
   const [productType, setProductType] = useState("");
   const [otherValues, setOtherValues] = useState({});
   const [uploading, setUploading] = useState(false);
-  const [searchStoreValue, setSearchStoreValue] = useState("");
   const [storeID, setStoreID] = useState("");
   const [storeValue, setStoreValue] = useState("");
   const [currentSize, setCurrentSize] = useState({
@@ -96,12 +95,11 @@ const AddProducts = () => {
       description: "",
       productStock: "",
       price: "",
+      forSale: true,
     },
 
     validationSchema: Yup.object().shape({
-      title: Yup.string()
-        .min(2, "Too Short")
-        .required("Required"),
+      title: Yup.string().min(2, "Too Short").required("Required"),
       description: Yup.string()
         .min(10, "Too Short")
         .max(3000, "Description cannot exceed 3000 characters")
@@ -112,6 +110,7 @@ const AddProducts = () => {
         .positive("Enter a positive value")
         .integer("Enter a positive value"),
       price: Yup.number().required("Required").positive().integer(),
+      forSale: Yup.boolean(),
     }),
 
     onSubmit: (values) => {
@@ -141,6 +140,7 @@ const AddProducts = () => {
       price,
       productStock,
       title,
+      forSale,
       values2: {
         images,
         category,
@@ -164,6 +164,7 @@ const AddProducts = () => {
     formData.append("no_in_stock", productStock);
     formData.append("unit", unit);
     formData.append("new", productTypeStatus);
+    formData.append("forSale", forSale)
     size.forEach((item) => formData.append("details[size][]", item));
     colors.forEach((item) => formData.append("details[color][]", item));
     formData.append("market", getMarketID(marketValue));
@@ -359,12 +360,6 @@ const AddProducts = () => {
     }
   };
 
-  // handle store search
-  const handleSearch = (value) => {
-    setSearchStoreValue(value);
-    return value;
-  };
-
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
     let imageList = images;
@@ -527,9 +522,7 @@ const AddProducts = () => {
             marketValue={marketValue}
             selectMarket={selectMarket}
             getMarketID={getMarketID}
-            searchStoreValue={searchStoreValue}
             setStoreValue={setStoreValue}
-            handleSearch={handleSearch}
             categories={categories}
             categoryValue={categoryValue}
             selectCategory={selectCategory}

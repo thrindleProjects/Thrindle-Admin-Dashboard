@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import getMarketName from "../../../utils/getMarketName";
-import GeneralFilterTab from "../GeneralFilterTab/GeneralFilterTab";
-import GeneralPagination from "../GeneralPagination/GeneralPagination";
+import ApprovedFilter from "../GeneralFilterTab/ApprovedProductsFilter";
+import Pagination from "../GeneralPagination/ApprovedProductPagination";
 // import { MdEdit } from "react-icons/md";
 // import { AiFillCloseCircle } from "react-icons/ai";
 
 const InventoryTable = (props) => {
   const hiddenMobile = ["Uploaded"];
-  const doubleColumn = [ "Category", "Product Title"];
+  const doubleColumn = ["Category", "Product Title"];
 
   const handleModal = (action, id, verified) => {
     return props.setModal(action, id);
@@ -23,20 +23,19 @@ const InventoryTable = (props) => {
 
   return (
     <>
-      <GeneralFilterTab
+      {/* <GeneralFilterTab
         filter={props.filterValue}
         filterData={props.products?.categories}
         products={props.products}
         setProducts={props.setProducts}
         changeFilter={(val) => props.setFilterValue(val)}
-      />
-      <GeneralPagination
-        showButtons={false}
-        pag
-        handlePagination={props.handlePagination}
-        pageNumber={props.pageIndex}
-        itemsNumber={props.itemsNumber}
-        totalNumber={props.totalNumber}
+      /> */}
+      <ApprovedFilter setProducts={props.setProducts} />
+      <Pagination
+        pageIndex={props.pageIndex}
+        pageInfo={props.pageInfo}
+        handlePagination={props.changePage}
+        pageLength={props.tableData.length}
       />
       <MainTable className="w-full rounded-md pt-10 mt-5 overflow-auto">
         <table className="w-max min-w-full max-w-2xl md:max-w-3xl lg:max-w-4xl">
@@ -50,7 +49,11 @@ const InventoryTable = (props) => {
                       {props.tableHeaderData?.map((item, index) => (
                         <th
                           key={index}
-                          className={`text-left  ${hiddenMobile.includes(item.title) ? "hidden md:block" : "block"} ${
+                          className={`text-left  ${
+                            hiddenMobile.includes(item.title)
+                              ? "hidden md:block"
+                              : "block"
+                          } ${
                             doubleColumn.includes(item.title) &&
                             "col-span-2 text-left"
                           }`}
@@ -67,7 +70,9 @@ const InventoryTable = (props) => {
                     {props.tableData?.map((item, index) => {
                       let marketName = getMarketName(item.store_id);
                       let uploadDate = getUploadDate(item.createdAt);
-                      let serialNumber = props.pageIndex * 20 + (index + 1);
+                      let serialNumber =
+                        (props.pageIndex - 1) * 20 + (index + 1);
+
                       return (
                         <tr
                           key={item._id}

@@ -177,12 +177,6 @@ const Dashboard = () => {
     }
   };
 
-  // returns today's date
-  const getCurrentDate = () => {
-    let date = new Date();
-    return date.toLocaleDateString();
-  };
-
   const getAllData = useCallback(() => {
     let url = "orders/admin/getOrders?type=";
     let allUrl = [
@@ -191,7 +185,7 @@ const Dashboard = () => {
       `${url}cancelled`,
       "users/admin/buyers",
       "stores/allstores",
-      "/products/search",
+      "/products/search?sort=-createdAt&limit=10",
       "wallets/balances",
     ];
 
@@ -203,30 +197,38 @@ const Dashboard = () => {
             pending,
             completed,
             cancelled,
-            newUsers,
+            allBuyers,
             allStores,
             allProducts,
             balances
           ) => {
             // destructing responses from axios.all
             let {
-              data: { data: pendingArr },
+              data: {
+                data: { pageInfo: pendingPageInfo },
+              },
             } = pending;
 
             let {
-              data: { data: completedArr },
+              data: {
+                data: { pageInfo: completedPageInfo },
+              },
             } = completed;
 
             let {
-              data: { data: cancelledArr },
+              data: {
+                data: { pageInfo: cancelledPageInfo },
+              },
             } = cancelled;
 
             let {
-              data: { data: newUsersArr },
-            } = newUsers;
+              data: { pageInfo: allBuyersPageInfo, newBuyers: newCustomers },
+            } = allBuyers;
 
             let {
-              data: { data: allStoresArr },
+              data: {
+                data: { pageInfo: allStoresPageInfo },
+              },
             } = allStores;
 
             let {
@@ -237,61 +239,53 @@ const Dashboard = () => {
               data: { data: balancesArr },
             } = balances;
 
-            // filters customers by today's date
-            let newCustomers = newUsersArr.filter(
-              (item) =>
-                item.updatedAt.slice(0, 10).split("-").join("/") ===
-                getCurrentDate()
-            );
-
             // slicing first ten of newly approved products
-            let newlyApproved = allProductsArr.reverse().slice(0, 10);
 
             // mutating all state at once
             setCurrentData((prevData) => {
               return {
-                ...prevData, 
+                ...prevData,
 
                 allOrders: {
                   total:
-                    pendingArr?.length +
-                    completedArr?.length +
-                    cancelledArr?.length,
+                    pendingPageInfo?.totalHits +
+                    completedPageInfo?.totalHits +
+                    cancelledPageInfo?.totalHits,
                   loading: false,
                 },
 
                 pendingOrders: {
-                  total: pendingArr?.length,
+                  total: pendingPageInfo?.totalHits,
                   loading: false,
                 },
 
                 completedOrders: {
-                  total: completedArr?.length,
+                  total: completedPageInfo?.totalHits,
                   loading: false,
                 },
 
                 cancelledOrders: {
-                  total: cancelledArr?.length,
+                  total: cancelledPageInfo?.totalHits,
                   loading: false,
                 },
 
                 allCustomers: {
-                  total: newUsersArr.length,
+                  total: allBuyersPageInfo?.totalHits,
                   loading: false,
                 },
 
                 newCustomers: {
-                  total: newCustomers.length,
+                  total: newCustomers,
                   loading: false,
                 },
 
                 allStores: {
-                  total: allStoresArr.length,
+                  total: allStoresPageInfo.totalHits,
                   loading: false,
                 },
 
                 recentProducts: {
-                  data: newlyApproved,
+                  data: allProductsArr,
                   loading: false,
                 },
 

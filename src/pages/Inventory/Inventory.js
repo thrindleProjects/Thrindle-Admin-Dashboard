@@ -16,7 +16,6 @@ import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import NewLoader from "../../components/newLoader/newLoader";
 import DeleteProductModal from "../../components/DeleteProductModal/DeleteProductModal";
-import paginationArr from "../../utils/pagination";
 import { Route, Routes, useParams, useSearchParams } from "react-router-dom";
 import InventoryHeader from "../../components/Common/GeneralHeaderTab/InventoryHeaderTab";
 
@@ -51,15 +50,6 @@ const Inventory = (props) => {
 
   const page = searchParams.get("page");
   const search = searchParams.get("search");
-  // const url = "https://api.thrindle.com/api/thrindle/sellers";
-
-  // // Break Customers Array into smaller arrays for pagination
-  // const paginationArr = (arr, size) => {
-
-  // }
-  //   Array.from({ length: Math.ceil(arr?.length / size) }, (v, i) =>
-  //     arr.slice(i * size, i * size + size)
-  //   );
 
   // get Markets data and store in local storage
   const getMarkets = async () => {
@@ -72,38 +62,6 @@ const Inventory = (props) => {
       } else {
         toast.error(`${error}`);
       }
-    }
-  };
-
-  // const resetPageIndex = () => {
-  //   setProducts({ ...products, pageIndex: 0 });
-  // };
-
-  // HandlePagination for frontend paginated table
-  const handlePagination = (type) => {
-    switch (type) {
-      case "NEXT_PAGE":
-        setProducts((oldProducts) => {
-          if (
-            oldProducts.paginatedProducts.length - 1 ===
-            oldProducts.pageIndex
-          ) {
-            return oldProducts;
-          }
-          return { ...oldProducts, pageIndex: oldProducts.pageIndex + 1 };
-        });
-        break;
-      case "PREVIOUS_PAGE":
-        setProducts((oldProducts) => {
-          if (oldProducts.pageIndex === 0) {
-            return oldProducts;
-          }
-          return { ...oldProducts, pageIndex: oldProducts.pageIndex - 1 };
-        });
-        break;
-      default:
-        console.log("Argumenet NOT handled");
-        break;
     }
   };
 
@@ -127,8 +85,8 @@ const Inventory = (props) => {
         setSearchParams(changeParams);
         break;
       case "LAST_PAGE":
-        if (payload === products.pageInfo?.total) return;
-        changeParams.page = products.pageInfo?.total;
+        if (payload === products.pageInfo?.totalPages) return;
+        changeParams.page = products.pageInfo?.totalPages;
         setSearchParams(changeParams);
         break;
       case "GO_TO_PAGE":
@@ -172,11 +130,15 @@ const Inventory = (props) => {
 
     setStatus({ isError: false, isLoading: true });
 
-    let verifiedEndPoint = search
+    const verifiedEndPoint = search
       ? `/products/search/${search}?page=${page ? page : 1}`
       : `/products/search?page=${page ? page : 1}`;
 
-    let endpoints = ["/products/unverifiedproducts", verifiedEndPoint];
+    const unverifiedEndPoint = search
+      ? `/products/unverifiedproducts?page=${page ? page : 1}&search=${search}`
+      : `/products/unverifiedproducts?page=${page ? page : 1}`;
+
+    let endpoints = [unverifiedEndPoint, verifiedEndPoint];
 
     axios
       .all(endpoints.map((endpoint) => axiosInstance.get(endpoint)))
@@ -184,7 +146,7 @@ const Inventory = (props) => {
         axios.spread((unverifiedProducts, approvedProducts) => {
           // destructing responses from axios.all
           let {
-            data: { data: unverifiedProductsArr },
+            data: { data: unverifiedProductsArr, pageInfo: unverifiedPageInfo },
           } = unverifiedProducts;
 
           let {
@@ -194,81 +156,76 @@ const Inventory = (props) => {
           getMarkets();
 
           // mutating all state at once
-          if (params["*"] !== "approved-product") {
-            setProducts((prevState) => {
-              if (
-                prevState?.pageIndex >
-                unverifiedProductsArr.reverse()?.length - 1
-              ) {
-                return {
-                  ...prevState,
-                  allProducts: unverifiedProductsArr.reverse(),
-                  paginatedProducts: paginationArr(
-                    unverifiedProductsArr.reverse(),
-                    20
-                  ),
-                  pageIndex: unverifiedProductsArr.reverse()?.length - 1,
-                  allProductsImmutable: unverifiedProductsArr.reverse(),
-                };
-              }
-
-              return {
-                ...prevState,
-                allProducts: unverifiedProductsArr.reverse(),
-                paginatedProducts: paginationArr(
-                  unverifiedProductsArr.reverse(),
-                  20
-                ),
-                allProductsImmutable: unverifiedProductsArr.reverse(),
-              };
-            });
-          }
-
-          if (params["*"] === "approved-product") {
-            const numberOfPagesToBeDisplayed = 5;
-            let pageNumber = Number(page);
-            // Create array of all possible pages
-            let rightHandSide = Array.from(
-              { length: approvedPageInfo.total },
+          const numberOfPagesToBeDisplayed = 5;
+          let pageNumber = Number(page);
+          const isApprovedTab = params["*"] === "approved-product";
+          // Create array of all possible pages
+          let rightHandSide;
+          if (!isApprovedTab) {
+            rightHandSide = Array.from(
+              { length: unverifiedPageInfo.totalPages },
               (_, index) => index + 1
             );
-            let leftHandSide;
-            leftHandSide = rightHandSide.splice(0, pageNumber);
+          }
+          if (isApprovedTab) {
+            rightHandSide = Array.from(
+              { length: approvedPageInfo.totalPages },
+              (_, index) => index + 1
+            );
+          }
 
-            let maxLeft =
-              rightHandSide.length < 3
-                ? numberOfPagesToBeDisplayed - rightHandSide.length
-                : 3;
-            let maxRight =
-              leftHandSide.length < 3
-                ? numberOfPagesToBeDisplayed - leftHandSide.length
-                : 2;
+          let leftHandSide;
+          leftHandSide = rightHandSide.splice(0, pageNumber);
 
-            //Get first three items from leftHandSide if its length
-            // is larger than 3
-            leftHandSide = leftHandSide.reverse().slice(0, maxLeft).reverse();
-            rightHandSide = rightHandSide.slice(0, maxRight);
-            let newPages = leftHandSide
-              .concat(rightHandSide)
-              .map((item) => ({ page: item, limit: 20 }));
+          let maxLeft =
+            rightHandSide.length < 3
+              ? numberOfPagesToBeDisplayed - rightHandSide.length
+              : 3;
+          let maxRight =
+            leftHandSide.length < 3
+              ? numberOfPagesToBeDisplayed - leftHandSide.length
+              : 2;
+
+          //Get first three items from leftHandSide if its length
+          // is larger than 3
+          leftHandSide = leftHandSide.reverse().slice(0, maxLeft).reverse();
+          rightHandSide = rightHandSide.slice(0, maxRight);
+          let newPages = leftHandSide
+            .concat(rightHandSide)
+            .map((item) => ({ page: item, limit: 20 }));
+
+          if (isApprovedTab) {
             approvedPageInfo.displayPages = newPages;
             approvedPageInfo.currentPage = pageNumber;
-
-            setProducts((prevState) => ({
-              ...prevState,
-              allProducts: approvedProductsArr,
-              pageInfo: approvedPageInfo,
-            }));
           }
+
+          if (!isApprovedTab) {
+            unverifiedPageInfo.displayPages = newPages;
+            unverifiedPageInfo.currentPage = pageNumber;
+          }
+
+          setProducts((prevState) => {
+            return isApprovedTab
+              ? {
+                  ...prevState,
+                  allProducts: approvedProductsArr,
+                  pageInfo: approvedPageInfo,
+                }
+              : {
+                  ...prevState,
+                  allProducts: unverifiedProductsArr,
+                  pageInfo: unverifiedPageInfo,
+                };
+          });
 
           setInventoryData((prevState) => {
             let currentState = prevState.map((item) => {
               if (item.title === "Pending Products") {
-                return { ...item, value: unverifiedProductsArr?.length };
+                return { ...item, value: unverifiedPageInfo.totalHits };
               }
 
               if (item.title === "Approved Products") {
-                return { ...item, value: approvedPageInfo.totalProducts };
+                return { ...item, value: approvedPageInfo.totalHits };
               }
 
               return item;
@@ -278,7 +235,7 @@ const Inventory = (props) => {
           });
 
           setAllInventory(
-            unverifiedProductsArr?.length + approvedPageInfo.totalProducts
+            unverifiedPageInfo.totalHits + approvedPageInfo.totalHits
           );
 
           setStatus({ isError: false, isLoading: false });
@@ -377,13 +334,12 @@ const Inventory = (props) => {
                 <InventoryTable
                   showCheck
                   tableHeaderData={inventTableHeader}
-                  tableData={products.paginatedProducts[products.pageIndex]}
-                  pageIndex={products.pageIndex}
+                  tableData={products.allProducts}
+                  pageIndex={page ? page : 1}
                   setModal={handleSetModal}
                   displayDeleteModal={(id, activeData) =>
                     displayDeleteModal(id, activeData)
                   }
-                  handlePagination={handlePagination}
                   itemsNumber={products?.paginatedProducts}
                   status={status}
                   totalNumber={products?.allProducts?.length}
@@ -391,6 +347,8 @@ const Inventory = (props) => {
                   products={products}
                   setProducts={setProducts}
                   setFilterValue={setFilterValue}
+                  pageInfo={products.pageInfo}
+                  changePage={changePage}
                 />
               }
             />

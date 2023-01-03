@@ -56,8 +56,7 @@ const SellerTable = (props) => {
           </thead>
           <tbody className="main-table-body">
             {props.tableData?.map((item, index) => {
-              let serialNumber = props.pageIndex * 20 + (index + 1);
-
+              let serialNumber = (props.pageIndex - 1) * 20 + (index + 1);
               return (
                 <tr
                   key={item._id}
