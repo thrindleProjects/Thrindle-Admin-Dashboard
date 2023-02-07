@@ -8,7 +8,7 @@ const AdminUserTable = ({ data, index }) => {
         <img
           alt=""
           className="w-16 h-16"
-          src={`http://store-staging-api.thrindle.com/api/thrindle/images/${data?.product?.images[0]}`}
+          src={`https://store-staging-api.thrindle.com/api/thrindle/images/${data?.product?.images[0]}`}
         />
         <p>{data?.product?.name}</p>
         <p>N {data?.product?.original_price.toLocaleString()}.00</p>

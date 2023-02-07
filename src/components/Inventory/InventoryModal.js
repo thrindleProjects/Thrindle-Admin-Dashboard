@@ -8,7 +8,7 @@ const InventoryModal = (props) => {
   const modalRef = useRef(null);
   const [modalData, setModalData] = useState([]);
 
-  const url = "http://store-staging-api.thrindle.com/api/thrindle";
+  const url = "https://store-staging-api.thrindle.com/api/thrindle";
 
   const { handleSetModal, getAllUnverifiedProducts } = props;
 
@@ -83,7 +83,7 @@ const InventoryModal = (props) => {
                 <div className="h-52 overflow-hidden shadow rounded-md">
                   <img
                     className="object-contain h-full"
-                    src={`http://store-staging-api.thrindle.com/api/thrindle/images/${item.images[0]}`}
+                    src={`https://store-staging-api.thrindle.com/api/thrindle/images/${item.images[0]}`}
                     alt="Pending Item"
                   />
                 </div>

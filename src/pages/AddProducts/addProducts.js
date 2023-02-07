@@ -95,7 +95,7 @@ const AddProducts = () => {
       description: "",
       productStock: "",
       price: "",
-      forSale: true,
+      forSale: false,
     },
 
     validationSchema: Yup.object().shape({
