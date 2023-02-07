@@ -146,6 +146,9 @@ const InventoryEditModal = (props) => {
         const {
           data: { data },
         } = await axios.get(fetchUrl);
+
+        const fetchedData = data[0] ?? [data];
+
         let {
           description,
           name,
@@ -158,7 +161,10 @@ const InventoryEditModal = (props) => {
           no_in_stock,
           new: itemStatus,
           price,
-        } = data[0];
+        } = fetchedData[0];
+
+        console.log({ fetchedData });
+
         let marketName = getMarketName(store_id);
         await getMarketCategories(marketName);
         let size, color;
@@ -195,7 +201,7 @@ const InventoryEditModal = (props) => {
           oldImages,
           newImages: [],
         }));
-        setModalData(data);
+        setModalData(fetchedData);
         setCategoryHandler((old) => {
           return { ...old, marketName };
         });
