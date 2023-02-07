@@ -16,10 +16,14 @@ const ApprovedProductPagination = ({
   });
 
   useEffect(() => {
-    let startNumber = (pageIndex - 1) * 20 + 1;
-    let endNumber = (pageIndex - 1) * 20 + pageLength;
-    let totalNumber = pageInfo?.totalProducts;
-    return setPageInfo({ startNumber, endNumber, totalNumber });
+    let startNumber = (pageIndex - 1) * 20 + 1 || 0;
+    let endNumber = (pageIndex - 1) * 20 + pageLength || 0;
+    let totalNumber = pageInfo?.totalProducts || 0;
+    return setPageInfo({
+      startNumber: endNumber ? startNumber : endNumber,
+      endNumber,
+      totalNumber,
+    });
   }, [pageIndex, pageInfo?.totalProducts, pageLength]);
 
   return (
@@ -54,7 +58,8 @@ const ApprovedProductPagination = ({
             <button
               key={item.page}
               className={`text-xs md:text-sm ${
-                pageInfo?.currentPage === item.page
+                pageInfo?.currentPage === item.page ||
+                pageInfo?.page === item.page
                   ? "text-primary-main font-black underline"
                   : "text-gray-700"
               }`}
