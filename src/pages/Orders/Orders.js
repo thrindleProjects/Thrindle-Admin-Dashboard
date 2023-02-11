@@ -112,7 +112,7 @@ const Orders = (props) => {
   };
 
   const getOrders = useCallback(async () => {
-    if (!marketType | (marketType === "mall") | (marketType === "market")) {
+    if (!marketType | (marketType === "mall") || marketType === "market") {
       setStatus({ isLoading: true, isError: false, isEmpty: false });
 
       setOrders((oldOrders) => {
@@ -133,7 +133,7 @@ const Orders = (props) => {
       url = `${url}&market=mall`;
     }
 
-    if ((marketType === "market") | !marketType) {
+    if (marketType === "market" || !marketType) {
       url = `${url}&market=market`;
     }
 
@@ -171,7 +171,7 @@ const Orders = (props) => {
 
       let rightHandSide;
 
-      if ((activeTab === "Pending Orders") | !activeTab) {
+      if (activeTab === "Pending Orders" || !activeTab) {
         paginatedOrders = pending;
         allOrders = pending;
         rightHandSide = Array.from(
@@ -215,7 +215,7 @@ const Orders = (props) => {
         .concat(rightHandSide)
         .map((item) => ({ page: item, limit: 20 }));
 
-      if (activeTab === "Pending Orders") {
+      if (activeTab === "Pending Orders" || !activeTab) {
         pendingPageInfo.displayPages = newPages;
         pendingPageInfo.currentPage = pageNumber;
       }
@@ -244,7 +244,8 @@ const Orders = (props) => {
 
       setOrders((oldState) => {
         const newState = oldState;
-        if (activeTab === "Pending Orders") newState.pageInfo = pendingPageInfo;
+        if (activeTab === "Pending Orders" || !activeTab)
+          newState.pageInfo = pendingPageInfo;
         if (activeTab === "Delivered Orders")
           newState.pageInfo = completedPageInfo;
         if (activeTab === "Cancelled Orders")
@@ -292,7 +293,7 @@ const Orders = (props) => {
             data={orderMarkets}
             noCounter={true}
             activeTab={
-              !marketType | (marketType === "market")
+              !marketType || marketType === "market"
                 ? "Thrindle Market"
                 : marketType === "mall"
                 ? "Thrindle Mall"
